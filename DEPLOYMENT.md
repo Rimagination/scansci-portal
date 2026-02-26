@@ -1,34 +1,61 @@
-# ScanSci 集成部署说明
+﻿# ScanSci 部署说明
 
-## 1. 目标结构
-- `www.scansci.com` -> 门户站（本目录 `scansci-portal`）
-- `dataset.scansci.com` -> DataRaven
-- `journal.scansci.com` -> Journal Scout
-- `citation.scansci.com` -> Citation Integrity Lab
+## 1. 域名与应用拆分
 
-三个应用继续独立维护、独立部署，不合并代码库。
+- `www.scansci.com`：门户（GitHub Pages 静态前端）
+- `dataset.scansci.com`：DataRaven
+- `journal.scansci.com`：Journal Scout
+- `citation.scansci.com`：Citation Integrity Lab
+
+三套应用继续独立仓库、独立发布。
 
 ## 2. Cloudflare DNS
-在 `scansci.com` 区域中新增/确认：
-- `CNAME  www      <门户 GitHub Pages 域名>`
-- `CNAME  dataset  <dataraven GitHub Pages 域名>`
-- `CNAME  journal  <journal-scout GitHub Pages 域名>`
-- `CNAME  citation <citation-integrity-lab GitHub Pages 域名>`
 
-建议代理模式先使用 `DNS only`，验证完成后再切换是否代理。
+在 `scansci.com` 下配置：
 
-## 3. GitHub Pages 绑定
-各仓库根目录 `CNAME` 已配置：
-- 门户：`www.scansci.com`
-- DataRaven：`dataset.scansci.com`
-- Journal Scout：`journal.scansci.com`
-- Citation Integrity Lab：`citation.scansci.com`
+- `CNAME www -> <portal pages domain>`
+- `CNAME dataset -> <dataraven pages domain>`
+- `CNAME journal -> <journal pages domain>`
+- `CNAME citation -> <citation pages domain>`
 
-在每个仓库 `Settings -> Pages` 中启用 Pages，对应分支发布。
+## 3. GitHub Pages
 
-## 4. 门户上新流程
-1. 新工具先部署到新二级域名。
-2. 在 `data/apps.json` 添加一条记录：
-   - `id`, `name`, `description`, `cover`, `url`, `category`
-3. 推送门户仓库，卡片自动渲染，无需改 HTML。
+每个仓库根目录保留 `CNAME` 文件并在 `Settings -> Pages` 开启发布。
 
+## 4. API 同域挂载（关键）
+
+将 Cloudflare Worker 路由绑定为：
+
+- `www.scansci.com/api/*`
+
+这样前端直接调用 `/api/*`，不需要跨域改造。
+
+## 5. D1 初始化
+
+在 Worker 目录执行：
+
+```bash
+cd worker
+wrangler d1 execute scansci_auth --remote --file=./sql/0001_init.sql
+```
+
+## 6. Worker Secrets
+
+```bash
+wrangler secret put GITHUB_CLIENT_ID
+wrangler secret put GITHUB_CLIENT_SECRET
+wrangler secret put JWT_SECRET
+```
+
+## 7. OAuth 回调地址（GitHub）
+
+在 GitHub OAuth App 里设置：
+
+- Homepage URL: `https://www.scansci.com`
+- Authorization callback URL: `https://www.scansci.com/api/auth/github/callback`
+
+## 8. 门户上新流程
+
+1. 新工具部署到新域名
+2. 更新 `data/apps.json`
+3. 提交后门户自动渲染新卡片

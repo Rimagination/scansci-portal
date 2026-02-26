@@ -59,6 +59,99 @@ body {
   font-size: 13px;
 }
 
+.auth-box {
+  margin: 14px 0 16px;
+}
+
+.auth-state {
+  border: 1px solid #cfdaeb;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.auth-state--user {
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+}
+
+.auth-title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #27405f;
+}
+
+.auth-subtitle {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #5b6e89;
+}
+
+.auth-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #d3dded;
+  object-fit: cover;
+}
+
+.auth-user-meta {
+  min-width: 0;
+}
+
+.auth-name {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #173457;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auth-email {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #5f7088;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auth-btn {
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.auth-btn--primary {
+  border: 1px solid #2f6fa4;
+  color: #fff;
+  background: #2f6fa4;
+}
+
+.auth-btn--primary:hover {
+  background: #225985;
+  border-color: #225985;
+}
+
+.auth-btn--ghost {
+  grid-column: 1 / -1;
+  border: 1px solid #bfd0e5;
+  color: #2f4f73;
+  background: #ffffff;
+}
+
+.auth-btn--ghost:hover {
+  background: #eef4fb;
+}
+
 .search-label {
   display: block;
   margin-bottom: 8px;
@@ -172,8 +265,8 @@ body {
 }
 
 .tool-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
   text-decoration: none;
   color: inherit;
   border: 1px solid #d4dce9;
@@ -188,6 +281,12 @@ body {
   transform: translateY(-4px);
   border-color: #9db7d6;
   box-shadow: 0 22px 34px rgba(16, 34, 60, 0.15);
+}
+
+.tool-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .tool-card__figure {
@@ -298,11 +397,45 @@ body {
 }
 
 .tool-card__meta {
-  margin-top: 10px;
+  margin-top: auto;
+  padding: 0 14px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
+}
+
+.tool-card__meta-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-card__fav {
+  border: 1px solid #c7d8eb;
+  border-radius: 999px;
+  background: #f8fbff;
+  color: #34597d;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tool-card__fav:hover {
+  border-color: #8eb3d6;
+  background: #eef6ff;
+}
+
+.tool-card__fav.is-active {
+  border-color: #2f8d98;
+  background: #ddf4ef;
+  color: #136064;
+}
+
+.tool-card__fav:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .tool-card__category {
@@ -317,6 +450,7 @@ body {
 }
 
 .tool-card__action {
+  text-decoration: none;
   font-size: 12px;
   font-weight: 700;
   color: #2e5f8f;

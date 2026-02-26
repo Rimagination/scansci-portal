@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226c" />
-  <link rel="stylesheet" href="./styles.css?v=20260226c" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226d" />
+  <link rel="stylesheet" href="./styles.css?v=20260226d" />
   <style>
     /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
     .portal-sidebar {
@@ -56,6 +56,22 @@
         <p class="brand-desc">统一入口，独立应用部署。</p>
       </div>
 
+      <section class="auth-box" aria-label="账户状态">
+        <div id="authGuest" class="auth-state">
+          <p class="auth-title">账户</p>
+          <p class="auth-subtitle">登录后可收藏常用工具并同步最近操作。</p>
+          <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">通过 GitHub 登录</button>
+        </div>
+        <div id="authUser" class="auth-state auth-state--user" hidden>
+          <img id="userAvatar" class="auth-avatar" alt="用户头像" />
+          <div class="auth-user-meta">
+            <p id="userName" class="auth-name"></p>
+            <p id="userEmail" class="auth-email"></p>
+          </div>
+          <button id="logoutBtn" class="auth-btn auth-btn--ghost" type="button">退出登录</button>
+        </div>
+      </section>
+
       <label class="search-label" for="globalSearch">全局搜索</label>
       <div class="global-search-wrap">
         <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -83,6 +99,6 @@
     </main>
   </div>
 
-  <script src="./app.js?v=20260226c"></script>
+  <script src="./app.js?v=20260226d"></script>
 </body>
 </html>

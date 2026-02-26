@@ -79,20 +79,11 @@ function renderFilters() {
 }
 
 function cardTemplate(app) {
-  const coverTitle = app.cover_title || app.name || "Untitled";
-  const coverSubtitle = app.cover_subtitle || "";
-  const showCoverMeta = app.show_cover_meta !== false;
   return `
     <a class="tool-card" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener">
       <div class="tool-card__figure">
         <img src="${escapeHtml(app.cover || "./assets/covers/default.svg")}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
         <div class="tool-card__fade" aria-hidden="true"></div>
-        ${showCoverMeta ? `
-        <div class="tool-card__cover-meta">
-          <h4 class="tool-card__cover-title">${escapeHtml(coverTitle)}</h4>
-          ${coverSubtitle ? `<p class="tool-card__cover-subtitle">${escapeHtml(coverSubtitle)}</p>` : ""}
-        </div>
-        ` : ""}
         <div class="tool-card__overlay">
           <span class="tool-card__cta">立即使用</span>
         </div>

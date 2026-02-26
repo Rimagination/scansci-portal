@@ -1,0 +1,38 @@
+{
+  "apps": [
+    {
+      "id": "dataraven",
+      "name": "DataRaven",
+      "description": "科研数据与开源数据检索引擎，聚焦数据集发现与索引能力。",
+      "cover": "./assets/brand/dataraven-crow-only.svg",
+      "cover_title": "",
+      "cover_subtitle": "",
+      "show_cover_meta": false,
+      "url": "https://dataset.scansci.com",
+      "category": "数据检索",
+      "tags": ["dataset", "open data", "search"]
+    },
+    {
+      "id": "journal-scout",
+      "name": "Journal Scout",
+      "description": "全学科选刊助手，聚合 JCR、中科院、核心目录与科协分级。",
+      "cover": "./assets/covers/journal-scout.svg",
+      "cover_title": "Journal Scout",
+      "cover_subtitle": "全学科期刊评价与选刊分析",
+      "url": "https://journal.scansci.com",
+      "category": "期刊分析",
+      "tags": ["journal", "JCR", "中科院", "CiteScore"]
+    },
+    {
+      "id": "citation-integrity-lab",
+      "name": "Citation Integrity Lab",
+      "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。",
+      "cover": "./assets/covers/citation-lab.svg",
+      "cover_title": "Citation Integrity Lab",
+      "cover_subtitle": "参考文献一致性与证据核查",
+      "url": "https://citation.scansci.com",
+      "category": "学术核查",
+      "tags": ["citation", "integrity", "validation"]
+    }
+  ]
+}

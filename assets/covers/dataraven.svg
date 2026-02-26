@@ -1,0 +1,32 @@
+<svg width="900" height="1350" viewBox="0 0 900 1350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DataRaven Cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8f9fc"/>
+      <stop offset="100%" stop-color="#edf1f7"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7d92b1"/>
+      <stop offset="100%" stop-color="#98abc8"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1350" fill="url(#bg)"/>
+  <g opacity="0.52">
+    <path d="M80 1120C188 1045 248 1010 358 1040C484 1073 532 1160 662 1160C746 1160 808 1130 860 1088" fill="none" stroke="url(#line)" stroke-width="4"/>
+    <path d="M80 1186C200 1136 270 1114 390 1138C504 1160 576 1238 708 1238C778 1238 826 1216 860 1194" fill="none" stroke="#aab8cf" stroke-width="3"/>
+    <circle cx="358" cy="1040" r="8" fill="#90a2bf"/>
+    <circle cx="662" cy="1160" r="8" fill="#90a2bf"/>
+    <circle cx="390" cy="1138" r="8" fill="#9aaaca"/>
+    <circle cx="708" cy="1238" r="8" fill="#9aaaca"/>
+  </g>
+
+  <rect x="316" y="190" width="268" height="268" rx="54" fill="#1d2028"/>
+  <g transform="translate(352 244)" fill="#ffffff">
+    <path d="M20 128L116 50C124 44 134 40 144 40H188C196 40 202 46 202 54C202 62 196 68 188 68H156V108C156 142 129 170 95 170H86L74 131L53 131L57 170H42L36 131H20C12 131 6 125 6 117C6 111 9 107 14 104L20 128Z"/>
+    <circle cx="142" cy="57" r="11"/>
+    <circle cx="142" cy="57" r="4" fill="#1d2028"/>
+  </g>
+
+  <text x="145" y="594" fill="#0f1830" font-family="Georgia, 'Times New Roman', serif" font-size="108" font-weight="700">DataRaven</text>
+  <text x="655" y="594" fill="#8f9db3" font-family="Noto Sans SC, Arial, sans-serif" font-size="70" font-weight="500">数鸦</text>
+  <text x="230" y="690" fill="#5e6673" font-family="Noto Sans SC, Arial, sans-serif" font-size="56" font-weight="600">学术级开源数据检索引擎</text>
+</svg>

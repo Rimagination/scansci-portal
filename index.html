@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ScanSci | 学术工具门户</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="portal-shell">
+    <aside class="portal-sidebar">
+      <div class="brand-block">
+        <img class="brand-logo" src="./assets/brand/scansci-logo.svg" alt="搜索科学 ScanSci" />
+        <p class="brand-desc">统一入口，独立应用部署。</p>
+      </div>
+
+      <label class="search-label" for="globalSearch">全局搜索</label>
+      <div class="global-search-wrap">
+        <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+        </svg>
+        <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名或关键词" />
+      </div>
+
+      <div class="filter-head">
+        <span>功能分类</span>
+      </div>
+      <div id="categoryFilters" class="category-filters" role="tablist" aria-label="功能分类"></div>
+    </aside>
+
+    <main class="portal-main">
+      <header class="main-head">
+        <h2>ScanSci Apps</h2>
+        <p id="toolCount">加载中...</p>
+      </header>
+
+      <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" hidden>未找到匹配应用，请调整关键词或分类。</p>
+      <p id="errorState" class="error-state" hidden>应用列表加载失败，请稍后重试。</p>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DataRaven 数鸦">
+  <rect width="1200" height="600" fill="#f3f4f6"/>
+
+  <rect x="150" y="98" width="220" height="220" rx="52" fill="#1f232c"/>
+
+  <g transform="translate(182 142)" fill="#ffffff">
+    <path d="M28 132L108 72C117 65 128 61 139 61H179C188 61 194 67 194 76C194 84 188 90 179 90H153V122C153 156 126 183 92 183H82L72 146H52L56 183H42L36 146H28C20 146 14 140 14 132C14 125 20 120 28 120V132Z"/>
+    <circle cx="137" cy="77" r="11"/>
+    <circle cx="137" cy="77" r="4" fill="#1f232c"/>
+  </g>
+
+  <text x="430" y="282" fill="#0f1830" font-family="Georgia, 'Times New Roman', serif" font-size="116" font-weight="700">DataRaven</text>
+  <text x="920" y="282" fill="#8f9db3" font-family="Noto Sans SC, Arial, sans-serif" font-size="74" font-weight="500">数鸦</text>
+  <text x="548" y="406" fill="#5f6673" font-family="Noto Sans SC, Arial, sans-serif" font-size="62" font-weight="600">学术级开源数据检索引擎</text>
+</svg>

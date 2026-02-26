@@ -1,0 +1,27 @@
+<svg width="900" height="1350" viewBox="0 0 900 1350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Journal Scout Cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3fbf6"/>
+      <stop offset="100%" stop-color="#ebf8f0"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2f8f57"/>
+      <stop offset="100%" stop-color="#d98f3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1350" fill="url(#bg)"/>
+  <rect x="90" y="120" width="720" height="1110" rx="24" fill="#ffffff" stroke="#c3ddce"/>
+  <g fill="none" stroke="#cadfce" stroke-width="2">
+    <path d="M130 290H770"/><path d="M130 470H770"/><path d="M130 650H770"/><path d="M130 830H770"/><path d="M130 1010H770"/>
+  </g>
+  <g fill="none" stroke="url(#line)" stroke-width="5">
+    <path d="M150 425L280 395L430 445L560 405L700 458L760 430"/>
+    <path d="M150 605L310 555L460 615L620 575L760 640"/>
+    <path d="M150 785L260 745L390 815L540 760L680 840L760 810"/>
+  </g>
+  <g fill="#3f9156">
+    <circle cx="150" cy="425" r="7"/><circle cx="280" cy="395" r="7"/><circle cx="430" cy="445" r="7"/><circle cx="560" cy="405" r="7"/><circle cx="700" cy="458" r="7"/>
+  </g>
+  <text x="146" y="275" fill="#215f40" font-family="Manrope, Arial, sans-serif" font-size="66" font-weight="800">Journal Scout</text>
+  <text x="146" y="1060" fill="#2d7a4d" font-family="Manrope, Arial, sans-serif" font-size="50" font-weight="700">RANKING + ANALYTICS</text>
+</svg>

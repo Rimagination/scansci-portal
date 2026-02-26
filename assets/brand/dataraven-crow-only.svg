@@ -1,0 +1,11 @@
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="DataRaven Crow Logo">
+  <rect width="1200" height="600" fill="#f3f4f6"/>
+
+  <rect x="430" y="90" width="340" height="340" rx="74" fill="#1f232c"/>
+
+  <g transform="translate(452 98) scale(1.35)" fill="#ffffff">
+    <path d="M26 128L106 68C116 61 127 57 139 57H181C190 57 196 63 196 72C196 81 190 87 181 87H154V121C154 156 126 184 91 184H82L72 145H50L54 184H41L34 145H26C18 145 12 139 12 131C12 123 18 117 26 117V128Z"/>
+    <circle cx="138" cy="73" r="11"/>
+    <circle cx="138" cy="73" r="4" fill="#1f232c"/>
+  </g>
+</svg>

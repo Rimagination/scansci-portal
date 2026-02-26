@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ScanSci">
+  <rect width="64" height="64" rx="12" fill="#ffffff"/>
+  <circle cx="28" cy="28" r="18" fill="none" stroke="#123f7e" stroke-width="5"/>
+  <circle cx="28" cy="28" r="14" fill="none" stroke="#1d5ea8" stroke-width="1.8"/>
+  <rect x="40" y="39" width="8" height="16" rx="3.8" transform="rotate(-45 40 39)" fill="#123f7e"/>
+  <line x1="19" y1="34" x2="26" y2="24" stroke="#c4c9d1" stroke-width="2.1" stroke-linecap="round"/>
+  <line x1="26" y1="24" x2="32" y2="31" stroke="#c4c9d1" stroke-width="2.1" stroke-linecap="round"/>
+  <line x1="32" y1="31" x2="38" y2="22" stroke="#c4c9d1" stroke-width="2.1" stroke-linecap="round"/>
+  <circle cx="19" cy="34" r="3.4" fill="#206ce0"/>
+  <circle cx="26" cy="24" r="3.4" fill="#13a36d"/>
+  <circle cx="32" cy="31" r="3.4" fill="#13a36d"/>
+  <circle cx="38" cy="22" r="3.4" fill="#dca23b"/>
+</svg>

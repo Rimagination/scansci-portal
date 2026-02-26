@@ -1,0 +1,27 @@
+<svg width="900" height="1350" viewBox="0 0 900 1350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Citation Integrity Lab Cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fff6e8"/>
+      <stop offset="100%" stop-color="#fff1dc"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c98433"/>
+      <stop offset="100%" stop-color="#b45a2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="1350" fill="url(#bg)"/>
+  <rect x="90" y="120" width="720" height="1110" rx="24" fill="#ffffff" stroke="#ead3b8"/>
+  <g fill="none" stroke="#eadfcf" stroke-width="2">
+    <path d="M130 280H770"/><path d="M130 440H770"/><path d="M130 600H770"/><path d="M130 760H770"/><path d="M130 920H770"/><path d="M130 1080H770"/>
+  </g>
+  <g fill="none" stroke="url(#line)" stroke-width="5">
+    <path d="M150 520L250 460L340 520L460 470L560 545L690 480L760 535"/>
+    <path d="M150 690L290 640L420 710L550 640L680 730L760 700"/>
+    <path d="M150 860L300 800L450 870L600 820L760 900"/>
+  </g>
+  <g fill="#c07a35">
+    <circle cx="150" cy="520" r="7"/><circle cx="250" cy="460" r="7"/><circle cx="340" cy="520" r="7"/><circle cx="460" cy="470" r="7"/><circle cx="560" cy="545" r="7"/><circle cx="690" cy="480" r="7"/>
+  </g>
+  <text x="146" y="275" fill="#a45e2e" font-family="Manrope, Arial, sans-serif" font-size="66" font-weight="800">Citation Lab</text>
+  <text x="146" y="1048" fill="#b86f34" font-family="Manrope, Arial, sans-serif" font-size="46" font-weight="700">INTEGRITY CHECK</text>
+</svg>

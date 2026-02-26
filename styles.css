@@ -48,7 +48,8 @@ body {
 
 .brand-logo {
   display: block;
-  width: 100%;
+  width: min(100%, 260px);
+  max-width: 100%;
   height: auto;
 }
 
@@ -346,7 +347,7 @@ body {
   color: #8f3d38;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 760px) {
   .portal-sidebar {
     position: static;
     width: auto;

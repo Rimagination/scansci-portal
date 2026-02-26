@@ -7,8 +7,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226a" />
-  <link rel="stylesheet" href="./styles.css?v=20260226a" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226b" />
+  <link rel="stylesheet" href="./styles.css?v=20260226b" />
+  <style>
+    /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
+    .portal-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 22px 18px;
+      border-right: 1px solid #cdd7e5;
+      background: linear-gradient(180deg, #f4f7fb 0%, #eef3fa 100%);
+    }
+    .portal-main {
+      margin-left: 280px;
+      padding: 38px 24px 24px;
+    }
+    .brand-logo {
+      display: block;
+      width: min(100%, 260px);
+      max-width: 100%;
+      height: auto;
+    }
+    @media (max-width: 760px) {
+      .portal-sidebar {
+        position: static;
+        width: auto;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid #cdd7e5;
+        padding: 16px;
+      }
+      .portal-main {
+        margin-left: 0;
+        padding: 20px 16px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="portal-shell">
@@ -45,6 +83,6 @@
     </main>
   </div>
 
-  <script src="./app.js?v=20260226a"></script>
+  <script src="./app.js?v=20260226b"></script>
 </body>
 </html>

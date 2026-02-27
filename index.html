@@ -59,16 +59,28 @@
       <section class="auth-box" aria-label="账户状态">
         <div id="authGuest" class="auth-state">
           <p class="auth-title">账户</p>
-          <p class="auth-subtitle">登录后可收藏常用工具并同步最近操作。</p>
-          <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">通过 GitHub 登录</button>
+          <p class="auth-subtitle">可选择 GitHub 或邮箱验证码注册/登录。</p>
+          <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
+          <p class="auth-divider"><span>或使用邮箱验证码</span></p>
+          <input id="emailInput" class="auth-input" type="email" placeholder="输入邮箱地址" autocomplete="email" />
+          <div class="auth-code-row">
+            <input id="emailCodeInput" class="auth-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入6位验证码" />
+            <button id="sendCodeBtn" class="auth-btn auth-btn--ghost" type="button">发送验证码</button>
+          </div>
+          <button id="emailLoginBtn" class="auth-btn auth-btn--secondary" type="button">邮箱登录/注册</button>
+          <p id="authHint" class="auth-hint" hidden></p>
         </div>
         <div id="authUser" class="auth-state auth-state--user" hidden>
           <img id="userAvatar" class="auth-avatar" alt="用户头像" />
           <div class="auth-user-meta">
             <p id="userName" class="auth-name"></p>
             <p id="userEmail" class="auth-email"></p>
+            <p id="userFlags" class="auth-flags"></p>
           </div>
-          <button id="logoutBtn" class="auth-btn auth-btn--ghost" type="button">退出登录</button>
+          <div class="auth-user-actions">
+            <button id="githubLinkBtn" class="auth-btn auth-btn--secondary" type="button" hidden>关联 GitHub</button>
+            <button id="logoutBtn" class="auth-btn auth-btn--ghost" type="button">退出登录</button>
+          </div>
         </div>
       </section>
 
@@ -99,6 +111,6 @@
     </main>
   </div>
 
-  <script src="./app.js?v=20260226d"></script>
+  <script src="./app.js?v=20260226e"></script>
 </body>
 </html>

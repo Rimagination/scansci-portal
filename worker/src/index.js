@@ -1,5 +1,6 @@
 ﻿const PKCE_COOKIE = "__Host-scansci_pkce";
 const SESSION_COOKIE = "__Host-scansci_session";
+const EMAIL_PURPOSE_LOGIN = "email_login";
 
 export default {
   async fetch(request, env) {
@@ -21,18 +22,33 @@ async function handleRequest(request, env) {
   const url = new URL(request.url);
 
   if (request.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: standardHeaders(request, env),
-    });
+    return new Response(null, { status: 204, headers: standardHeaders(request, env) });
   }
 
   if (url.pathname === "/api/auth/github/start" && request.method === "GET") {
-    return startGithubOAuth(request, env);
+    return startGithubOAuth(request, env, { mode: "login" });
+  }
+
+  if (url.pathname === "/api/auth/github/link/start" && request.method === "GET") {
+    return startGithubOAuth(request, env, { mode: "link" });
   }
 
   if (url.pathname === "/api/auth/github/callback" && request.method === "GET") {
     return handleGithubCallback(request, env);
+  }
+
+  if (url.pathname === "/api/auth/email/request-code" && request.method === "POST") {
+    if (!isSameOriginPost(request, env)) {
+      return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+    }
+    return handleEmailRequestCode(request, env);
+  }
+
+  if (url.pathname === "/api/auth/email/verify-code" && request.method === "POST") {
+    if (!isSameOriginPost(request, env)) {
+      return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+    }
+    return handleEmailVerifyCode(request, env);
   }
 
   if (url.pathname === "/api/auth/logout" && request.method === "POST") {
@@ -60,8 +76,17 @@ async function handleRequest(request, env) {
   return jsonResponse(request, env, { ok: false, error: "not_found" }, 404);
 }
 
-async function startGithubOAuth(request, env) {
+async function startGithubOAuth(request, env, options = { mode: "login" }) {
   requireEnv(env, ["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET", "JWT_SECRET"]);
+
+  const mode = options.mode === "link" ? "link" : "login";
+  let auth = null;
+  if (mode === "link") {
+    auth = await requireAuth(request, env);
+    if (!auth) {
+      return jsonResponse(request, env, { ok: false, error: "unauthorized" }, 401);
+    }
+  }
 
   const requestUrl = new URL(request.url);
   const publicOrigin = getPublicOrigin(request, env);
@@ -75,8 +100,9 @@ async function startGithubOAuth(request, env) {
     verifier,
     return_to: returnTo,
     created_at: Date.now(),
+    mode,
+    user_id: auth?.userId || null,
   };
-  const payloadValue = utf8ToBase64Url(JSON.stringify(payload));
 
   const authUrl = new URL("https://github.com/login/oauth/authorize");
   authUrl.searchParams.set("client_id", env.GITHUB_CLIENT_ID);
@@ -90,7 +116,7 @@ async function startGithubOAuth(request, env) {
   headers.set("Location", authUrl.toString());
   headers.append(
     "Set-Cookie",
-    buildCookie(PKCE_COOKIE, payloadValue, {
+    buildCookie(PKCE_COOKIE, utf8ToBase64Url(JSON.stringify(payload)), {
       path: "/",
       maxAge: 600,
       httpOnly: true,
@@ -128,7 +154,6 @@ async function handleGithubCallback(request, env) {
   if (pkce.state !== state || !pkce.verifier) {
     return jsonResponse(request, env, { ok: false, error: "invalid_oauth_state" }, 400);
   }
-
   if (typeof pkce.created_at !== "number" || Date.now() - pkce.created_at > 10 * 60 * 1000) {
     return jsonResponse(request, env, { ok: false, error: "pkce_expired" }, 400);
   }
@@ -169,10 +194,10 @@ async function handleGithubCallback(request, env) {
   if (!userRes.ok) {
     return jsonResponse(request, env, { ok: false, error: "github_user_failed" }, 502);
   }
-  const user = await userRes.json();
+  const ghUser = await userRes.json();
 
   const emailRes = await fetch("https://api.github.com/user/emails", { headers: ghHeaders });
-  let resolvedEmail = user.email || null;
+  let resolvedEmail = ghUser.email || null;
   if (emailRes.ok) {
     const emails = await emailRes.json();
     if (Array.isArray(emails) && emails.length) {
@@ -181,65 +206,123 @@ async function handleGithubCallback(request, env) {
       resolvedEmail = primaryVerified?.email || verified?.email || resolvedEmail;
     }
   }
+  resolvedEmail = normalizeEmail(resolvedEmail);
 
-  const githubId = String(user.id || "");
+  const githubId = String(ghUser.id || "");
   if (!githubId) {
     return jsonResponse(request, env, { ok: false, error: "github_id_missing" }, 502);
   }
 
+  const mode = pkce.mode === "link" ? "link" : "login";
   const now = new Date().toISOString();
-  await env.DB.prepare(
-    `INSERT INTO users (github_id, login, email, avatar_url, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?)
-     ON CONFLICT(github_id) DO UPDATE SET
-       login = excluded.login,
-       email = COALESCE(excluded.email, users.email),
-       avatar_url = excluded.avatar_url,
-       updated_at = excluded.updated_at`
-  )
-    .bind(githubId, String(user.login || ""), resolvedEmail, String(user.avatar_url || ""), now, now)
-    .run();
+  let user = null;
 
-  const dbUser = await env.DB.prepare(
-    "SELECT id, github_id, login, email, avatar_url FROM users WHERE github_id = ?"
-  )
-    .bind(githubId)
-    .first();
+  if (mode === "link") {
+    const auth = await requireAuth(request, env);
+    if (!auth) {
+      return jsonResponse(request, env, { ok: false, error: "unauthorized" }, 401);
+    }
 
-  if (!dbUser) {
-    return jsonResponse(request, env, { ok: false, error: "user_upsert_failed" }, 500);
+    const existingLink = await env.DB.prepare("SELECT github_id, user_id FROM github_links WHERE github_id = ?")
+      .bind(githubId)
+      .first();
+
+    if (existingLink && Number(existingLink.user_id) !== auth.userId) {
+      return jsonResponse(request, env, { ok: false, error: "github_already_linked" }, 409);
+    }
+
+    await env.DB.prepare(
+      `INSERT INTO github_links (github_id, user_id, created_at)
+       VALUES (?, ?, ?)
+       ON CONFLICT(github_id) DO UPDATE SET user_id = excluded.user_id, created_at = excluded.created_at`
+    )
+      .bind(githubId, auth.userId, now)
+      .run();
+
+    await env.DB.prepare(
+      `UPDATE users
+       SET email = COALESCE(email, ?),
+           avatar_url = CASE WHEN avatar_url IS NULL OR avatar_url = '' THEN ? ELSE avatar_url END,
+           updated_at = ?
+       WHERE id = ?`
+    )
+      .bind(resolvedEmail, String(ghUser.avatar_url || ""), now, auth.userId)
+      .run();
+
+    if (resolvedEmail) {
+      await markEmailVerified(env, auth.userId, resolvedEmail, now);
+    }
+
+    user = await getUserById(env, auth.userId);
+  } else {
+    user = await findUserByGithubId(env, githubId);
+
+    if (!user) {
+      await env.DB.prepare(
+        `INSERT INTO users (github_id, login, email, avatar_url, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)`
+      )
+        .bind(githubId, String(ghUser.login || "github_user"), resolvedEmail, String(ghUser.avatar_url || ""), now, now)
+        .run();
+
+      user = await env.DB.prepare(
+        "SELECT id, github_id, login, email, avatar_url FROM users WHERE github_id = ?"
+      )
+        .bind(githubId)
+        .first();
+    } else {
+      if (String(user.github_id || "") === githubId) {
+        await env.DB.prepare(
+          `UPDATE users
+           SET login = ?,
+               email = COALESCE(?, email),
+               avatar_url = ?,
+               updated_at = ?
+           WHERE id = ?`
+        )
+          .bind(String(ghUser.login || user.login || "github_user"), resolvedEmail, String(ghUser.avatar_url || ""), now, user.id)
+          .run();
+      } else {
+        await env.DB.prepare(
+          `UPDATE users
+           SET email = COALESCE(email, ?),
+               avatar_url = CASE WHEN avatar_url IS NULL OR avatar_url = '' THEN ? ELSE avatar_url END,
+               updated_at = ?
+           WHERE id = ?`
+        )
+          .bind(resolvedEmail, String(ghUser.avatar_url || ""), now, user.id)
+          .run();
+      }
+
+      user = await getUserById(env, Number(user.id));
+    }
+
+    if (!user) {
+      return jsonResponse(request, env, { ok: false, error: "user_upsert_failed" }, 500);
+    }
+
+    await env.DB.prepare(
+      `INSERT INTO github_links (github_id, user_id, created_at)
+       VALUES (?, ?, ?)
+       ON CONFLICT(github_id) DO UPDATE SET user_id = excluded.user_id, created_at = excluded.created_at`
+    )
+      .bind(githubId, user.id, now)
+      .run();
+
+    if (resolvedEmail) {
+      await markEmailVerified(env, user.id, resolvedEmail, now);
+    }
   }
 
-  const ttl = parseInt(env.SESSION_TTL_SECONDS || "2592000", 10);
-  const exp = Math.floor(Date.now() / 1000) + (Number.isFinite(ttl) ? ttl : 2592000);
-  const token = await signJwt(
-    {
-      sub: String(dbUser.id),
-      github_id: String(dbUser.github_id),
-      login: String(dbUser.login || ""),
-      email: dbUser.email || null,
-      avatar_url: dbUser.avatar_url || null,
-      iat: Math.floor(Date.now() / 1000),
-      exp,
-    },
-    env.JWT_SECRET
-  );
+  if (!user) {
+    return jsonResponse(request, env, { ok: false, error: "user_not_found" }, 500);
+  }
 
   const returnTo = sanitizeReturnTo(pkce.return_to || "/");
   const redirectUrl = new URL(returnTo, publicOrigin);
-
   const headers = standardHeaders(request, env);
   headers.set("Location", redirectUrl.toString());
-  headers.append(
-    "Set-Cookie",
-    buildCookie(SESSION_COOKIE, token, {
-      path: "/",
-      maxAge: exp - Math.floor(Date.now() / 1000),
-      httpOnly: true,
-      secure: true,
-      sameSite: "Lax",
-    })
-  );
+  await appendSessionCookie(headers, env, user);
   headers.append(
     "Set-Cookie",
     buildCookie(PKCE_COOKIE, "", {
@@ -252,6 +335,198 @@ async function handleGithubCallback(request, env) {
   );
 
   return new Response(null, { status: 302, headers });
+}
+
+async function handleEmailRequestCode(request, env) {
+  requireEnv(env, ["JWT_SECRET"]);
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse(request, env, { ok: false, error: "invalid_json" }, 400);
+  }
+
+  const email = normalizeEmail(body?.email);
+  if (!isValidEmail(email)) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_email" }, 400);
+  }
+
+  const nowSec = Math.floor(Date.now() / 1000);
+  const ip = getClientIp(request);
+
+  const perMinute = await env.DB.prepare(
+    `SELECT COUNT(1) AS c FROM email_verification_codes
+     WHERE email = ? AND purpose = ? AND created_unix >= ?`
+  )
+    .bind(email, EMAIL_PURPOSE_LOGIN, nowSec - 60)
+    .first();
+
+  if (Number(perMinute?.c || 0) >= 1) {
+    return jsonResponse(request, env, { ok: false, error: "too_many_requests" }, 429);
+  }
+
+  const perIpMinute = await env.DB.prepare(
+    `SELECT COUNT(1) AS c FROM email_verification_codes
+     WHERE ip = ? AND created_unix >= ?`
+  )
+    .bind(ip, nowSec - 60)
+    .first();
+
+  if (Number(perIpMinute?.c || 0) >= 3) {
+    return jsonResponse(request, env, { ok: false, error: "too_many_requests" }, 429);
+  }
+
+  const code = String(Math.floor(100000 + Math.random() * 900000));
+  const ttlSeconds = parseInt(env.EMAIL_CODE_TTL_SECONDS || "600", 10);
+  const expiresUnix = nowSec + (Number.isFinite(ttlSeconds) ? ttlSeconds : 600);
+  const nowIso = new Date().toISOString();
+  const codeHash = await hashEmailCode(email, EMAIL_PURPOSE_LOGIN, code, env.JWT_SECRET);
+
+  await env.DB.prepare(
+    `INSERT INTO email_verification_codes
+      (email, purpose, code_hash, expires_unix, consumed_at, attempts, ip, created_unix, created_at)
+     VALUES (?, ?, ?, ?, NULL, 0, ?, ?, ?)`
+  )
+    .bind(email, EMAIL_PURPOSE_LOGIN, codeHash, expiresUnix, ip, nowSec, nowIso)
+    .run();
+
+  const allowDevCode = String(env.ALLOW_DEV_EMAIL_CODE || "0") === "1";
+  if (allowDevCode) {
+    return jsonResponse(request, env, {
+      ok: true,
+      expires_in: expiresUnix - nowSec,
+      dev_preview_code: code,
+    });
+  }
+
+  requireEnv(env, ["RESEND_API_KEY", "EMAIL_FROM"]);
+  const sendOk = await sendVerificationEmail(env, email, code, expiresUnix - nowSec);
+  if (!sendOk) {
+    return jsonResponse(request, env, { ok: false, error: "provider_unavailable" }, 502);
+  }
+
+  return jsonResponse(request, env, { ok: true, expires_in: expiresUnix - nowSec });
+}
+
+async function handleEmailVerifyCode(request, env) {
+  requireEnv(env, ["JWT_SECRET"]);
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse(request, env, { ok: false, error: "invalid_json" }, 400);
+  }
+
+  const email = normalizeEmail(body?.email);
+  const code = String(body?.code || "").trim();
+  if (!isValidEmail(email)) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_email" }, 400);
+  }
+  if (!/^\d{6}$/.test(code)) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_code" }, 400);
+  }
+
+  const nowSec = Math.floor(Date.now() / 1000);
+  const nowIso = new Date().toISOString();
+  const maxAttempts = parseInt(env.EMAIL_CODE_MAX_ATTEMPTS || "5", 10);
+
+  const codeRow = await env.DB.prepare(
+    `SELECT id, code_hash, attempts, expires_unix
+     FROM email_verification_codes
+     WHERE email = ? AND purpose = ? AND consumed_at IS NULL
+     ORDER BY id DESC LIMIT 1`
+  )
+    .bind(email, EMAIL_PURPOSE_LOGIN)
+    .first();
+
+  if (!codeRow || Number(codeRow.expires_unix || 0) < nowSec) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_or_expired_code" }, 400);
+  }
+
+  const attempts = Number(codeRow.attempts || 0);
+  if (attempts >= maxAttempts) {
+    return jsonResponse(request, env, { ok: false, error: "too_many_attempts" }, 429);
+  }
+
+  const expectedHash = await hashEmailCode(email, EMAIL_PURPOSE_LOGIN, code, env.JWT_SECRET);
+  if (expectedHash !== String(codeRow.code_hash || "")) {
+    const newAttempts = attempts + 1;
+    await env.DB.prepare(
+      "UPDATE email_verification_codes SET attempts = ?, consumed_at = CASE WHEN ? >= ? THEN ? ELSE consumed_at END WHERE id = ?"
+    )
+      .bind(newAttempts, newAttempts, maxAttempts, nowIso, codeRow.id)
+      .run();
+    return jsonResponse(request, env, { ok: false, error: "invalid_code" }, 400);
+  }
+
+  await env.DB.prepare("UPDATE email_verification_codes SET consumed_at = ? WHERE id = ?")
+    .bind(nowIso, codeRow.id)
+    .run();
+
+  let user = await findUserByEmail(env, email);
+  if (!user) {
+    const login = deriveLoginFromEmail(email);
+    await env.DB.prepare(
+      `INSERT INTO users (github_id, login, email, avatar_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?)`
+    )
+      .bind(`email:${randomBase64Url(12)}`, login, email, "", nowIso, nowIso)
+      .run();
+
+    user = await findUserByEmail(env, email);
+  } else {
+    await env.DB.prepare("UPDATE users SET email = COALESCE(email, ?), updated_at = ? WHERE id = ?")
+      .bind(email, nowIso, user.id)
+      .run();
+    user = await getUserById(env, Number(user.id));
+  }
+
+  if (!user) {
+    return jsonResponse(request, env, { ok: false, error: "user_upsert_failed" }, 500);
+  }
+
+  await markEmailVerified(env, user.id, email, nowIso);
+
+  const headers = standardHeaders(request, env);
+  await appendSessionCookie(headers, env, user);
+  const favorites = await getUserFavorites(env, user.id);
+  const fullUser = await getUserById(env, user.id);
+
+  return new Response(
+    JSON.stringify({ ok: true, user: fullUser, favorites }),
+    {
+      status: 200,
+      headers,
+    }
+  );
+}
+
+async function sendVerificationEmail(env, toEmail, code, ttlSeconds) {
+  const subject = "ScanSci 邮箱验证码";
+  const text = `你的 ScanSci 验证码是 ${code}，${Math.max(1, Math.floor(ttlSeconds / 60))} 分钟内有效。`;
+  const html = `<p>你的 <strong>ScanSci</strong> 验证码是：</p><h2 style=\"letter-spacing:4px\">${code}</h2><p>${Math.max(
+    1,
+    Math.floor(ttlSeconds / 60)
+  )} 分钟内有效，请勿泄露。</p>`;
+
+  const resp = await fetch((env.RESEND_API_BASE || "https://api.resend.com").replace(/\/$/, "") + "/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: env.EMAIL_FROM,
+      to: [toEmail],
+      subject,
+      text,
+      html,
+    }),
+  });
+
+  return resp.ok;
 }
 
 async function handleLogout(request, env) {
@@ -275,27 +550,13 @@ async function handleMe(request, env) {
     return jsonResponse(request, env, { ok: false, error: "unauthorized" }, 401);
   }
 
-  const user = await env.DB.prepare(
-    "SELECT id, github_id, login, email, avatar_url FROM users WHERE id = ?"
-  )
-    .bind(auth.userId)
-    .first();
-
+  const user = await getUserById(env, auth.userId);
   if (!user) {
     return jsonResponse(request, env, { ok: false, error: "unauthorized" }, 401);
   }
 
-  const favoritesRows = await env.DB.prepare(
-    "SELECT app_id FROM user_favorites WHERE user_id = ? ORDER BY created_at DESC"
-  )
-    .bind(auth.userId)
-    .all();
-
-  return jsonResponse(request, env, {
-    ok: true,
-    user,
-    favorites: (favoritesRows.results || []).map((x) => x.app_id),
-  });
+  const favorites = await getUserFavorites(env, auth.userId);
+  return jsonResponse(request, env, { ok: true, user, favorites });
 }
 
 async function handleActionWrite(request, env) {
@@ -322,9 +583,7 @@ async function handleActionWrite(request, env) {
   const now = new Date().toISOString();
 
   if (actionType === "favorite_toggle") {
-    const existing = await env.DB.prepare(
-      "SELECT 1 FROM user_favorites WHERE user_id = ? AND app_id = ? LIMIT 1"
-    )
+    const existing = await env.DB.prepare("SELECT 1 FROM user_favorites WHERE user_id = ? AND app_id = ? LIMIT 1")
       .bind(auth.userId, appId)
       .first();
 
@@ -333,11 +592,8 @@ async function handleActionWrite(request, env) {
       await env.DB.prepare("DELETE FROM user_favorites WHERE user_id = ? AND app_id = ?")
         .bind(auth.userId, appId)
         .run();
-      isFavorite = false;
     } else {
-      await env.DB.prepare(
-        "INSERT INTO user_favorites (user_id, app_id, created_at) VALUES (?, ?, ?)"
-      )
+      await env.DB.prepare("INSERT INTO user_favorites (user_id, app_id, created_at) VALUES (?, ?, ?)")
         .bind(auth.userId, appId, now)
         .run();
       isFavorite = true;
@@ -393,6 +649,139 @@ async function handleActionRead(request, env) {
   }));
 
   return jsonResponse(request, env, { ok: true, items });
+}
+
+async function getUserById(env, userId) {
+  const user = await env.DB.prepare("SELECT id, github_id, login, email, avatar_url FROM users WHERE id = ?")
+    .bind(userId)
+    .first();
+  if (!user) return null;
+
+  const link = await env.DB.prepare("SELECT github_id FROM github_links WHERE user_id = ? LIMIT 1")
+    .bind(userId)
+    .first();
+
+  const emailVerified = await env.DB.prepare(
+    "SELECT 1 FROM user_email_verifications WHERE user_id = ? LIMIT 1"
+  )
+    .bind(userId)
+    .first();
+
+  const githubLinked = !!link || (typeof user.github_id === "string" && !user.github_id.startsWith("email:"));
+
+  return {
+    ...user,
+    github_linked: githubLinked,
+    email_verified: !!emailVerified,
+  };
+}
+
+async function findUserByEmail(env, email) {
+  const row = await env.DB.prepare(
+    "SELECT id, github_id, login, email, avatar_url FROM users WHERE lower(email) = lower(?) ORDER BY id ASC LIMIT 1"
+  )
+    .bind(email)
+    .first();
+  return row || null;
+}
+
+async function findUserByGithubId(env, githubId) {
+  const link = await env.DB.prepare("SELECT user_id FROM github_links WHERE github_id = ?")
+    .bind(githubId)
+    .first();
+
+  if (link?.user_id) {
+    return getUserById(env, Number(link.user_id));
+  }
+
+  const legacy = await env.DB.prepare(
+    "SELECT id, github_id, login, email, avatar_url FROM users WHERE github_id = ?"
+  )
+    .bind(githubId)
+    .first();
+
+  if (legacy) return getUserById(env, Number(legacy.id));
+  return null;
+}
+
+async function getUserFavorites(env, userId) {
+  const favoritesRows = await env.DB.prepare(
+    "SELECT app_id FROM user_favorites WHERE user_id = ? ORDER BY created_at DESC"
+  )
+    .bind(userId)
+    .all();
+  return (favoritesRows.results || []).map((x) => x.app_id);
+}
+
+async function markEmailVerified(env, userId, email, nowIso) {
+  await env.DB.prepare(
+    `INSERT INTO user_email_verifications (user_id, email, verified_at, created_at)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET email = excluded.email, verified_at = excluded.verified_at`
+  )
+    .bind(userId, email, nowIso, nowIso)
+    .run();
+}
+
+async function appendSessionCookie(headers, env, user) {
+  const ttl = parseInt(env.SESSION_TTL_SECONDS || "2592000", 10);
+  const ttlSec = Number.isFinite(ttl) ? ttl : 2592000;
+  const exp = Math.floor(Date.now() / 1000) + ttlSec;
+  const token = await signJwt(
+    {
+      sub: String(user.id),
+      github_id: String(user.github_id || ""),
+      login: String(user.login || ""),
+      email: user.email || null,
+      avatar_url: user.avatar_url || null,
+      iat: Math.floor(Date.now() / 1000),
+      exp,
+    },
+    env.JWT_SECRET
+  );
+
+  headers.append(
+    "Set-Cookie",
+    buildCookie(SESSION_COOKIE, token, {
+      path: "/",
+      maxAge: ttlSec,
+      httpOnly: true,
+      secure: true,
+      sameSite: "Lax",
+    })
+  );
+}
+
+async function hashEmailCode(email, purpose, code, secret) {
+  return sha256Hex(`${email}|${purpose}|${code}|${secret}`);
+}
+
+async function sha256Hex(input) {
+  const data = new TextEncoder().encode(input);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  const bytes = new Uint8Array(digest);
+  let out = "";
+  for (const b of bytes) out += b.toString(16).padStart(2, "0");
+  return out;
+}
+
+function deriveLoginFromEmail(email) {
+  const local = String(email || "").split("@")[0] || "user";
+  const normalized = local.toLowerCase().replace(/[^a-z0-9_.-]/g, "").slice(0, 24);
+  if (normalized.length >= 3) return normalized;
+  return `user_${randomBase64Url(6).toLowerCase()}`;
+}
+
+function normalizeEmail(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ""));
+}
+
+function getClientIp(request) {
+  return String(request.headers.get("CF-Connecting-IP") || request.headers.get("X-Forwarded-For") || "unknown").slice(0, 120);
 }
 
 function safeJsonParse(value) {
@@ -467,10 +856,12 @@ function standardHeaders(request, env) {
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
   const origin = request.headers.get("Origin");
-  const allowed = new Set((env.CORS_ORIGINS || "")
-    .split(",")
-    .map((x) => x.trim())
-    .filter(Boolean));
+  const allowed = new Set(
+    (env.CORS_ORIGINS || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean)
+  );
   allowed.add(getPublicOrigin(request, env));
 
   if (origin && allowed.has(origin)) {

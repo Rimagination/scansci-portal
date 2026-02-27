@@ -37,6 +37,7 @@
 ```bash
 cd worker
 wrangler d1 execute scansci_auth --remote --file=./sql/0001_init.sql
+wrangler d1 execute scansci_auth --remote --file=./sql/0002_auth_methods.sql
 ```
 
 ## 6. Worker Secrets
@@ -45,6 +46,8 @@ wrangler d1 execute scansci_auth --remote --file=./sql/0001_init.sql
 wrangler secret put GITHUB_CLIENT_ID
 wrangler secret put GITHUB_CLIENT_SECRET
 wrangler secret put JWT_SECRET
+wrangler secret put RESEND_API_KEY
+wrangler secret put EMAIL_FROM
 ```
 
 ## 7. OAuth 回调地址（GitHub）

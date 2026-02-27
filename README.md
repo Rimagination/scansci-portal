@@ -1,6 +1,10 @@
 ﻿# ScanSci Portal
 
 ScanSci 的统一入口门户（静态前端）+ Cloudflare Worker API（登录与用户行为）。
+支持两种账号路径：
+
+- 邮箱验证码注册/登录
+- GitHub OAuth 登录，或登录后关联 GitHub
 
 ## 目录
 
@@ -20,7 +24,10 @@ ScanSci 的统一入口门户（静态前端）+ Cloudflare Worker API（登录�
 ## API（Worker）
 
 - `GET /api/auth/github/start`
+- `GET /api/auth/github/link/start`
 - `GET /api/auth/github/callback`
+- `POST /api/auth/email/request-code`
+- `POST /api/auth/email/verify-code`
 - `POST /api/auth/logout`
 - `GET /api/me`
 - `POST /api/actions`
@@ -41,6 +48,8 @@ ScanSci 的统一入口门户（静态前端）+ Cloudflare Worker API（登录�
    - `GITHUB_CLIENT_ID`
    - `GITHUB_CLIENT_SECRET`
    - `JWT_SECRET`
+   - `RESEND_API_KEY`
+   - `EMAIL_FROM`
 4. 部署 Worker 并绑定路由 `www.scansci.com/api/*`
 
 本地开发示例：

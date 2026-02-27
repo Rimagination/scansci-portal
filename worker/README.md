@@ -2,14 +2,19 @@
 
 Cloudflare Worker + D1，实现：
 
-- GitHub OAuth (Authorization Code + PKCE)
+- GitHub OAuth 登录（Authorization Code + PKCE）
+- 邮箱验证码登录/注册
+- 已登录账号关联 GitHub
 - HttpOnly Cookie 会话
 - 用户收藏与行为记录
 
 ## 路由
 
 - `GET /api/auth/github/start`
+- `GET /api/auth/github/link/start`
 - `GET /api/auth/github/callback`
+- `POST /api/auth/email/request-code`
+- `POST /api/auth/email/verify-code`
 - `POST /api/auth/logout`
 - `GET /api/me`
 - `POST /api/actions`
@@ -17,35 +22,39 @@ Cloudflare Worker + D1，实现：
 
 ## 环境变量
 
-在 Cloudflare 设置 secrets：
+Secrets：
 
 - `GITHUB_CLIENT_ID`
 - `GITHUB_CLIENT_SECRET`
 - `JWT_SECRET`
+- `RESEND_API_KEY`
+- `EMAIL_FROM`
 
-在 `wrangler.toml` 设置：
+Vars（wrangler.toml）：
 
-- `PUBLIC_ORIGIN`（默认 `https://www.scansci.com`）
-- `SESSION_TTL_SECONDS`（默认 30 天）
+- `PUBLIC_ORIGIN`
+- `SESSION_TTL_SECONDS`
 - `GITHUB_OAUTH_SCOPE`
+- `EMAIL_CODE_TTL_SECONDS`
+- `EMAIL_CODE_MAX_ATTEMPTS`
+- `ALLOW_DEV_EMAIL_CODE`
 
-## D1 表
+## D1 SQL
 
-执行：`sql/0001_init.sql`
+按顺序执行：
 
-- `users`
-- `user_actions`
-- `user_favorites`
+- `sql/0001_init.sql`
+- `sql/0002_auth_methods.sql`
 
 ## 本地调试
 
 ```bash
-wrangler d1 migrations apply scansci_auth --local
 wrangler dev
 ```
 
 ## 安全策略
 
 - OAuth 使用 PKCE
-- Session 存在 HttpOnly Cookie（不进入 localStorage）
+- Session 仅存 HttpOnly Cookie（不放 localStorage）
 - POST 接口校验 Origin（同源）
+- 验证码限频与尝试次数限制

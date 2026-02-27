@@ -19,9 +19,16 @@ const els = {
   authUser: document.getElementById("authUser"),
   loginBtn: document.getElementById("loginBtn"),
   logoutBtn: document.getElementById("logoutBtn"),
+  githubLinkBtn: document.getElementById("githubLinkBtn"),
   userAvatar: document.getElementById("userAvatar"),
   userName: document.getElementById("userName"),
   userEmail: document.getElementById("userEmail"),
+  userFlags: document.getElementById("userFlags"),
+  emailInput: document.getElementById("emailInput"),
+  emailCodeInput: document.getElementById("emailCodeInput"),
+  sendCodeBtn: document.getElementById("sendCodeBtn"),
+  emailLoginBtn: document.getElementById("emailLoginBtn"),
+  authHint: document.getElementById("authHint"),
 };
 
 const DEFAULT_CATEGORIES = ["全部", "数据检索", "期刊分析", "学术核查"];
@@ -37,6 +44,25 @@ function escapeHtml(value) {
 
 function normalize(text) {
   return String(text || "").trim().toLowerCase();
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function setAuthHint(message, type = "info") {
+  if (!els.authHint) return;
+  if (!message) {
+    els.authHint.hidden = true;
+    els.authHint.textContent = "";
+    els.authHint.classList.remove("is-error", "is-success");
+    return;
+  }
+  els.authHint.hidden = false;
+  els.authHint.textContent = message;
+  els.authHint.classList.remove("is-error", "is-success");
+  if (type === "error") els.authHint.classList.add("is-error");
+  if (type === "success") els.authHint.classList.add("is-success");
 }
 
 function buildCategories() {
@@ -149,15 +175,27 @@ function renderAuth() {
   els.authGuest.hidden = loggedIn;
   els.authUser.hidden = !loggedIn;
 
-  if (!loggedIn) return;
+  if (!loggedIn) {
+    return;
+  }
+
   if (els.userAvatar) {
     els.userAvatar.src = state.me.avatar_url || "./assets/brand/dataraven-crow-only.svg";
   }
   if (els.userName) {
-    els.userName.textContent = state.me.login || "GitHub 用户";
+    els.userName.textContent = state.me.login || "用户";
   }
   if (els.userEmail) {
-    els.userEmail.textContent = state.me.email || "未公开邮箱";
+    els.userEmail.textContent = state.me.email || "未绑定邮箱";
+  }
+  if (els.userFlags) {
+    const flags = [];
+    flags.push(state.me.email_verified ? "邮箱已验证" : "邮箱未验证");
+    flags.push(state.me.github_linked ? "GitHub 已关联" : "GitHub 未关联");
+    els.userFlags.textContent = flags.join(" · ");
+  }
+  if (els.githubLinkBtn) {
+    els.githubLinkBtn.hidden = !!state.me.github_linked;
   }
 }
 
@@ -189,6 +227,29 @@ async function apiFetch(path, init = {}) {
   });
 }
 
+async function safeJson(res) {
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+function messageFromError(payload, fallback) {
+  if (!payload?.error) return fallback;
+  const map = {
+    unauthorized: "请先登录后再操作。",
+    invalid_email: "邮箱格式不正确。",
+    invalid_code: "验证码不正确。",
+    invalid_or_expired_code: "验证码无效或已过期。",
+    too_many_requests: "请求过于频繁，请稍后再试。",
+    too_many_attempts: "验证码尝试次数过多，请重新发送。",
+    provider_unavailable: "邮件服务暂不可用，请稍后再试。",
+    config_error: `服务端缺少配置：${payload?.missing || "未知"}`,
+  };
+  return map[payload.error] || fallback;
+}
+
 async function loadMe() {
   try {
     const res = await apiFetch("/me", { method: "GET" });
@@ -212,9 +273,15 @@ async function loadMe() {
   renderGrid();
 }
 
-function goToLogin() {
+function goToGithubLogin() {
   const returnTo = `${window.location.pathname}${window.location.search}`;
   const url = `${API_BASE}/auth/github/start?return_to=${encodeURIComponent(returnTo)}`;
+  window.location.href = url;
+}
+
+function goToGithubLink() {
+  const returnTo = `${window.location.pathname}${window.location.search}`;
+  const url = `${API_BASE}/auth/github/link/start?return_to=${encodeURIComponent(returnTo)}`;
   window.location.href = url;
 }
 
@@ -230,6 +297,77 @@ async function logout() {
   renderGrid();
 }
 
+async function requestEmailCode() {
+  const email = String(els.emailInput?.value || "").trim().toLowerCase();
+  if (!isValidEmail(email)) {
+    setAuthHint("请输入有效邮箱地址。", "error");
+    return;
+  }
+
+  if (els.sendCodeBtn) els.sendCodeBtn.setAttribute("disabled", "disabled");
+  try {
+    const res = await apiFetch("/auth/email/request-code", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+    const payload = await safeJson(res);
+    if (!res.ok) {
+      setAuthHint(messageFromError(payload, "验证码发送失败，请稍后重试。"), "error");
+      return;
+    }
+
+    let hint = "验证码已发送，请查收邮箱。";
+    if (payload?.dev_preview_code) {
+      hint += ` (开发码: ${payload.dev_preview_code})`;
+    }
+    setAuthHint(hint, "success");
+  } catch (err) {
+    console.error(err);
+    setAuthHint("验证码发送失败，请稍后重试。", "error");
+  } finally {
+    if (els.sendCodeBtn) els.sendCodeBtn.removeAttribute("disabled");
+  }
+}
+
+async function loginByEmailCode() {
+  const email = String(els.emailInput?.value || "").trim().toLowerCase();
+  const code = String(els.emailCodeInput?.value || "").trim();
+
+  if (!isValidEmail(email)) {
+    setAuthHint("请输入有效邮箱地址。", "error");
+    return;
+  }
+  if (!/^\d{6}$/.test(code)) {
+    setAuthHint("请输入6位数字验证码。", "error");
+    return;
+  }
+
+  if (els.emailLoginBtn) els.emailLoginBtn.setAttribute("disabled", "disabled");
+  try {
+    const res = await apiFetch("/auth/email/verify-code", {
+      method: "POST",
+      body: JSON.stringify({ email, code }),
+    });
+    const payload = await safeJson(res);
+    if (!res.ok) {
+      setAuthHint(messageFromError(payload, "邮箱登录失败，请重试。"), "error");
+      return;
+    }
+
+    state.me = payload?.user || null;
+    state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
+    if (els.emailCodeInput) els.emailCodeInput.value = "";
+    setAuthHint("登录成功。", "success");
+    renderAuth();
+    renderGrid();
+  } catch (err) {
+    console.error(err);
+    setAuthHint("邮箱登录失败，请重试。", "error");
+  } finally {
+    if (els.emailLoginBtn) els.emailLoginBtn.removeAttribute("disabled");
+  }
+}
+
 async function onFavoriteClick(event) {
   event.preventDefault();
   event.stopPropagation();
@@ -240,7 +378,7 @@ async function onFavoriteClick(event) {
   if (!appId) return;
 
   if (!state.me) {
-    goToLogin();
+    setAuthHint("请先登录，再收藏常用工具。", "error");
     return;
   }
 
@@ -260,12 +398,16 @@ async function onFavoriteClick(event) {
       state.favorites = new Set();
       renderAuth();
       renderGrid();
-      goToLogin();
+      setAuthHint("登录已过期，请重新登录。", "error");
       return;
     }
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const payload = await res.json();
+    const payload = await safeJson(res);
+    if (!res.ok) {
+      console.error(payload);
+      return;
+    }
+
     const active = !!payload?.is_favorite;
     if (active) state.favorites.add(String(appId));
     else state.favorites.delete(String(appId));
@@ -314,12 +456,37 @@ function bindEvents() {
   }
 
   if (els.loginBtn) {
-    els.loginBtn.addEventListener("click", goToLogin);
+    els.loginBtn.addEventListener("click", goToGithubLogin);
+  }
+
+  if (els.githubLinkBtn) {
+    els.githubLinkBtn.addEventListener("click", goToGithubLink);
   }
 
   if (els.logoutBtn) {
     els.logoutBtn.addEventListener("click", () => {
       void logout();
+    });
+  }
+
+  if (els.sendCodeBtn) {
+    els.sendCodeBtn.addEventListener("click", () => {
+      void requestEmailCode();
+    });
+  }
+
+  if (els.emailLoginBtn) {
+    els.emailLoginBtn.addEventListener("click", () => {
+      void loginByEmailCode();
+    });
+  }
+
+  if (els.emailCodeInput) {
+    els.emailCodeInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        void loginByEmailCode();
+      }
     });
   }
 }

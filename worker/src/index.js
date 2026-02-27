@@ -7,6 +7,11 @@ export default {
       return await handleRequest(request, env);
     } catch (error) {
       console.error("Unhandled worker error", error);
+      const message = String(error?.message || "");
+      if (message.startsWith("Missing env var:")) {
+        const missing = message.replace("Missing env var:", "").trim();
+        return jsonResponse(request, env, { ok: false, error: "config_error", missing }, 500);
+      }
       return jsonResponse(request, env, { ok: false, error: "internal_error" }, 500);
     }
   },

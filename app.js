@@ -6,7 +6,9 @@ const state = {
   favorites: new Set(),
 };
 
-const API_BASE = "/api";
+const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
+  ? "https://www.scansci.com/api"
+  : "/api";
 
 const els = {
   search: document.getElementById("globalSearch"),

@@ -247,7 +247,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("./data/apps.json", { cache: "no-store" });
+    const res = await fetch("./data/apps.json", { cache: "force-cache" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];

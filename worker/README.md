@@ -19,6 +19,8 @@ Cloudflare Worker + D1，实现：
 - `GET /api/me`
 - `POST /api/actions`
 - `GET /api/actions?type=favorite|recent`
+- `GET /api/elsevier/serial-title?issn=xxxx-xxxx`
+- `GET /api/web/preview-image?url=https://example.com`
 
 ## 环境变量
 
@@ -29,6 +31,7 @@ Secrets：
 - `JWT_SECRET`
 - `RESEND_API_KEY`
 - `EMAIL_FROM`
+- `ELSEVIER_API_KEY`
 
 Vars（wrangler.toml）：
 
@@ -38,6 +41,7 @@ Vars（wrangler.toml）：
 - `EMAIL_CODE_TTL_SECONDS`
 - `EMAIL_CODE_MAX_ATTEMPTS`
 - `ALLOW_DEV_EMAIL_CODE`
+- `CORS_ORIGINS`
 
 ## D1 SQL
 

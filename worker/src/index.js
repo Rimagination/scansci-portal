@@ -73,6 +73,14 @@ async function handleRequest(request, env) {
     return handleActionRead(request, env);
   }
 
+  if (url.pathname === "/api/elsevier/serial-title" && request.method === "GET") {
+    return handleElsevierSerialTitle(request, env);
+  }
+
+  if (url.pathname === "/api/web/preview-image" && request.method === "GET") {
+    return handleWebPreviewImage(request, env);
+  }
+
   return jsonResponse(request, env, { ok: false, error: "not_found" }, 404);
 }
 
@@ -674,6 +682,245 @@ async function handleActionRead(request, env) {
   }));
 
   return jsonResponse(request, env, { ok: true, items });
+}
+
+async function handleElsevierSerialTitle(request, env) {
+  const apiKey = String(env.ELSEVIER_API_KEY || "").trim();
+  if (!apiKey) {
+    return jsonResponse(request, env, { ok: false, error: "missing_api_key" }, 503);
+  }
+
+  const url = new URL(request.url);
+  const issn = String(url.searchParams.get("issn") || "").trim();
+  if (!issn) {
+    return jsonResponse(request, env, { ok: false, error: "missing_issn" }, 400);
+  }
+
+  const issnPath = issn.replace(/[^0-9Xx]/g, "");
+  const upstreamUrl =
+    `https://api.elsevier.com/content/serial/title/issn/${encodeURIComponent(issnPath)}?` +
+    `view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area&apiKey=${encodeURIComponent(apiKey)}`;
+
+  let upstreamRes;
+  try {
+    upstreamRes = await fetch(upstreamUrl, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "X-ELS-APIKey": apiKey,
+      },
+    });
+  } catch {
+    return jsonResponse(request, env, { ok: false, error: "elsevier_unreachable" }, 502);
+  }
+
+  const rawText = await upstreamRes.text();
+  let payload = null;
+  try {
+    payload = JSON.parse(rawText);
+  } catch {
+    payload = null;
+  }
+
+  if (!upstreamRes.ok) {
+    return jsonResponse(
+      request,
+      env,
+      {
+        ok: false,
+        error: "elsevier_http_error",
+        status: upstreamRes.status,
+        details: payload || rawText.slice(0, 1200),
+      },
+      upstreamRes.status
+    );
+  }
+
+  if (!payload || typeof payload !== "object") {
+    return jsonResponse(request, env, { ok: false, error: "invalid_upstream_payload" }, 502);
+  }
+
+  const headers = standardHeaders(request, env);
+  headers.set("Content-Type", "application/json; charset=utf-8");
+  return new Response(JSON.stringify(payload), { status: 200, headers });
+}
+
+async function handleWebPreviewImage(request, env) {
+  const requestUrl = new URL(request.url);
+  const raw = String(requestUrl.searchParams.get("url") || "").trim();
+  if (!raw) {
+    return jsonResponse(request, env, { ok: false, error: "missing_url" }, 400);
+  }
+
+  let targetUrl = "";
+  try {
+    targetUrl = normalizeRemoteHttpUrl(raw);
+  } catch (err) {
+    const reason = String(err?.message || "invalid_url");
+    return jsonResponse(request, env, { ok: false, error: reason }, 400);
+  }
+
+  let resp;
+  try {
+    resp = await fetch(targetUrl, {
+      method: "GET",
+      redirect: "follow",
+      headers: {
+        Accept: "text/html,application/xhtml+xml",
+        "User-Agent": "ScanSci-Worker/1.0",
+      },
+      cf: { cacheTtl: 7200, cacheEverything: false },
+    });
+  } catch {
+    return jsonResponse(request, env, { ok: false, error: "preview_fetch_failed" }, 502);
+  }
+
+  if (!resp.ok) {
+    return jsonResponse(request, env, { ok: false, error: "preview_http_error", status: resp.status }, 502);
+  }
+
+  const contentType = String(resp.headers.get("content-type") || "").toLowerCase();
+  if (!contentType.includes("text/html") && !contentType.includes("application/xhtml+xml")) {
+    return jsonResponse(request, env, {
+      ok: true,
+      target_url: targetUrl,
+      resolved_url: resp.url || targetUrl,
+      cover_url: "",
+      content_type: contentType,
+    });
+  }
+
+  let html = "";
+  try {
+    html = await resp.text();
+  } catch {
+    html = "";
+  }
+  if (html.length > 1_500_000) html = html.slice(0, 1_500_000);
+
+  const coverUrl = extractPreviewImageUrl(html, resp.url || targetUrl);
+  return jsonResponse(request, env, {
+    ok: true,
+    target_url: targetUrl,
+    resolved_url: resp.url || targetUrl,
+    cover_url: coverUrl,
+    content_type: contentType,
+  });
+}
+
+function normalizeRemoteHttpUrl(raw) {
+  let url;
+  try {
+    url = new URL(String(raw || "").trim());
+  } catch {
+    throw new Error("invalid_url");
+  }
+  if (!["http:", "https:"].includes(url.protocol)) throw new Error("invalid_url");
+  if (isPrivateHostname(url.hostname)) throw new Error("unsafe_url");
+  return url.toString();
+}
+
+function isPrivateHostname(hostname) {
+  const host = String(hostname || "").trim().toLowerCase();
+  if (!host) return true;
+  if (host === "localhost" || host.endsWith(".local")) return true;
+  if (host === "::1") return true;
+
+  const ipv4 = host.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4) {
+    const octets = ipv4.slice(1).map((x) => Number(x));
+    if (octets.some((x) => x < 0 || x > 255)) return true;
+    const [a, b] = octets;
+    if (a === 10) return true;
+    if (a === 127) return true;
+    if (a === 0) return true;
+    if (a === 169 && b === 254) return true;
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a >= 224) return true;
+  }
+
+  if (host.includes(":")) {
+    if (host.startsWith("fc") || host.startsWith("fd")) return true;
+    if (host.startsWith("fe80")) return true;
+  }
+
+  return false;
+}
+
+function escapeRegex(text) {
+  return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function extractMetaContent(html, key) {
+  const escaped = escapeRegex(String(key || "").toLowerCase());
+  const patterns = [
+    new RegExp(
+      `<meta[^>]+(?:property|name)\\s*=\\s*["']${escaped}["'][^>]+content\\s*=\\s*["']([^"']+)["'][^>]*>`,
+      "i"
+    ),
+    new RegExp(
+      `<meta[^>]+content\\s*=\\s*["']([^"']+)["'][^>]+(?:property|name)\\s*=\\s*["']${escaped}["'][^>]*>`,
+      "i"
+    ),
+  ];
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) return match[1].trim();
+  }
+  return "";
+}
+
+function extractLinkContent(html, relName) {
+  const escaped = escapeRegex(String(relName || "").toLowerCase());
+  const patterns = [
+    new RegExp(
+      `<link[^>]+rel\\s*=\\s*["'][^"']*${escaped}[^"']*["'][^>]+href\\s*=\\s*["']([^"']+)["'][^>]*>`,
+      "i"
+    ),
+    new RegExp(
+      `<link[^>]+href\\s*=\\s*["']([^"']+)["'][^>]+rel\\s*=\\s*["'][^"']*${escaped}[^"']*["'][^>]*>`,
+      "i"
+    ),
+  ];
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) return match[1].trim();
+  }
+  return "";
+}
+
+function normalizePreviewImageUrl(raw, baseUrl) {
+  let value = String(raw || "").trim();
+  if (!value) return "";
+  value = value.replace(/\\\//g, "/");
+  if (value.startsWith("//")) value = `https:${value}`;
+  value = value.replace(/^https\/\//i, "https://").replace(/^http\/\//i, "http://");
+  value = value.replace(/^https?:\/\/https?:?\/\//i, "https://");
+  try {
+    const abs = new URL(value, baseUrl);
+    if (!["http:", "https:"].includes(abs.protocol)) return "";
+    return abs.toString();
+  } catch {
+    return "";
+  }
+}
+
+function extractPreviewImageUrl(html, baseUrl) {
+  const keys = [
+    "og:image:secure_url",
+    "og:image",
+    "twitter:image",
+    "twitter:image:src",
+    "og:image:url",
+  ];
+  for (const key of keys) {
+    const value = extractMetaContent(html, key);
+    const normalized = normalizePreviewImageUrl(value, baseUrl);
+    if (normalized) return normalized;
+  }
+  const linkImageSrc = extractLinkContent(html, "image_src");
+  return normalizePreviewImageUrl(linkImageSrc, baseUrl);
 }
 
 async function getUserById(env, userId) {

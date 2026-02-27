@@ -1,4 +1,5 @@
 :root {
+  --sidebar-width: 252px;
   --bg: #e9edf4;
   --paper: #f8fafc;
   --ink: #10223c;
@@ -34,42 +35,58 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: var(--sidebar-width);
   height: 100vh;
   border-right: 1px solid var(--line);
   background: linear-gradient(180deg, #f4f7fb 0%, #eef3fa 100%);
-  padding: 22px 18px;
+  padding: 16px 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-top {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar-categories {
+  min-height: 0;
   overflow-y: auto;
+  padding-right: 2px;
 }
 
 .brand-block {
-  margin-bottom: 20px;
+  margin-bottom: 6px;
 }
 
 .brand-logo {
   display: block;
-  width: min(100%, 260px);
+  width: min(100%, 182px);
   max-width: 100%;
   height: auto;
 }
 
 .brand-desc {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .auth-box {
-  margin: 14px 0 16px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid #d2ddec;
 }
 
 .auth-state {
   border: 1px solid #cfdaeb;
   border-radius: 12px;
   background: #f8fbff;
-  padding: 10px;
+  padding: 9px;
   display: grid;
-  gap: 8px;
+  gap: 7px;
 }
 
 .auth-state--user {
@@ -86,7 +103,7 @@ body {
 
 .auth-subtitle {
   margin: 0;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.45;
   color: #5b6e89;
 }
@@ -108,7 +125,7 @@ body {
   border-radius: 10px;
   background: #fff;
   color: #173457;
-  padding: 8px 10px;
+  padding: 7px 10px;
   font-size: 12px;
 }
 
@@ -163,9 +180,9 @@ body {
 
 .auth-btn {
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 8px 10px;
+  padding: 7px 9px;
   cursor: pointer;
 }
 
@@ -223,8 +240,9 @@ body {
 
 .search-label {
   display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 6px;
+  font-size: 12px;
   font-weight: 700;
   color: #29415d;
 }
@@ -252,8 +270,8 @@ body {
   border-radius: 11px;
   background: #fff;
   color: var(--ink);
-  padding: 10px 12px 10px 32px;
-  font-size: 13px;
+  padding: 9px 12px 9px 32px;
+  font-size: 12px;
 }
 
 .global-search:focus {
@@ -263,18 +281,19 @@ body {
 }
 
 .filter-head {
-  margin: 16px 0 8px;
+  margin: 4px 0 4px;
 }
 
 .filter-head span {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: #29415d;
 }
 
 .category-filters {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+  padding-bottom: 4px;
 }
 
 .category-filter {
@@ -282,8 +301,8 @@ body {
   border-radius: 999px;
   background: #f6f9ff;
   color: #3b5878;
-  padding: 7px 12px;
-  font-size: 13px;
+  padding: 6px 11px;
+  font-size: 12px;
   font-weight: 700;
   text-align: left;
   cursor: pointer;
@@ -302,7 +321,7 @@ body {
 }
 
 .portal-main {
-  margin-left: 280px;
+  margin-left: var(--sidebar-width);
   padding: 38px 24px 24px;
 }
 
@@ -558,6 +577,16 @@ body {
     border-right: 0;
     border-bottom: 1px solid var(--line);
     padding: 16px;
+    overflow: visible;
+  }
+
+  .sidebar-categories {
+    overflow: visible;
+    min-height: auto;
+  }
+
+  .auth-box {
+    margin-top: 10px;
   }
 
   .portal-main {

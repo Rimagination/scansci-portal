@@ -8,27 +8,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226d" />
-  <link rel="stylesheet" href="./styles.css?v=20260226d" />
+  <link rel="stylesheet" href="./styles.css?v=20260227a" />
   <style>
     /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
+    :root { --sidebar-width: 252px; }
     .portal-sidebar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 280px;
+      width: var(--sidebar-width);
       height: 100vh;
-      overflow-y: auto;
-      padding: 22px 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 14px;
       border-right: 1px solid #cdd7e5;
       background: linear-gradient(180deg, #f4f7fb 0%, #eef3fa 100%);
     }
+    .sidebar-top { display: grid; gap: 10px; }
+    .sidebar-categories { min-height: 0; overflow-y: auto; }
+    .auth-box { margin-top: auto; }
     .portal-main {
-      margin-left: 280px;
+      margin-left: var(--sidebar-width);
       padding: 38px 24px 24px;
     }
     .brand-logo {
       display: block;
-      width: min(100%, 260px);
+      width: min(100%, 182px);
       max-width: 100%;
       height: auto;
     }
@@ -51,17 +58,36 @@
 <body>
   <div class="portal-shell">
     <aside class="portal-sidebar">
-      <div class="brand-block">
-        <img class="brand-logo" src="./assets/brand/scansci-logo.svg" alt="搜索科学 ScanSci" />
-        <p class="brand-desc">统一入口，独立应用部署。</p>
+      <div class="sidebar-top">
+        <div class="brand-block">
+          <img class="brand-logo" src="./assets/brand/scansci-logo.svg" alt="搜索科学 ScanSci" />
+          <p class="brand-desc">统一入口，独立应用部署。</p>
+        </div>
+
+        <label class="search-label" for="globalSearch">全局搜索</label>
+        <div class="global-search-wrap">
+          <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+          </svg>
+          <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名或关键词" />
+        </div>
+
+        <div class="filter-head">
+          <span>功能分类</span>
+        </div>
+      </div>
+
+      <div class="sidebar-categories">
+        <div id="categoryFilters" class="category-filters" role="tablist" aria-label="功能分类"></div>
       </div>
 
       <section class="auth-box" aria-label="账户状态">
         <div id="authGuest" class="auth-state">
           <p class="auth-title">账户</p>
-          <p class="auth-subtitle">可选择 GitHub 或邮箱验证码注册/登录。</p>
+          <p class="auth-subtitle">支持 GitHub 或邮箱验证码登录。</p>
           <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
-          <p class="auth-divider"><span>或使用邮箱验证码</span></p>
+          <p class="auth-divider"><span>或邮箱验证码</span></p>
           <input id="emailInput" class="auth-input" type="email" placeholder="输入邮箱地址" autocomplete="email" />
           <div class="auth-code-row">
             <input id="emailCodeInput" class="auth-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入6位验证码" />
@@ -83,20 +109,6 @@
           </div>
         </div>
       </section>
-
-      <label class="search-label" for="globalSearch">全局搜索</label>
-      <div class="global-search-wrap">
-        <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-        </svg>
-        <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名或关键词" />
-      </div>
-
-      <div class="filter-head">
-        <span>功能分类</span>
-      </div>
-      <div id="categoryFilters" class="category-filters" role="tablist" aria-label="功能分类"></div>
     </aside>
 
     <main class="portal-main">

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
@@ -26,9 +26,9 @@
       border-right: 1px solid #cdd7e5;
       background: linear-gradient(180deg, #f4f7fb 0%, #eef3fa 100%);
     }
-    .sidebar-top { display: grid; gap: 10px; }
-    .sidebar-categories { min-height: 0; overflow-y: auto; }
-    .auth-box { margin-top: auto; }
+    .sidebar-top { display: grid; gap: 8px; }
+    .sidebar-categories { min-height: 0; flex: 1; overflow-y: auto; }
+    .auth-dock { margin-top: auto; }
     .portal-main {
       margin-left: var(--sidebar-width);
       padding: 38px 24px 24px;
@@ -46,8 +46,10 @@
         height: auto;
         border-right: 0;
         border-bottom: 1px solid #cdd7e5;
+        overflow: visible;
         padding: 16px;
       }
+      .sidebar-categories { overflow: visible; }
       .portal-main {
         margin-left: 0;
         padding: 20px 16px 16px;
@@ -82,30 +84,24 @@
         <div id="categoryFilters" class="category-filters" role="tablist" aria-label="功能分类"></div>
       </div>
 
-      <section class="auth-box" aria-label="账户状态">
-        <div id="authGuest" class="auth-state">
-          <p class="auth-title">账户</p>
-          <p class="auth-subtitle">支持 GitHub 或邮箱验证码登录。</p>
-          <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
-          <p class="auth-divider"><span>或邮箱验证码</span></p>
-          <input id="emailInput" class="auth-input" type="email" placeholder="输入邮箱地址" autocomplete="email" />
-          <div class="auth-code-row">
-            <input id="emailCodeInput" class="auth-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入6位验证码" />
-            <button id="sendCodeBtn" class="auth-btn auth-btn--ghost" type="button">发送验证码</button>
-          </div>
-          <button id="emailLoginBtn" class="auth-btn auth-btn--secondary" type="button">邮箱登录/注册</button>
-          <p id="authHint" class="auth-hint" hidden></p>
-        </div>
-        <div id="authUser" class="auth-state auth-state--user" hidden>
-          <img id="userAvatar" class="auth-avatar" alt="用户头像" />
-          <div class="auth-user-meta">
-            <p id="userName" class="auth-name"></p>
-            <p id="userEmail" class="auth-email"></p>
-            <p id="userFlags" class="auth-flags"></p>
-          </div>
-          <div class="auth-user-actions">
-            <button id="githubLinkBtn" class="auth-btn auth-btn--secondary" type="button" hidden>关联 GitHub</button>
-            <button id="logoutBtn" class="auth-btn auth-btn--ghost" type="button">退出登录</button>
+      <section class="auth-dock" aria-label="账户状态">
+        <button id="openAuthModalBtn" class="auth-open-btn" type="button">登录 / 注册</button>
+        <div id="userMiniCard" class="user-mini-card" hidden>
+          <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
+          <span id="userName" class="user-mini-card__name"></span>
+          <div class="user-mini-card__actions">
+            <button id="githubLinkBtn" class="user-mini-card__icon" type="button" hidden title="关联 GitHub" aria-label="关联 GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M9 8a4 4 0 0 1 7-2l1.5 1.5a4 4 0 0 1 0 5.7l-2.2 2.2a4 4 0 0 1-5.7 0 1 1 0 1 1 1.4-1.4 2 2 0 0 0 2.9 0l2.2-2.2a2 2 0 0 0 0-2.9L14.6 7.4a2 2 0 1 0-2.9 2.9 1 1 0 1 1-1.4 1.4A4 4 0 0 1 9 8z"></path>
+                <path d="M15 16a4 4 0 0 1-7 2l-1.5-1.5a4 4 0 0 1 0-5.7l2.2-2.2a4 4 0 0 1 5.7 0 1 1 0 1 1-1.4 1.4 2 2 0 0 0-2.9 0L7.9 12.2a2 2 0 0 0 0 2.9l1.5 1.5a2 2 0 1 0 2.9-2.9 1 1 0 0 1 1.4-1.4A4 4 0 0 1 15 16z"></path>
+              </svg>
+            </button>
+            <button id="logoutBtn" class="user-mini-card__icon" type="button" title="退出登录" aria-label="退出登录">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M13 3a1 1 0 0 1 0 2H7v14h6a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7z"></path>
+                <path d="M15.3 7.3a1 1 0 0 1 1.4 0l4.3 4.3a1 1 0 0 1 0 1.4l-4.3 4.3a1 1 0 1 1-1.4-1.4L18.9 13H10a1 1 0 1 1 0-2h8.9l-3.6-3.6a1 1 0 0 1 0-1.4z"></path>
+              </svg>
+            </button>
           </div>
         </div>
       </section>
@@ -123,6 +119,27 @@
     </main>
   </div>
 
-  <script src="./app.js?v=20260226e"></script>
+  <div id="authModal" class="auth-modal" hidden>
+    <div class="auth-modal__backdrop" data-auth-close="true"></div>
+    <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <button id="closeAuthModalBtn" class="auth-modal__close" type="button" aria-label="关闭登录窗口">×</button>
+      <h3 id="authModalTitle" class="auth-modal__title">登录 / 注册</h3>
+      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录 ScanSci。</p>
+
+      <div id="authGuest" class="auth-state">
+        <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
+        <p class="auth-divider"><span>或邮箱验证码</span></p>
+        <input id="emailInput" class="auth-input" type="email" placeholder="输入邮箱地址" autocomplete="email" />
+        <div class="auth-code-row">
+          <input id="emailCodeInput" class="auth-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入6位验证码" />
+          <button id="sendCodeBtn" class="auth-btn auth-btn--ghost" type="button">发送验证码</button>
+        </div>
+        <button id="emailLoginBtn" class="auth-btn auth-btn--secondary" type="button">邮箱登录/注册</button>
+        <p id="authHint" class="auth-hint" hidden></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="./app.js?v=20260227a"></script>
 </body>
 </html>

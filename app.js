@@ -1,4 +1,4 @@
-﻿const state = {
+const state = {
   apps: [],
   query: "",
   activeCategory: "全部",
@@ -15,15 +15,15 @@ const els = {
   empty: document.getElementById("emptyState"),
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
-  authGuest: document.getElementById("authGuest"),
-  authUser: document.getElementById("authUser"),
+  authModal: document.getElementById("authModal"),
+  openAuthModalBtn: document.getElementById("openAuthModalBtn"),
+  closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
   loginBtn: document.getElementById("loginBtn"),
   logoutBtn: document.getElementById("logoutBtn"),
   githubLinkBtn: document.getElementById("githubLinkBtn"),
+  userMiniCard: document.getElementById("userMiniCard"),
   userAvatar: document.getElementById("userAvatar"),
   userName: document.getElementById("userName"),
-  userEmail: document.getElementById("userEmail"),
-  userFlags: document.getElementById("userFlags"),
   emailInput: document.getElementById("emailInput"),
   emailCodeInput: document.getElementById("emailCodeInput"),
   sendCodeBtn: document.getElementById("sendCodeBtn"),
@@ -48,6 +48,25 @@ function normalize(text) {
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function isModalOpen() {
+  return !!els.authModal && !els.authModal.hidden;
+}
+
+function openAuthModal() {
+  if (!els.authModal) return;
+  els.authModal.hidden = false;
+  document.body.classList.add("is-modal-open");
+  window.setTimeout(() => {
+    if (els.emailInput) els.emailInput.focus();
+  }, 10);
+}
+
+function closeAuthModal() {
+  if (!els.authModal) return;
+  els.authModal.hidden = true;
+  document.body.classList.remove("is-modal-open");
 }
 
 function setAuthHint(message, type = "info") {
@@ -101,6 +120,51 @@ function isFavorite(appId) {
   return state.favorites.has(String(appId));
 }
 
+function favoriteLabel(appId) {
+  return isFavorite(appId) ? "取消常用" : "加入常用";
+}
+
+function cardTemplate(app) {
+  const appId = String(app.id || "");
+  const appClass = appId.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
+  const favoriteCls = isFavorite(appId) ? " is-active" : "";
+
+  return `
+    <article class="tool-card tool-card--${escapeHtml(appClass)}" data-app-id="${escapeHtml(appId)}">
+      <a class="tool-card__link" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener" data-action="open">
+        <div class="tool-card__figure">
+          <img src="${escapeHtml(app.cover || "./assets/covers/default.svg")}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
+          <div class="tool-card__overlay">
+            <span class="tool-card__cta">立即使用</span>
+          </div>
+        </div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">${escapeHtml(app.name || "未命名工具")}</h3>
+          <p class="tool-card__desc">${escapeHtml(app.description || "")}</p>
+        </div>
+      </a>
+      <div class="tool-card__meta">
+        <span class="tool-card__category">${escapeHtml(app.category || "未分类")}</span>
+        <div class="tool-card__meta-actions">
+          <button
+            class="tool-card__fav${favoriteCls}"
+            type="button"
+            data-app-id="${escapeHtml(appId)}"
+            data-action="favorite"
+            title="${favoriteLabel(appId)}"
+            aria-label="${favoriteLabel(appId)}"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 20.4 4.8 14a4.7 4.7 0 0 1 6.5-6.8L12 8l.7-.8a4.7 4.7 0 0 1 6.5 6.8L12 20.4z"></path>
+            </svg>
+          </button>
+          <a class="tool-card__action" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener">立即使用 →</a>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
 function renderFilters() {
   if (!els.filters) return;
   const categories = buildCategories();
@@ -120,39 +184,6 @@ function renderFilters() {
   });
 }
 
-function favoriteButtonText(appId) {
-  return isFavorite(appId) ? "已收藏" : "加入常用";
-}
-
-function cardTemplate(app) {
-  const appId = String(app.id || "");
-  const favoriteCls = isFavorite(appId) ? " is-active" : "";
-  return `
-    <article class="tool-card" data-app-id="${escapeHtml(appId)}">
-      <a class="tool-card__link" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener" data-action="open">
-        <div class="tool-card__figure">
-          <img src="${escapeHtml(app.cover || "./assets/covers/default.svg")}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
-          <div class="tool-card__fade" aria-hidden="true"></div>
-          <div class="tool-card__overlay">
-            <span class="tool-card__cta">立即使用</span>
-          </div>
-        </div>
-        <div class="tool-card__body">
-          <h3 class="tool-card__name">${escapeHtml(app.name || "未命名工具")}</h3>
-          <p class="tool-card__desc">${escapeHtml(app.description || "")}</p>
-        </div>
-      </a>
-      <div class="tool-card__meta">
-        <span class="tool-card__category">${escapeHtml(app.category || "未分类")}</span>
-        <div class="tool-card__meta-actions">
-          <button class="tool-card__fav${favoriteCls}" type="button" data-app-id="${escapeHtml(appId)}" data-action="favorite">${favoriteButtonText(appId)}</button>
-          <a class="tool-card__action" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener">立即使用 →</a>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
 function renderGrid() {
   if (!els.grid || !els.empty || !els.count) return;
   const visible = getVisibleApps();
@@ -170,32 +201,35 @@ function renderGrid() {
 }
 
 function renderAuth() {
-  if (!els.authGuest || !els.authUser) return;
   const loggedIn = !!state.me;
-  els.authGuest.hidden = loggedIn;
-  els.authUser.hidden = !loggedIn;
+
+  if (els.openAuthModalBtn) {
+    els.openAuthModalBtn.hidden = loggedIn;
+  }
+
+  if (els.userMiniCard) {
+    els.userMiniCard.hidden = !loggedIn;
+  }
 
   if (!loggedIn) {
+    setAuthHint("");
     return;
   }
 
   if (els.userAvatar) {
     els.userAvatar.src = state.me.avatar_url || "./assets/brand/dataraven-crow-only.svg";
   }
+
   if (els.userName) {
     els.userName.textContent = state.me.login || "用户";
   }
-  if (els.userEmail) {
-    els.userEmail.textContent = state.me.email || "未绑定邮箱";
-  }
-  if (els.userFlags) {
-    const flags = [];
-    flags.push(state.me.email_verified ? "邮箱已验证" : "邮箱未验证");
-    flags.push(state.me.github_linked ? "GitHub 已关联" : "GitHub 未关联");
-    els.userFlags.textContent = flags.join(" · ");
-  }
+
   if (els.githubLinkBtn) {
     els.githubLinkBtn.hidden = !!state.me.github_linked;
+  }
+
+  if (isModalOpen()) {
+    closeAuthModal();
   }
 }
 
@@ -357,7 +391,7 @@ async function loginByEmailCode() {
     state.me = payload?.user || null;
     state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
     if (els.emailCodeInput) els.emailCodeInput.value = "";
-    setAuthHint("登录成功。", "success");
+    setAuthHint("");
     renderAuth();
     renderGrid();
   } catch (err) {
@@ -379,6 +413,7 @@ async function onFavoriteClick(event) {
 
   if (!state.me) {
     setAuthHint("请先登录，再收藏常用工具。", "error");
+    openAuthModal();
     return;
   }
 
@@ -399,6 +434,7 @@ async function onFavoriteClick(event) {
       renderAuth();
       renderGrid();
       setAuthHint("登录已过期，请重新登录。", "error");
+      openAuthModal();
       return;
     }
 
@@ -454,6 +490,29 @@ function bindEvents() {
       renderGrid();
     });
   }
+
+  if (els.openAuthModalBtn) {
+    els.openAuthModalBtn.addEventListener("click", openAuthModal);
+  }
+
+  if (els.closeAuthModalBtn) {
+    els.closeAuthModalBtn.addEventListener("click", closeAuthModal);
+  }
+
+  if (els.authModal) {
+    els.authModal.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.dataset.authClose === "true") {
+        closeAuthModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && isModalOpen()) {
+      closeAuthModal();
+    }
+  });
 
   if (els.loginBtn) {
     els.loginBtn.addEventListener("click", goToGithubLogin);

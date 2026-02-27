@@ -401,9 +401,19 @@ async function handleEmailRequestCode(request, env) {
   }
 
   requireEnv(env, ["RESEND_API_KEY", "EMAIL_FROM"]);
-  const sendOk = await sendVerificationEmail(env, email, code, expiresUnix - nowSec);
-  if (!sendOk) {
-    return jsonResponse(request, env, { ok: false, error: "provider_unavailable" }, 502);
+  const sendResult = await sendVerificationEmail(env, email, code, expiresUnix - nowSec);
+  if (!sendResult.ok) {
+    return jsonResponse(
+      request,
+      env,
+      {
+        ok: false,
+        error: "provider_unavailable",
+        provider_status: sendResult.status || null,
+        provider_detail: sendResult.detail || null,
+      },
+      502
+    );
   }
 
   return jsonResponse(request, env, { ok: true, expires_in: expiresUnix - nowSec });
@@ -526,7 +536,22 @@ async function sendVerificationEmail(env, toEmail, code, ttlSeconds) {
     }),
   });
 
-  return resp.ok;
+  if (resp.ok) {
+    return { ok: true, status: resp.status };
+  }
+
+  let body = "";
+  try {
+    body = await resp.text();
+  } catch (_) {}
+
+  // Keep provider diagnostics in logs for faster production debugging.
+  console.error("Resend email send failed", {
+    status: resp.status,
+    body: body ? body.slice(0, 600) : "",
+  });
+
+  return { ok: false, status: resp.status, detail: body ? body.slice(0, 280) : null };
 }
 
 async function handleLogout(request, env) {

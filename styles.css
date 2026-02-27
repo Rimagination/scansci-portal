@@ -175,21 +175,8 @@ body.is-modal-open {
   padding-top: 10px;
 }
 
-.auth-open-btn {
-  width: 100%;
-  border: 1px solid #2f6fa4;
-  border-radius: 11px;
-  background: #2f6fa4;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 9px 12px;
-  cursor: pointer;
-}
-
-.auth-open-btn:hover {
-  background: #225985;
-  border-color: #225985;
+.auth-dock[hidden] {
+  display: none !important;
 }
 
 .user-mini-card {
@@ -201,14 +188,36 @@ body.is-modal-open {
   grid-template-columns: 34px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
+  overflow: hidden;
+  min-height: 50px;
 }
 
 .user-mini-card__avatar {
   width: 34px;
   height: 34px;
+  min-width: 34px;
+  max-width: 34px;
+  min-height: 34px;
+  max-height: 34px;
   border-radius: 50%;
   border: 1px solid #d3dded;
   object-fit: cover;
+  object-position: center;
+  display: block;
+  background: #eef3fa;
+}
+
+#userAvatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  max-width: 34px;
+  min-height: 34px;
+  max-height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .user-mini-card__name {
@@ -411,17 +420,10 @@ body.is-modal-open {
 
 .main-head {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-end;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   gap: 10px;
-}
-
-.main-head h2 {
-  margin: 0;
-  font-size: 24px;
-  font-family: var(--font-head);
-  letter-spacing: -0.01em;
 }
 
 .main-head p {
@@ -470,33 +472,16 @@ body.is-modal-open {
   display: grid;
   place-items: center;
   border-bottom: 1px solid #dce4ef;
+  background: #eef2f8;
 }
 
 .tool-card__figure img {
   width: 100%;
   height: 100%;
-  padding: 20px 22px 48px;
-  object-fit: contain;
+  padding: 0;
+  object-fit: cover;
   object-position: center;
   display: block;
-}
-
-.tool-card--dataraven .tool-card__figure {
-  background:
-    radial-gradient(380px 190px at 96% 8%, rgba(107, 146, 216, 0.18), transparent 62%),
-    linear-gradient(180deg, #f4f8ff 0%, #ecf3ff 58%, #f9fcff 100%);
-}
-
-.tool-card--journal-scout .tool-card__figure {
-  background:
-    radial-gradient(420px 190px at 6% 14%, rgba(144, 151, 167, 0.16), transparent 60%),
-    linear-gradient(180deg, #f9fafc 0%, #f0f3f8 58%, #fbfdff 100%);
-}
-
-.tool-card--citation-integrity-lab .tool-card__figure {
-  background:
-    radial-gradient(460px 180px at 95% 8%, rgba(108, 173, 136, 0.24), transparent 62%),
-    linear-gradient(180deg, #f8fcf6 0%, #eef8ef 58%, #fbfdfb 100%);
 }
 
 .tool-card__overlay {
@@ -567,12 +552,12 @@ body.is-modal-open {
 }
 
 .tool-card__fav {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #c7d8eb;
-  border-radius: 50%;
-  background: #f8fbff;
-  color: #6a83a2;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #98a3b8;
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -580,23 +565,19 @@ body.is-modal-open {
 }
 
 .tool-card__fav svg {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentcolor;
-  stroke-width: 2.1;
+  stroke-width: 2;
 }
 
 .tool-card__fav:hover {
-  border-color: #8eb3d6;
-  background: #eef6ff;
-  color: #436e99;
+  color: #7f8aa2;
 }
 
 .tool-card__fav.is-active {
-  border-color: #2f8d98;
-  background: #ddf4ef;
-  color: #136064;
+  color: #ef5b88;
 }
 
 .tool-card__fav.is-active svg {

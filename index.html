@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226d" />
-  <link rel="stylesheet" href="./styles.css?v=20260227a" />
+  <link rel="stylesheet" href="./styles.css?v=20260227c" />
   <style>
     /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
     :root { --sidebar-width: 252px; }
@@ -84,8 +84,7 @@
         <div id="categoryFilters" class="category-filters" role="tablist" aria-label="功能分类"></div>
       </div>
 
-      <section class="auth-dock" aria-label="账户状态">
-        <button id="openAuthModalBtn" class="auth-open-btn" type="button">登录 / 注册</button>
+      <section id="authDock" class="auth-dock" aria-label="账户状态" hidden>
         <div id="userMiniCard" class="user-mini-card" hidden>
           <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
           <span id="userName" class="user-mini-card__name"></span>
@@ -109,7 +108,6 @@
 
     <main class="portal-main">
       <header class="main-head">
-        <h2>ScanSci Apps</h2>
         <p id="toolCount">加载中...</p>
       </header>
 
@@ -140,6 +138,6 @@
     </section>
   </div>
 
-  <script src="./app.js?v=20260227a"></script>
+  <script src="./app.js?v=20260227c"></script>
 </body>
 </html>

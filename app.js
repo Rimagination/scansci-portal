@@ -15,8 +15,8 @@ const els = {
   empty: document.getElementById("emptyState"),
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
+  authDock: document.getElementById("authDock"),
   authModal: document.getElementById("authModal"),
-  openAuthModalBtn: document.getElementById("openAuthModalBtn"),
   closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
   loginBtn: document.getElementById("loginBtn"),
   logoutBtn: document.getElementById("logoutBtn"),
@@ -203,8 +203,8 @@ function renderGrid() {
 function renderAuth() {
   const loggedIn = !!state.me;
 
-  if (els.openAuthModalBtn) {
-    els.openAuthModalBtn.hidden = loggedIn;
+  if (els.authDock) {
+    els.authDock.hidden = !loggedIn;
   }
 
   if (els.userMiniCard) {
@@ -218,6 +218,16 @@ function renderAuth() {
 
   if (els.userAvatar) {
     els.userAvatar.src = state.me.avatar_url || "./assets/brand/dataraven-crow-only.svg";
+    els.userAvatar.width = 34;
+    els.userAvatar.height = 34;
+    els.userAvatar.style.width = "34px";
+    els.userAvatar.style.height = "34px";
+    els.userAvatar.style.maxWidth = "34px";
+    els.userAvatar.style.maxHeight = "34px";
+    els.userAvatar.style.borderRadius = "50%";
+    els.userAvatar.style.objectFit = "cover";
+    els.userAvatar.style.objectPosition = "center";
+    els.userAvatar.style.display = "block";
   }
 
   if (els.userName) {
@@ -489,10 +499,6 @@ function bindEvents() {
       state.query = els.search.value || "";
       renderGrid();
     });
-  }
-
-  if (els.openAuthModalBtn) {
-    els.openAuthModalBtn.addEventListener("click", openAuthModal);
   }
 
   if (els.closeAuthModalBtn) {

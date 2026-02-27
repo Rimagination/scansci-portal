@@ -15,4 +15,4 @@ zone_name = "scansci.com"
 [[d1_databases]]
 binding = "DB"
 database_name = "scansci_auth"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "4ea255cf-6c0e-4bd5-bafb-16e6bfda7689"

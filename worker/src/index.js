@@ -959,18 +959,32 @@ function extractCitationTitle(text, year, doi) {
   if (doi) {
     candidate = candidate.replace(new RegExp(escapeRegExp(doi), "ig"), " ");
   }
+
+  // Common APA-like pattern: (2020). Title.
+  const apaLike = candidate.match(
+    /\(\s*(?:19|20)\d{2}[a-z]?\s*\)\s*\.?\s*([^.;。]{6,260})[.;。]/i
+  );
+  if (apaLike?.[1]) {
+    return apaLike[1].trim();
+  }
+
   if (Number.isFinite(year)) {
-    const yearPattern = new RegExp(`\\(?\\b${year}[a-z]?\\b\\)?`);
+    const yearPattern = new RegExp(`\\(?\\b${year}[a-z]?\\b\\)?`, "i");
     candidate = candidate.replace(yearPattern, " ");
   }
+
   const parts = candidate
     .split(/[.。]/)
     .map((p) => p.trim())
     .filter(Boolean);
-  for (const part of parts) {
+  for (let i = 0; i < parts.length; i += 1) {
+    const part = parts[i];
+    // Skip likely author segment like "Polack, F. P., Thomas, S. J."
+    if (i === 0 && /,\s*[A-Z]\./.test(part) && parts.length > 1) continue;
     if (part.length < 6) continue;
     if (/https?:\/\//i.test(part)) continue;
     if (/^\d+$/.test(part)) continue;
+    if (/^\(?\d{4}[a-z]?\)?$/i.test(part)) continue;
     return part;
   }
   return parts[0] || "";
@@ -979,16 +993,26 @@ function extractCitationTitle(text, year, doi) {
 function extractCitationAuthors(text, year) {
   let segment = String(text || "");
   if (Number.isFinite(year)) {
-    const idx = segment.indexOf(String(year));
-    if (idx > 0 && idx < 120) segment = segment.slice(0, idx);
+    const yearMatch = segment.match(new RegExp(`\\(?\\b${year}[a-z]?\\b\\)?`, "i"));
+    if (yearMatch && Number.isFinite(yearMatch.index) && yearMatch.index > 0 && yearMatch.index < 200) {
+      segment = segment.slice(0, yearMatch.index);
+    }
   }
-  segment = segment.replace(CITATION_REF_START_RE, "").trim();
+  segment = segment.replace(CITATION_REF_START_RE, "").replace(/\bet al\.?/gi, "").trim();
   if (!segment) return [];
+
+  const regexMatches = [...segment.matchAll(/([A-Z][A-Za-z'`\-]+,\s*(?:[A-Z]\.\s*){1,4})/g)].map((m) =>
+    String(m[1] || "").trim().replace(/[.,;]+$/g, "")
+  );
+  if (regexMatches.length) {
+    return [...new Set(regexMatches)].slice(0, 12);
+  }
+
   const parts = segment
     .split(/\s*(?:;| and | & |，|、)\s*/i)
     .map((p) => p.trim().replace(/[.,;]+$/g, ""))
     .filter(Boolean);
-  return parts.slice(0, 8);
+  return [...new Set(parts)].slice(0, 8);
 }
 
 function parseCitationAnchors(bodyText, references) {
@@ -1049,22 +1073,35 @@ async function verifyCitationReference(ref) {
   let official = null;
   const sourceLinks = {};
   const sourcesFound = [];
+  const candidates = [];
 
   if (doi) {
     sourceLinks.doi = `https://doi.org/${encodeURI(doi)}`;
     sourceLinks.crossref = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
     sourceLinks.openalex = `https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}`;
-    const crossref = await fetchCrossrefByDoi(doi);
+    sourceLinks.semanticscholar = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(
+      doi
+    )}?fields=title,year,venue,authors,url,abstract`;
+    sourceLinks.datacite = `https://api.datacite.org/dois/${encodeURIComponent(doi)}`;
+
+    const [crossref, openalex, semantic] = await Promise.all([
+      fetchCrossrefByDoi(doi),
+      fetchOpenAlexByDoi(doi),
+      fetchSemanticScholarByDoi(doi),
+    ]);
     if (crossref) {
-      official = crossref;
       sourcesFound.push("crossref");
-    } else {
-      const openalex = await fetchOpenAlexByDoi(doi);
-      if (openalex) {
-        official = openalex;
-        sourcesFound.push("openalex");
-      }
+      candidates.push(crossref);
     }
+    if (openalex) {
+      sourcesFound.push("openalex");
+      candidates.push(openalex);
+    }
+    if (semantic) {
+      sourcesFound.push("semanticscholar");
+      candidates.push(semantic);
+    }
+    official = pickBestCitationOfficial(ref, candidates, doi);
   }
 
   const conflicts = [];
@@ -1105,19 +1142,38 @@ async function verifyCitationReference(ref) {
       });
     }
 
-    const doiScore = doi ? (doiMatch === false ? 0.2 : 1) : 0.6;
-    const yearScore = yearMatch === null ? 0.7 : yearMatch ? 1 : 0.2;
-    score = 0.55 * titleSim + 0.25 * yearScore + 0.2 * doiScore;
-
-    if (score >= 0.78) {
-      status = "green";
-      reason = "元数据匹配良好";
-    } else if (score >= 0.48) {
-      status = "yellow";
-      reason = "元数据存在偏差，建议复核";
+    // DOI-exact match has high confidence, consistent with prior behavior.
+    if (doi && doiMatch === true) {
+      if (yearMatch === false) {
+        status = "yellow";
+        score = 0.72;
+        reason = "DOI 匹配，但年份存在偏差，建议复核";
+      } else {
+        status = "green";
+        score = Math.min(0.99, 0.93 + 0.03 * Math.max(0, sourcesFound.length - 1));
+        reason =
+          sourcesFound.length >= 2
+            ? `多源命中（${sourcesFound.join(" / ")}），标题/年份整体匹配。`
+            : "DOI 匹配，元数据整体一致。";
+      }
     } else {
-      status = "red";
-      reason = "元数据冲突明显";
+      const doiScore = doi ? (doiMatch === false ? 0.1 : 0.75) : 0.55;
+      const yearScore = yearMatch === null ? 0.68 : yearMatch ? 1 : 0.2;
+      score = 0.62 * titleSim + 0.23 * yearScore + 0.15 * doiScore;
+
+      if (score >= 0.78) {
+        status = "green";
+        reason = "元数据匹配良好";
+      } else if (score >= 0.45) {
+        status = "yellow";
+        reason = "元数据存在偏差，建议复核";
+      } else if (doiMatch === false || (titleSim < 0.25 && yearMatch === false)) {
+        status = "red";
+        reason = "元数据冲突明显";
+      } else {
+        status = "yellow";
+        reason = "证据不足，建议复核";
+      }
     }
   }
 
@@ -1251,6 +1307,54 @@ async function fetchOpenAlexByDoi(doi) {
     url: String(payload.id || `https://doi.org/${encodeURI(doi)}`),
     abstract: null,
   };
+}
+
+async function fetchSemanticScholarByDoi(doi) {
+  const url = `https://api.semanticscholar.org/graph/v1/paper/DOI:${encodeURIComponent(
+    doi
+  )}?fields=title,year,venue,authors,url,abstract`;
+  const payload = await fetchJsonSafe(url, { headers: { Accept: "application/json" } });
+  if (!payload || typeof payload !== "object" || !payload.title) return null;
+  const authors = Array.isArray(payload.authors)
+    ? payload.authors.map((x) => String(x?.name || "").trim()).filter(Boolean).slice(0, 12)
+    : [];
+  return {
+    source: "semanticscholar",
+    title: String(payload.title || "") || null,
+    authors,
+    journal: String(payload.venue || "") || null,
+    year: Number(payload.year || 0) || null,
+    doi: normalizeCitationDoi(doi) || null,
+    url: String(payload.url || `https://www.semanticscholar.org/search?q=${encodeURIComponent(doi)}`),
+    abstract: String(payload.abstract || "") || null,
+  };
+}
+
+function pickBestCitationOfficial(ref, candidates, doi) {
+  const list = (candidates || []).filter(Boolean);
+  if (!list.length) return null;
+  const userTitle = String(ref?.title || "");
+  const userYear = Number(ref?.year || 0) || null;
+
+  const scored = list.map((item) => {
+    const titleSim = simpleTextSimilarity(userTitle, item.title || "");
+    const doiMatch =
+      doi && item?.doi ? normalizeCitationDoi(item.doi) === normalizeCitationDoi(doi) : !doi ? null : false;
+    const yearMatch =
+      Number.isFinite(userYear) && Number.isFinite(Number(item?.year || 0))
+        ? Number(item.year) === userYear
+        : null;
+    let score = titleSim * 1.2;
+    if (doiMatch === true) score += 2.0;
+    if (yearMatch === true) score += 0.25;
+    if (item?.abstract) score += 0.08;
+    const sourceWeight = item?.source === "crossref" ? 0.05 : item?.source === "openalex" ? 0.04 : 0.03;
+    score += sourceWeight;
+    return { item, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  return scored[0].item;
 }
 
 async function fetchJsonSafe(url, options = {}, timeoutMs = 12000) {

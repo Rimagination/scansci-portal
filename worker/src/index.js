@@ -1,6 +1,10 @@
 ﻿const PKCE_COOKIE = "__Host-scansci_pkce";
 const SESSION_COOKIE = "__Host-scansci_session";
 const EMAIL_PURPOSE_LOGIN = "email_login";
+const CITATION_DOI_RE = /(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i;
+const CITATION_REF_START_RE = /^\s*(?:\[(\d+)\]|(\d+)[.)]|（(\d+)）)\s*/;
+const CITATION_YEAR_RE = /\b(19|20)\d{2}[a-z]?\b/i;
+const CITATION_NUMERIC_CITATION_RE = /\[(\d+(?:\s*[-,;]\s*\d+)*)\]/g;
 
 export default {
   async fetch(request, env) {
@@ -75,6 +79,13 @@ async function handleRequest(request, env) {
 
   if (url.pathname === "/api/elsevier/serial-title" && request.method === "GET") {
     return handleElsevierSerialTitle(request, env);
+  }
+
+  if (
+    (url.pathname === "/api/citation/analyze" || url.pathname === "/api/analyze") &&
+    request.method === "POST"
+  ) {
+    return handleCitationAnalyze(request, env);
   }
 
   if (url.pathname === "/api/admin/elsevier/cache/upsert" && request.method === "POST") {
@@ -798,6 +809,511 @@ async function handleElsevierSerialTitle(request, env) {
     source: "elsevier-live",
   });
   return jsonWithSourceHeader(request, env, winner.payload, "elsevier-live");
+}
+
+async function handleCitationAnalyze(request, env) {
+  const body = await parseJsonBody(request);
+  const text = String(body?.text || "").trim();
+  const mode = body?.mode === "references" ? "references" : "full";
+  if (!text) {
+    return jsonResponse(request, env, { detail: "text is required" }, 400);
+  }
+
+  const parsed = parseCitationInput(text, mode);
+  const refs = Array.isArray(parsed.references) ? parsed.references : [];
+  const verifiedRefs = await mapLimit(refs, 5, async (ref) => verifyCitationReference(ref));
+  const referenceResults = {};
+  for (const item of verifiedRefs) {
+    referenceResults[item.ref_id] = item;
+  }
+
+  const anchorResults = buildCitationAnchorResults(parsed.anchors || [], referenceResults);
+  return jsonResponse(request, env, {
+    parse: parsed,
+    reference_results: referenceResults,
+    anchor_results: anchorResults,
+  });
+}
+
+function parseCitationInput(text, mode) {
+  const normalized = String(text || "").replace(/\r\n/g, "\n").trim();
+  if (!normalized) {
+    return { body_text: "", reference_text: "", references: [], anchors: [] };
+  }
+
+  let bodyText = "";
+  let referenceText = "";
+  if (mode === "references") {
+    referenceText = normalized;
+  } else {
+    const split = splitCitationBodyAndReferences(normalized);
+    bodyText = split.bodyText;
+    referenceText = split.referenceText;
+  }
+
+  const references = parseCitationReferences(referenceText || normalized);
+  const anchors = mode === "references" ? [] : parseCitationAnchors(bodyText, references);
+  return {
+    body_text: bodyText,
+    reference_text: referenceText,
+    references,
+    anchors,
+  };
+}
+
+function splitCitationBodyAndReferences(text) {
+  const lines = String(text || "").split("\n");
+  const headerPattern = /(references|reference|参考文献|文献)/i;
+  let splitIndex = -1;
+  for (let i = 0; i < lines.length; i += 1) {
+    if (headerPattern.test(lines[i].trim())) {
+      splitIndex = i + 1;
+      break;
+    }
+  }
+  if (splitIndex === -1) {
+    for (let i = 0; i < lines.length; i += 1) {
+      if (CITATION_REF_START_RE.test(lines[i])) {
+        splitIndex = i;
+        break;
+      }
+    }
+  }
+  if (splitIndex === -1) {
+    return { bodyText: text, referenceText: "" };
+  }
+  return {
+    bodyText: lines.slice(0, splitIndex).join("\n").trim(),
+    referenceText: lines.slice(splitIndex).join("\n").trim(),
+  };
+}
+
+function parseCitationReferences(referenceText) {
+  const lines = String(referenceText || "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (!lines.length) return [];
+
+  const entries = [];
+  let current = "";
+  for (const line of lines) {
+    if (!current) {
+      current = line;
+      continue;
+    }
+    if (CITATION_REF_START_RE.test(line)) {
+      entries.push(current);
+      current = line;
+    } else {
+      current = `${current} ${line}`;
+    }
+  }
+  if (current) entries.push(current);
+
+  const refs = [];
+  let seq = 1;
+  for (const rawLine of entries) {
+    const line = rawLine.replace(/\s+/g, " ").trim();
+    if (!line) continue;
+    const startMatch = line.match(CITATION_REF_START_RE);
+    const indexText = startMatch?.[1] || startMatch?.[2] || startMatch?.[3] || "";
+    const index = indexText ? Number(indexText) : seq;
+    const cleaned = startMatch ? line.slice(startMatch[0].length).trim() : line;
+    const doi = extractCitationDoi(cleaned);
+    const yearMatch = cleaned.match(CITATION_YEAR_RE);
+    const year = yearMatch ? Number(String(yearMatch[0]).slice(0, 4)) : null;
+    const title = extractCitationTitle(cleaned, year, doi);
+    const authors = extractCitationAuthors(cleaned, year);
+    const firstAuthor = authors.length ? authors[0].split(",")[0].trim() : null;
+    refs.push({
+      ref_id: String(index || seq),
+      raw: cleaned,
+      index: Number.isFinite(index) ? index : seq,
+      authors,
+      first_author: firstAuthor || null,
+      year: Number.isFinite(year) ? year : null,
+      title: title || null,
+      doi: doi || null,
+    });
+    seq += 1;
+  }
+  return refs;
+}
+
+function extractCitationDoi(text) {
+  const match = String(text || "").match(CITATION_DOI_RE);
+  if (!match) return "";
+  return normalizeCitationDoi(match[1]);
+}
+
+function normalizeCitationDoi(raw) {
+  let doi = String(raw || "").trim();
+  doi = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").replace(/^doi:\s*/i, "");
+  doi = doi.replace(/[.,;:!?"'`，。；：！？]+$/g, "");
+  return doi.toLowerCase();
+}
+
+function extractCitationTitle(text, year, doi) {
+  let candidate = String(text || "");
+  if (doi) {
+    candidate = candidate.replace(new RegExp(escapeRegExp(doi), "ig"), " ");
+  }
+  if (Number.isFinite(year)) {
+    const yearPattern = new RegExp(`\\(?\\b${year}[a-z]?\\b\\)?`);
+    candidate = candidate.replace(yearPattern, " ");
+  }
+  const parts = candidate
+    .split(/[.。]/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  for (const part of parts) {
+    if (part.length < 6) continue;
+    if (/https?:\/\//i.test(part)) continue;
+    if (/^\d+$/.test(part)) continue;
+    return part;
+  }
+  return parts[0] || "";
+}
+
+function extractCitationAuthors(text, year) {
+  let segment = String(text || "");
+  if (Number.isFinite(year)) {
+    const idx = segment.indexOf(String(year));
+    if (idx > 0 && idx < 120) segment = segment.slice(0, idx);
+  }
+  segment = segment.replace(CITATION_REF_START_RE, "").trim();
+  if (!segment) return [];
+  const parts = segment
+    .split(/\s*(?:;| and | & |，|、)\s*/i)
+    .map((p) => p.trim().replace(/[.,;]+$/g, ""))
+    .filter(Boolean);
+  return parts.slice(0, 8);
+}
+
+function parseCitationAnchors(bodyText, references) {
+  const text = String(bodyText || "");
+  if (!text) return [];
+  const anchors = [];
+  let match;
+  let seq = 1;
+  while ((match = CITATION_NUMERIC_CITATION_RE.exec(text)) !== null) {
+    const marker = match[0];
+    const linked = expandCitationMarkerIds(match[1], references);
+    const sentence = extractSentenceAround(text, match.index, match.index + marker.length);
+    anchors.push({
+      anchor_id: `A${seq}`,
+      marker,
+      start: match.index,
+      end: match.index + marker.length,
+      linked_ref_ids: linked,
+      context: sentence,
+      claim: sentence,
+    });
+    seq += 1;
+  }
+  return anchors;
+}
+
+function expandCitationMarkerIds(content, references) {
+  const maxIndex = Math.max(50, ...references.map((r) => Number(r.index || 0)).filter(Boolean));
+  const out = new Set();
+  const blocks = String(content || "").split(/[;,]/).map((x) => x.trim()).filter(Boolean);
+  for (const block of blocks) {
+    const range = block.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (range) {
+      const start = Number(range[1]);
+      const end = Number(range[2]);
+      if (Number.isFinite(start) && Number.isFinite(end) && end >= start && end - start <= 20) {
+        for (let i = start; i <= end && i <= maxIndex; i += 1) out.add(String(i));
+      }
+      continue;
+    }
+    const n = Number(block);
+    if (Number.isFinite(n) && n > 0 && n <= maxIndex) out.add(String(n));
+  }
+  return [...out];
+}
+
+function extractSentenceAround(text, start, end) {
+  const left = Math.max(0, String(text).lastIndexOf(".", start - 1), String(text).lastIndexOf("。", start - 1));
+  const rightDot = String(text).indexOf(".", end);
+  const rightCn = String(text).indexOf("。", end);
+  const rightCandidates = [rightDot, rightCn].filter((x) => x >= 0);
+  const right = rightCandidates.length ? Math.min(...rightCandidates) + 1 : String(text).length;
+  return String(text).slice(left > 0 ? left + 1 : 0, right).trim();
+}
+
+async function verifyCitationReference(ref) {
+  const doi = normalizeCitationDoi(ref?.doi || "");
+  let official = null;
+  const sourceLinks = {};
+  const sourcesFound = [];
+
+  if (doi) {
+    sourceLinks.doi = `https://doi.org/${encodeURI(doi)}`;
+    sourceLinks.crossref = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
+    sourceLinks.openalex = `https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}`;
+    const crossref = await fetchCrossrefByDoi(doi);
+    if (crossref) {
+      official = crossref;
+      sourcesFound.push("crossref");
+    } else {
+      const openalex = await fetchOpenAlexByDoi(doi);
+      if (openalex) {
+        official = openalex;
+        sourcesFound.push("openalex");
+      }
+    }
+  }
+
+  const conflicts = [];
+  let score = 0.35;
+  let status = "white";
+  let reason = "未检索到可核验元数据";
+
+  if (official) {
+    const titleSim = simpleTextSimilarity(ref.title, official.title);
+    const yearMatch = Number.isFinite(ref.year) && Number.isFinite(official.year) ? ref.year === official.year : null;
+    const doiMatch = doi && official.doi ? normalizeCitationDoi(official.doi) === doi : !doi ? null : false;
+
+    if (Number.isFinite(ref.year) && Number.isFinite(official.year) && !yearMatch) {
+      conflicts.push({
+        field: "year",
+        user_value: String(ref.year),
+        official_value: String(official.year),
+        similarity: null,
+        level: "warning",
+      });
+    }
+    if (ref.title && official.title && titleSim < 0.6) {
+      conflicts.push({
+        field: "title",
+        user_value: ref.title,
+        official_value: official.title,
+        similarity: Number(titleSim.toFixed(3)),
+        level: "warning",
+      });
+    }
+    if (doi && official.doi && !doiMatch) {
+      conflicts.push({
+        field: "doi",
+        user_value: doi,
+        official_value: official.doi,
+        similarity: null,
+        level: "high",
+      });
+    }
+
+    const doiScore = doi ? (doiMatch === false ? 0.2 : 1) : 0.6;
+    const yearScore = yearMatch === null ? 0.7 : yearMatch ? 1 : 0.2;
+    score = 0.55 * titleSim + 0.25 * yearScore + 0.2 * doiScore;
+
+    if (score >= 0.78) {
+      status = "green";
+      reason = "元数据匹配良好";
+    } else if (score >= 0.48) {
+      status = "yellow";
+      reason = "元数据存在偏差，建议复核";
+    } else {
+      status = "red";
+      reason = "元数据冲突明显";
+    }
+  }
+
+  return {
+    ref_id: String(ref.ref_id),
+    status,
+    label: citationStatusLabel(status),
+    reason,
+    score: Number(score.toFixed(3)),
+    official,
+    conflicts,
+    sources_found: sourcesFound,
+    source_links: sourceLinks,
+    citation_suggestions: {},
+  };
+}
+
+function buildCitationAnchorResults(anchors, referenceResults) {
+  const out = [];
+  for (const anchor of anchors) {
+    const linked = (anchor?.linked_ref_ids || []).map((id) => referenceResults[String(id)]).filter(Boolean);
+    const metadataScore = linked.length ? average(linked.map((r) => statusToScore(r.status))) : 0.35;
+    const relevanceScore = linked.length ? average(linked.map((r) => Math.max(0.2, r.score || 0))) : 0.35;
+    const supportScore = linked.length ? Math.max(0.2, Math.min(1, (metadataScore + relevanceScore) / 2)) : 0.35;
+    const overall = average([metadataScore, relevanceScore, supportScore]);
+    const overallStatus = scoreToCitationStatus(overall);
+
+    const dimensions = {
+      metadata: toCitationDimension(metadataScore, "元数据"),
+      relevance: toCitationDimension(relevanceScore, "相关性"),
+      support: toCitationDimension(supportScore, "支持度"),
+    };
+
+    out.push({
+      anchor_id: anchor.anchor_id,
+      marker: anchor.marker,
+      linked_ref_ids: anchor.linked_ref_ids || [],
+      overall_status: overallStatus,
+      overall_label: citationStatusLabel(overallStatus),
+      context: anchor.context || "",
+      claim: anchor.claim || anchor.context || "",
+      dimensions,
+      linked_reference_results: linked,
+      radar: {
+        metadata: Number(metadataScore.toFixed(3)),
+        relevance: Number(relevanceScore.toFixed(3)),
+        support: Number(supportScore.toFixed(3)),
+        overall: Number(overall.toFixed(3)),
+      },
+    });
+  }
+  return out;
+}
+
+function toCitationDimension(score, name) {
+  const status = scoreToCitationStatus(score);
+  return {
+    status,
+    label: `${name}${citationStatusLabel(status)}`,
+    score: Number(score.toFixed(3)),
+    reason: `${name}评分 ${Math.round(score * 100)} / 100`,
+  };
+}
+
+function statusToScore(status) {
+  if (status === "green") return 0.95;
+  if (status === "yellow") return 0.62;
+  if (status === "red") return 0.18;
+  return 0.35;
+}
+
+function scoreToCitationStatus(score) {
+  if (score >= 0.78) return "green";
+  if (score >= 0.48) return "yellow";
+  if (score > 0.001) return "red";
+  return "white";
+}
+
+function citationStatusLabel(status) {
+  if (status === "green") return "正常";
+  if (status === "yellow") return "需复核";
+  if (status === "red") return "高风险";
+  return "证据不足";
+}
+
+async function fetchCrossrefByDoi(doi) {
+  const url = `https://api.crossref.org/works/${encodeURIComponent(doi)}`;
+  const payload = await fetchJsonSafe(url, { headers: { Accept: "application/json" } });
+  const message = payload?.message;
+  if (!message) return null;
+  const title = Array.isArray(message.title) ? String(message.title[0] || "") : String(message.title || "");
+  const authors = Array.isArray(message.author)
+    ? message.author.map((a) => [a.family, a.given].filter(Boolean).join(", ").trim()).filter(Boolean)
+    : [];
+  const year = Number(message?.issued?.["date-parts"]?.[0]?.[0] || 0) || null;
+  const journal = Array.isArray(message["container-title"])
+    ? String(message["container-title"][0] || "")
+    : String(message["container-title"] || "");
+  return {
+    source: "crossref",
+    title: title || null,
+    authors,
+    journal: journal || null,
+    year,
+    doi: normalizeCitationDoi(message.DOI || doi) || null,
+    url: String(message.URL || `https://doi.org/${encodeURI(doi)}`),
+    abstract: null,
+  };
+}
+
+async function fetchOpenAlexByDoi(doi) {
+  const url = `https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}`;
+  const payload = await fetchJsonSafe(url, { headers: { Accept: "application/json" } });
+  if (!payload || typeof payload !== "object") return null;
+  const title = String(payload.display_name || "");
+  const year = Number(payload.publication_year || 0) || null;
+  const journal = String(payload?.primary_location?.source?.display_name || "");
+  const authors = Array.isArray(payload.authorships)
+    ? payload.authorships
+        .map((x) => String(x?.author?.display_name || "").trim())
+        .filter(Boolean)
+        .slice(0, 12)
+    : [];
+  return {
+    source: "openalex",
+    title: title || null,
+    authors,
+    journal: journal || null,
+    year,
+    doi: normalizeCitationDoi(payload.doi || doi) || null,
+    url: String(payload.id || `https://doi.org/${encodeURI(doi)}`),
+    abstract: null,
+  };
+}
+
+async function fetchJsonSafe(url, options = {}, timeoutMs = 12000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const resp = await fetch(url, { ...options, signal: controller.signal });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function mapLimit(items, limit, mapper) {
+  const list = Array.isArray(items) ? items : [];
+  const out = new Array(list.length);
+  let idx = 0;
+  const workers = Array.from({ length: Math.max(1, Math.min(limit || 1, list.length || 1)) }, async () => {
+    while (true) {
+      const current = idx;
+      idx += 1;
+      if (current >= list.length) break;
+      out[current] = await mapper(list[current], current);
+    }
+  });
+  await Promise.all(workers);
+  return out;
+}
+
+function simpleTextSimilarity(a, b) {
+  const left = normalizeSimpleText(a);
+  const right = normalizeSimpleText(b);
+  if (!left || !right) return 0;
+  if (left === right) return 1;
+  const leftSet = new Set(left.split(" "));
+  const rightSet = new Set(right.split(" "));
+  let inter = 0;
+  for (const token of leftSet) {
+    if (rightSet.has(token)) inter += 1;
+  }
+  const union = new Set([...leftSet, ...rightSet]).size;
+  return union ? inter / union : 0;
+}
+
+function normalizeSimpleText(text) {
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function average(values) {
+  const nums = (values || []).map((x) => Number(x)).filter((x) => Number.isFinite(x));
+  if (!nums.length) return 0;
+  return nums.reduce((a, b) => a + b, 0) / nums.length;
+}
+
+function escapeRegExp(text) {
+  return String(text || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 async function handleAdminElsevierCacheUpsert(request, env) {

@@ -892,24 +892,47 @@ function parseCitationReferences(referenceText) {
   const lines = String(referenceText || "")
     .split("\n")
     .map((line) => line.trim())
-    .filter(Boolean);
+    .filter((line) => Boolean(line) && !isCitationReferenceHeadingLine(line));
   if (!lines.length) return [];
 
   const entries = [];
-  let current = "";
-  for (const line of lines) {
-    if (!current) {
-      current = line;
-      continue;
+  const hasNumberedRefs = lines.some((line) => CITATION_REF_START_RE.test(line));
+
+  if (hasNumberedRefs) {
+    let current = "";
+    for (const line of lines) {
+      if (CITATION_REF_START_RE.test(line)) {
+        if (current) entries.push(current);
+        current = line;
+      } else if (current) {
+        current = `${current} ${line}`;
+      } else {
+        // Ignore preface lines before the first numbered reference.
+        continue;
+      }
     }
-    if (CITATION_REF_START_RE.test(line)) {
-      entries.push(current);
-      current = line;
-    } else {
-      current = `${current} ${line}`;
+    if (current) entries.push(current);
+  } else {
+    // Fallback mode for unnumbered references.
+    let current = "";
+    for (const line of lines) {
+      if (!current) {
+        current = line;
+        continue;
+      }
+      const shouldStartNew =
+        /[.。;；!?]$/.test(current) &&
+        !/^(https?:\/\/|doi:\s*)/i.test(line) &&
+        (/\b(19|20)\d{2}[a-z]?\b/i.test(line) || /^[A-Z][A-Za-z'`\-]+,\s*[A-Z]/.test(line));
+      if (shouldStartNew) {
+        entries.push(current);
+        current = line;
+      } else {
+        current = `${current} ${line}`;
+      }
     }
+    if (current) entries.push(current);
   }
-  if (current) entries.push(current);
 
   const refs = [];
   let seq = 1;
@@ -920,6 +943,8 @@ function parseCitationReferences(referenceText) {
     const indexText = startMatch?.[1] || startMatch?.[2] || startMatch?.[3] || "";
     const index = indexText ? Number(indexText) : seq;
     const cleaned = startMatch ? line.slice(startMatch[0].length).trim() : line;
+    if (isCitationReferenceHeadingLine(cleaned)) continue;
+    if (!looksLikeCitationEntry(cleaned)) continue;
     const doi = extractCitationDoi(cleaned);
     const yearMatch = cleaned.match(CITATION_YEAR_RE);
     const year = yearMatch ? Number(String(yearMatch[0]).slice(0, 4)) : null;
@@ -939,6 +964,31 @@ function parseCitationReferences(referenceText) {
     seq += 1;
   }
   return refs;
+}
+
+function isCitationReferenceHeadingLine(line) {
+  const text = String(line || "").trim();
+  if (!text) return false;
+  const compactCn = text.replace(/\s+/g, "");
+  if (/^(参考文献|参考文献清单|文献|引用文献)([（(].*[)）])?$/.test(compactCn)) {
+    return true;
+  }
+  const compactEn = text
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[:：]/g, "")
+    .trim();
+  return /^(references?|reference list|bibliography|works cited)(\s*\(.*\))?$/.test(compactEn);
+}
+
+function looksLikeCitationEntry(line) {
+  const text = String(line || "").trim();
+  if (!text) return false;
+  if (extractCitationDoi(text)) return true;
+  if (CITATION_YEAR_RE.test(text)) return true;
+  if (/^[A-Z][A-Za-z'`\-]+,\s*[A-Z]/.test(text)) return true;
+  if (/[\u4e00-\u9fa5].{4,}(期刊|卷|页|doi|DOI|\d{4})/.test(text)) return true;
+  return text.length >= 28;
 }
 
 function extractCitationDoi(text) {

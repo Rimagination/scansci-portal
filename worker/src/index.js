@@ -77,6 +77,14 @@ async function handleRequest(request, env) {
     return handleElsevierSerialTitle(request, env);
   }
 
+  if (url.pathname === "/api/admin/elsevier/cache/upsert" && request.method === "POST") {
+    return handleAdminElsevierCacheUpsert(request, env);
+  }
+
+  if (url.pathname === "/api/admin/elsevier/cache/batch-upsert" && request.method === "POST") {
+    return handleAdminElsevierCacheBatchUpsert(request, env);
+  }
+
   if (url.pathname === "/api/web/preview-image" && request.method === "GET") {
     return handleWebPreviewImage(request, env);
   }
@@ -685,33 +693,442 @@ async function handleActionRead(request, env) {
 }
 
 async function handleElsevierSerialTitle(request, env) {
-  const apiKey = String(env.ELSEVIER_API_KEY || "").trim();
-  if (!apiKey) {
-    return jsonResponse(request, env, { ok: false, error: "missing_api_key" }, 503);
-  }
-
   const url = new URL(request.url);
   const issn = String(url.searchParams.get("issn") || "").trim();
   if (!issn) {
     return jsonResponse(request, env, { ok: false, error: "missing_issn" }, 400);
   }
+  const cacheKey = normalizeIssnKey(issn);
+  if (!cacheKey) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_issn" }, 400);
+  }
 
-  const issnPath = issn.replace(/[^0-9Xx]/g, "");
-  const upstreamUrl =
-    `https://api.elsevier.com/content/serial/title/issn/${encodeURIComponent(issnPath)}?` +
-    `view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area&apiKey=${encodeURIComponent(apiKey)}`;
+  const staleLimitSeconds = Math.max(0, parseInt(env.ELSEVIER_CACHE_STALE_SECONDS || "2592000", 10) || 2592000);
+  const cached = await loadElsevierCacheByKey(env, cacheKey);
+  if (cached && !cached.isExpired) {
+    return jsonWithSourceHeader(request, env, cached.payload, "d1-cache-fresh", {
+      "X-ScanSci-Elsevier-Cache-Key": cached.issnKey,
+      "X-ScanSci-Elsevier-Updated-Unix": String(cached.updatedUnix),
+    });
+  }
 
-  let upstreamRes;
+  const canUseStale =
+    !!cached &&
+    cached.isExpired &&
+    Number.isFinite(cached.expiresUnix) &&
+    Math.floor(Date.now() / 1000) - cached.expiresUnix <= staleLimitSeconds;
+
+  const apiKey = String(env.ELSEVIER_API_KEY || "").trim();
+  if (!apiKey) {
+    if (canUseStale) {
+      return jsonWithSourceHeader(request, env, cached.payload, "d1-cache-stale-no-key", {
+        "Warning": '110 - "Response is stale"',
+      });
+    }
+    return jsonResponse(request, env, { ok: false, error: "missing_api_key" }, 503);
+  }
+
+  const preferSecondary =
+    String(env.ELSEVIER_SECONDARY_FIRST || "").trim() === "1" &&
+    !!normalizeBaseUrl(env.ELSEVIER_SECONDARY_PROXY_BASE || "");
+  if (preferSecondary) {
+    const secondaryFirst = await requestElsevierViaSecondaryProxy(env, issn);
+    if (secondaryFirst.ok) {
+      await upsertElsevierCacheRecord(env, {
+        issn,
+        payload: secondaryFirst.payload,
+        source: "secondary-proxy-primary",
+      });
+      return jsonWithSourceHeader(request, env, secondaryFirst.payload, "secondary-proxy-primary");
+    }
+  }
+
+  const variants = buildElsevierIssnVariants(issn);
+  if (!variants.length) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_issn" }, 400);
+  }
+
+  const failures = [];
+  let winner = null;
+
+  for (const candidate of variants) {
+    const result = await requestElsevierSerialTitle(candidate, apiKey, env);
+    if (result.ok) {
+      winner = result;
+      break;
+    }
+    failures.push(result);
+  }
+
+  if (!winner) {
+    const fallback = await requestElsevierViaSecondaryProxy(env, issn);
+    if (fallback.ok) {
+      await upsertElsevierCacheRecord(env, {
+        issn,
+        payload: fallback.payload,
+        source: "secondary-proxy-fallback",
+      });
+      return jsonWithSourceHeader(request, env, fallback.payload, "secondary-proxy-fallback");
+    }
+
+    if (canUseStale) {
+      return jsonWithSourceHeader(request, env, cached.payload, "d1-cache-stale-fallback", {
+        "Warning": '110 - "Response is stale"',
+      });
+    }
+
+    const primary = failures[0] || { status: 502, payload: null, text: "", reason: "elsevier_unreachable" };
+    const status = Number(primary.status) || 502;
+    return jsonResponse(
+      request,
+      env,
+      {
+        ok: false,
+        error: primary.reason || "elsevier_http_error",
+        status,
+        details: primary.payload || (primary.text ? primary.text.slice(0, 1200) : null),
+      },
+      status
+    );
+  }
+
+  await upsertElsevierCacheRecord(env, {
+    issn,
+    payload: winner.payload,
+    source: "elsevier-live",
+  });
+  return jsonWithSourceHeader(request, env, winner.payload, "elsevier-live");
+}
+
+async function handleAdminElsevierCacheUpsert(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+  const body = await parseJsonBody(request);
+  if (!body || typeof body !== "object") {
+    return jsonResponse(request, env, { ok: false, error: "invalid_json" }, 400);
+  }
+  const result = await upsertElsevierCacheRecord(env, {
+    issn: body.issn,
+    payload: body.payload,
+    ttlSeconds: body.ttlSeconds,
+    source: body.source || "admin-upsert",
+  });
+  if (!result.ok) {
+    return jsonResponse(request, env, { ok: false, error: result.error || "cache_upsert_failed" }, 400);
+  }
+  return jsonResponse(request, env, {
+    ok: true,
+    key: result.issnKey,
+    expires_unix: result.expiresUnix,
+  });
+}
+
+async function handleAdminElsevierCacheBatchUpsert(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+  const body = await parseJsonBody(request);
+  const items = Array.isArray(body?.items) ? body.items : [];
+  if (!items.length) {
+    return jsonResponse(request, env, { ok: false, error: "missing_items" }, 400);
+  }
+  if (items.length > 100) {
+    return jsonResponse(request, env, { ok: false, error: "too_many_items", max: 100 }, 400);
+  }
+
+  let success = 0;
+  const failures = [];
+  for (const item of items) {
+    const result = await upsertElsevierCacheRecord(env, {
+      issn: item?.issn,
+      payload: item?.payload,
+      ttlSeconds: item?.ttlSeconds,
+      source: item?.source || "admin-batch-upsert",
+    });
+    if (result.ok) {
+      success += 1;
+    } else {
+      failures.push({
+        issn: String(item?.issn || ""),
+        error: result.error || "cache_upsert_failed",
+      });
+    }
+  }
+
+  return jsonResponse(request, env, {
+    ok: failures.length === 0,
+    success,
+    failed: failures.length,
+    failures: failures.slice(0, 20),
+  });
+}
+
+function isAdminTokenValid(request, env) {
+  const configured = String(env.ADMIN_SYNC_TOKEN || "").trim();
+  if (!configured) return false;
+  const headerToken = String(request.headers.get("X-ScanSci-Admin-Token") || "").trim();
+  if (!headerToken) return false;
+  return timingSafeEqual(headerToken, configured);
+}
+
+function timingSafeEqual(a, b) {
+  const left = String(a || "");
+  const right = String(b || "");
+  if (left.length !== right.length) return false;
+  let result = 0;
+  for (let i = 0; i < left.length; i += 1) {
+    result |= left.charCodeAt(i) ^ right.charCodeAt(i);
+  }
+  return result === 0;
+}
+
+async function parseJsonBody(request) {
   try {
-    upstreamRes = await fetch(upstreamUrl, {
-      method: "GET",
+    return await request.json();
+  } catch {
+    return null;
+  }
+}
+
+function normalizeIssnKey(raw) {
+  const compact = String(raw || "").replace(/[^0-9Xx]/g, "").toUpperCase();
+  if (!/^\d{7}[\dX]$/.test(compact)) return "";
+  return compact;
+}
+
+function formatIssnDisplay(issnKey) {
+  const key = normalizeIssnKey(issnKey);
+  if (!key) return "";
+  return `${key.slice(0, 4)}-${key.slice(4)}`;
+}
+
+async function loadElsevierCacheByKey(env, issnKey) {
+  const key = normalizeIssnKey(issnKey);
+  if (!key) return null;
+  const row = await env.DB.prepare(
+    "SELECT issn_key, issn_display, payload_json, source, updated_unix, expires_unix FROM elsevier_cache WHERE issn_key = ? LIMIT 1"
+  )
+    .bind(key)
+    .first();
+  if (!row || !row.payload_json) return null;
+  const payload = safeJsonParse(row.payload_json);
+  if (!payload || typeof payload !== "object") return null;
+  const now = Math.floor(Date.now() / 1000);
+  const expiresUnix = Number(row.expires_unix || 0);
+  return {
+    issnKey: key,
+    issnDisplay: String(row.issn_display || formatIssnDisplay(key)),
+    payload,
+    source: String(row.source || ""),
+    updatedUnix: Number(row.updated_unix || 0),
+    expiresUnix,
+    isExpired: Number.isFinite(expiresUnix) ? expiresUnix <= now : true,
+  };
+}
+
+async function upsertElsevierCacheRecord(env, input) {
+  const key = normalizeIssnKey(input?.issn);
+  if (!key) return { ok: false, error: "invalid_issn" };
+  const payload = input?.payload;
+  if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
+  const normalizedPayload = unwrapElsevierPayload(payload);
+  if (!normalizedPayload) return { ok: false, error: "invalid_elsevier_payload" };
+
+  const ttlDefault = Math.max(300, parseInt(env.ELSEVIER_CACHE_TTL_SECONDS || "604800", 10) || 604800);
+  const ttlSeconds = Math.max(300, parseInt(String(input?.ttlSeconds || ttlDefault), 10) || ttlDefault);
+  const nowUnix = Math.floor(Date.now() / 1000);
+  const expiresUnix = nowUnix + ttlSeconds;
+  const source = String(input?.source || "elsevier-live").slice(0, 120);
+  const nowIso = new Date().toISOString();
+
+  await env.DB.prepare(
+    `INSERT INTO elsevier_cache
+      (issn_key, issn_display, payload_json, source, updated_unix, expires_unix, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(issn_key) DO UPDATE SET
+       issn_display = excluded.issn_display,
+       payload_json = excluded.payload_json,
+       source = excluded.source,
+       updated_unix = excluded.updated_unix,
+       expires_unix = excluded.expires_unix,
+       updated_at = excluded.updated_at`
+  )
+    .bind(key, formatIssnDisplay(key), JSON.stringify(normalizedPayload), source, nowUnix, expiresUnix, nowIso)
+    .run();
+
+  return { ok: true, issnKey: key, expiresUnix };
+}
+
+function jsonWithSourceHeader(request, env, payload, source, extraHeaders = {}) {
+  const headers = standardHeaders(request, env);
+  headers.set("Content-Type", "application/json; charset=utf-8");
+  headers.set("X-ScanSci-Elsevier-Source", String(source || "unknown"));
+  if (String(source || "").startsWith("d1-cache")) {
+    headers.set("Cache-Control", "public, max-age=300, s-maxage=300");
+  } else {
+    headers.set("Cache-Control", "public, max-age=120, s-maxage=180");
+  }
+  for (const [k, v] of Object.entries(extraHeaders || {})) {
+    if (v !== undefined && v !== null) headers.set(k, String(v));
+  }
+  return new Response(JSON.stringify(payload), { status: 200, headers });
+}
+
+function normalizeBaseUrl(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return "";
+  try {
+    const u = new URL(text);
+    if (!["http:", "https:"].includes(u.protocol)) return "";
+    return u.toString().replace(/\/+$/, "");
+  } catch {
+    return "";
+  }
+}
+
+function unwrapElsevierPayload(payload) {
+  if (payload && typeof payload === "object") {
+    if (payload["serial-metadata-response"]) return payload;
+    if (payload.payload && typeof payload.payload === "object" && payload.payload["serial-metadata-response"]) {
+      return payload.payload;
+    }
+  }
+  return null;
+}
+
+async function requestElsevierViaSecondaryProxy(env, issnRaw) {
+  const base = normalizeBaseUrl(env.ELSEVIER_SECONDARY_PROXY_BASE || "");
+  if (!base) return { ok: false };
+
+  const issn = String(issnRaw || "").trim();
+  if (!issn) return { ok: false };
+
+  const candidates = [
+    `${base}/api/elsevier/serial-title?issn=${encodeURIComponent(issn)}`,
+    `${base}/elsevier/serial-title?issn=${encodeURIComponent(issn)}`,
+  ];
+
+  for (const url of candidates) {
+    let resp;
+    try {
+      resp = await fetch(url, {
+        method: "GET",
+        headers: { Accept: "application/json", "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)" },
+        cf: { cacheTtl: 600, cacheEverything: false },
+      });
+    } catch {
+      continue;
+    }
+    if (!resp.ok) continue;
+
+    let body = null;
+    try {
+      body = await resp.json();
+    } catch {
+      body = null;
+    }
+    const payload = unwrapElsevierPayload(body);
+    if (payload) return { ok: true, payload };
+  }
+
+  return { ok: false };
+}
+
+function buildElsevierIssnVariants(issnRaw) {
+  const compact = String(issnRaw || "").replace(/[^0-9Xx]/g, "").toUpperCase();
+  if (!compact) return [];
+  const variants = new Set();
+  if (compact.length === 8) {
+    variants.add(`${compact.slice(0, 4)}-${compact.slice(4)}`);
+  }
+  variants.add(compact);
+  return [...variants];
+}
+
+async function requestElsevierSerialTitle(issn, apiKey, env) {
+  const publicOrigin = "https://www.scansci.com";
+  const defaultTimeout = 3500;
+  const parsedTimeout = Number.parseInt(String(env?.ELSEVIER_UPSTREAM_TIMEOUT_MS || ""), 10);
+  const runtimeTimeout =
+    Number.isFinite(parsedTimeout) && parsedTimeout >= 1200
+      ? parsedTimeout
+      : Number.parseInt(String(defaultTimeout), 10);
+  const baseUrl =
+    `https://api.elsevier.com/content/serial/title?` +
+    `issn=${encodeURIComponent(issn)}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`;
+
+  const attempts = [
+    {
+      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      timeoutMs: runtimeTimeout,
       headers: {
         Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
+      },
+    },
+    {
+      url: baseUrl,
+      timeoutMs: runtimeTimeout,
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
         "X-ELS-APIKey": apiKey,
       },
+    },
+    {
+      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      timeoutMs: runtimeTimeout,
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
+        "X-ELS-APIKey": apiKey,
+      },
+    },
+  ];
+
+  const failures = [];
+  for (const attempt of attempts) {
+    const result = await requestElsevierOnce(attempt.url, attempt.headers, attempt.timeoutMs || null);
+    if (result.ok) return result;
+    failures.push(result);
+  }
+
+  return failures[0] || { ok: false, reason: "elsevier_unreachable", status: 502, payload: null, text: "" };
+}
+
+async function requestElsevierOnce(url, headers, timeoutMsRaw = null) {
+  const timeoutMs = Math.max(1200, Number(timeoutMsRaw || 0) || Number.parseInt(String(timeoutMsRaw || "0"), 10) || 0);
+  const controller = new AbortController();
+  const timer = timeoutMs > 0 ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  let upstreamRes;
+  try {
+    upstreamRes = await fetch(url, {
+      method: "GET",
+      headers,
+      signal: controller.signal,
+      cf: { cacheTtl: 1800, cacheEverything: false },
     });
-  } catch {
-    return jsonResponse(request, env, { ok: false, error: "elsevier_unreachable" }, 502);
+  } catch (error) {
+    const isAbort = String(error?.name || "") === "AbortError";
+    return {
+      ok: false,
+      reason: isAbort ? "elsevier_timeout" : "elsevier_unreachable",
+      status: 502,
+      payload: null,
+      text: "",
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 
   const rawText = await upstreamRes.text();
@@ -723,26 +1140,20 @@ async function handleElsevierSerialTitle(request, env) {
   }
 
   if (!upstreamRes.ok) {
-    return jsonResponse(
-      request,
-      env,
-      {
-        ok: false,
-        error: "elsevier_http_error",
-        status: upstreamRes.status,
-        details: payload || rawText.slice(0, 1200),
-      },
-      upstreamRes.status
-    );
+    return {
+      ok: false,
+      reason: "elsevier_http_error",
+      status: upstreamRes.status,
+      payload,
+      text: rawText,
+    };
   }
 
   if (!payload || typeof payload !== "object") {
-    return jsonResponse(request, env, { ok: false, error: "invalid_upstream_payload" }, 502);
+    return { ok: false, reason: "invalid_upstream_payload", status: 502, payload: null, text: rawText };
   }
 
-  const headers = standardHeaders(request, env);
-  headers.set("Content-Type", "application/json; charset=utf-8");
-  return new Response(JSON.stringify(payload), { status: 200, headers });
+  return { ok: true, payload };
 }
 
 async function handleWebPreviewImage(request, env) {
@@ -1141,7 +1552,7 @@ function standardHeaders(request, env) {
     headers.set("Vary", "Origin");
     headers.set("Access-Control-Allow-Credentials", "true");
     headers.set("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-    headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-ScanSci-Admin-Token");
   }
 
   return headers;

@@ -20,6 +20,8 @@ Cloudflare Worker + D1，实现：
 - `POST /api/actions`
 - `GET /api/actions?type=favorite|recent`
 - `GET /api/elsevier/serial-title?issn=xxxx-xxxx`
+- `POST /api/admin/elsevier/cache/upsert`（管理员）
+- `POST /api/admin/elsevier/cache/batch-upsert`（管理员）
 - `GET /api/web/preview-image?url=https://example.com`
 
 ## 环境变量
@@ -32,6 +34,7 @@ Secrets：
 - `RESEND_API_KEY`
 - `EMAIL_FROM`
 - `ELSEVIER_API_KEY`
+- `ADMIN_SYNC_TOKEN`（用于 GitHub Actions 批量写入缓存）
 
 Vars（wrangler.toml）：
 
@@ -42,6 +45,63 @@ Vars（wrangler.toml）：
 - `EMAIL_CODE_MAX_ATTEMPTS`
 - `ALLOW_DEV_EMAIL_CODE`
 - `CORS_ORIGINS`
+- `ELSEVIER_SECONDARY_PROXY_BASE`（可选，Elsevier 直连失败时回退到二级代理，如 Vercel/Fly）
+- `ELSEVIER_SECONDARY_FIRST`（可选，`1` 表示优先走二级代理，推荐在 Worker 出口受限时开启）
+- `ELSEVIER_UPSTREAM_TIMEOUT_MS`（可选，Elsevier 直连超时毫秒，默认 `3500`）
+- `ELSEVIER_CACHE_TTL_SECONDS`（可选，缓存有效期秒，默认 `604800`）
+- `ELSEVIER_CACHE_STALE_SECONDS`（可选，允许返回过期缓存的宽限秒，默认 `2592000`）
+
+## Elsevier 高可用策略（免费）
+
+`/api/elsevier/serial-title` 采用以下顺序：
+
+1. 先查 D1 缓存（命中即返回，毫秒级）
+2. 缓存失效后尝试 Elsevier 直连（Worker 出口）
+3. 直连失败时自动回退 `ELSEVIER_SECONDARY_PROXY_BASE`（可选）
+4. 若存在“未过久”的过期缓存，优先返回过期缓存，避免前端报错
+
+当 `ELSEVIER_SECONDARY_FIRST=1` 且配置了二级代理时，将优先请求二级代理（减少前端超时）。
+
+## 管理员缓存写入
+
+管理员接口使用 Header：
+
+- `X-ScanSci-Admin-Token: <ADMIN_SYNC_TOKEN>`
+
+`batch-upsert` body 示例：
+
+```json
+{
+  "items": [
+    {
+      "issn": "0028-0836",
+      "payload": { "serial-metadata-response": {} },
+      "ttlSeconds": 604800,
+      "source": "gha-sync"
+    }
+  ]
+}
+```
+
+## GitHub Actions 定时同步（推荐）
+
+已提供工作流：
+
+- `.github/workflows/elsevier-cache-sync.yml`
+
+需要在 GitHub 仓库 Secrets 中设置：
+
+- `ELSEVIER_API_KEY`
+- `SCANSCI_ADMIN_SYNC_TOKEN`
+
+并在 Worker Secrets 中设置同一值：
+
+```bash
+wrangler secret put ADMIN_SYNC_TOKEN
+```
+
+工作流会定时拉取 `https://journal.scansci.com/data/search_index.json` 的 ISSN 列表，
+请求 Elsevier 后批量写入 D1 缓存。
 
 ## D1 SQL
 
@@ -49,6 +109,7 @@ Vars（wrangler.toml）：
 
 - `sql/0001_init.sql`
 - `sql/0002_auth_methods.sql`
+- `sql/0003_elsevier_cache.sql`
 
 ## 本地调试
 

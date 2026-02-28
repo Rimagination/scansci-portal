@@ -11,6 +11,11 @@ EMAIL_CODE_TTL_SECONDS = "600"
 EMAIL_CODE_MAX_ATTEMPTS = "5"
 ALLOW_DEV_EMAIL_CODE = "0"
 CORS_ORIGINS = "https://www.scansci.com,https://journal.scansci.com,https://dataset.scansci.com,https://citation.scansci.com"
+ELSEVIER_SECONDARY_PROXY_BASE = ""
+ELSEVIER_SECONDARY_FIRST = "0"
+ELSEVIER_UPSTREAM_TIMEOUT_MS = "3500"
+ELSEVIER_CACHE_TTL_SECONDS = "604800"
+ELSEVIER_CACHE_STALE_SECONDS = "2592000"
 
 [[routes]]
 pattern = "www.scansci.com/api/*"

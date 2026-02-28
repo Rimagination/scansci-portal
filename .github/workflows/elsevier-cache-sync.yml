@@ -1,0 +1,31 @@
+name: Elsevier Cache Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Sync Elsevier cache to Cloudflare Worker (D1)
+        env:
+          ELSEVIER_API_KEY: ${{ secrets.ELSEVIER_API_KEY }}
+          SCANSCI_ADMIN_SYNC_TOKEN: ${{ secrets.SCANSCI_ADMIN_SYNC_TOKEN }}
+          SCANSCI_WORKER_BASE: "https://www.scansci.com"
+          ISSN_SOURCE_URL: "https://journal.scansci.com/data/search_index.json"
+          ISSN_LIMIT: "800"
+          CONCURRENCY: "6"
+          BATCH_SIZE: "25"
+          TTL_SECONDS: "1209600"
+          REQUEST_TIMEOUT_MS: "12000"
+        run: node worker/scripts/sync_elsevier_cache.mjs

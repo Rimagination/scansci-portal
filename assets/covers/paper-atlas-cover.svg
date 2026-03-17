@@ -1,0 +1,38 @@
+<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#faf9fc"/>
+      <stop offset="100%" style="stop-color:#f3f1f7"/>
+    </linearGradient>
+    <linearGradient id="nodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e9e5f7"/>
+      <stop offset="100%" style="stop-color:#6D28D9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="200" fill="url(#bg)"/>
+
+  <!-- Network nodes -->
+  <circle cx="200" cy="100" r="28" fill="#6D28D9" stroke="#F97316" stroke-width="3"/>
+  <circle cx="120" cy="70" r="18" fill="#8B5CF6" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+  <circle cx="280" cy="80" r="20" fill="#A78BFA" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+  <circle cx="150" cy="140" r="16" fill="#C4B5FD" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+  <circle cx="260" cy="150" r="14" fill="#DDD6FE" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+  <circle cx="320" cy="120" r="12" fill="#EDE9FE" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+  <circle cx="80" cy="110" r="15" fill="#A78BFA" stroke="rgba(30,27,75,0.15)" stroke-width="1.5"/>
+
+  <!-- Edges -->
+  <line x1="200" y1="100" x2="120" y2="70" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="200" y1="100" x2="280" y2="80" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="200" y1="100" x2="150" y2="140" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="200" y1="100" x2="260" y2="150" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="200" y1="100" x2="320" y2="120" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="200" y1="100" x2="80" y2="110" stroke="#c8c0dd" stroke-width="1.5"/>
+  <line x1="120" y1="70" x2="80" y2="110" stroke="#c8c0dd" stroke-width="1"/>
+  <line x1="280" y1="80" x2="320" y2="120" stroke="#c8c0dd" stroke-width="1"/>
+  <line x1="150" y1="140" x2="260" y2="150" stroke="#c8c0dd" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="200" y="185" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#1e1b4b">Paper Atlas</text>
+</svg>

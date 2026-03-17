@@ -39,6 +39,19 @@
         "integrity",
         "validation"
       ]
+    },
+    {
+      "id": "paper-atlas",
+      "name": "Paper Atlas",
+      "description": "论文图谱探索工具，可视化论文引用关系与相似度网络。",
+      "cover": "./assets/covers/paper-atlas-cover.svg",
+      "url": "https://paperatlas.scansci.com",
+      "category": "学术核查",
+      "tags": [
+        "citation map",
+        "visualization",
+        "related papers"
+      ]
     }
   ]
 }

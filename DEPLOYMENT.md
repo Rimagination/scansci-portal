@@ -18,6 +18,39 @@
 - `CNAME journal -> <journal pages domain>`
 - `CNAME citation -> <citation pages domain>`
 
+## Paper Atlas 自定义域名（反向代理）
+
+Paper Atlas 部署在 Hugging Face Space，使用 Cloudflare Worker 反向代理实现自定义域名。
+
+### DNS 配置
+
+在 Cloudflare DNS 中不需要 CNAME 记录（Worker 路由直接处理），或者添加一条 DNS 记录指向任意地址（仅用于激活 zone）：
+
+```
+A     paperatlas    192.0.2.1    (灰色云，仅占位)
+```
+
+### Worker 配置
+
+Worker 脚本：`worker/paper-atlas-proxy.js`
+
+部署命令：
+```bash
+cd worker
+npx wrangler deploy --config wrangler.paper-atlas.toml
+```
+
+Worker 会将所有 `paperatlas.scansci.com/*` 请求代理到 `rimagination-paper-atlas.hf.space`。
+
+### 路由规则
+
+在 Cloudflare Dashboard → Workers & Pages → paper-atlas-proxy → Settings → Triggers 中配置：
+
+- Route: `paperatlas.scansci.com/*`
+- Zone: `scansci.com`
+
+---
+
 ## 3. GitHub Pages
 
 每个仓库根目录保留 `CNAME` 文件并在 `Settings -> Pages` 开启发布。

@@ -1,0 +1,8 @@
+name = "paper-atlas-proxy"
+main = "paper-atlas-proxy.js"
+compatibility_date = "2026-03-18"
+workers_dev = false
+
+[[routes]]
+pattern = "paperatlas.scansci.com/*"
+zone_name = "scansci.com"

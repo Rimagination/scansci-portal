@@ -1,6 +1,17 @@
 {
   "apps": [
     {
+      "id": "paper-atlas",
+      "name": "Paper Atlas",
+      "description": "论文图谱探索工具，可视化论文引用关系与相似度网络，基于 Semantic Scholar 和 OpenAlex 数据。",
+      "cover": "./assets/covers/paper-atlas-cover.svg",
+      "cover_title": "Paper Atlas",
+      "cover_subtitle": "论文引用关系与相似度网络可视化",
+      "url": "https://paperatlas.scansci.com",
+      "category": "文献分析",
+      "tags": ["paper", "citation", "graph", "visualization", "semantic-scholar"]
+    },
+    {
       "id": "dataraven",
       "name": "DataRaven",
       "description": "科研数据与开源数据检索引擎，聚焦数据集发现与索引能力。",
@@ -38,19 +49,6 @@
         "citation",
         "integrity",
         "validation"
-      ]
-    },
-    {
-      "id": "paper-atlas",
-      "name": "Paper Atlas",
-      "description": "论文图谱探索工具，可视化论文引用关系与相似度网络。",
-      "cover": "./assets/covers/paper-atlas-cover.svg",
-      "url": "https://paperatlas.scansci.com",
-      "category": "学术核查",
-      "tags": [
-        "citation map",
-        "visualization",
-        "related papers"
       ]
     }
   ]

@@ -645,9 +645,13 @@ body.is-modal-open {
 
 .stats-inline {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
-  opacity: 0.7;
+}
+
+.stats-inline strong {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 /* ── Existing responsive ────────────────────────────────────── */

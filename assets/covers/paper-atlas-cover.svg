@@ -1,61 +1,143 @@
-<svg width="900" height="1350" viewBox="0 0 900 1350" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paper Atlas Cover">
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paper Atlas Cover">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f8f4ff"/>
-      <stop offset="100%" stop-color="#f0ebff"/>
+    <linearGradient id="pa-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#faf8ff"/>
+      <stop offset="60%" stop-color="#f4f0fd"/>
+      <stop offset="100%" stop-color="#ede8fb"/>
     </linearGradient>
-    <linearGradient id="node" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#6366f1"/>
+    <radialGradient id="pa-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6d28d9" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pa-n0" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#5b21b6"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </radialGradient>
+    <radialGradient id="pa-n1" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </radialGradient>
+    <radialGradient id="pa-n2" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
+    <radialGradient id="pa-n3" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#a78bfa"/>
       <stop offset="100%" stop-color="#8b5cf6"/>
-    </linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#a78bfa"/>
-    </linearGradient>
+    </radialGradient>
+    <radialGradient id="pa-no" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </radialGradient>
+    <filter id="pa-blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+    <filter id="pa-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#4c1d95" flood-opacity="0.25"/>
+    </filter>
   </defs>
-  <rect width="900" height="1350" fill="url(#bg)"/>
-  <rect x="90" y="120" width="720" height="1110" rx="24" fill="#ffffff" stroke="#e0d5ff"/>
 
-  <!-- Graph Network -->
-  <!-- Central Node -->
-  <circle cx="450" cy="500" r="45" fill="url(#node)" opacity="0.9"/>
-  <circle cx="450" cy="500" r="30" fill="#ffffff"/>
-  <text x="450" y="508" fill="#6366f1" font-family="Manrope, Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle">P</text>
+  <!-- Background -->
+  <rect width="900" height="600" fill="url(#pa-bg)"/>
 
-  <!-- Surrounding Nodes -->
-  <circle cx="300" cy="380" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="600" cy="380" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="250" cy="550" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="650" cy="550" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="350" cy="680" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="550" cy="680" r="25" fill="url(#node)" opacity="0.7"/>
-  <circle cx="450" cy="750" r="25" fill="url(#node)" opacity="0.7"/>
-
-  <!-- Edges (Connections) -->
-  <g fill="none" stroke="url(#edge)" stroke-width="3" opacity="0.6">
-    <path d="M420 475 L325 400"/>
-    <path d="M480 475 L575 400"/>
-    <path d="M425 525 L275 540"/>
-    <path d="M475 525 L625 540"/>
-    <path d="M430 540 L365 660"/>
-    <path d="M470 540 L535 660"/>
-    <path d="M450 545 L450 725"/>
-    <path d="M325 405 L265 530"/>
-    <path d="M575 405 L635 530"/>
-    <path d="M325 405 L575 405"/>
-    <path d="M265 530 L635 530"/>
-    <path d="M365 660 L535 660"/>
-    <path d="M535 660 L450 725"/>
-    <path d="M365 660 L450 725"/>
+  <!-- Subtle dot grid -->
+  <g fill="#c4b5fd" opacity="0.18">
+    <circle cx="75"  cy="60"  r="1.5"/><circle cx="150" cy="60"  r="1.5"/><circle cx="225" cy="60"  r="1.5"/><circle cx="300" cy="60"  r="1.5"/><circle cx="375" cy="60"  r="1.5"/><circle cx="450" cy="60"  r="1.5"/><circle cx="525" cy="60"  r="1.5"/><circle cx="600" cy="60"  r="1.5"/><circle cx="675" cy="60"  r="1.5"/><circle cx="750" cy="60"  r="1.5"/><circle cx="825" cy="60"  r="1.5"/>
+    <circle cx="75"  cy="135" r="1.5"/><circle cx="150" cy="135" r="1.5"/><circle cx="225" cy="135" r="1.5"/><circle cx="300" cy="135" r="1.5"/><circle cx="375" cy="135" r="1.5"/><circle cx="450" cy="135" r="1.5"/><circle cx="525" cy="135" r="1.5"/><circle cx="600" cy="135" r="1.5"/><circle cx="675" cy="135" r="1.5"/><circle cx="750" cy="135" r="1.5"/><circle cx="825" cy="135" r="1.5"/>
+    <circle cx="75"  cy="210" r="1.5"/><circle cx="150" cy="210" r="1.5"/><circle cx="225" cy="210" r="1.5"/><circle cx="300" cy="210" r="1.5"/><circle cx="375" cy="210" r="1.5"/><circle cx="450" cy="210" r="1.5"/><circle cx="525" cy="210" r="1.5"/><circle cx="600" cy="210" r="1.5"/><circle cx="675" cy="210" r="1.5"/><circle cx="750" cy="210" r="1.5"/><circle cx="825" cy="210" r="1.5"/>
+    <circle cx="75"  cy="285" r="1.5"/><circle cx="150" cy="285" r="1.5"/><circle cx="225" cy="285" r="1.5"/><circle cx="300" cy="285" r="1.5"/><circle cx="375" cy="285" r="1.5"/><circle cx="450" cy="285" r="1.5"/><circle cx="525" cy="285" r="1.5"/><circle cx="600" cy="285" r="1.5"/><circle cx="675" cy="285" r="1.5"/><circle cx="750" cy="285" r="1.5"/><circle cx="825" cy="285" r="1.5"/>
+    <circle cx="75"  cy="360" r="1.5"/><circle cx="150" cy="360" r="1.5"/><circle cx="225" cy="360" r="1.5"/><circle cx="300" cy="360" r="1.5"/><circle cx="375" cy="360" r="1.5"/><circle cx="450" cy="360" r="1.5"/><circle cx="525" cy="360" r="1.5"/><circle cx="600" cy="360" r="1.5"/><circle cx="675" cy="360" r="1.5"/><circle cx="750" cy="360" r="1.5"/><circle cx="825" cy="360" r="1.5"/>
+    <circle cx="75"  cy="435" r="1.5"/><circle cx="150" cy="435" r="1.5"/><circle cx="225" cy="435" r="1.5"/><circle cx="300" cy="435" r="1.5"/><circle cx="375" cy="435" r="1.5"/><circle cx="450" cy="435" r="1.5"/><circle cx="525" cy="435" r="1.5"/><circle cx="600" cy="435" r="1.5"/><circle cx="675" cy="435" r="1.5"/><circle cx="750" cy="435" r="1.5"/><circle cx="825" cy="435" r="1.5"/>
+    <circle cx="75"  cy="510" r="1.5"/><circle cx="150" cy="510" r="1.5"/><circle cx="225" cy="510" r="1.5"/><circle cx="300" cy="510" r="1.5"/><circle cx="375" cy="510" r="1.5"/><circle cx="450" cy="510" r="1.5"/><circle cx="525" cy="510" r="1.5"/><circle cx="600" cy="510" r="1.5"/><circle cx="675" cy="510" r="1.5"/><circle cx="750" cy="510" r="1.5"/><circle cx="825" cy="510" r="1.5"/>
+    <circle cx="75"  cy="575" r="1.5"/><circle cx="150" cy="575" r="1.5"/><circle cx="225" cy="575" r="1.5"/><circle cx="300" cy="575" r="1.5"/><circle cx="375" cy="575" r="1.5"/><circle cx="450" cy="575" r="1.5"/><circle cx="525" cy="575" r="1.5"/><circle cx="600" cy="575" r="1.5"/><circle cx="675" cy="575" r="1.5"/><circle cx="750" cy="575" r="1.5"/><circle cx="825" cy="575" r="1.5"/>
   </g>
 
-  <!-- Small nodes at edge intersections -->
-  <circle cx="325" cy="405" r="12" fill="#8b5cf6" opacity="0.5"/>
-  <circle cx="575" cy="405" r="12" fill="#8b5cf6" opacity="0.5"/>
-  <circle cx="265" cy="530" r="12" fill="#8b5cf6" opacity="0.5"/>
-  <circle cx="635" cy="530" r="12" fill="#8b5cf6" opacity="0.5"/>
+  <!-- Central glow halo -->
+  <ellipse cx="450" cy="300" rx="130" ry="110" fill="url(#pa-glow)" filter="url(#pa-blur)"/>
 
-  <!-- Title -->
-  <text x="450" y="920" fill="#4c3f7a" font-family="Manrope, Arial, sans-serif" font-size="72" font-weight="800" text-anchor="middle">Paper Atlas</text>
-  <text x="450" y="990" fill="#7c6f9f" font-family="Manrope, Arial, sans-serif" font-size="36" font-weight="500" text-anchor="middle">论文图谱探索工具</text>
+  <!-- ── Edges ─────────────────────────────────── -->
+  <!-- seed → ring-1 -->
+  <g fill="none" stroke="#6d28d9" stroke-linecap="round">
+    <line x1="450" y1="300" x2="278" y2="188" stroke-width="1.8" opacity="0.38"/>
+    <line x1="450" y1="300" x2="618" y2="172" stroke-width="1.8" opacity="0.38"/>
+    <line x1="450" y1="300" x2="698" y2="318" stroke-width="1.8" opacity="0.38"/>
+    <line x1="450" y1="300" x2="598" y2="458" stroke-width="1.8" opacity="0.38"/>
+    <line x1="450" y1="300" x2="310" y2="448" stroke-width="1.8" opacity="0.38"/>
+    <line x1="450" y1="300" x2="168" y2="308" stroke-width="1.8" opacity="0.38"/>
+  </g>
+  <!-- ring-1 → ring-2 -->
+  <g fill="none" stroke="#8b5cf6" stroke-linecap="round">
+    <line x1="278" y1="188" x2="148" y2="148" stroke-width="1.3" opacity="0.28"/>
+    <line x1="278" y1="188" x2="388" y2="98"  stroke-width="1.3" opacity="0.28"/>
+    <line x1="618" y1="172" x2="728" y2="108" stroke-width="1.3" opacity="0.28"/>
+    <line x1="618" y1="172" x2="758" y2="228" stroke-width="1.3" opacity="0.28"/>
+    <line x1="698" y1="318" x2="808" y2="278" stroke-width="1.3" opacity="0.28"/>
+    <line x1="698" y1="318" x2="798" y2="418" stroke-width="1.3" opacity="0.28"/>
+    <line x1="598" y1="458" x2="698" y2="528" stroke-width="1.3" opacity="0.28"/>
+    <line x1="598" y1="458" x2="508" y2="538" stroke-width="1.3" opacity="0.28"/>
+    <line x1="310" y1="448" x2="198" y2="508" stroke-width="1.3" opacity="0.28"/>
+    <line x1="310" y1="448" x2="358" y2="548" stroke-width="1.3" opacity="0.28"/>
+    <line x1="168" y1="308" x2="88"  y2="238" stroke-width="1.3" opacity="0.28"/>
+    <line x1="168" y1="308" x2="98"  y2="408" stroke-width="1.3" opacity="0.28"/>
+  </g>
+  <!-- ring-1 cross-links -->
+  <g fill="none" stroke="#a78bfa" stroke-linecap="round">
+    <line x1="278" y1="188" x2="618" y2="172" stroke-width="1.1" opacity="0.22"/>
+    <line x1="618" y1="172" x2="698" y2="318" stroke-width="1.1" opacity="0.22"/>
+    <line x1="698" y1="318" x2="598" y2="458" stroke-width="1.1" opacity="0.22"/>
+    <line x1="598" y1="458" x2="310" y2="448" stroke-width="1.1" opacity="0.22"/>
+    <line x1="310" y1="448" x2="168" y2="308" stroke-width="1.1" opacity="0.22"/>
+    <line x1="168" y1="308" x2="278" y2="188" stroke-width="1.1" opacity="0.22"/>
+  </g>
+  <!-- ring-2 some links -->
+  <g fill="none" stroke="#a78bfa" stroke-linecap="round">
+    <line x1="148" y1="148" x2="88"  y2="238" stroke-width="1.0" opacity="0.18"/>
+    <line x1="388" y1="98"  x2="728" y2="108" stroke-width="1.0" opacity="0.18"/>
+    <line x1="758" y1="228" x2="808" y2="278" stroke-width="1.0" opacity="0.18"/>
+    <line x1="798" y1="418" x2="698" y2="528" stroke-width="1.0" opacity="0.18"/>
+    <line x1="508" y1="538" x2="358" y2="548" stroke-width="1.0" opacity="0.18"/>
+    <line x1="198" y1="508" x2="98"  y2="408" stroke-width="1.0" opacity="0.18"/>
+  </g>
+
+  <!-- ── Nodes ring-2 (small, background) ──────── -->
+  <circle cx="148" cy="148" r="9"  fill="url(#pa-n3)" opacity="0.65"/>
+  <circle cx="388" cy="98"  r="10" fill="url(#pa-n2)" opacity="0.65"/>
+  <circle cx="728" cy="108" r="9"  fill="url(#pa-n3)" opacity="0.65"/>
+  <circle cx="758" cy="228" r="9"  fill="url(#pa-no)" opacity="0.60"/>
+  <circle cx="808" cy="278" r="8"  fill="url(#pa-n3)" opacity="0.55"/>
+  <circle cx="798" cy="418" r="9"  fill="url(#pa-n3)" opacity="0.60"/>
+  <circle cx="698" cy="528" r="9"  fill="url(#pa-no)" opacity="0.60"/>
+  <circle cx="508" cy="538" r="10" fill="url(#pa-n3)" opacity="0.65"/>
+  <circle cx="358" cy="548" r="8"  fill="url(#pa-n3)" opacity="0.60"/>
+  <circle cx="198" cy="508" r="9"  fill="url(#pa-no)" opacity="0.60"/>
+  <circle cx="98"  cy="408" r="8"  fill="url(#pa-n3)" opacity="0.55"/>
+  <circle cx="88"  cy="238" r="9"  fill="url(#pa-n3)" opacity="0.60"/>
+
+  <!-- ── Nodes ring-1 (medium) ─────────────────── -->
+  <circle cx="278" cy="188" r="18" fill="url(#pa-n1)" opacity="0.88" filter="url(#pa-shadow)"/>
+  <circle cx="618" cy="172" r="17" fill="url(#pa-n2)" opacity="0.88" filter="url(#pa-shadow)"/>
+  <circle cx="698" cy="318" r="19" fill="url(#pa-n1)" opacity="0.88" filter="url(#pa-shadow)"/>
+  <circle cx="598" cy="458" r="16" fill="url(#pa-n2)" opacity="0.85" filter="url(#pa-shadow)"/>
+  <circle cx="310" cy="448" r="18" fill="url(#pa-no)" opacity="0.85" filter="url(#pa-shadow)"/>
+  <circle cx="168" cy="308" r="16" fill="url(#pa-n2)" opacity="0.85" filter="url(#pa-shadow)"/>
+
+  <!-- ── Seed node (center) ─────────────────────── -->
+  <!-- outer ring -->
+  <circle cx="450" cy="300" r="36" fill="#4c1d95" opacity="0.15"/>
+  <!-- main node -->
+  <circle cx="450" cy="300" r="28" fill="url(#pa-n0)" filter="url(#pa-shadow)"/>
+  <!-- inner highlight -->
+  <circle cx="443" cy="293" r="10" fill="white" opacity="0.18"/>
+  <!-- label -->
+  <text x="450" y="306" fill="white" font-family="Manrope, Arial, sans-serif" font-size="16" font-weight="800" text-anchor="middle" opacity="0.95">P</text>
+
+  <!-- ── Year legend strip (bottom-right) ──────── -->
+  <g opacity="0.72">
+    <circle cx="648" cy="564" r="5" fill="url(#pa-n0)"/>
+    <circle cx="668" cy="564" r="5" fill="url(#pa-n1)"/>
+    <circle cx="688" cy="564" r="5" fill="url(#pa-n2)"/>
+    <circle cx="708" cy="564" r="5" fill="url(#pa-n3)"/>
+    <circle cx="728" cy="564" r="5" fill="url(#pa-no)"/>
+    <text x="738" y="568" fill="#7c3aed" font-family="Manrope, Arial, sans-serif" font-size="10" font-weight="600" opacity="0.7"> year</text>
+  </g>
 </svg>

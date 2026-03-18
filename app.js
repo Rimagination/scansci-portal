@@ -572,7 +572,6 @@ function setStatVal(id, value) {
   const el = document.getElementById(id);
   if (!el) return;
   el.textContent = value;
-  el.classList.remove("is-loading");
 }
 
 async function loadStats() {

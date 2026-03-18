@@ -641,6 +641,100 @@ body.is-modal-open {
   color: #8f3d38;
 }
 
+/* ── Stats bar ─────────────────────────────────────────────── */
+
+.stats-bar {
+  display: flex;
+  align-items: stretch;
+  background: var(--card);
+  border: 1px solid #d4dce9;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(16, 34, 60, 0.07);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.stats-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 12px;
+  gap: 5px;
+  min-width: 0;
+}
+
+.stats-item + .stats-item {
+  border-left: 1px solid var(--line);
+}
+
+.stats-item--accent .stats-value {
+  color: var(--brand);
+}
+
+.stats-value {
+  font-family: var(--font-head);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.stats-value.is-loading {
+  min-width: 44px;
+  min-height: 1em;
+  color: transparent;
+  background: linear-gradient(90deg, #dce4ef 25%, #eaf0f8 50%, #dce4ef 75%);
+  background-size: 200% 100%;
+  animation: stats-shimmer 1.5s infinite ease-in-out;
+  border-radius: 6px;
+  user-select: none;
+}
+
+@keyframes stats-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.stats-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Stats bar responsive ───────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats-item + .stats-item {
+    border-left: none;
+  }
+
+  .stats-item:nth-child(2) {
+    border-left: 1px solid var(--line);
+  }
+
+  .stats-item:nth-child(3),
+  .stats-item:nth-child(4) {
+    border-top: 1px solid var(--line);
+  }
+
+  .stats-item:nth-child(4) {
+    border-left: 1px solid var(--line);
+  }
+}
+
+/* ── Existing responsive ────────────────────────────────────── */
+
 @media (max-width: 760px) {
   .portal-sidebar {
     position: static;

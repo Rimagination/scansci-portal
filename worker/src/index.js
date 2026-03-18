@@ -125,6 +125,10 @@ async function handleRequest(request, env) {
     return handleWebPreviewImage(request, env);
   }
 
+  if (url.pathname === "/api/stats" && request.method === "GET") {
+    return handleStats(request, env);
+  }
+
   return jsonResponse(request, env, { ok: false, error: "not_found" }, 404);
 }
 
@@ -3026,4 +3030,93 @@ function base64UrlToBytes(base64url) {
     bytes[i] = binary.charCodeAt(i);
   }
   return bytes;
+}
+
+// ── /api/stats ────────────────────────────────────────────────
+// Fetches zone analytics from Cloudflare GraphQL API and caches
+// the result for 10 minutes. Requires CF_API_TOKEN (secret) and
+// CF_ZONE_ID (var) to be configured; returns nulls otherwise.
+
+const STATS_CF_GQL = "https://api.cloudflare.com/client/v4/graphql";
+const STATS_CACHE_URL = "https://www.scansci.com/_internal/stats-cache";
+const STATS_CACHE_TTL = 600; // 10 minutes
+
+const STATS_QUERY = `
+  query($zoneTag:String!,$d30Start:String!,$d30End:String!,$h24Start:String!,$h24End:String!){
+    viewer {
+      zones(filter:{zoneTag:$zoneTag}) {
+        d30: httpRequests1dGroups(limit:31, filter:{date_geq:$d30Start, date_leq:$d30End}) {
+          uniq { uniques }
+          sum  { requests }
+        }
+        h24: httpRequests1hGroups(limit:25, filter:{datetime_geq:$h24Start, datetime_leq:$h24End}) {
+          uniq { uniques }
+        }
+      }
+    }
+  }
+`;
+
+async function handleStats(request, env) {
+  // Check edge cache first
+  const cache = caches.default;
+  const cacheKey = new Request(STATS_CACHE_URL);
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    const payload = await cached.json();
+    return jsonResponse(request, env, payload);
+  }
+
+  // Without credentials, return nulls immediately
+  if (!env.CF_API_TOKEN || !env.CF_ZONE_ID) {
+    return jsonResponse(request, env, { visitors_24h: null, visitors_30d: null, requests_30d: null });
+  }
+
+  try {
+    const now = new Date();
+    const d30End   = now.toISOString().slice(0, 10);
+    const d30Start = new Date(now - 30 * 864e5).toISOString().slice(0, 10);
+    const h24End   = now.toISOString();
+    const h24Start = new Date(now - 864e5).toISOString();
+
+    const gqlRes = await fetch(STATS_CF_GQL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${env.CF_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: STATS_QUERY,
+        variables: { zoneTag: env.CF_ZONE_ID, d30Start, d30End, h24Start, h24End },
+      }),
+    });
+
+    if (!gqlRes.ok) {
+      return jsonResponse(request, env, { visitors_24h: null, visitors_30d: null, requests_30d: null });
+    }
+
+    const gqlData = await gqlRes.json();
+    const zone = gqlData?.data?.viewer?.zones?.[0];
+    if (!zone) {
+      return jsonResponse(request, env, { visitors_24h: null, visitors_30d: null, requests_30d: null });
+    }
+
+    const visitors_24h  = (zone.h24 || []).reduce((s, g) => s + (g.uniq?.uniques  || 0), 0);
+    const visitors_30d  = (zone.d30 || []).reduce((s, g) => s + (g.uniq?.uniques  || 0), 0);
+    const requests_30d  = (zone.d30 || []).reduce((s, g) => s + (g.sum?.requests  || 0), 0);
+
+    const payload = { visitors_24h, visitors_30d, requests_30d };
+
+    // Store in edge cache
+    await cache.put(
+      cacheKey,
+      new Response(JSON.stringify(payload), {
+        headers: { "Content-Type": "application/json", "Cache-Control": `public, max-age=${STATS_CACHE_TTL}` },
+      }),
+    );
+
+    return jsonResponse(request, env, payload);
+  } catch {
+    return jsonResponse(request, env, { visitors_24h: null, visitors_30d: null, requests_30d: null });
+  }
 }

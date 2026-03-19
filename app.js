@@ -33,7 +33,7 @@ const els = {
   authHint: document.getElementById("authHint"),
 };
 
-const DEFAULT_CATEGORIES = ["全部", "数据检索", "期刊分析", "学术核查"];
+const DEFAULT_CATEGORIES = ["全部", "文献分析", "数据检索", "期刊分析", "学术核查"];
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -247,7 +247,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("./data/apps.json", { cache: "force-cache" });
+    const res = await fetch("./data/apps.json?v=2", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];

@@ -15,7 +15,7 @@ async function readFixture(name) {
   return fs.readFile(url, "utf8");
 }
 
-test("parseDurationToDays normalizes day, week, and month units", () => {
+test("parseDurationToDays normalizes English and Chinese units", () => {
   assert.equal(parseDurationToDays("12 days"), 12);
   assert.equal(parseDurationToDays("2 weeks"), 14);
   assert.equal(parseDurationToDays("平均4.4月"), 132);
@@ -75,6 +75,18 @@ test("parseSubmissionStatsBySource handles MDPI fixture", async () => {
   assert.equal(parsed.first_decision_days, 14.5);
 });
 
+test("parseSubmissionStatsBySource handles live-style MDPI stats payload", () => {
+  const html = `
+    <script>
+      var medianElements1 = $.parseJSON('{"Jan<br\\/>2026":17.760868055555555,"Feb<br\\/>2026":17.328831018518517}');
+    </script>
+  `;
+  const parsed = parseSubmissionStatsBySource("MDPI", html);
+  assert.equal(parsed.review_time_days, 17.3);
+  assert.equal(parsed.first_decision_days, 17.3);
+  assert.equal(parsed.review_time_label, "17.3 days");
+});
+
 test("parseSubmissionStatsBySource handles SAGE fixture", async () => {
   const html = await readFixture("submission-sage.html");
   const parsed = parseSubmissionStatsBySource("SAGE", html);
@@ -99,4 +111,16 @@ test("parseSubmissionStatsBySource handles MedSci fixture", async () => {
   assert.equal(parsed.accept_rate_pct, 53.8);
   assert.equal(parsed.overall_score, 7.2);
   assert.equal(parsed.sample_size, 12);
+});
+
+test("parseSubmissionStatsBySource handles live-style MedSci journalDetail JSON", () => {
+  const html = `
+    <script>
+      var journalDetail = {"averageReviewTime":"平均2.38月","acceptanceRate":null,"medsciHotlightRealtime":12.488};
+    </script>
+  `;
+  const parsed = parseSubmissionStatsBySource("MedSci", html);
+  assert.equal(parsed.review_time_days, 71.4);
+  assert.equal(parsed.review_time_label, "平均2.38月");
+  assert.equal(parsed.overall_score, 12.5);
 });

@@ -1,4 +1,4 @@
-export const SUBMISSION_STATS_PARSER_VERSION = "2026-03-21-v1";
+export const SUBMISSION_STATS_PARSER_VERSION = "2026-03-21-v2";
 
 const SOURCE_ALIASES = new Map([
   ["elsevier", "Elsevier"],
@@ -114,10 +114,13 @@ export function validateUserRatingInput(body) {
 }
 
 export function parseDurationToDays(raw) {
-  const text = normalizeWhitespace(String(raw || "").replace(/平均|约|大约|中位数|median/gi, " "));
+  const text = normalizeWhitespace(String(raw || ""))
+    .replace(/平均|大约|约|中位数|median/gi, " ")
+    .replace(/骞冲潎|绾澶х害|涓綅鏁?/gi, " ");
   if (!text) return null;
+
   const match = text.match(
-    /([0-9]+(?:\.[0-9]+)?)(?:\s*(?:-|to|–|—)\s*([0-9]+(?:\.[0-9]+)?))?\s*(days?|day|d\b|weeks?|week|wks?|wk\b|months?|month|mos?|mo\b|天|周|月)/i
+    /([0-9]+(?:\.[0-9]+)?)(?:\s*(?:-|~|–|—|to|至|到)\s*([0-9]+(?:\.[0-9]+)?))?\s*(days?|day|d\b|weeks?|week|wks?|wk\b|months?|month|mos?|mo\b|天|日|周|星期|个月|月|澶?|鍛?|鏈?)/i
   );
   if (!match) return null;
 
@@ -127,15 +130,22 @@ export function parseDurationToDays(raw) {
   const avg = (left + right) / 2;
   const unit = String(match[3] || "").toLowerCase();
 
-  if (unit === "天" || unit.startsWith("day") || unit === "d") return roundMetric(avg);
-  if (unit === "周" || unit.startsWith("week") || unit.startsWith("wk") || unit === "wks") return roundMetric(avg * 7);
-  if (unit === "月" || unit.startsWith("month") || unit.startsWith("mo")) return roundMetric(avg * 30);
+  if (unit === "天" || unit === "日" || unit === "澶?" || unit.startsWith("day") || unit === "d") {
+    return roundMetric(avg);
+  }
+  if (unit === "周" || unit === "星期" || unit === "鍛?" || unit.startsWith("week") || unit.startsWith("wk")) {
+    return roundMetric(avg * 7);
+  }
+  if (unit === "月" || unit === "个月" || unit === "鏈?" || unit.startsWith("month") || unit.startsWith("mo")) {
+    return roundMetric(avg * 30);
+  }
   return null;
 }
 
 export function parseSubmissionStatsBySource(sourceName, html) {
   const canonical = canonicalSubmissionSourceName(sourceName);
-  const text = normalizeDocumentText(html);
+  const rawHtml = String(html || "");
+  const text = normalizeDocumentText(rawHtml);
 
   switch (canonical) {
     case "Elsevier":
@@ -143,13 +153,13 @@ export function parseSubmissionStatsBySource(sourceName, html) {
     case "Springer Nature":
       return parseSpringerSubmissionStats(text);
     case "MDPI":
-      return parseMdpiSubmissionStats(text);
+      return parseMdpiSubmissionStats(rawHtml, text);
     case "SAGE":
       return parseSageSubmissionStats(text);
     case "LetPub":
-      return parseLetpubSubmissionStats(text);
+      return parseLetpubSubmissionStats(rawHtml, text);
     case "MedSci":
-      return parseMedsciSubmissionStats(text);
+      return parseMedsciSubmissionStats(rawHtml, text);
     default:
       return {};
   }
@@ -157,10 +167,10 @@ export function parseSubmissionStatsBySource(sourceName, html) {
 
 function parseElsevierSubmissionStats(text) {
   const reviewLabel = extractFirst(text, [
-    /Review Time[^0-9]{0,24}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Review Time[^0-9]{0,24}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]);
   const firstDecisionLabel = extractFirst(text, [
-    /Time to (?:First )?Decision[^0-9]{0,24}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Time to (?:First )?Decision[^0-9]{0,24}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]);
   const acceptRate = extractPercent(text, [/Acceptance Rate[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)\s*%/i]);
 
@@ -174,7 +184,7 @@ function parseElsevierSubmissionStats(text) {
 
 function parseSpringerSubmissionStats(text) {
   const firstDecisionLabel = extractFirst(text, [
-    /Submission to First Decision(?:\s*\(median\))?[^0-9]{0,18}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Submission to First Decision(?:\s*\(median\))?[^0-9]{0,18}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]);
   const acceptRate = extractPercent(text, [/Acceptance Rate[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)\s*%/i]);
 
@@ -186,24 +196,28 @@ function parseSpringerSubmissionStats(text) {
   });
 }
 
-function parseMdpiSubmissionStats(text) {
+function parseMdpiSubmissionStats(html, text) {
   const firstDecisionLabel = extractFirst(text, [
-    /Median Time to First Decision[^0-9]{0,14}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Median Time to First Decision[^0-9]{0,14}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]);
   const reviewLabel = extractFirst(text, [
-    /Review Time[^0-9]{0,18}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Review Time[^0-9]{0,18}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]) || firstDecisionLabel;
 
+  const medianSeries = extractSeriesJson(html, "medianElements1");
+  const medianDays = extractLatestSeriesValue(medianSeries);
+  const fallbackLabel = medianDays !== null ? `${medianDays} days` : "";
+
   return compactStats({
-    review_time_days: parseDurationToDays(reviewLabel),
-    review_time_label: reviewLabel,
-    first_decision_days: parseDurationToDays(firstDecisionLabel),
+    review_time_days: parseDurationToDays(reviewLabel) ?? medianDays,
+    review_time_label: reviewLabel || fallbackLabel,
+    first_decision_days: parseDurationToDays(firstDecisionLabel) ?? medianDays,
   });
 }
 
 function parseSageSubmissionStats(text) {
   const firstDecisionLabel = extractFirst(text, [
-    /Time to First Decision[^0-9]{0,16}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?|天|周|月))/i,
+    /Time to First Decision[^0-9]{0,16}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|to|~|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:days?|weeks?|months?))/i,
   ]);
   const acceptRate = extractPercent(text, [/Acceptance Rate[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)\s*%/i]);
 
@@ -215,16 +229,27 @@ function parseSageSubmissionStats(text) {
   });
 }
 
-function parseLetpubSubmissionStats(text) {
+function parseLetpubSubmissionStats(_html, text) {
   const reviewLabel = extractFirst(text, [
-    /平均审稿速度[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
-    /审稿速度[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /平均审稿速度[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /审稿速度[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /骞冲潎瀹＄閫熷害[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|鑷硘鍒?|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:澶?|鍛?|鏈?))/i,
+    /瀹＄閫熷害[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|鑷硘鍒?|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:澶?|鍛?|鏈?))/i,
   ]);
-  const acceptRate = extractPercent(text, [/投稿命中率[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i]);
-  const overallScore = extractNumber(text, [/网友评分[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i, /实时评分[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i]);
+  const acceptRate = extractPercent(text, [
+    /投稿命中率[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i,
+    /鎶曠鍛戒腑鐜?[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i,
+  ]);
+  const overallScore = extractNumber(text, [
+    /网友评分[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i,
+    /实时评分[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i,
+    /缃戝弸璇勫垎[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i,
+    /瀹炴椂璇勫垎[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?)/i,
+  ]);
   const sampleSize = extractInteger(text, [
     /经验分享[^0-9]{0,8}([0-9]{1,5})/i,
-    /共有[^0-9]{0,8}([0-9]{1,5})[^0-9]{0,4}(?:条|篇)(?:经验|评论|投稿)/i,
+    /共有[^0-9]{0,8}([0-9]{1,5})[^0-9]{0,4}(?:条|篇)?(?:经验|评论|投稿)/i,
+    /缁忛獙鍒嗕韩[^0-9]{0,8}([0-9]{1,5})/i,
   ]);
 
   return compactStats({
@@ -236,20 +261,40 @@ function parseLetpubSubmissionStats(text) {
   });
 }
 
-function parseMedsciSubmissionStats(text) {
+function parseMedsciSubmissionStats(html, text) {
+  const detail = extractJsonAssignment(html, "journalDetail");
+  const jsonReviewLabel = normalizeWhitespace(detail?.averageReviewTime || "");
+  const jsonAcceptRate = normalizeNullableNumber(detail?.acceptanceRate);
+  const jsonScore = normalizeNullableNumber(detail?.medsciHotlightRealtime ?? detail?.medsciHotlight);
+
   const reviewLabel = extractFirst(text, [
-    /审稿周期[^0-9]{0,12}(?:平均)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
-    /审稿速度[^0-9]{0,12}(?:平均)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到|–|—)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /averageReviewTime[^0-9]{0,24}(平均[0-9]+(?:\.[0-9]+)?月)/i,
+    /审稿周期[^0-9]{0,12}(?:平均)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /审稿速度[^0-9]{0,12}(?:平均)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|至|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:天|周|月))/i,
+    /瀹＄鍛ㄦ湡[^0-9]{0,12}(?:骞冲潎)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|鑷硘鍒?|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:澶?|鍛?|鏈?))/i,
+    /瀹＄閫熷害[^0-9]{0,12}(?:骞冲潎)?\s*([0-9]+(?:\.[0-9]+)?(?:\s*(?:-|鑷硘鍒?|到)\s*[0-9]+(?:\.[0-9]+)?)?\s*(?:澶?|鍛?|鏈?))/i,
+  ]) || jsonReviewLabel;
+
+  const acceptRate = extractPercent(text, [
+    /投稿命中率[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i,
+    /鎶曠鍛戒腑鐜?[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i,
   ]);
-  const acceptRate = extractPercent(text, [/投稿命中率[^0-9]{0,10}([0-9]+(?:\.[0-9]+)?)\s*%/i]);
-  const overallScore = extractNumber(text, [/评分[^0-9]{0,8}([0-9]+(?:\.[0-9]+)?)/i]);
-  const sampleSize = extractInteger(text, [/投稿经验[^0-9]{0,8}([0-9]{1,5})/i, /经验分享[^0-9]{0,8}([0-9]{1,5})/i]);
+  const overallScore = extractNumber(text, [
+    /评分[^0-9]{0,8}([0-9]+(?:\.[0-9]+)?)/i,
+    /璇勫垎[^0-9]{0,8}([0-9]+(?:\.[0-9]+)?)/i,
+  ]);
+  const sampleSize = extractInteger(text, [
+    /投稿经验[^0-9]{0,8}([0-9]{1,5})/i,
+    /经验分享[^0-9]{0,8}([0-9]{1,5})/i,
+    /鎶曠缁忛獙[^0-9]{0,8}([0-9]{1,5})/i,
+    /缁忛獙鍒嗕韩[^0-9]{0,8}([0-9]{1,5})/i,
+  ]);
 
   return compactStats({
     review_time_days: parseDurationToDays(reviewLabel),
     review_time_label: reviewLabel,
-    accept_rate_pct: acceptRate,
-    overall_score: overallScore,
+    accept_rate_pct: acceptRate ?? jsonAcceptRate,
+    overall_score: overallScore ?? jsonScore,
     sample_size: sampleSize,
   });
 }
@@ -280,7 +325,8 @@ function decodeHtmlEntities(input) {
   return String(input || "")
     .replace(/&([a-z]+);/gi, (_, name) => named[name.toLowerCase()] ?? `&${name};`)
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    .replace(/\\u([0-9a-f]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
 }
 
 function normalizeWhitespace(input) {
@@ -317,6 +363,47 @@ function extractInteger(text, patterns) {
   if (!value) return null;
   const num = parseInt(String(value).replace(/[^\d]+/g, ""), 10);
   return Number.isFinite(num) && num > 0 ? num : null;
+}
+
+function extractJsonAssignment(html, variableName) {
+  const pattern = new RegExp(`var\\s+${escapeRegExp(variableName)}\\s*=\\s*(\\{[\\s\\S]*?\\});`);
+  const match = String(html || "").match(pattern);
+  if (!match || !match[1]) return null;
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return null;
+  }
+}
+
+function extractSeriesJson(html, variableName) {
+  const pattern = new RegExp(
+    `var\\s+${escapeRegExp(variableName)}\\s*=\\s*\\$\\.parseJSON\\('([\\s\\S]*?)'\\);`
+  );
+  const match = String(html || "").match(pattern);
+  if (!match || !match[1]) return null;
+
+  let text = match[1]
+    .replace(/\\\\/g, "\\")
+    .replace(/\\"/g, "\"")
+    .replace(/<br\\\/>/g, " ");
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+function extractLatestSeriesValue(series) {
+  if (!series || typeof series !== "object") return null;
+  const values = Object.values(series)
+    .map((value) => normalizeNullableNumber(value))
+    .filter((value) => value !== null);
+  return values.length ? values[values.length - 1] : null;
+}
+
+function escapeRegExp(input) {
+  return String(input || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function normalizeHttpUrl(raw) {
@@ -357,9 +444,9 @@ function normalizeIsoDateTime(value) {
 }
 
 function normalizeRawJson(value) {
-  if (value === undefined) return null;
-  if (value === null) return null;
-  if (typeof value === "object" || Array.isArray(value)) return value;
+  if (value === undefined || value === null) return null;
+  if (Array.isArray(value)) return value;
+  if (typeof value === "object") return value;
   if (["string", "number", "boolean"].includes(typeof value)) return value;
   return null;
 }

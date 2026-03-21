@@ -694,11 +694,31 @@ async function handleActionRead(request, env) {
 
   if (type === "favorite") {
     const rows = await env.DB.prepare(
-      "SELECT app_id, created_at FROM user_favorites WHERE user_id = ? ORDER BY created_at DESC LIMIT 100"
+      `SELECT
+         uf.app_id,
+         uf.created_at,
+         (
+           SELECT ua.payload_json
+           FROM user_actions ua
+           WHERE ua.user_id = uf.user_id
+             AND ua.app_id = uf.app_id
+             AND ua.action_type = 'favorite_toggle'
+           ORDER BY ua.created_at DESC
+           LIMIT 1
+         ) AS payload_json
+       FROM user_favorites uf
+       WHERE uf.user_id = ?
+       ORDER BY uf.created_at DESC
+       LIMIT 100`
     )
       .bind(auth.userId)
       .all();
-    return jsonResponse(request, env, { ok: true, items: rows.results || [] });
+    const items = (rows.results || []).map((row) => ({
+      app_id: row.app_id,
+      created_at: row.created_at,
+      payload: safeJsonParse(row.payload_json),
+    }));
+    return jsonResponse(request, env, { ok: true, items });
   }
 
   const rows = await env.DB.prepare(

@@ -51,6 +51,8 @@ export default {
 
 async function handleRequest(request, env) {
   const url = new URL(request.url);
+  const submissionStatsMatch = url.pathname.match(/^\/api\/journals\/([^/]+)\/submission-stats$/);
+  const submissionRatingMatch = url.pathname.match(/^\/api\/journals\/([^/]+)\/ratings$/);
 
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: standardHeaders(request, env) });
@@ -93,6 +95,17 @@ async function handleRequest(request, env) {
     return handleMe(request, env);
   }
 
+  if (submissionStatsMatch && request.method === "GET") {
+    return handleJournalSubmissionStats(request, env, submissionStatsMatch[1]);
+  }
+
+  if (submissionRatingMatch && request.method === "POST") {
+    if (!isSameOriginPost(request, env)) {
+      return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+    }
+    return handleJournalRatingWrite(request, env, submissionRatingMatch[1]);
+  }
+
   if (url.pathname === "/api/actions" && request.method === "POST") {
     if (!isSameOriginPost(request, env)) {
       return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
@@ -121,6 +134,10 @@ async function handleRequest(request, env) {
 
   if (url.pathname === "/api/admin/elsevier/cache/batch-upsert" && request.method === "POST") {
     return handleAdminElsevierCacheBatchUpsert(request, env);
+  }
+
+  if (url.pathname === "/api/admin/submission-stats/batch-upsert" && request.method === "POST") {
+    return handleAdminSubmissionStatsBatchUpsert(request, env);
   }
 
   if (url.pathname === "/api/web/preview-image" && request.method === "GET") {
@@ -623,6 +640,101 @@ async function handleMe(request, env) {
 
   const favorites = await getUserFavorites(env, auth.userId);
   return jsonResponse(request, env, { ok: true, user, favorites });
+}
+
+async function handleJournalSubmissionStats(request, env, rawIssn) {
+  const issnKey = normalizeIssnKey(rawIssn);
+  if (!issnKey) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_issn" }, 400);
+  }
+
+  const [officialSources, communitySources, userRatingSummary] = await Promise.all([
+    loadSubmissionStatsExternalByType(env, issnKey, "official"),
+    loadSubmissionStatsExternalByType(env, issnKey, "community"),
+    loadJournalUserRatingSummary(env, issnKey),
+  ]);
+
+  let viewerAuthenticated = false;
+  let myRating = null;
+  const auth = await requireAuth(request, env);
+  if (auth) {
+    const user = await getUserById(env, auth.userId);
+    if (user) {
+      viewerAuthenticated = true;
+      myRating = await loadJournalUserRatingByUser(env, auth.userId, issnKey);
+    }
+  }
+
+  return jsonResponse(request, env, {
+    ok: true,
+    issn: formatIssnDisplay(issnKey),
+    issn_key: issnKey,
+    official_sources: officialSources,
+    community_sources: communitySources,
+    user_rating_summary: userRatingSummary,
+    my_rating: myRating,
+    viewer_authenticated: viewerAuthenticated,
+  });
+}
+
+async function handleJournalRatingWrite(request, env, rawIssn) {
+  const auth = await requireAuth(request, env);
+  if (!auth) {
+    return jsonResponse(request, env, { ok: false, error: "unauthorized" }, 401);
+  }
+
+  const issnKey = normalizeIssnKey(rawIssn);
+  if (!issnKey) {
+    return jsonResponse(request, env, { ok: false, error: "invalid_issn" }, 400);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse(request, env, { ok: false, error: "invalid_json" }, 400);
+  }
+
+  const validated = validateSubmissionRatingPayload(body);
+  if (!validated.ok) {
+    return jsonResponse(request, env, { ok: false, error: validated.error || "invalid_payload" }, 400);
+  }
+
+  const nowIso = new Date().toISOString();
+  await env.DB.prepare(
+    `INSERT INTO journal_user_ratings
+      (user_id, issn_key, issn_display, speed_score, editor_score, recommend_score, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(user_id, issn_key) DO UPDATE SET
+       issn_display = excluded.issn_display,
+       speed_score = excluded.speed_score,
+       editor_score = excluded.editor_score,
+       recommend_score = excluded.recommend_score,
+       updated_at = excluded.updated_at`
+  )
+    .bind(
+      auth.userId,
+      issnKey,
+      formatIssnDisplay(issnKey),
+      validated.rating.speed_score,
+      validated.rating.editor_score,
+      validated.rating.recommend_score,
+      nowIso,
+      nowIso
+    )
+    .run();
+
+  const [summary, myRating] = await Promise.all([
+    loadJournalUserRatingSummary(env, issnKey),
+    loadJournalUserRatingByUser(env, auth.userId, issnKey),
+  ]);
+
+  return jsonResponse(request, env, {
+    ok: true,
+    issn: formatIssnDisplay(issnKey),
+    my_rating: myRating,
+    user_rating_summary: summary,
+  });
 }
 
 async function handleActionWrite(request, env) {
@@ -2246,6 +2358,43 @@ async function handleAdminElsevierCacheBatchUpsert(request, env) {
   });
 }
 
+async function handleAdminSubmissionStatsBatchUpsert(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+
+  const body = await parseJsonBody(request);
+  const items = Array.isArray(body?.items) ? body.items : [];
+  if (!items.length) {
+    return jsonResponse(request, env, { ok: false, error: "missing_items" }, 400);
+  }
+  if (items.length > 100) {
+    return jsonResponse(request, env, { ok: false, error: "too_many_items", max: 100 }, 400);
+  }
+
+  let success = 0;
+  const failures = [];
+  for (const item of items) {
+    const result = await upsertSubmissionStatExternalRecord(env, item);
+    if (result.ok) {
+      success += 1;
+    } else {
+      failures.push({
+        issn: String(item?.issn || ""),
+        source_name: String(item?.source_name || item?.sourceName || ""),
+        error: result.error || "submission_stat_upsert_failed",
+      });
+    }
+  }
+
+  return jsonResponse(request, env, {
+    ok: failures.length === 0,
+    success,
+    failed: failures.length,
+    failures: failures.slice(0, 20),
+  });
+}
+
 function isAdminTokenValid(request, env) {
   const configured = String(env.ADMIN_SYNC_TOKEN || "").trim();
   if (!configured) return false;
@@ -2273,6 +2422,32 @@ async function parseJsonBody(request) {
   }
 }
 
+function normalizeSubmissionSourceName(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return "";
+  const key = text.toLowerCase().replace(/\s+/g, " ");
+  const aliases = {
+    elsevier: "Elsevier",
+    springer: "Springer Nature",
+    "springer nature": "Springer Nature",
+    springernature: "Springer Nature",
+    mdpi: "MDPI",
+    sage: "SAGE",
+    letpub: "LetPub",
+    medsci: "MedSci",
+  };
+  return aliases[key] || text.slice(0, 80);
+}
+
+function inferSubmissionSourceType(sourceName, preferredType = "") {
+  const explicit = String(preferredType || "").trim().toLowerCase();
+  if (explicit === "official" || explicit === "community") return explicit;
+  const canonical = normalizeSubmissionSourceName(sourceName);
+  if (["Elsevier", "Springer Nature", "MDPI", "SAGE"].includes(canonical)) return "official";
+  if (["LetPub", "MedSci"].includes(canonical)) return "community";
+  return "";
+}
+
 function normalizeIssnKey(raw) {
   const compact = String(raw || "").replace(/[^0-9Xx]/g, "").toUpperCase();
   if (!/^\d{7}[\dX]$/.test(compact)) return "";
@@ -2283,6 +2458,60 @@ function formatIssnDisplay(issnKey) {
   const key = normalizeIssnKey(issnKey);
   if (!key) return "";
   return `${key.slice(0, 4)}-${key.slice(4)}`;
+}
+
+function normalizeSubmissionStatPayloadLocal(input) {
+  const issnKey = normalizeIssnKey(input?.issn);
+  if (!issnKey) return { ok: false, error: "invalid_issn" };
+
+  const sourceName = normalizeSubmissionSourceName(input?.source_name ?? input?.sourceName);
+  if (!sourceName) return { ok: false, error: "invalid_source_name" };
+
+  const sourceType = inferSubmissionSourceType(sourceName, input?.source_type ?? input?.sourceType);
+  if (!sourceType) return { ok: false, error: "invalid_source_type" };
+
+  const sourceUrl = normalizeSubmissionSourceUrl(input?.source_url ?? input?.sourceUrl);
+  if (!sourceUrl) return { ok: false, error: "invalid_source_url" };
+
+  const nowIso = new Date().toISOString();
+  return {
+    ok: true,
+    record: {
+      issn_key: issnKey,
+      issn_display: formatIssnDisplay(issnKey),
+      source_name: sourceName,
+      source_type: sourceType,
+      review_time_days: normalizeNullableNumber(input?.review_time_days ?? input?.reviewTimeDays),
+      review_time_label: normalizeShortText(input?.review_time_label ?? input?.reviewTimeLabel, 120),
+      first_decision_days: normalizeNullableNumber(input?.first_decision_days ?? input?.firstDecisionDays),
+      accept_rate_pct: normalizeNullableNumber(input?.accept_rate_pct ?? input?.acceptRatePct),
+      sample_size: normalizeNullableInteger(input?.sample_size ?? input?.sampleSize),
+      overall_score: normalizeNullableNumber(input?.overall_score ?? input?.overallScore),
+      source_url: sourceUrl,
+      updated_at: normalizeIsoDateTime(input?.updated_at ?? input?.updatedAt),
+      fetched_at: normalizeIsoDateTime(input?.fetched_at ?? input?.fetchedAt) || nowIso,
+      parser_version: normalizeShortText(input?.parser_version ?? input?.parserVersion ?? "2026-03-21-v1", 80),
+      raw_json: normalizeArbitraryJson(input?.raw_json ?? input?.rawJson),
+      status: normalizeShortText(input?.status || "active", 32) || "active",
+    },
+  };
+}
+
+function validateSubmissionRatingPayload(body) {
+  const speedScore = normalizeScoreValue(body?.speed_score ?? body?.speedScore);
+  const editorScore = normalizeScoreValue(body?.editor_score ?? body?.editorScore);
+  const recommendScore = normalizeScoreValue(body?.recommend_score ?? body?.recommendScore);
+  if (!speedScore || !editorScore || !recommendScore) {
+    return { ok: false, error: "invalid_rating_scores" };
+  }
+  return {
+    ok: true,
+    rating: {
+      speed_score: speedScore,
+      editor_score: editorScore,
+      recommend_score: recommendScore,
+    },
+  };
 }
 
 async function loadElsevierCacheByKey(env, issnKey) {
@@ -2342,6 +2571,157 @@ async function upsertElsevierCacheRecord(env, input) {
   return { ok: true, issnKey: key, expiresUnix };
 }
 
+async function upsertSubmissionStatExternalRecord(env, input) {
+  const normalized = normalizeSubmissionStatPayloadLocal(input);
+  if (!normalized.ok) return normalized;
+
+  const row = normalized.record;
+  await env.DB.prepare(
+    `INSERT INTO journal_submission_stats_external
+      (
+        issn_key,
+        issn_display,
+        source_name,
+        source_type,
+        review_time_days,
+        review_time_label,
+        first_decision_days,
+        accept_rate_pct,
+        sample_size,
+        overall_score,
+        source_url,
+        updated_at,
+        fetched_at,
+        parser_version,
+        raw_json,
+        status,
+        created_at
+      )
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(issn_key, source_name, source_url) DO UPDATE SET
+       issn_display = excluded.issn_display,
+       source_type = excluded.source_type,
+       review_time_days = excluded.review_time_days,
+       review_time_label = excluded.review_time_label,
+       first_decision_days = excluded.first_decision_days,
+       accept_rate_pct = excluded.accept_rate_pct,
+       sample_size = excluded.sample_size,
+       overall_score = excluded.overall_score,
+       updated_at = excluded.updated_at,
+       fetched_at = excluded.fetched_at,
+       parser_version = excluded.parser_version,
+       raw_json = excluded.raw_json,
+       status = excluded.status`
+  )
+    .bind(
+      row.issn_key,
+      row.issn_display,
+      row.source_name,
+      row.source_type,
+      row.review_time_days,
+      row.review_time_label,
+      row.first_decision_days,
+      row.accept_rate_pct,
+      row.sample_size,
+      row.overall_score,
+      row.source_url,
+      row.updated_at,
+      row.fetched_at,
+      row.parser_version,
+      row.raw_json === null ? null : JSON.stringify(row.raw_json),
+      row.status,
+      new Date().toISOString()
+    )
+    .run();
+
+  return { ok: true, issnKey: row.issn_key, sourceName: row.source_name };
+}
+
+async function loadSubmissionStatsExternalByType(env, issnKey, sourceType) {
+  const rows = await env.DB.prepare(
+    `SELECT
+        issn_display,
+        source_name,
+        source_type,
+        review_time_days,
+        review_time_label,
+        first_decision_days,
+        accept_rate_pct,
+        sample_size,
+        overall_score,
+        source_url,
+        updated_at,
+        fetched_at,
+        parser_version,
+        status
+     FROM journal_submission_stats_external
+     WHERE issn_key = ? AND source_type = ? AND status = 'active'
+     ORDER BY COALESCE(updated_at, fetched_at) DESC, source_name ASC`
+  )
+    .bind(issnKey, sourceType)
+    .all();
+
+  return (rows.results || []).map((row) => ({
+    issn: String(row.issn_display || formatIssnDisplay(issnKey)),
+    source_name: String(row.source_name || ""),
+    source_type: String(row.source_type || sourceType),
+    review_time_days: normalizeNullableNumber(row.review_time_days),
+    review_time_label: String(row.review_time_label || ""),
+    first_decision_days: normalizeNullableNumber(row.first_decision_days),
+    accept_rate_pct: normalizeNullableNumber(row.accept_rate_pct),
+    sample_size: normalizeNullableInteger(row.sample_size),
+    overall_score: normalizeNullableNumber(row.overall_score),
+    source_url: String(row.source_url || ""),
+    updated_at: String(row.updated_at || ""),
+    fetched_at: String(row.fetched_at || ""),
+    parser_version: String(row.parser_version || ""),
+    status: String(row.status || "active"),
+  }));
+}
+
+async function loadJournalUserRatingSummary(env, issnKey) {
+  const row = await env.DB.prepare(
+    `SELECT
+        COUNT(*) AS total_ratings,
+        AVG(speed_score) AS speed_avg,
+        AVG(editor_score) AS editor_avg,
+        AVG(recommend_score) AS recommend_avg,
+        AVG((speed_score + editor_score + recommend_score) / 3.0) AS overall_avg
+     FROM journal_user_ratings
+     WHERE issn_key = ?`
+  )
+    .bind(issnKey)
+    .first();
+
+  return {
+    total_ratings: normalizeNullableInteger(row?.total_ratings) || 0,
+    speed_avg: normalizeNullableNumber(row?.speed_avg),
+    editor_avg: normalizeNullableNumber(row?.editor_avg),
+    recommend_avg: normalizeNullableNumber(row?.recommend_avg),
+    overall_avg: normalizeNullableNumber(row?.overall_avg),
+  };
+}
+
+async function loadJournalUserRatingByUser(env, userId, issnKey) {
+  const row = await env.DB.prepare(
+    `SELECT issn_display, speed_score, editor_score, recommend_score, updated_at
+     FROM journal_user_ratings
+     WHERE user_id = ? AND issn_key = ?
+     LIMIT 1`
+  )
+    .bind(userId, issnKey)
+    .first();
+
+  if (!row) return null;
+  return {
+    issn: String(row.issn_display || formatIssnDisplay(issnKey)),
+    speed_score: normalizeScoreValue(row.speed_score),
+    editor_score: normalizeScoreValue(row.editor_score),
+    recommend_score: normalizeScoreValue(row.recommend_score),
+    updated_at: String(row.updated_at || ""),
+  };
+}
+
 function jsonWithSourceHeader(request, env, payload, source, extraHeaders = {}) {
   const headers = standardHeaders(request, env);
   headers.set("Content-Type", "application/json; charset=utf-8");
@@ -2377,6 +2757,57 @@ function unwrapElsevierPayload(payload) {
     }
   }
   return null;
+}
+
+function normalizeSubmissionSourceUrl(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return "";
+  try {
+    const url = new URL(text);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return "";
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
+function normalizeNullableNumber(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const num = Number(value);
+  if (!Number.isFinite(num)) return null;
+  return Math.round(num * 10) / 10;
+}
+
+function normalizeNullableInteger(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const num = parseInt(String(value), 10);
+  return Number.isFinite(num) && num > 0 ? num : null;
+}
+
+function normalizeShortText(value, maxLen = 120) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  return text.slice(0, maxLen);
+}
+
+function normalizeIsoDateTime(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const parsed = new Date(text);
+  return Number.isFinite(parsed.getTime()) ? parsed.toISOString() : "";
+}
+
+function normalizeArbitraryJson(value) {
+  if (value === undefined || value === null) return null;
+  if (["string", "number", "boolean"].includes(typeof value)) return value;
+  if (typeof value === "object") return value;
+  return null;
+}
+
+function normalizeScoreValue(value) {
+  const num = parseInt(String(value || ""), 10);
+  if (!Number.isFinite(num) || num < 1 || num > 5) return 0;
+  return num;
 }
 
 async function requestElsevierViaSecondaryProxy(env, issnRaw) {

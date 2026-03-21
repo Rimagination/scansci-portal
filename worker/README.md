@@ -17,11 +17,14 @@ Cloudflare Worker + D1，实现：
 - `POST /api/auth/email/verify-code`
 - `POST /api/auth/logout`
 - `GET /api/me`
+- `GET /api/journals/:issn/submission-stats`
+- `POST /api/journals/:issn/ratings`
 - `POST /api/actions`
 - `GET /api/actions?type=favorite|recent`
 - `GET /api/elsevier/serial-title?issn=xxxx-xxxx`
 - `POST /api/admin/elsevier/cache/upsert`（管理员）
 - `POST /api/admin/elsevier/cache/batch-upsert`（管理员）
+- `POST /api/admin/submission-stats/batch-upsert`（管理员）
 - `GET /api/web/preview-image?url=https://example.com`
 
 ## 环境变量
@@ -83,6 +86,27 @@ Vars（wrangler.toml）：
 }
 ```
 
+`submission-stats batch-upsert` body 示例：
+
+```json
+{
+  "items": [
+    {
+      "issn": "0028-0836",
+      "source_name": "Elsevier",
+      "source_type": "official",
+      "source_url": "https://www.example.com/journal",
+      "review_time_days": 19,
+      "first_decision_days": 19,
+      "accept_rate_pct": 23,
+      "fetched_at": "2026-03-21T00:00:00.000Z",
+      "parser_version": "2026-03-21-v1",
+      "raw_json": { "source": "etl" }
+    }
+  ]
+}
+```
+
 ## GitHub Actions 定时同步（推荐）
 
 已提供工作流：
@@ -103,6 +127,36 @@ wrangler secret put ADMIN_SYNC_TOKEN
 工作流会定时拉取 `https://journal.scansci.com/data/search_index.json` 的 ISSN 列表，
 请求 Elsevier 后批量写入 D1 缓存。
 
+## 投稿评价同步
+
+- 解析与归一化逻辑：`src/submission-stats.mjs`
+- 离线同步脚本：`scripts/sync_submission_stats.mjs`
+- 解析测试样例：`test/fixtures/submission-*.html`
+
+命令示例：
+
+```bash
+export ADMIN_SYNC_TOKEN=xxxx
+node scripts/sync_submission_stats.mjs ./sources.json
+```
+
+`sources.json` 需要提供公开页面种子，例如：
+
+```json
+[
+  {
+    "issn": "0028-0836",
+    "source_name": "Elsevier",
+    "source_url": "https://www.example.com/journal"
+  },
+  {
+    "issn": "0028-0836",
+    "source_name": "LetPub",
+    "source_url": "https://www.letpub.com.cn/index.php?page=journalapp&view=detail&journalid=123"
+  }
+]
+```
+
 ## D1 SQL
 
 按顺序执行：
@@ -110,6 +164,7 @@ wrangler secret put ADMIN_SYNC_TOKEN
 - `sql/0001_init.sql`
 - `sql/0002_auth_methods.sql`
 - `sql/0003_elsevier_cache.sql`
+- `sql/0004_submission_stats.sql`
 
 ## 本地调试
 

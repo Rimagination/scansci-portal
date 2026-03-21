@@ -1,5 +1,7 @@
 ﻿const PKCE_COOKIE = "__Host-scansci_pkce";
-const SESSION_COOKIE = "__Host-scansci_session";
+const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
+const SESSION_COOKIE = "__Secure-scansci_session";
+const LEGACY_SESSION_COOKIE = "__Host-scansci_session";
 const EMAIL_PURPOSE_LOGIN = "email_login";
 const CITATION_DOI_RE = /(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i;
 const CITATION_REF_START_RE = /^\s*(?:\[(\d+)\]|(\d+)[.)]|（(\d+)）)\s*/;
@@ -195,7 +197,7 @@ async function handleGithubCallback(request, env) {
   }
 
   const cookies = parseCookies(request.headers.get("Cookie") || "");
-  const pkceRaw = cookies[PKCE_COOKIE];
+  const pkceRaw = cookies[PKCE_COOKIE] || cookies[LEGACY_PKCE_COOKIE];
   if (!pkceRaw) {
     return jsonResponse(request, env, { ok: false, error: "missing_pkce_cookie" }, 400);
   }
@@ -374,21 +376,12 @@ async function handleGithubCallback(request, env) {
     return jsonResponse(request, env, { ok: false, error: "user_not_found" }, 500);
   }
 
-  const returnTo = sanitizeReturnTo(pkce.return_to || "/");
-  const redirectUrl = new URL(returnTo, publicOrigin);
+  const returnTo = sanitizeReturnTo(pkce.return_to || "/", env, request);
+  const redirectUrl = /^https?:\/\//i.test(returnTo) ? new URL(returnTo) : new URL(returnTo, publicOrigin);
   const headers = standardHeaders(request, env);
   headers.set("Location", redirectUrl.toString());
   await appendSessionCookie(headers, env, user);
-  headers.append(
-    "Set-Cookie",
-    buildCookie(PKCE_COOKIE, "", {
-      path: "/",
-      maxAge: 0,
-      httpOnly: true,
-      secure: true,
-      sameSite: "Lax",
-    })
-  );
+  appendExpiredCookie(headers, PKCE_COOKIE, env, { legacyHostOnly: true });
 
   return new Response(null, { status: 302, headers });
 }
@@ -612,16 +605,8 @@ async function sendVerificationEmail(env, toEmail, code, ttlSeconds) {
 
 async function handleLogout(request, env) {
   const headers = standardHeaders(request, env);
-  headers.append(
-    "Set-Cookie",
-    buildCookie(SESSION_COOKIE, "", {
-      path: "/",
-      maxAge: 0,
-      httpOnly: true,
-      secure: true,
-      sameSite: "Lax",
-    })
-  );
+  appendExpiredCookie(headers, SESSION_COOKIE, env);
+  appendExpiredCookie(headers, LEGACY_SESSION_COOKIE, env, { legacyHostOnly: true });
   return new Response(null, { status: 204, headers });
 }
 
@@ -2808,8 +2793,10 @@ async function appendSessionCookie(headers, env, user) {
       httpOnly: true,
       secure: true,
       sameSite: "Lax",
+      domain: getCookieDomain(env),
     })
   );
+  appendExpiredCookie(headers, LEGACY_SESSION_COOKIE, env, { legacyHostOnly: true });
 }
 
 async function hashEmailCode(email, purpose, code, secret) {
@@ -2856,7 +2843,7 @@ function safeJsonParse(value) {
 async function requireAuth(request, env) {
   if (!env.JWT_SECRET) return null;
   const cookies = parseCookies(request.headers.get("Cookie") || "");
-  const token = cookies[SESSION_COOKIE];
+  const token = cookies[SESSION_COOKIE] || cookies[LEGACY_SESSION_COOKIE];
   if (!token) return null;
 
   const payload = await verifyJwt(token, env.JWT_SECRET || "");
@@ -2883,6 +2870,7 @@ function parseCookies(cookieHeader) {
 function buildCookie(name, value, options = {}) {
   const parts = [`${name}=${encodeURIComponent(value)}`];
   parts.push(`Path=${options.path || "/"}`);
+  if (options.domain) parts.push(`Domain=${options.domain}`);
   if (typeof options.maxAge === "number") parts.push(`Max-Age=${Math.max(0, Math.floor(options.maxAge))}`);
   if (options.httpOnly) parts.push("HttpOnly");
   if (options.secure) parts.push("Secure");
@@ -2890,17 +2878,63 @@ function buildCookie(name, value, options = {}) {
   return parts.join("; ");
 }
 
-function sanitizeReturnTo(raw) {
+function sanitizeReturnTo(raw, env, request) {
   if (!raw || typeof raw !== "string") return "/";
-  if (!raw.startsWith("/")) return "/";
-  if (raw.startsWith("//")) return "/";
-  return raw;
+  if (raw.startsWith("/")) {
+    if (raw.startsWith("//")) return "/";
+    return raw;
+  }
+
+  try {
+    const url = new URL(raw);
+    if (!isAllowedOrigin(url.origin, env, request)) {
+      return "/";
+    }
+    return `${url.origin}${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return "/";
+  }
+}
+
+function getCookieDomain(env) {
+  const domain = String(env.SESSION_COOKIE_DOMAIN || "").trim();
+  if (!domain) return null;
+  return domain.startsWith(".") ? domain : `.${domain}`;
+}
+
+function appendExpiredCookie(headers, name, env, options = {}) {
+  headers.append(
+    "Set-Cookie",
+    buildCookie(name, "", {
+      path: "/",
+      maxAge: 0,
+      httpOnly: true,
+      secure: true,
+      sameSite: "Lax",
+      domain: options.legacyHostOnly ? null : getCookieDomain(env),
+    })
+  );
+}
+
+function getAllowedOrigins(env, request) {
+  const allowed = new Set(
+    (env.CORS_ORIGINS || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean)
+  );
+  allowed.add(getPublicOrigin(request, env));
+  return allowed;
+}
+
+function isAllowedOrigin(origin, env, request) {
+  return getAllowedOrigins(env, request).has(origin);
 }
 
 function isSameOriginPost(request, env) {
   const origin = request.headers.get("Origin");
   if (!origin) return true;
-  return origin === getPublicOrigin(request, env);
+  return isAllowedOrigin(origin, env, request);
 }
 
 function getPublicOrigin(request, env) {
@@ -2916,13 +2950,7 @@ function standardHeaders(request, env) {
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
 
   const origin = request.headers.get("Origin");
-  const allowed = new Set(
-    (env.CORS_ORIGINS || "")
-      .split(",")
-      .map((x) => x.trim())
-      .filter(Boolean)
-  );
-  allowed.add(getPublicOrigin(request, env));
+  const allowed = getAllowedOrigins(env, request);
 
   if (origin && allowed.has(origin)) {
     headers.set("Access-Control-Allow-Origin", origin);

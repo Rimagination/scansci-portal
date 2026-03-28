@@ -3,10 +3,10 @@
     {
       "id": "paper-atlas",
       "name": "Paper Atlas",
-      "description": "论文图谱探索工具，可视化论文引用关系与相似度网络，基于 Semantic Scholar 和 OpenAlex 数据。",
+      "description": "论文图谱探索工具，可视化论文引用关系、主题簇与相似论文网络。",
       "cover": "./assets/covers/paper-atlas-cover.svg",
       "cover_title": "Paper Atlas",
-      "cover_subtitle": "论文引用关系与相似度网络可视化",
+      "cover_subtitle": "论文关系图谱与相似网络探索",
       "url": "https://paperatlas.scansci.com",
       "category": "文献分析",
       "tags": ["paper", "citation", "graph", "visualization", "semantic-scholar"]
@@ -14,42 +14,57 @@
     {
       "id": "dataraven",
       "name": "DataRaven",
-      "description": "科研数据与开源数据检索引擎，聚焦数据集发现与索引能力。",
+      "description": "科研数据与开放数据检索引擎，聚焦数据集发现、筛选和来源判断。",
       "cover": "./assets/covers/dataraven-cover.webp",
+      "cover_title": "DataRaven",
+      "cover_subtitle": "科研数据发现与开放数据检索",
       "url": "https://dataset.scansci.com",
       "category": "数据检索",
-      "tags": [
-        "dataset",
-        "open data",
-        "search"
-      ]
+      "tags": ["dataset", "open data", "search"]
     },
     {
       "id": "journal-scout",
       "name": "Journal Scout",
-      "description": "全学科选刊助手，聚合 JCR、中科院、核心目录与科协分级。",
+      "description": "选刊分析助手，整合 JCR、分区和期刊指标，帮助定位投稿方向。",
       "cover": "./assets/covers/journal-scout-cover.webp",
+      "cover_title": "Journal Scout",
+      "cover_subtitle": "期刊评估与投稿匹配分析",
       "url": "https://journal.scansci.com",
       "category": "期刊分析",
-      "tags": [
-        "journal",
-        "jcr",
-        "中科院",
-        "citescore"
-      ]
+      "tags": ["journal", "jcr", "分区", "citescore"]
     },
     {
       "id": "citation-integrity-lab",
       "name": "Citation Integrity Lab",
       "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。",
       "cover": "./assets/covers/citation-integrity-lab-cover.webp",
+      "cover_title": "Citation Integrity Lab",
+      "cover_subtitle": "参考文献一致性与证据核查",
       "url": "https://citation.scansci.com",
       "category": "学术核查",
-      "tags": [
-        "citation",
-        "integrity",
-        "validation"
-      ]
+      "tags": ["citation", "integrity", "validation"]
+    },
+    {
+      "id": "paper-deck",
+      "name": "PaperDeck",
+      "description": "每日论文推荐卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。",
+      "cover": "./assets/covers/paper-deck-cover.svg",
+      "cover_title": "PaperDeck",
+      "cover_subtitle": "每日科研论文推荐 · 画像驱动",
+      "url": "https://paperdeck.scansci.com",
+      "category": "文献发现",
+      "tags": ["paper", "recommendation", "daily", "profile", "semantic-scholar"]
+    },
+    {
+      "id": "scansci-skills",
+      "name": "ScanSci Skills",
+      "description": "科研 AI 代理技能库，重点收录文献综述、数据复现、论文写作与模型评测相关技能，少量保留高价值通用支撑技能。",
+      "cover": "./assets/covers/scansci-skills.svg",
+      "cover_title": "ScanSci Skills",
+      "cover_subtitle": "科研流程专用 AI 技能库",
+      "url": "https://skills.scansci.com",
+      "category": "科研技能库",
+      "tags": ["skills", "research", "academic", "codex", "claude-code"]
     }
   ]
 }

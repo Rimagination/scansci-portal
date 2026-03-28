@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">PaperDeck cover</title>
+  <desc id="desc">Editorial cover for the PaperDeck portal card.</desc>
+  <defs>
+    <linearGradient id="pd-bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f1a2e" />
+      <stop offset="55%" stop-color="#0a1628" />
+      <stop offset="100%" stop-color="#1a1a0a" />
+    </linearGradient>
+    <linearGradient id="pd-gold" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#fde68a" stop-opacity="0.95" />
+    </linearGradient>
+    <linearGradient id="pd-card1" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a5f" />
+      <stop offset="100%" stop-color="#0f2040" />
+    </linearGradient>
+    <linearGradient id="pd-card2" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a4a7f" />
+      <stop offset="100%" stop-color="#1a2f5a" />
+    </linearGradient>
+    <linearGradient id="pd-card3" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#3a5fa0" />
+      <stop offset="100%" stop-color="#2a3f7a" />
+    </linearGradient>
+    <filter id="pd-glow">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="720" fill="url(#pd-bg)" />
+
+  <!-- Ambient glows -->
+  <circle cx="900" cy="220" r="240" fill="#f59e0b" opacity="0.06" />
+  <circle cx="200" cy="500" r="200" fill="#3b82f6" opacity="0.07" />
+
+  <!-- Stacked cards (right side) -->
+  <!-- Card shadow/stack back -->
+  <rect x="680" y="148" width="380" height="480" rx="20" fill="#0a1628" opacity="0.6" transform="rotate(-8 870 388)" />
+  <rect x="688" y="152" width="380" height="480" rx="20" fill="url(#pd-card1)" opacity="0.85" stroke="#1e4080" stroke-width="1.5" transform="rotate(-8 878 392)" />
+
+  <rect x="700" y="144" width="380" height="480" rx="20" fill="#0a1628" opacity="0.6" transform="rotate(-3 890 384)" />
+  <rect x="706" y="148" width="380" height="480" rx="20" fill="url(#pd-card2)" opacity="0.9" stroke="#2a4a8a" stroke-width="1.5" transform="rotate(-3 896 388)" />
+
+  <!-- Front card -->
+  <rect x="718" y="140" width="380" height="480" rx="20" fill="#0a1628" opacity="0.5" />
+  <rect x="724" y="144" width="380" height="480" rx="20" fill="url(#pd-card3)" stroke="#4a7fc0" stroke-width="2" />
+
+  <!-- Front card content -->
+  <rect x="748" y="168" width="332" height="6" rx="3" fill="#f59e0b" opacity="0.9" />
+  <rect x="748" y="188" width="240" height="4" rx="2" fill="#93c5fd" opacity="0.6" />
+  <rect x="748" y="208" width="280" height="4" rx="2" fill="#93c5fd" opacity="0.45" />
+  <rect x="748" y="228" width="200" height="4" rx="2" fill="#93c5fd" opacity="0.35" />
+
+  <rect x="748" y="260" width="332" height="120" rx="12" fill="#0f2040" opacity="0.7" />
+  <rect x="764" y="276" width="180" height="4" rx="2" fill="#cbd5e1" opacity="0.5" />
+  <rect x="764" y="292" width="220" height="4" rx="2" fill="#cbd5e1" opacity="0.4" />
+  <rect x="764" y="308" width="160" height="4" rx="2" fill="#cbd5e1" opacity="0.3" />
+  <rect x="764" y="332" width="130" height="28" rx="8" fill="#1e4080" opacity="0.9" />
+  <rect x="906" y="332" width="130" height="28" rx="8" fill="#1e3a5f" opacity="0.9" />
+
+  <!-- Star rating on card -->
+  <text x="750" y="430" fill="#f59e0b" font-size="22" font-family="sans-serif">★★★★☆</text>
+
+  <!-- Card bottom label -->
+  <rect x="724" y="548" width="380" height="76" rx="0 0 20 20" fill="#0f1830" opacity="0.9" />
+  <rect x="724" y="548" width="380" height="76" rx="0 0 20 20" fill="#f59e0b" opacity="0.08" />
+  <rect x="748" y="566" width="160" height="5" rx="2.5" fill="#f59e0b" opacity="0.85" />
+  <rect x="748" y="582" width="220" height="4" rx="2" fill="#93c5fd" opacity="0.55" />
+
+  <!-- Left side: text -->
+  <text x="80" y="220" fill="#f59e0b" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="52" font-weight="800" letter-spacing="-1">PaperDeck</text>
+  <path d="M80 238 L480 238" stroke="url(#pd-gold)" stroke-width="3" stroke-linecap="round" />
+  <text x="80" y="278" fill="#e2e8f0" fill-opacity="0.78" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="22">每日科研论文推荐 · 画像驱动</text>
+
+  <!-- Feature tags -->
+  <rect x="80" y="312" width="128" height="34" rx="10" fill="#1e3a5f" opacity="0.9" />
+  <text x="144" y="334" text-anchor="middle" fill="#93c5fd" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">兴趣画像</text>
+
+  <rect x="220" y="312" width="128" height="34" rx="10" fill="#2a1a0a" opacity="0.9" />
+  <text x="284" y="334" text-anchor="middle" fill="#fcd34d" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">每日抽卡</text>
+
+  <rect x="360" y="312" width="128" height="34" rx="10" fill="#1a2f0a" opacity="0.9" />
+  <text x="424" y="334" text-anchor="middle" fill="#86efac" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">收藏追踪</text>
+
+  <!-- Decorative lines -->
+  <path d="M80 380h348" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1" />
+  <rect x="80" y="400" width="420" height="4" rx="2" fill="#e2e8f0" opacity="0.12" />
+  <rect x="80" y="416" width="340" height="4" rx="2" fill="#e2e8f0" opacity="0.09" />
+  <rect x="80" y="432" width="380" height="4" rx="2" fill="#e2e8f0" opacity="0.07" />
+  <rect x="80" y="448" width="280" height="4" rx="2" fill="#e2e8f0" opacity="0.06" />
+
+  <!-- Bottom source label -->
+  <text x="80" y="620" fill="#64748b" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="16">Powered by Semantic Scholar · OpenAlex</text>
+</svg>

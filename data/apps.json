@@ -55,16 +55,5 @@
       "category": "文献发现",
       "tags": ["paper", "recommendation", "daily", "profile", "semantic-scholar"]
     },
-    {
-      "id": "scansci-skills",
-      "name": "ScanSci Skills",
-      "description": "科研 AI 代理技能库，重点收录文献综述、数据复现、论文写作与模型评测相关技能，少量保留高价值通用支撑技能。",
-      "cover": "./assets/covers/scansci-skills.svg",
-      "cover_title": "ScanSci Skills",
-      "cover_subtitle": "科研流程专用 AI 技能库",
-      "url": "https://skills.scansci.com",
-      "category": "科研技能库",
-      "tags": ["skills", "research", "academic", "codex", "claude-code"]
-    }
   ]
 }

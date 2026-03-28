@@ -1,0 +1,8 @@
+name = "paper-deck-proxy"
+main = "paper-deck-proxy.js"
+compatibility_date = "2026-03-27"
+workers_dev = false
+
+[[routes]]
+pattern = "paperdeck.scansci.com"
+custom_domain = true

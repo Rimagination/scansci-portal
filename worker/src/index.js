@@ -803,10 +803,13 @@ async function handleActionRead(request, env) {
 
   const url = new URL(request.url);
   const type = url.searchParams.get("type") || "recent";
+  const appId = String(url.searchParams.get("app_id") || "").trim();
+  const actionType = String(url.searchParams.get("action_type") || "").trim();
+  const parsedLimit = Number.parseInt(String(url.searchParams.get("limit") || "50"), 10);
+  const limit = Number.isFinite(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 100) : 50;
 
   if (type === "favorite") {
-    const rows = await env.DB.prepare(
-      `SELECT
+    const favoriteQueryBase = `SELECT
          uf.app_id,
          uf.created_at,
          (
@@ -819,12 +822,14 @@ async function handleActionRead(request, env) {
            LIMIT 1
          ) AS payload_json
        FROM user_favorites uf
-       WHERE uf.user_id = ?
-       ORDER BY uf.created_at DESC
-       LIMIT 100`
-    )
-      .bind(auth.userId)
-      .all();
+       WHERE uf.user_id = ?`;
+    const favoriteQuery = appId
+      ? `${favoriteQueryBase} AND uf.app_id = ? ORDER BY uf.created_at DESC LIMIT ?`
+      : `${favoriteQueryBase} ORDER BY uf.created_at DESC LIMIT ?`;
+    const favoriteStmt = env.DB.prepare(favoriteQuery);
+    const rows = appId
+      ? await favoriteStmt.bind(auth.userId, appId, limit).all()
+      : await favoriteStmt.bind(auth.userId, limit).all();
     const items = (rows.results || []).map((row) => ({
       app_id: row.app_id,
       created_at: row.created_at,
@@ -833,10 +838,29 @@ async function handleActionRead(request, env) {
     return jsonResponse(request, env, { ok: true, items });
   }
 
+  const where = ["user_id = ?"];
+  const bindings = [auth.userId];
+
+  if (appId) {
+    where.push("app_id = ?");
+    bindings.push(appId);
+  }
+
+  if (actionType) {
+    where.push("action_type = ?");
+    bindings.push(actionType);
+  }
+
+  bindings.push(limit);
+
   const rows = await env.DB.prepare(
-    "SELECT app_id, action_type, payload_json, created_at FROM user_actions WHERE user_id = ? ORDER BY created_at DESC LIMIT 50"
+    `SELECT app_id, action_type, payload_json, created_at
+     FROM user_actions
+     WHERE ${where.join(" AND ")}
+     ORDER BY created_at DESC
+     LIMIT ?`
   )
-    .bind(auth.userId)
+    .bind(...bindings)
     .all();
 
   const items = (rows.results || []).map((row) => ({

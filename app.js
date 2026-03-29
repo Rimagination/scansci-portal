@@ -35,7 +35,7 @@ const els = {
   authHint: document.getElementById("authHint"),
 };
 
-const DEFAULT_CATEGORIES = ["全部", "文献分析", "数据检索", "期刊分析", "学术核查"];
+const DEFAULT_CATEGORIES = ["全部", "文献分析", "数据检索", "期刊分析", "引文核查"];
 
 function escapeHtml(value) {
   return String(value ?? "")

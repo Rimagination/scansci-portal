@@ -93,6 +93,14 @@
       </div>
 
       <section id="authDock" class="auth-dock" aria-label="账户状态" hidden>
+        <div id="guestAuthCard" class="guest-auth-card" hidden>
+          <div class="guest-auth-card__body">
+            <p class="guest-auth-card__eyebrow">未登录</p>
+            <h3 class="guest-auth-card__title">登录 ScanSci</h3>
+            <p class="guest-auth-card__desc">登录后可收藏常用工具，并同步你的使用记录。</p>
+          </div>
+          <button id="guestLoginBtn" class="guest-auth-card__button" type="button">立即登录</button>
+        </div>
         <div id="userMiniCard" class="user-mini-card" hidden>
           <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
           <span id="userName" class="user-mini-card__name"></span>

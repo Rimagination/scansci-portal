@@ -187,6 +187,63 @@ body.is-modal-open {
   display: none !important;
 }
 
+.guest-auth-card {
+  border: 1px solid #cfdaeb;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(15, 143, 123, 0.12), transparent 42%),
+    linear-gradient(180deg, #fbfdff 0%, #f4f8fe 100%);
+  padding: 14px;
+  display: grid;
+  gap: 12px;
+  box-shadow: 0 16px 30px rgba(16, 34, 60, 0.08);
+}
+
+.guest-auth-card__body {
+  display: grid;
+  gap: 6px;
+}
+
+.guest-auth-card__eyebrow {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0f8f7b;
+}
+
+.guest-auth-card__title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+  color: #16365a;
+}
+
+.guest-auth-card__desc {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #5d6a82;
+}
+
+.guest-auth-card__button {
+  width: 100%;
+  border: 1px solid #2f8d98;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1b9d8d 0%, #2f6fa4 100%);
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(47, 111, 164, 0.18);
+}
+
+.guest-auth-card__button:hover {
+  filter: brightness(0.98);
+}
+
 .user-mini-card {
   border: 1px solid #cfdaeb;
   border-radius: 12px;

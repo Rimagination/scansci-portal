@@ -21,6 +21,8 @@ const els = {
   authModal: document.getElementById("authModal"),
   closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
   loginBtn: document.getElementById("loginBtn"),
+  guestAuthCard: document.getElementById("guestAuthCard"),
+  guestLoginBtn: document.getElementById("guestLoginBtn"),
   logoutBtn: document.getElementById("logoutBtn"),
   githubLinkBtn: document.getElementById("githubLinkBtn"),
   userMiniCard: document.getElementById("userMiniCard"),
@@ -206,7 +208,11 @@ function renderAuth() {
   const loggedIn = !!state.me;
 
   if (els.authDock) {
-    els.authDock.hidden = !loggedIn;
+    els.authDock.hidden = false;
+  }
+
+  if (els.guestAuthCard) {
+    els.guestAuthCard.hidden = loggedIn;
   }
 
   if (els.userMiniCard) {
@@ -525,6 +531,10 @@ function bindEvents() {
 
   if (els.loginBtn) {
     els.loginBtn.addEventListener("click", goToGithubLogin);
+  }
+
+  if (els.guestLoginBtn) {
+    els.guestLoginBtn.addEventListener("click", openAuthModal);
   }
 
   if (els.githubLinkBtn) {

@@ -54,6 +54,17 @@
       "url": "https://paperdeck.scansci.com",
       "category": "文献发现",
       "tags": ["paper", "recommendation", "daily", "profile", "semantic-scholar"]
+    },
+    {
+      "id": "sci-skills",
+      "name": "SCI Skills",
+      "description": "科研 Agent 技能库，聚合文献综述、统计分析、科研绘图、生物信息、医学医药、遥感与 GIS 等数百个科学研究相关 skills。",
+      "cover": "./assets/covers/scansci-skills.svg",
+      "cover_title": "SCI Skills",
+      "cover_subtitle": "科研 Skills 检索目录",
+      "url": "https://skills.scansci.com",
+      "category": "科研技能",
+      "tags": ["skills", "agent", "research workflow", "bioinformatics", "statistics", "visualization"]
     }
   ]
 }

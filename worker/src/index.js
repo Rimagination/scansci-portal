@@ -2677,6 +2677,7 @@ async function loadSubmissionStatsExternalByType(env, issnKey, sourceType) {
         updated_at,
         fetched_at,
         parser_version,
+        raw_json,
         status
      FROM journal_submission_stats_external
      WHERE issn_key = ? AND source_type = ? AND status = 'active'
@@ -2685,22 +2686,26 @@ async function loadSubmissionStatsExternalByType(env, issnKey, sourceType) {
     .bind(issnKey, sourceType)
     .all();
 
-  return (rows.results || []).map((row) => ({
-    issn: String(row.issn_display || formatIssnDisplay(issnKey)),
-    source_name: String(row.source_name || ""),
-    source_type: String(row.source_type || sourceType),
-    review_time_days: normalizeNullableNumber(row.review_time_days),
-    review_time_label: String(row.review_time_label || ""),
-    first_decision_days: normalizeNullableNumber(row.first_decision_days),
-    accept_rate_pct: normalizeNullableNumber(row.accept_rate_pct),
-    sample_size: normalizeNullableInteger(row.sample_size),
-    overall_score: normalizeNullableNumber(row.overall_score),
-    source_url: String(row.source_url || ""),
-    updated_at: String(row.updated_at || ""),
-    fetched_at: String(row.fetched_at || ""),
-    parser_version: String(row.parser_version || ""),
-    status: String(row.status || "active"),
-  }));
+  return (rows.results || []).map((row) => {
+    const commentInsights = extractSubmissionCommentInsights(row.raw_json);
+    return {
+      issn: String(row.issn_display || formatIssnDisplay(issnKey)),
+      source_name: String(row.source_name || ""),
+      source_type: String(row.source_type || sourceType),
+      review_time_days: normalizeNullableNumber(row.review_time_days),
+      review_time_label: String(row.review_time_label || ""),
+      first_decision_days: normalizeNullableNumber(row.first_decision_days),
+      accept_rate_pct: normalizeNullableNumber(row.accept_rate_pct),
+      sample_size: normalizeNullableInteger(row.sample_size),
+      overall_score: normalizeNullableNumber(row.overall_score),
+      source_url: String(row.source_url || ""),
+      updated_at: String(row.updated_at || ""),
+      fetched_at: String(row.fetched_at || ""),
+      parser_version: String(row.parser_version || ""),
+      status: String(row.status || "active"),
+      comment_insights: commentInsights,
+    };
+  });
 }
 
 async function loadJournalUserRatingSummary(env, issnKey) {
@@ -2806,6 +2811,130 @@ function normalizeNullableInteger(value) {
   if (value === null || value === undefined || value === "") return null;
   const num = parseInt(String(value), 10);
   return Number.isFinite(num) && num > 0 ? num : null;
+}
+
+function normalizeInsightMonth(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  const monthMatch = text.match(/^(\d{4})-(\d{2})/);
+  if (monthMatch) return `${monthMatch[1]}-${monthMatch[2]}`;
+  const parsed = new Date(text);
+  if (!Number.isFinite(parsed.getTime())) return "";
+  return parsed.toISOString().slice(0, 7);
+}
+
+function normalizeInsightDistribution(items, maxItems = 8) {
+  if (!Array.isArray(items) || !items.length) return [];
+  const normalized = [];
+  for (const item of items) {
+    if (!item || typeof item !== "object") continue;
+    const label = normalizeShortText(item.label ?? item.name, 48);
+    const count = normalizeNullableInteger(item.count);
+    const pct = normalizeNullableNumber(item.pct ?? item.percent);
+    if (!label && count === null && pct === null) continue;
+    normalized.push({
+      label: label || "unknown",
+      count: count,
+      pct: pct,
+    });
+  }
+  normalized.sort((a, b) => {
+    const countA = Number(a.count || 0);
+    const countB = Number(b.count || 0);
+    if (countA !== countB) return countB - countA;
+    return String(a.label || "").localeCompare(String(b.label || ""));
+  });
+  return normalized.slice(0, maxItems);
+}
+
+function normalizeInsightTags(items, maxItems = 10) {
+  if (!Array.isArray(items) || !items.length) return [];
+  const normalized = [];
+  for (const item of items) {
+    if (!item || typeof item !== "object") continue;
+    const tag = normalizeShortText(item.tag ?? item.label ?? item.name, 40);
+    const count = normalizeNullableInteger(item.count);
+    if (!tag || count === null) continue;
+    normalized.push({ tag, count });
+  }
+  normalized.sort((a, b) => {
+    if (a.count !== b.count) return b.count - a.count;
+    return a.tag.localeCompare(b.tag);
+  });
+  return normalized.slice(0, maxItems);
+}
+
+function normalizeInsightSamples(items, maxItems = 10) {
+  if (!Array.isArray(items) || !items.length) return [];
+  const normalized = [];
+  for (const item of items) {
+    if (!item || typeof item !== "object") continue;
+    const month = normalizeInsightMonth(item.month);
+    const result = normalizeShortText(item.result, 48);
+    const cycleBucket = normalizeShortText(item.cycle_bucket ?? item.cycleBucket, 32);
+    const likesBucket = normalizeShortText(item.likes_bucket ?? item.likesBucket, 32);
+    const tags = Array.isArray(item.tags)
+      ? item.tags.map((tag) => normalizeShortText(tag, 32)).filter(Boolean).slice(0, 4)
+      : [];
+    if (!month && !result && !cycleBucket && !likesBucket && !tags.length) continue;
+    normalized.push({
+      month,
+      result,
+      cycle_bucket: cycleBucket,
+      likes_bucket: likesBucket,
+      tags,
+    });
+  }
+  return normalized.slice(0, maxItems);
+}
+
+function extractSubmissionCommentInsights(rawJsonValue) {
+  const payload =
+    rawJsonValue && typeof rawJsonValue === "object" ? rawJsonValue : safeJsonParse(String(rawJsonValue || ""));
+  if (!payload || typeof payload !== "object") return null;
+
+  const candidate =
+    payload.comment_insights && typeof payload.comment_insights === "object"
+      ? payload.comment_insights
+      : payload.commentInsights && typeof payload.commentInsights === "object"
+        ? payload.commentInsights
+        : null;
+  if (!candidate) return null;
+
+  const insight = {
+    schema_version: normalizeShortText(candidate.schema_version ?? candidate.schemaVersion, 80),
+    sample_size: normalizeNullableInteger(candidate.sample_size ?? candidate.sampleSize),
+    accepted_rate_pct: normalizeNullableNumber(candidate.accepted_rate_pct ?? candidate.acceptedRatePct),
+    review_time_days_p50: normalizeNullableNumber(candidate.review_time_days_p50 ?? candidate.reviewTimeDaysP50),
+    review_time_days_p75: normalizeNullableNumber(candidate.review_time_days_p75 ?? candidate.reviewTimeDaysP75),
+    recent_comment_count_12m: normalizeNullableInteger(
+      candidate.recent_comment_count_12m ?? candidate.recentCommentCount12m
+    ),
+    updated_month: normalizeInsightMonth(candidate.updated_month ?? candidate.updatedMonth),
+    result_distribution: normalizeInsightDistribution(candidate.result_distribution ?? candidate.resultDistribution),
+    cycle_distribution: normalizeInsightDistribution(candidate.cycle_distribution ?? candidate.cycleDistribution),
+    tags_top: normalizeInsightTags(candidate.tags_top ?? candidate.tagsTop),
+    research_directions_top: normalizeInsightTags(
+      candidate.research_directions_top ?? candidate.researchDirectionsTop
+    ),
+    summary_samples: normalizeInsightSamples(candidate.summary_samples ?? candidate.summarySamples),
+  };
+
+  const hasValue =
+    insight.sample_size !== null ||
+    insight.accepted_rate_pct !== null ||
+    insight.review_time_days_p50 !== null ||
+    insight.review_time_days_p75 !== null ||
+    insight.recent_comment_count_12m !== null ||
+    Boolean(insight.updated_month) ||
+    insight.result_distribution.length > 0 ||
+    insight.cycle_distribution.length > 0 ||
+    insight.tags_top.length > 0 ||
+    insight.research_directions_top.length > 0 ||
+    insight.summary_samples.length > 0;
+
+  if (!hasValue) return null;
+  return insight;
 }
 
 function normalizeShortText(value, maxLen = 120) {

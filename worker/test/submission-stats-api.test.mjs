@@ -290,6 +290,21 @@ test("GET /api/journals/:issn/submission-stats returns official, community, and 
         updated_at: "2026-03-18T00:00:00.000Z",
         fetched_at: "2026-03-21T00:00:00.000Z",
         parser_version: "v1",
+        raw_json: JSON.stringify({
+          comment_insights: {
+            schema_version: "letpub-comment-insights-v1",
+            sample_size: 37,
+            accepted_rate_pct: 48.6,
+            review_time_days_p50: 60,
+            result_distribution: [
+              { label: "accepted", count: 18, pct: 48.6 },
+              { label: "rejected", count: 7, pct: 18.9 },
+            ],
+            summary_samples: [
+              { month: "2026-03", result: "accepted", cycle_bucket: "1-3 months", tags: ["major revision"] },
+            ],
+          },
+        }),
         status: "active",
       },
     ],
@@ -314,6 +329,9 @@ test("GET /api/journals/:issn/submission-stats returns official, community, and 
   assert.equal(payload.ok, true);
   assert.equal(payload.official_sources.length, 1);
   assert.equal(payload.community_sources.length, 1);
+  assert.equal(payload.community_sources[0].comment_insights.sample_size, 37);
+  assert.equal(payload.community_sources[0].comment_insights.result_distribution.length, 2);
+  assert.equal(payload.community_sources[0].comment_insights.summary_samples.length, 1);
   assert.equal(payload.user_rating_summary.total_ratings, 1);
   assert.equal(payload.viewer_authenticated, true);
   assert.deepEqual(payload.my_rating, {

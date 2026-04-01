@@ -131,6 +131,7 @@ wrangler secret put ADMIN_SYNC_TOKEN
 
 - 解析与归一化逻辑：`src/submission-stats.mjs`
 - 离线同步脚本：`scripts/sync_submission_stats.mjs`
+- LetPub 脱敏评论洞察脚本：`scripts/sync_letpub_comment_insights.mjs`
 - 解析测试样例：`test/fixtures/submission-*.html`
 
 命令示例：
@@ -138,6 +139,14 @@ wrangler secret put ADMIN_SYNC_TOKEN
 ```bash
 export ADMIN_SYNC_TOKEN=xxxx
 node scripts/sync_submission_stats.mjs ./sources.json
+```
+
+LetPub 评论脱敏同步示例：
+
+```bash
+export ADMIN_SYNC_TOKEN=xxxx
+node scripts/sync_letpub_comment_insights.mjs D:/VSP/TEST/outputs/letpub_environment_and_ecology_all_comments_logged_in.json --dry-run --out ./letpub-preview.json
+node scripts/sync_letpub_comment_insights.mjs D:/VSP/TEST/outputs/letpub_environment_and_ecology_all_comments_logged_in.json
 ```
 
 `sources.json` 需要提供公开页面种子，例如：

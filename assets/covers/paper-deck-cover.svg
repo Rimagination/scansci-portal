@@ -1,97 +1,86 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
   <title id="title">PaperDeck cover</title>
-  <desc id="desc">Editorial cover for the PaperDeck portal card.</desc>
+  <desc id="desc">Light editorial cover for the PaperDeck portal card.</desc>
   <defs>
     <linearGradient id="pd-bg" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#0f1a2e" />
-      <stop offset="55%" stop-color="#0a1628" />
-      <stop offset="100%" stop-color="#1a1a0a" />
+      <stop offset="0%" stop-color="#f7f3ea" />
+      <stop offset="58%" stop-color="#eef3fb" />
+      <stop offset="100%" stop-color="#e7eff9" />
     </linearGradient>
-    <linearGradient id="pd-gold" x1="0%" x2="100%" y1="0%" y2="0%">
-      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.95" />
-      <stop offset="100%" stop-color="#fde68a" stop-opacity="0.95" />
+    <linearGradient id="pd-line" x1="0%" x2="100%" y1="0%" y2="0%">
+      <stop offset="0%" stop-color="#c7892f" />
+      <stop offset="100%" stop-color="#e6c58d" />
     </linearGradient>
-    <linearGradient id="pd-card1" x1="0%" x2="0%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#1e3a5f" />
-      <stop offset="100%" stop-color="#0f2040" />
+    <linearGradient id="pd-card-back" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#d9e5f6" />
+      <stop offset="100%" stop-color="#b9cde7" />
     </linearGradient>
-    <linearGradient id="pd-card2" x1="0%" x2="0%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#2a4a7f" />
-      <stop offset="100%" stop-color="#1a2f5a" />
+    <linearGradient id="pd-card-mid" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#d0def2" />
+      <stop offset="100%" stop-color="#9fbbe0" />
     </linearGradient>
-    <linearGradient id="pd-card3" x1="0%" x2="0%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#3a5fa0" />
-      <stop offset="100%" stop-color="#2a3f7a" />
+    <linearGradient id="pd-card-front" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#fdfefe" />
+      <stop offset="100%" stop-color="#edf3fb" />
     </linearGradient>
-    <filter id="pd-glow">
-      <feGaussianBlur stdDeviation="8" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    <filter id="pd-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#60708a" flood-opacity="0.18" />
     </filter>
   </defs>
 
-  <!-- Background -->
   <rect width="1200" height="720" fill="url(#pd-bg)" />
+  <circle cx="188" cy="124" r="178" fill="#f6d49a" opacity="0.22" />
+  <circle cx="1038" cy="148" r="218" fill="#d5e3f8" opacity="0.85" />
+  <circle cx="1034" cy="564" r="222" fill="#f0d6b6" opacity="0.26" />
 
-  <!-- Ambient glows -->
-  <circle cx="900" cy="220" r="240" fill="#f59e0b" opacity="0.06" />
-  <circle cx="200" cy="500" r="200" fill="#3b82f6" opacity="0.07" />
+  <g filter="url(#pd-shadow)">
+    <rect x="688" y="156" width="380" height="480" rx="26" fill="#9eb8d9" opacity="0.32" transform="rotate(-8 878 396)" />
+    <rect x="694" y="160" width="380" height="480" rx="26" fill="url(#pd-card-back)" stroke="#9fb7d7" stroke-width="2" transform="rotate(-8 884 400)" />
 
-  <!-- Stacked cards (right side) -->
-  <!-- Card shadow/stack back -->
-  <rect x="680" y="148" width="380" height="480" rx="20" fill="#0a1628" opacity="0.6" transform="rotate(-8 870 388)" />
-  <rect x="688" y="152" width="380" height="480" rx="20" fill="url(#pd-card1)" opacity="0.85" stroke="#1e4080" stroke-width="1.5" transform="rotate(-8 878 392)" />
+    <rect x="708" y="152" width="380" height="480" rx="26" fill="#97b1d4" opacity="0.22" transform="rotate(-3 898 392)" />
+    <rect x="714" y="156" width="380" height="480" rx="26" fill="url(#pd-card-mid)" stroke="#8ea9d1" stroke-width="2" transform="rotate(-3 904 396)" />
 
-  <rect x="700" y="144" width="380" height="480" rx="20" fill="#0a1628" opacity="0.6" transform="rotate(-3 890 384)" />
-  <rect x="706" y="148" width="380" height="480" rx="20" fill="url(#pd-card2)" opacity="0.9" stroke="#2a4a8a" stroke-width="1.5" transform="rotate(-3 896 388)" />
+    <rect x="730" y="152" width="380" height="480" rx="26" fill="#95abc7" opacity="0.18" />
+    <rect x="736" y="156" width="380" height="480" rx="26" fill="url(#pd-card-front)" stroke="#cad7e8" stroke-width="2" />
+  </g>
 
-  <!-- Front card -->
-  <rect x="718" y="140" width="380" height="480" rx="20" fill="#0a1628" opacity="0.5" />
-  <rect x="724" y="144" width="380" height="480" rx="20" fill="url(#pd-card3)" stroke="#4a7fc0" stroke-width="2" />
+  <rect x="764" y="186" width="324" height="7" rx="3.5" fill="#d39d48" />
+  <rect x="764" y="210" width="228" height="5" rx="2.5" fill="#7b92b0" opacity="0.62" />
+  <rect x="764" y="228" width="278" height="5" rx="2.5" fill="#8ea3bd" opacity="0.46" />
+  <rect x="764" y="246" width="194" height="5" rx="2.5" fill="#a5b4c7" opacity="0.38" />
 
-  <!-- Front card content -->
-  <rect x="748" y="168" width="332" height="6" rx="3" fill="#f59e0b" opacity="0.9" />
-  <rect x="748" y="188" width="240" height="4" rx="2" fill="#93c5fd" opacity="0.6" />
-  <rect x="748" y="208" width="280" height="4" rx="2" fill="#93c5fd" opacity="0.45" />
-  <rect x="748" y="228" width="200" height="4" rx="2" fill="#93c5fd" opacity="0.35" />
+  <rect x="764" y="286" width="324" height="126" rx="16" fill="#f5f8fd" stroke="#d5dfeb" stroke-width="2" />
+  <rect x="786" y="306" width="176" height="5" rx="2.5" fill="#556b87" opacity="0.56" />
+  <rect x="786" y="323" width="214" height="5" rx="2.5" fill="#7488a1" opacity="0.42" />
+  <rect x="786" y="340" width="152" height="5" rx="2.5" fill="#9aa9bb" opacity="0.32" />
+  <rect x="786" y="365" width="126" height="30" rx="10" fill="#2f6aa3" opacity="0.95" />
+  <rect x="924" y="365" width="126" height="30" rx="10" fill="#dfe7f2" stroke="#becddd" stroke-width="1.5" />
+  <text x="849" y="385" text-anchor="middle" fill="#ffffff" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="14" font-weight="700">Draw</text>
+  <text x="987" y="385" text-anchor="middle" fill="#36506f" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="14" font-weight="700">Save</text>
 
-  <rect x="748" y="260" width="332" height="120" rx="12" fill="#0f2040" opacity="0.7" />
-  <rect x="764" y="276" width="180" height="4" rx="2" fill="#cbd5e1" opacity="0.5" />
-  <rect x="764" y="292" width="220" height="4" rx="2" fill="#cbd5e1" opacity="0.4" />
-  <rect x="764" y="308" width="160" height="4" rx="2" fill="#cbd5e1" opacity="0.3" />
-  <rect x="764" y="332" width="130" height="28" rx="8" fill="#1e4080" opacity="0.9" />
-  <rect x="906" y="332" width="130" height="28" rx="8" fill="#1e3a5f" opacity="0.9" />
+  <text x="764" y="464" fill="#c88d2c" font-size="24" font-family="Manrope, 'Noto Sans SC', sans-serif">Similar papers</text>
+  <rect x="736" y="560" width="380" height="76" rx="0 0 26 26" fill="#e8eef7" />
+  <rect x="764" y="582" width="166" height="6" rx="3" fill="#c7892f" opacity="0.92" />
+  <rect x="764" y="600" width="236" height="5" rx="2.5" fill="#7087a0" opacity="0.48" />
 
-  <!-- Star rating on card -->
-  <text x="750" y="430" fill="#f59e0b" font-size="22" font-family="sans-serif">★★★★☆</text>
+  <text x="80" y="218" fill="#1d3552" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="56" font-weight="800" letter-spacing="-1.2">PaperDeck</text>
+  <path d="M80 238 L466 238" stroke="url(#pd-line)" stroke-width="3" stroke-linecap="round" />
+  <text x="80" y="286" fill="#4e647c" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="22">Memory-driven paper discovery, now in a lighter portal card.</text>
 
-  <!-- Card bottom label -->
-  <rect x="724" y="548" width="380" height="76" rx="0 0 20 20" fill="#0f1830" opacity="0.9" />
-  <rect x="724" y="548" width="380" height="76" rx="0 0 20 20" fill="#f59e0b" opacity="0.08" />
-  <rect x="748" y="566" width="160" height="5" rx="2.5" fill="#f59e0b" opacity="0.85" />
-  <rect x="748" y="582" width="220" height="4" rx="2" fill="#93c5fd" opacity="0.55" />
+  <rect x="80" y="320" width="138" height="36" rx="12" fill="#ffffff" stroke="#d7dfeb" stroke-width="1.5" />
+  <text x="149" y="343" text-anchor="middle" fill="#31567a" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="700">Profile</text>
 
-  <!-- Left side: text -->
-  <text x="80" y="220" fill="#f59e0b" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="52" font-weight="800" letter-spacing="-1">PaperDeck</text>
-  <path d="M80 238 L480 238" stroke="url(#pd-gold)" stroke-width="3" stroke-linecap="round" />
-  <text x="80" y="278" fill="#e2e8f0" fill-opacity="0.78" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="22">每日科研论文推荐 · 画像驱动</text>
+  <rect x="230" y="320" width="138" height="36" rx="12" fill="#fff4e2" stroke="#efd29f" stroke-width="1.5" />
+  <text x="299" y="343" text-anchor="middle" fill="#9a6a21" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="700">Draw</text>
 
-  <!-- Feature tags -->
-  <rect x="80" y="312" width="128" height="34" rx="10" fill="#1e3a5f" opacity="0.9" />
-  <text x="144" y="334" text-anchor="middle" fill="#93c5fd" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">兴趣画像</text>
+  <rect x="380" y="320" width="138" height="36" rx="12" fill="#edf6ef" stroke="#bfd7c4" stroke-width="1.5" />
+  <text x="449" y="343" text-anchor="middle" fill="#3a7251" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="700">Collect</text>
 
-  <rect x="220" y="312" width="128" height="34" rx="10" fill="#2a1a0a" opacity="0.9" />
-  <text x="284" y="334" text-anchor="middle" fill="#fcd34d" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">每日抽卡</text>
+  <path d="M80 392h362" stroke="#ccb48e" stroke-opacity="0.5" stroke-width="1.5" />
+  <rect x="80" y="418" width="418" height="5" rx="2.5" fill="#a9b6c6" opacity="0.24" />
+  <rect x="80" y="436" width="348" height="5" rx="2.5" fill="#aeb9c8" opacity="0.16" />
+  <rect x="80" y="454" width="386" height="5" rx="2.5" fill="#b9c3d1" opacity="0.12" />
+  <rect x="80" y="472" width="278" height="5" rx="2.5" fill="#c6ced8" opacity="0.1" />
 
-  <rect x="360" y="312" width="128" height="34" rx="10" fill="#1a2f0a" opacity="0.9" />
-  <text x="424" y="334" text-anchor="middle" fill="#86efac" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="15" font-weight="600">收藏追踪</text>
-
-  <!-- Decorative lines -->
-  <path d="M80 380h348" stroke="#f59e0b" stroke-opacity="0.18" stroke-width="1" />
-  <rect x="80" y="400" width="420" height="4" rx="2" fill="#e2e8f0" opacity="0.12" />
-  <rect x="80" y="416" width="340" height="4" rx="2" fill="#e2e8f0" opacity="0.09" />
-  <rect x="80" y="432" width="380" height="4" rx="2" fill="#e2e8f0" opacity="0.07" />
-  <rect x="80" y="448" width="280" height="4" rx="2" fill="#e2e8f0" opacity="0.06" />
-
-  <!-- Bottom source label -->
-  <text x="80" y="620" fill="#64748b" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="16">Powered by Semantic Scholar · OpenAlex</text>
+  <text x="80" y="618" fill="#72859a" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="16">Powered by Semantic Scholar and OpenAlex</text>
 </svg>

@@ -70,7 +70,7 @@
       "id": "acti",
       "name": "ACTI",
       "description": "学术人格类型测试，从努力度、思维型、社交型与时间型四个维度生成科研状态画像。",
-      "cover": "./assets/covers/acti-cover.svg",
+      "cover": "./assets/covers/acti-cover.webp",
       "cover_title": "ACTI",
       "cover_subtitle": "学术人格类型测试",
       "url": "https://acti.scansci.com",

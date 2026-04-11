@@ -1,0 +1,8 @@
+name = "acti-proxy"
+main = "acti-proxy.js"
+compatibility_date = "2026-04-11"
+workers_dev = false
+
+[[routes]]
+pattern = "acti.scansci.com"
+custom_domain = true

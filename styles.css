@@ -85,12 +85,13 @@ body.is-modal-open {
 
 .brand-logo {
   display: block;
-  width: min(100%, 182px);
+  width: min(100%, 214px);
   max-width: 100%;
   height: auto;
 }
 
 .brand-desc {
+  display: none;
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 12px;

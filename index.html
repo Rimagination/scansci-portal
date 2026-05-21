@@ -4,6 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ScanSci | 学术工具门户</title>
+  <meta name="description" content="ScanSci 是面向科研发现的工具门户，汇集文献图谱、科研数据检索、选刊分析、引文核查、论文推荐、科研 Agent Skills 与学术测评工具。" />
+  <meta name="keywords" content="ScanSci,科研工具,文献图谱,选刊分析,科研数据,引文核查,论文推荐,AI Agent,SCI Skills" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://www.scansci.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ScanSci" />
+  <meta property="og:title" content="ScanSci | 面向科研发现的工具门户" />
+  <meta property="og:description" content="一站访问文献图谱、数据检索、选刊分析、引文核查、论文推荐、科研 Agent Skills 与学术测评工具。" />
+  <meta property="og:url" content="https://www.scansci.com/" />
+  <meta property="og:image" content="https://www.scansci.com/assets/covers/dataraven-cover.webp" />
+  <meta property="og:image:type" content="image/webp" />
+  <meta property="og:image:alt" content="ScanSci 科研工具门户" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="ScanSci | 面向科研发现的工具门户" />
+  <meta name="twitter:description" content="汇集科研发现、投稿辅助、数据检索与 AI Agent Skills 的学术工具入口。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="dns-prefetch" href="//dataset.scansci.com" />
@@ -20,7 +35,67 @@
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260226d" />
-  <link rel="stylesheet" href="./styles.css?v=20260319d" />
+  <link rel="stylesheet" href="./styles.css?v=20260521a" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "ScanSci 学术工具门户",
+    "description": "面向科研发现的工具门户，汇集文献图谱、科研数据检索、选刊分析、引文核查、论文推荐、科研 Agent Skills 与学术测评工具。",
+    "url": "https://www.scansci.com/",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://paperatlas.scansci.com",
+        "name": "Paper Atlas",
+        "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://dataset.scansci.com",
+        "name": "Data Raven",
+        "description": "科研数据与开放数据检索引擎，聚焦数据集发现、筛选和来源判断。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://journal.scansci.com",
+        "name": "Journal Scout",
+        "description": "选刊分析助手，整合 JCR、分区和期刊指标，帮助定位投稿方向。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://citation.scansci.com",
+        "name": "Citation Integrity Lab",
+        "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://paperdeck.scansci.com",
+        "name": "PaperDeck",
+        "description": "每日论文推荐卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://skills.scansci.com",
+        "name": "SCI Skills",
+        "description": "科研 Agent 技能库，聚合文献综述、统计分析、科研绘图、生物信息、医学医药、遥感与 GIS 等科研 skills。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://acti.scansci.com",
+        "name": "ACTI",
+        "description": "学术人格类型测试，从努力度、思维型、社交型与时间型四个维度生成科研状态画像。"
+      }
+    ]
+  }
+  </script>
   <style>
     /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
     :root { --sidebar-width: 252px; }
@@ -75,7 +150,7 @@
       <div class="sidebar-top">
         <div class="brand-block">
           <img class="brand-logo" src="./assets/brand/scansci-logo.svg" alt="搜索科学 ScanSci" />
-          <p class="brand-desc">统一入口，独立应用部署。</p>
+          <p class="brand-desc">面向科研发现的工具门户</p>
         </div>
 
         <label class="search-label" for="globalSearch">全局搜索</label>
@@ -101,7 +176,7 @@
           <div class="guest-auth-card__body">
             <p class="guest-auth-card__eyebrow">未登录</p>
             <h3 class="guest-auth-card__title">登录 ScanSci</h3>
-            <p class="guest-auth-card__desc">登录后可收藏常用工具，并同步你的使用记录。</p>
+            <p class="guest-auth-card__desc">登录后保存常用工具、继续最近使用，并同步你的科研工具偏好。</p>
           </div>
           <button id="guestLoginBtn" class="guest-auth-card__button" type="button">立即登录</button>
         </div>
@@ -147,7 +222,7 @@
     <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
       <button id="closeAuthModalBtn" class="auth-modal__close" type="button" aria-label="关闭登录窗口">×</button>
       <h3 id="authModalTitle" class="auth-modal__title">登录 / 注册</h3>
-      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录 ScanSci。</p>
+      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录，保存常用工具、最近使用和科研偏好。</p>
 
       <div id="authGuest" class="auth-state">
         <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
@@ -163,6 +238,21 @@
     </section>
   </div>
 
-  <script src="./app.js?v=20260319b"></script>
+  <script src="./app.js?v=20260521a"></script>
+  <noscript>
+    <section class="noscript-catalog" aria-label="ScanSci 应用目录">
+      <h2>ScanSci 应用目录</h2>
+      <p>ScanSci 是面向科研发现的工具门户。启用 JavaScript 后可使用搜索、筛选、收藏和登录同步功能。</p>
+      <ul>
+        <li><a href="https://paperatlas.scansci.com">Paper Atlas</a>：研究图谱工具，适合查看论文引用网络、相似研究和主题脉络。</li>
+        <li><a href="https://dataset.scansci.com">Data Raven</a>：科研数据检索，适合寻找可复用数据集和开放数据来源。</li>
+        <li><a href="https://journal.scansci.com">Journal Scout</a>：选刊分析助手，适合投稿前评估期刊指标、分区和匹配度。</li>
+        <li><a href="https://citation.scansci.com">Citation Integrity Lab</a>：引文完整性核查，适合检查参考文献是否支撑正文论断。</li>
+        <li><a href="https://paperdeck.scansci.com">PaperDeck</a>：每日论文推荐卡片，适合轻量发现值得阅读的论文。</li>
+        <li><a href="https://skills.scansci.com">SCI Skills</a>：科研 Agent 技能库，适合查找科研工作流 skills。</li>
+        <li><a href="https://acti.scansci.com">ACTI</a>：学术人格类型测试，适合了解科研状态和协作偏好。</li>
+      </ul>
+    </section>
+  </noscript>
 </body>
 </html>

@@ -1,7 +1,7 @@
 const state = {
   apps: [],
   query: "",
-  activeCategory: "全部",
+  activeFilter: "all",
   me: null,
   favorites: new Set(),
 };
@@ -35,7 +35,15 @@ const els = {
   authHint: document.getElementById("authHint"),
 };
 
-const DEFAULT_CATEGORIES = ["全部", "文献分析", "数据检索", "期刊分析", "引文核查"];
+const FILTERS = [
+  { key: "all", label: "全部", terms: [] },
+  { key: "literature", label: "文献发现", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
+  { key: "data", label: "数据检索", terms: ["数据", "dataset", "open data"] },
+  { key: "journal", label: "投稿选刊", terms: ["期刊", "投稿", "journal", "jcr", "分区", "citescore"] },
+  { key: "integrity", label: "引文核查", terms: ["引文", "参考文献", "integrity", "validation"] },
+  { key: "agent", label: "AI Agent", terms: ["agent", "skills", "research workflow", "bioinformatics", "statistics"] },
+  { key: "assessment", label: "科研测评", terms: ["测评", "assessment", "academic personality", "test", "acti"] },
+];
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -88,36 +96,37 @@ function setAuthHint(message, type = "info") {
   if (type === "success") els.authHint.classList.add("is-success");
 }
 
-function buildCategories() {
-  const categories = new Set(DEFAULT_CATEGORIES);
-  for (const app of state.apps) {
-    categories.add(app.category || "未分类");
-  }
-  return [...categories];
-}
-
-function matchesQuery(app, query) {
-  if (!query) return true;
-  const haystack = [
+function appSearchText(app) {
+  return [
     app.id,
     app.name,
     app.description,
+    app.use_case,
+    app.cover_title,
+    app.cover_subtitle,
     app.category,
     ...(Array.isArray(app.tags) ? app.tags : []),
   ]
     .map((item) => normalize(item))
     .join(" ");
+}
+
+function matchesQuery(app, query) {
+  if (!query) return true;
+  const haystack = appSearchText(app);
   return haystack.includes(query);
 }
 
-function matchesCategory(app, category) {
-  if (category === "全部") return true;
-  return (app.category || "未分类") === category;
+function matchesFilter(app, filterKey) {
+  const filter = FILTERS.find((item) => item.key === filterKey) || FILTERS[0];
+  if (!filter.terms.length) return true;
+  const haystack = appSearchText(app);
+  return filter.terms.some((term) => haystack.includes(normalize(term)));
 }
 
 function getVisibleApps() {
   const q = normalize(state.query);
-  return state.apps.filter((app) => matchesCategory(app, state.activeCategory) && matchesQuery(app, q));
+  return state.apps.filter((app) => matchesFilter(app, state.activeFilter) && matchesQuery(app, q));
 }
 
 function isFavorite(appId) {
@@ -132,6 +141,12 @@ function cardTemplate(app) {
   const appId = String(app.id || "");
   const appClass = appId.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   const favoriteCls = isFavorite(appId) ? " is-active" : "";
+  const tags = Array.isArray(app.tags) ? app.tags.slice(0, 4) : [];
+  const tagHtml = tags
+    .map((tag) => {
+      return `<button class="tool-card__tag" type="button" data-action="tag-search" data-query="${escapeHtml(tag)}">${escapeHtml(tag)}</button>`;
+    })
+    .join("");
 
   return `
     <article class="tool-card tool-card--${escapeHtml(appClass)}" data-app-id="${escapeHtml(appId)}">
@@ -145,8 +160,10 @@ function cardTemplate(app) {
         <div class="tool-card__body">
           <h3 class="tool-card__name">${escapeHtml(app.name || "未命名工具")}</h3>
           <p class="tool-card__desc">${escapeHtml(app.description || "")}</p>
+          <p class="tool-card__use"><span>适用场景</span>${escapeHtml(app.use_case || "用于科研工作流中的专项任务。")}</p>
         </div>
       </a>
+      ${tagHtml ? `<div class="tool-card__tags" aria-label="${escapeHtml(app.name || "应用")} 标签">${tagHtml}</div>` : ""}
       <div class="tool-card__meta">
         <span class="tool-card__category">${escapeHtml(app.category || "未分类")}</span>
         <div class="tool-card__meta-actions">
@@ -171,17 +188,16 @@ function cardTemplate(app) {
 
 function renderFilters() {
   if (!els.filters) return;
-  const categories = buildCategories();
-  els.filters.innerHTML = categories
-    .map((category) => {
-      const active = category === state.activeCategory ? " is-active" : "";
-      return `<button class="category-filter${active}" type="button" data-category="${escapeHtml(category)}">${escapeHtml(category)}</button>`;
+  els.filters.innerHTML = FILTERS
+    .map((filter) => {
+      const active = filter.key === state.activeFilter ? " is-active" : "";
+      return `<button class="category-filter${active}" type="button" role="tab" aria-selected="${filter.key === state.activeFilter ? "true" : "false"}" data-filter="${escapeHtml(filter.key)}">${escapeHtml(filter.label)}</button>`;
     })
     .join("");
 
   els.filters.querySelectorAll(".category-filter").forEach((btn) => {
     btn.addEventListener("click", () => {
-      state.activeCategory = btn.dataset.category || "全部";
+      state.activeFilter = btn.dataset.filter || "all";
       renderFilters();
       renderGrid();
     });
@@ -201,6 +217,10 @@ function renderGrid() {
 
   els.grid.querySelectorAll('[data-action="open"]').forEach((link) => {
     link.addEventListener("click", onOpenToolClick);
+  });
+
+  els.grid.querySelectorAll('[data-action="tag-search"]').forEach((btn) => {
+    btn.addEventListener("click", onTagSearchClick);
   });
 }
 
@@ -500,6 +520,21 @@ function onOpenToolClick(event) {
   if (appId) {
     void trackOpenTool(appId);
   }
+}
+
+function onTagSearchClick(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const btn = event.currentTarget;
+  if (!(btn instanceof HTMLElement)) return;
+  const query = btn.dataset.query || "";
+  state.query = query;
+  if (els.search) {
+    els.search.value = query;
+    els.search.focus();
+  }
+  renderGrid();
 }
 
 function bindEvents() {

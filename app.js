@@ -39,7 +39,7 @@ const FILTERS = [
   { key: "all", label: "全部", terms: [] },
   { key: "literature", label: "文献发现", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
   { key: "data", label: "数据检索", terms: ["数据", "dataset", "open data"] },
-  { key: "journal", label: "投稿选刊", terms: ["期刊", "投稿", "journal", "jcr", "分区", "citescore"] },
+  { key: "journal", label: "期刊查询", terms: ["期刊", "journal", "jcr", "分区", "citescore", "影响因子"] },
   { key: "integrity", label: "引文核查", terms: ["引文", "参考文献", "integrity", "validation"] },
   { key: "agent", label: "AI Agent", terms: ["agent", "skills", "research workflow", "bioinformatics", "statistics"] },
   { key: "assessment", label: "科研测评", terms: ["测评", "assessment", "academic personality", "test", "acti"] },
@@ -101,7 +101,6 @@ function appSearchText(app) {
     app.id,
     app.name,
     app.description,
-    app.use_case,
     app.cover_title,
     app.cover_subtitle,
     app.category,
@@ -141,12 +140,6 @@ function cardTemplate(app) {
   const appId = String(app.id || "");
   const appClass = appId.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   const favoriteCls = isFavorite(appId) ? " is-active" : "";
-  const tags = Array.isArray(app.tags) ? app.tags.slice(0, 4) : [];
-  const tagHtml = tags
-    .map((tag) => {
-      return `<button class="tool-card__tag" type="button" data-action="tag-search" data-query="${escapeHtml(tag)}">${escapeHtml(tag)}</button>`;
-    })
-    .join("");
 
   return `
     <article class="tool-card tool-card--${escapeHtml(appClass)}" data-app-id="${escapeHtml(appId)}">
@@ -160,10 +153,8 @@ function cardTemplate(app) {
         <div class="tool-card__body">
           <h3 class="tool-card__name">${escapeHtml(app.name || "未命名工具")}</h3>
           <p class="tool-card__desc">${escapeHtml(app.description || "")}</p>
-          <p class="tool-card__use"><span>适用场景</span>${escapeHtml(app.use_case || "用于科研工作流中的专项任务。")}</p>
         </div>
       </a>
-      ${tagHtml ? `<div class="tool-card__tags" aria-label="${escapeHtml(app.name || "应用")} 标签">${tagHtml}</div>` : ""}
       <div class="tool-card__meta">
         <span class="tool-card__category">${escapeHtml(app.category || "未分类")}</span>
         <div class="tool-card__meta-actions">
@@ -219,9 +210,6 @@ function renderGrid() {
     link.addEventListener("click", onOpenToolClick);
   });
 
-  els.grid.querySelectorAll('[data-action="tag-search"]').forEach((btn) => {
-    btn.addEventListener("click", onTagSearchClick);
-  });
 }
 
 function renderAuth() {
@@ -520,21 +508,6 @@ function onOpenToolClick(event) {
   if (appId) {
     void trackOpenTool(appId);
   }
-}
-
-function onTagSearchClick(event) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  const btn = event.currentTarget;
-  if (!(btn instanceof HTMLElement)) return;
-  const query = btn.dataset.query || "";
-  state.query = query;
-  if (els.search) {
-    els.search.value = query;
-    els.search.focus();
-  }
-  renderGrid();
 }
 
 function bindEvents() {

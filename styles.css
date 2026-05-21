@@ -601,47 +601,6 @@ body.is-modal-open {
   min-height: 40px;
 }
 
-.tool-card__use {
-  margin: 10px 0 0;
-  border-left: 3px solid #9fc9c0;
-  padding-left: 9px;
-  color: #314d68;
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-.tool-card__use span {
-  display: block;
-  margin-bottom: 2px;
-  color: #137464;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.tool-card__tags {
-  padding: 0 14px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tool-card__tag {
-  border: 1px solid #d4e0ec;
-  border-radius: 999px;
-  background: #f8fbff;
-  color: #526b87;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.tool-card__tag:hover {
-  border-color: #93b8d4;
-  color: #255778;
-  background: #eef7ff;
-}
-
 .tool-card__meta {
   margin-top: auto;
   padding: 0 14px 14px;

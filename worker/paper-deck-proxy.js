@@ -5,6 +5,32 @@ export default {
     const targetUrl = new URL(url.pathname + url.search, `https://${targetHost}`);
     const isCacheSensitiveGet = request.method === "GET" || request.method === "HEAD";
 
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "X-Proxy-By": "Cloudflare-Worker-PaperDeck",
+        },
+      });
+    }
+
+    if (request.method === "HEAD" && (url.pathname === "/" || url.pathname === "/health")) {
+      return new Response(null, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "X-Proxy-By": "Cloudflare-Worker-PaperDeck",
+        },
+      });
+    }
+
     const headers = new Headers(request.headers);
     headers.set("Host", targetHost);
     headers.set("Origin", `https://${targetHost}`);
@@ -55,7 +81,7 @@ export default {
       responseHeaders.delete("content-security-policy");
       responseHeaders.delete("content-security-policy-report-only");
       responseHeaders.set("Access-Control-Allow-Origin", "*");
-      responseHeaders.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+      responseHeaders.set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, OPTIONS");
       responseHeaders.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
       responseHeaders.set("X-Proxy-By", "Cloudflare-Worker-PaperDeck");
 

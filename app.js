@@ -2,6 +2,7 @@ const state = {
   apps: [],
   query: "",
   activeFilter: "all",
+  viewMode: "all",
   me: null,
   favorites: new Set(),
 };
@@ -33,16 +34,18 @@ const els = {
   sendCodeBtn: document.getElementById("sendCodeBtn"),
   emailLoginBtn: document.getElementById("emailLoginBtn"),
   authHint: document.getElementById("authHint"),
+  navActions: document.querySelectorAll("[data-nav-action]"),
 };
 
 const FILTERS = [
-  { key: "all", label: "全部", terms: [] },
-  { key: "literature", label: "文献发现", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
-  { key: "data", label: "数据检索", terms: ["数据", "dataset", "open data"] },
-  { key: "journal", label: "期刊查询", terms: ["期刊", "journal", "jcr", "分区", "citescore", "影响因子"] },
-  { key: "integrity", label: "引文核查", terms: ["引文", "参考文献", "integrity", "validation"] },
-  { key: "agent", label: "AI Agent", terms: ["agent", "skills", "research workflow", "bioinformatics", "statistics"] },
-  { key: "assessment", label: "科研测评", terms: ["测评", "assessment", "academic personality", "test", "acti"] },
+  { key: "all", label: "全部轻工具", terms: [] },
+  { key: "presentation", label: "演示", terms: ["演示", "汇报", "slides", "presentation", "ppt"] },
+  { key: "literature", label: "文献", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
+  { key: "data", label: "数据", terms: ["数据", "dataset", "open data"] },
+  { key: "journal", label: "期刊", terms: ["期刊", "journal", "jcr", "分区", "citescore", "影响因子"] },
+  { key: "integrity", label: "引文", terms: ["引文", "参考文献", "integrity", "validation"] },
+  { key: "agent", label: "技能", terms: ["agent", "skills", "research workflow", "bioinformatics", "statistics"] },
+  { key: "assessment", label: "测评", terms: ["测评", "assessment", "academic personality", "test", "acti"] },
 ];
 
 function escapeHtml(value) {
@@ -103,6 +106,7 @@ function appSearchText(app) {
     app.description,
     app.cover_title,
     app.cover_subtitle,
+    app.status,
     app.category,
     ...(Array.isArray(app.tags) ? app.tags : []),
   ]
@@ -136,28 +140,43 @@ function favoriteLabel(appId) {
   return isFavorite(appId) ? "取消常用" : "加入常用";
 }
 
+function compactDescription(app) {
+  const description = String(app.description || "").trim();
+  if (!description) return "";
+  const firstSentence = description.match(/^[^。.!?！？]+[。.!?！？]?/)?.[0] || description;
+  return firstSentence.length > 58 ? `${firstSentence.slice(0, 56)}…` : firstSentence;
+}
+
 function cardTemplate(app) {
   const appId = String(app.id || "");
   const appClass = appId.toLowerCase().replace(/[^a-z0-9_-]/g, "-");
   const favoriteCls = isFavorite(appId) ? " is-active" : "";
+  const appUrl = app.url || "#";
+  const englishTitle = app.name || "Untitled Tool";
+  const chineseTitle = app.category || "轻工具";
+  const statusBadge = app.status
+    ? `<span class="tool-card__status">${escapeHtml(app.status)}</span>`
+    : "";
 
   return `
     <article class="tool-card tool-card--${escapeHtml(appClass)}" data-app-id="${escapeHtml(appId)}">
-      <a class="tool-card__link" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener" data-action="open">
+      <a class="tool-card__link" href="${escapeHtml(appUrl)}" target="_self" rel="noopener" data-action="open">
         <div class="tool-card__figure">
+          ${statusBadge}
           <img src="${escapeHtml(app.cover || "./assets/covers/default.svg")}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
           <div class="tool-card__overlay">
             <span class="tool-card__cta">立即使用</span>
           </div>
         </div>
-        <div class="tool-card__body">
-          <h3 class="tool-card__name">${escapeHtml(app.name || "未命名工具")}</h3>
-          <p class="tool-card__desc">${escapeHtml(app.description || "")}</p>
-        </div>
       </a>
-      <div class="tool-card__meta">
-        <span class="tool-card__category">${escapeHtml(app.category || "未分类")}</span>
-        <div class="tool-card__meta-actions">
+      <div class="tool-card__body">
+        <div class="tool-card__titlebar">
+          <a class="tool-card__title-link" href="${escapeHtml(appUrl)}" target="_self" rel="noopener" data-action="open">
+            <h3 class="tool-card__name">
+              <span class="tool-card__name-main">${escapeHtml(englishTitle)}</span>
+              <span class="tool-card__name-sub">${escapeHtml(chineseTitle)}</span>
+            </h3>
+          </a>
           <button
             class="tool-card__fav${favoriteCls}"
             type="button"
@@ -170,8 +189,8 @@ function cardTemplate(app) {
               <path d="M12 20.4 4.8 14a4.7 4.7 0 0 1 6.5-6.8L12 8l.7-.8a4.7 4.7 0 0 1 6.5 6.8L12 20.4z"></path>
             </svg>
           </button>
-          <a class="tool-card__action" href="${escapeHtml(app.url || "#")}" target="_self" rel="noopener">立即使用 →</a>
         </div>
+        <p class="tool-card__desc">${escapeHtml(compactDescription(app))}</p>
       </div>
     </article>
   `;
@@ -200,7 +219,8 @@ function renderGrid() {
   const visible = getVisibleApps();
   els.grid.innerHTML = visible.map((app) => cardTemplate(app)).join("");
   els.empty.hidden = visible.length !== 0;
-  els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个应用`;
+  els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个轻工具`;
+  els.empty.textContent = "未找到匹配轻工具，请调整关键词或分类。";
 
   els.grid.querySelectorAll('[data-action="favorite"]').forEach((btn) => {
     btn.addEventListener("click", onFavoriteClick);
@@ -261,7 +281,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("./data/apps.json?v=2", { cache: "no-store" });
+    const res = await fetch("./data/apps.json?v=4", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];
@@ -317,6 +337,7 @@ async function loadMe() {
     if (res.status === 401) {
       state.me = null;
       state.favorites = new Set();
+      state.viewMode = "all";
       renderAuth();
       renderGrid();
       return;
@@ -329,6 +350,7 @@ async function loadMe() {
     console.warn("Auth API unavailable, running as guest:", err);
     state.me = null;
     state.favorites = new Set();
+    state.viewMode = "all";
   }
   renderAuth();
   renderGrid();
@@ -575,6 +597,18 @@ function bindEvents() {
       }
     });
   }
+
+  els.navActions.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const action = btn.dataset.navAction || "all";
+      if (action === "favorites" && !state.me) {
+        setAuthHint("请先登录，再查看收藏的轻工具。", "error");
+        openAuthModal();
+      }
+      state.viewMode = "all";
+      renderGrid();
+    });
+  });
 }
 
 // ── Stats ─────────────────────────────────────────────────────

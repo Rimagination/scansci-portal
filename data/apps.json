@@ -1,6 +1,18 @@
 {
   "apps": [
     {
+      "id": "easyslides",
+      "name": "EasySlides",
+      "description": "学术演示与科研汇报样例库，把论文内容、组会汇报和真实 PPT 页面放进可展示的舞台场景。",
+      "cover": "./assets/covers/easyslides-cover.png",
+      "cover_title": "EasySlides",
+      "cover_subtitle": "学术演示与科研汇报",
+      "url": "https://easyslides.scansci.com",
+      "status": "NEW",
+      "category": "学术演示",
+      "tags": ["slides", "presentation", "ppt", "academic presentation", "科研汇报", "学术演示", "组会"]
+    },
+    {
       "id": "paper-atlas",
       "name": "Paper Atlas",
       "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。",
@@ -8,7 +20,7 @@
       "cover_title": "Paper Atlas",
       "cover_subtitle": "研究图谱",
       "url": "https://paperatlas.scansci.com",
-      "category": "文献分析",
+      "category": "文献图谱",
       "tags": ["paper", "citation", "graph", "visualization", "semantic-scholar", "文献发现"]
     },
     {
@@ -19,7 +31,7 @@
       "cover_title": "Data Raven",
       "cover_subtitle": "科研数据发现与开放数据检索",
       "url": "https://dataset.scansci.com",
-      "category": "数据检索",
+      "category": "科研数据检索",
       "tags": ["dataset", "open data", "search", "数据集"]
     },
     {
@@ -35,10 +47,10 @@
     },
     {
       "id": "citation-integrity-lab",
-      "name": "Citation Integrity Lab",
+      "name": "Citation Lab",
       "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。",
       "cover": "./assets/covers/citation-integrity-lab-cover.webp",
-      "cover_title": "Citation Integrity Lab",
+      "cover_title": "Citation Lab",
       "cover_subtitle": "参考文献一致性与证据核查",
       "url": "https://citation.scansci.com",
       "category": "引文核查",
@@ -47,12 +59,12 @@
     {
       "id": "paper-deck",
       "name": "PaperDeck",
-      "description": "每日论文推荐卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。",
+      "description": "每日论文卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。",
       "cover": "./assets/covers/paper-deck-cover.svg",
       "cover_title": "PaperDeck",
-      "cover_subtitle": "每日科研论文推荐 · 画像驱动",
+      "cover_subtitle": "每日论文卡片 · 画像驱动",
       "url": "https://paperdeck.scansci.com",
-      "category": "文献发现",
+      "category": "每日论文卡片",
       "tags": ["paper", "recommendation", "daily", "profile", "semantic-scholar", "文献发现"]
     },
     {
@@ -63,7 +75,7 @@
       "cover_title": "SCI Skills",
       "cover_subtitle": "科研 Skills 检索目录",
       "url": "https://skills.scansci.com",
-      "category": "科研技能",
+      "category": "科研技能库",
       "tags": ["skills", "agent", "research workflow", "bioinformatics", "statistics", "visualization", "AI Agent"]
     },
     {
@@ -74,7 +86,7 @@
       "cover_title": "ACTI",
       "cover_subtitle": "学术人格类型测试",
       "url": "https://acti.scansci.com",
-      "category": "科研测评",
+      "category": "学术人格测试",
       "tags": ["academic personality", "assessment", "research profile", "test", "ACTI", "测评"]
     }
   ]

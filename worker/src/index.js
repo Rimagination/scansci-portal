@@ -909,7 +909,6 @@ async function handleElsevierSerialTitle(request, env) {
     return jsonResponse(request, env, { ok: false, error: "invalid_issn" }, 400);
   }
 
-  const staleLimitSeconds = Math.max(0, parseInt(env.ELSEVIER_CACHE_STALE_SECONDS || "2592000", 10) || 2592000);
   const cached = await loadElsevierCacheByKey(env, cacheKey);
   if (cached && !cached.isExpired) {
     return jsonWithSourceHeader(request, env, cached.payload, "d1-cache-fresh", {
@@ -918,11 +917,7 @@ async function handleElsevierSerialTitle(request, env) {
     });
   }
 
-  const canUseStale =
-    !!cached &&
-    cached.isExpired &&
-    Number.isFinite(cached.expiresUnix) &&
-    Math.floor(Date.now() / 1000) - cached.expiresUnix <= staleLimitSeconds;
+  const canUseStale = !!cached && cached.isExpired;
 
   const apiKey = String(env.ELSEVIER_API_KEY || "").trim();
   if (!apiKey) {
@@ -2811,12 +2806,13 @@ async function loadElsevierCacheByKey(env, issnKey) {
   if (!row || !row.payload_json) return null;
   const payload = safeJsonParse(row.payload_json);
   if (!payload || typeof payload !== "object") return null;
+  const sanitizedPayload = sanitizeElsevierPayload(payload);
   const now = Math.floor(Date.now() / 1000);
   const expiresUnix = Number(row.expires_unix || 0);
   return {
     issnKey: key,
     issnDisplay: String(row.issn_display || formatIssnDisplay(key)),
-    payload,
+    payload: sanitizedPayload,
     source: String(row.source || ""),
     updatedUnix: Number(row.updated_unix || 0),
     expiresUnix,
@@ -2830,7 +2826,7 @@ async function upsertElsevierCacheRecord(env, input) {
   if (!env.DB?.prepare) return { ok: false, error: "cache_unavailable" };
   const payload = input?.payload;
   if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
-  const normalizedPayload = unwrapElsevierPayload(payload);
+  const normalizedPayload = sanitizeElsevierPayload(unwrapElsevierPayload(payload));
   if (!normalizedPayload) return { ok: false, error: "invalid_elsevier_payload" };
 
   const ttlDefault = Math.max(300, parseInt(env.ELSEVIER_CACHE_TTL_SECONDS || "604800", 10) || 604800);
@@ -3031,7 +3027,46 @@ function jsonWithSourceHeader(request, env, payload, source, extraHeaders = {}) 
   for (const [k, v] of Object.entries(extraHeaders || {})) {
     if (v !== undefined && v !== null) headers.set(k, String(v));
   }
-  return new Response(JSON.stringify(payload), { status: 200, headers });
+  return new Response(JSON.stringify(sanitizeElsevierPayload(payload)), { status: 200, headers });
+}
+
+function sanitizeElsevierPayload(value, seen = new WeakMap()) {
+  if (typeof value === "string") return stripElsevierApiKeyFromString(value);
+  if (!value || typeof value !== "object") return value;
+  if (seen.has(value)) return seen.get(value);
+
+  if (Array.isArray(value)) {
+    const arr = [];
+    seen.set(value, arr);
+    for (const item of value) arr.push(sanitizeElsevierPayload(item, seen));
+    return arr;
+  }
+
+  const out = {};
+  seen.set(value, out);
+  for (const [key, item] of Object.entries(value)) {
+    out[key] = sanitizeElsevierPayload(item, seen);
+  }
+  return out;
+}
+
+function stripElsevierApiKeyFromString(raw) {
+  const text = String(raw || "");
+  if (!/(?:api[_-]?key|apikey|X-ELS-APIKey)/i.test(text)) return raw;
+
+  try {
+    const url = new URL(text);
+    const keysToDelete = [...url.searchParams.keys()].filter((key) =>
+      /^(?:api[_-]?key|apikey|X-ELS-APIKey)$/i.test(key)
+    );
+    for (const key of keysToDelete) url.searchParams.delete(key);
+    return url.toString();
+  } catch {
+    return text
+      .replace(/([?&])(?:api[_-]?key|apikey|X-ELS-APIKey)=[^&#\s"']*/gi, "$1")
+      .replace(/\?&/g, "?")
+      .replace(/[?&](?=#|$)/g, "");
+  }
 }
 
 function normalizeBaseUrl(raw) {
@@ -3280,7 +3315,7 @@ function buildElsevierIssnVariants(issnRaw) {
   return [...variants];
 }
 
-async function requestElsevierSerialTitle(issn, apiKey, env) {
+export async function requestElsevierSerialTitle(issn, apiKey, env) {
   const publicOrigin = "https://www.scansci.com";
   const defaultTimeout = 3500;
   const parsedTimeout = Number.parseInt(String(env?.ELSEVIER_UPSTREAM_TIMEOUT_MS || ""), 10);
@@ -3288,13 +3323,16 @@ async function requestElsevierSerialTitle(issn, apiKey, env) {
     Number.isFinite(parsedTimeout) && parsedTimeout >= 1200
       ? parsedTimeout
       : Number.parseInt(String(defaultTimeout), 10);
-  const baseUrl =
+  const citeScoreUrl =
+    `https://api.elsevier.com/content/serial/title?` +
+    `issn=${encodeURIComponent(issn)}&view=CITESCORE`;
+  const standardUrl =
     `https://api.elsevier.com/content/serial/title?` +
     `issn=${encodeURIComponent(issn)}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`;
 
   const attempts = [
     {
-      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      url: `${citeScoreUrl}&apiKey=${encodeURIComponent(apiKey)}`,
       timeoutMs: runtimeTimeout,
       headers: {
         Accept: "application/json",
@@ -3305,7 +3343,7 @@ async function requestElsevierSerialTitle(issn, apiKey, env) {
       },
     },
     {
-      url: baseUrl,
+      url: citeScoreUrl,
       timeoutMs: runtimeTimeout,
       headers: {
         Accept: "application/json",
@@ -3317,7 +3355,42 @@ async function requestElsevierSerialTitle(issn, apiKey, env) {
       },
     },
     {
-      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      url: `${citeScoreUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      timeoutMs: runtimeTimeout,
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
+        "X-ELS-APIKey": apiKey,
+      },
+    },
+    {
+      url: `${standardUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      timeoutMs: runtimeTimeout,
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
+      },
+    },
+    {
+      url: standardUrl,
+      timeoutMs: runtimeTimeout,
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "en-US,en;q=0.9",
+        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+        Origin: publicOrigin,
+        Referer: `${publicOrigin}/`,
+        "X-ELS-APIKey": apiKey,
+      },
+    },
+    {
+      url: `${standardUrl}&apiKey=${encodeURIComponent(apiKey)}`,
       timeoutMs: runtimeTimeout,
       headers: {
         Accept: "application/json",

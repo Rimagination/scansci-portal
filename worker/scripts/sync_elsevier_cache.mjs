@@ -105,12 +105,13 @@ async function loadSeedIssns() {
 function buildElsevierUrls(issn) {
   const compact = issn.replace("-", "");
   const variants = [issn, compact];
-  return variants.map(
-    (variant) =>
-      `https://api.elsevier.com/content/serial/title?issn=${encodeURIComponent(
-        variant
-      )}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`
-  );
+  return variants.flatMap((variant) => {
+    const encoded = encodeURIComponent(variant);
+    return [
+      `https://api.elsevier.com/content/serial/title?issn=${encoded}&view=CITESCORE`,
+      `https://api.elsevier.com/content/serial/title?issn=${encoded}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`,
+    ];
+  });
 }
 
 function unwrapElsevierPayload(payload) {

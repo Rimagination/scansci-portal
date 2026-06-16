@@ -1,0 +1,8 @@
+name = "scansci-journal-car-risk"
+main = "src/journal-car-risk-worker.js"
+compatibility_date = "2026-06-16"
+workers_dev = false
+
+[[routes]]
+pattern = "www.scansci.com/api/journals/car-risk*"
+zone_name = "scansci.com"

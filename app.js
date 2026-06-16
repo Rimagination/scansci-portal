@@ -5,6 +5,7 @@ const state = {
   viewMode: "all",
   me: null,
   favorites: new Set(),
+  authModalSource: "",
 };
 
 const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
@@ -69,8 +70,35 @@ function isModalOpen() {
   return !!els.authModal && !els.authModal.hidden;
 }
 
-function openAuthModal() {
+function anonPrompt() {
+  return window.ScanSciAnonPrompt || null;
+}
+
+function normalizeAppUrl(url) {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  try {
+    return new URL(value, window.location.href).href.replace(/\/$/, "");
+  } catch {
+    return value.replace(/\/$/, "");
+  }
+}
+
+function isKnownAppUrl(url) {
+  const value = normalizeAppUrl(url);
+  if (!value) return false;
+  return state.apps.some((app) => normalizeAppUrl(app.url) === value);
+}
+
+function navigateToTool(url) {
+  const value = String(url || "").trim();
+  if (!value || !isKnownAppUrl(value)) return;
+  window.location.href = value;
+}
+
+function openAuthModal(source = "manual") {
   if (!els.authModal) return;
+  state.authModalSource = source;
   els.authModal.hidden = false;
   document.body.classList.add("is-modal-open");
   window.setTimeout(() => {
@@ -80,8 +108,17 @@ function openAuthModal() {
 
 function closeAuthModal() {
   if (!els.authModal) return;
+  const source = state.authModalSource;
+  state.authModalSource = "";
   els.authModal.hidden = true;
   document.body.classList.remove("is-modal-open");
+
+  const prompt = anonPrompt();
+  if (source === "anon-auto" && prompt) {
+    prompt.markDismissed();
+    const pendingUrl = prompt.consumePendingToolUrl();
+    if (pendingUrl) navigateToTool(pendingUrl);
+  }
 }
 
 function setAuthHint(message, type = "info") {
@@ -97,6 +134,15 @@ function setAuthHint(message, type = "info") {
   els.authHint.classList.remove("is-error", "is-success");
   if (type === "error") els.authHint.classList.add("is-error");
   if (type === "success") els.authHint.classList.add("is-success");
+}
+
+function finishAuthenticatedPromptFlow() {
+  const prompt = anonPrompt();
+  if (!prompt || !state.me) return;
+  const pendingUrl = prompt.consumePendingToolUrl();
+  prompt.clearState();
+  state.authModalSource = "";
+  if (pendingUrl) navigateToTool(pendingUrl);
 }
 
 function appSearchText(app) {
@@ -346,6 +392,7 @@ async function loadMe() {
     const payload = await res.json();
     state.me = payload?.user || null;
     state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
+    finishAuthenticatedPromptFlow();
   } catch (err) {
     console.warn("Auth API unavailable, running as guest:", err);
     state.me = null;
@@ -443,6 +490,7 @@ async function loginByEmailCode() {
     setAuthHint("");
     renderAuth();
     renderGrid();
+    finishAuthenticatedPromptFlow();
   } catch (err) {
     console.error(err);
     setAuthHint("邮箱登录失败，请重试。", "error");
@@ -523,10 +571,23 @@ async function trackOpenTool(appId) {
 
 function onOpenToolClick(event) {
   const link = event.currentTarget;
-  if (!(link instanceof HTMLElement)) return;
+  if (!(link instanceof HTMLAnchorElement)) return;
   const card = link.closest(".tool-card");
   if (!(card instanceof HTMLElement)) return;
   const appId = card.dataset.appId;
+  const toolUrl = link.href;
+
+  if (!state.me) {
+    const prompt = anonPrompt();
+    const promptState = prompt ? prompt.recordToolOpen() : null;
+    if (prompt && promptState && prompt.shouldPrompt(promptState) && isKnownAppUrl(toolUrl)) {
+      event.preventDefault();
+      prompt.setPendingToolUrl(toolUrl);
+      openAuthModal("anon-auto");
+      return;
+    }
+  }
+
   if (appId) {
     void trackOpenTool(appId);
   }

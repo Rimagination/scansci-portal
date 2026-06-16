@@ -1,4 +1,6 @@
-﻿const PKCE_COOKIE = "__Host-scansci_pkce";
+﻿import { queryJournalSearch, upsertJournalSearchItems } from "./journal-search.js";
+
+const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
 const SESSION_COOKIE = "__Secure-scansci_session";
 const LEGACY_SESSION_COOKIE = "__Host-scansci_session";
@@ -117,8 +119,16 @@ async function handleRequest(request, env) {
     return handleActionRead(request, env);
   }
 
+  if (url.pathname === "/api/journals/search" && request.method === "GET") {
+    return handleJournalSearch(request, env);
+  }
+
   if (url.pathname === "/api/elsevier/serial-title" && request.method === "GET") {
     return handleElsevierSerialTitle(request, env);
+  }
+
+  if (url.pathname === "/api/impact/predicted-if" && request.method === "GET") {
+    return handlePredictedImpactFactor(request, env);
   }
 
   if (
@@ -138,6 +148,10 @@ async function handleRequest(request, env) {
 
   if (url.pathname === "/api/admin/submission-stats/batch-upsert" && request.method === "POST") {
     return handleAdminSubmissionStatsBatchUpsert(request, env);
+  }
+
+  if (url.pathname === "/api/admin/journal-search/batch-upsert" && request.method === "POST") {
+    return handleAdminJournalSearchBatchUpsert(request, env);
   }
 
   if (url.pathname === "/api/web/preview-image" && request.method === "GET") {
@@ -873,6 +887,17 @@ async function handleActionRead(request, env) {
   return jsonResponse(request, env, { ok: true, items });
 }
 
+async function handleJournalSearch(request, env) {
+  const url = new URL(request.url);
+  const result = await queryJournalSearch(env, {
+    query: url.searchParams.get("q") || "",
+    limit: url.searchParams.get("limit") || "",
+    minIF: url.searchParams.get("min_if") || url.searchParams.get("minIF") || "",
+  });
+  const status = result.ok ? 200 : 503;
+  return jsonResponse(request, env, { ok: result.ok, ...result }, status);
+}
+
 async function handleElsevierSerialTitle(request, env) {
   const url = new URL(request.url);
   const issn = String(url.searchParams.get("issn") || "").trim();
@@ -979,6 +1004,131 @@ async function handleElsevierSerialTitle(request, env) {
     source: "elsevier-live",
   });
   return jsonWithSourceHeader(request, env, winner.payload, "elsevier-live");
+}
+
+async function handlePredictedImpactFactor(request, env) {
+  const url = new URL(request.url);
+  const issn = formatIssnDisplay(url.searchParams.get("issn"));
+  const eissn = formatIssnDisplay(url.searchParams.get("eissn"));
+  if (!issn && !eissn) {
+    return jsonResponse(request, env, { status: "unavailable", error: "missing_issn", message: "issn is required" }, 400);
+  }
+
+  const officialIf = parsePositiveFloatParam(url.searchParams.get("official_if"));
+  const currentYear = new Date().getUTCFullYear();
+  const officialYear = parseYearParam(url.searchParams.get("official_year")) || currentYear - 2;
+  const targetYear = parseYearParam(url.searchParams.get("target_year")) || officialYear + 1;
+  if (targetYear < 1990 || targetYear > currentYear + 1) {
+    return jsonResponse(request, env, { status: "unavailable", error: "invalid_target_year" }, 400);
+  }
+
+  const cachePayloadKey = JSON.stringify({
+    issn,
+    eissn,
+    official_if: officialIf,
+    official_year: officialYear,
+    target_year: targetYear,
+  });
+  const cache = caches.default;
+  const cacheRequest = new Request(`https://www.scansci.com/_internal/predicted-if?key=${encodeURIComponent(cachePayloadKey)}`);
+  const cached = await cache.match(cacheRequest);
+  if (cached) {
+    const payload = await cached.json();
+    payload.cached = true;
+    return jsonResponse(request, env, payload, 200);
+  }
+
+  const finish = async (status, payload, ttlSeconds) => {
+    const cacheTtl = Math.max(60, Number(ttlSeconds || 0) || 0);
+    await cache.put(
+      cacheRequest,
+      new Response(JSON.stringify(payload), {
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": `public, max-age=${cacheTtl}`,
+        },
+      })
+    );
+    return jsonResponse(request, env, payload, status);
+  };
+
+  const sourceResult = await fetchOpenAlexSourceForPrediction([issn, eissn], env);
+  if (!sourceResult.source) {
+    return finish(
+      200,
+      {
+        status: "unavailable",
+        error: sourceResult.error || "openalex_source_not_found",
+        message: "未找到可用于预测的 OpenAlex Source",
+        target_year: targetYear,
+      },
+      3600
+    );
+  }
+
+  const source = sourceResult.source;
+  const counts = sourceCountsByYear(source);
+  const baselineYears = [officialYear - 1, officialYear - 2];
+  const targetYears = [targetYear - 1, targetYear - 2];
+  const baseline = sumOpenAlexCounts(counts, baselineYears);
+  const target = sumOpenAlexCounts(counts, targetYears);
+  const baselineRate = baseline.citation_rate;
+  const targetRate = target.citation_rate;
+  if (!baselineRate || !targetRate) {
+    return finish(
+      200,
+      {
+        status: "unavailable",
+        error: "insufficient_openalex_counts",
+        message: "OpenAlex 年度引用数据不足",
+        target_year: targetYear,
+        source_id: source.id,
+        source_name: source.display_name,
+        baseline,
+        target,
+      },
+      3600
+    );
+  }
+
+  const rawRatio = Number(targetRate) / Number(baselineRate);
+  const shrinkage = parsePositiveFloatParam(env.PREDICTED_IF_OPENALEX_SHRINKAGE, 1) ?? 0.35;
+  let adjustedRatio = rawRatio;
+  let value = Number(targetRate);
+  let method = "openalex_cohort_rate";
+  if (officialIf !== null) {
+    adjustedRatio = 1 + (rawRatio - 1) * shrinkage;
+    value = officialIf * adjustedRatio;
+    method = "official_if_calibrated_openalex_cohort_shrunken";
+  }
+
+  const minWorks = Math.min(Number(baseline.works_count || 0), Number(target.works_count || 0));
+  const confidence = officialIf !== null && minWorks >= 50 ? "medium" : "low";
+  return finish(
+    200,
+    {
+      status: "ok",
+      metric: "predicted_if",
+      value: Number(value.toFixed(3)),
+      target_year: targetYear,
+      official_year: officialYear,
+      official_if: officialIf,
+      method,
+      confidence,
+      source: "OpenAlex",
+      source_id: source.id,
+      source_name: source.display_name,
+      matched_issn: sourceResult.matched_issn || "",
+      baseline,
+      target,
+      ratio: Number(adjustedRatio.toFixed(5)),
+      openalex_raw_ratio: Number(rawRatio.toFixed(5)),
+      openalex_shrinkage: shrinkage,
+      fetched_at: new Date().toISOString().slice(0, 10),
+      note: "非官方预测值，仅用于投稿前信息参考。",
+    },
+    6 * 60 * 60
+  );
 }
 
 async function handleCitationAnalyze(request, env) {
@@ -2419,6 +2569,18 @@ async function handleAdminSubmissionStatsBatchUpsert(request, env) {
   });
 }
 
+async function handleAdminJournalSearchBatchUpsert(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+
+  const body = await parseJsonBody(request);
+  const items = Array.isArray(body?.items) ? body.items : [];
+  const result = await upsertJournalSearchItems(env, items);
+  const status = result.ok || result.failed > 0 ? 200 : 400;
+  return jsonResponse(request, env, result, status);
+}
+
 function isAdminTokenValid(request, env) {
   const configured = String(env.ADMIN_SYNC_TOKEN || "").trim();
   if (!configured) return false;
@@ -2484,6 +2646,99 @@ function formatIssnDisplay(issnKey) {
   return `${key.slice(0, 4)}-${key.slice(4)}`;
 }
 
+function parsePositiveFloatParam(raw, maximum = 1000) {
+  const value = Number.parseFloat(String(raw || "").trim());
+  if (!Number.isFinite(value) || value <= 0 || value > maximum) return null;
+  return value;
+}
+
+function parseYearParam(raw) {
+  const text = String(raw || "").trim();
+  if (!/^(19|20)\d{2}$/.test(text)) return null;
+  return Number.parseInt(text, 10);
+}
+
+function buildOpenAlexSourceUrl(issn, env) {
+  const params = new URLSearchParams({
+    filter: `issn:${issn}`,
+    "per-page": "1",
+    select: "id,display_name,issn_l,issn,counts_by_year",
+  });
+  const mailto = String(env.OPENALEX_MAILTO || "").trim();
+  if (mailto) params.set("mailto", mailto);
+  return `https://api.openalex.org/sources?${params.toString()}`;
+}
+
+async function fetchOpenAlexSourceForPrediction(issns, env) {
+  const tried = [...new Set((issns || []).map((x) => formatIssnDisplay(x)).filter(Boolean))];
+  if (!tried.length) return { source: null, error: "openalex_source_not_found", tried };
+
+  const requests = tried.map(async (issn) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    try {
+      const resp = await fetch(buildOpenAlexSourceUrl(issn, env), {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "ScanSci-Worker/1.0 (OpenAlex predictive IF estimate)",
+        },
+        signal: controller.signal,
+        cf: { cacheTtl: 6 * 60 * 60, cacheEverything: false },
+      });
+      if (!resp.ok) return { source: null, error: `openalex_http_${resp.status}`, matched_issn: issn };
+      const payload = await resp.json();
+      const results = Array.isArray(payload?.results) ? payload.results : [];
+      const source = results.find((row) => row && typeof row === "object") || null;
+      return source ? { source, matched_issn: issn, tried } : { source: null, error: "openalex_source_not_found", matched_issn: issn };
+    } catch (error) {
+      const isAbort = String(error?.name || "") === "AbortError";
+      return { source: null, error: isAbort ? "openalex_timeout" : "openalex_unavailable", matched_issn: issn };
+    } finally {
+      clearTimeout(timer);
+    }
+  });
+
+  const results = await Promise.all(requests);
+  const winner = results.find((item) => item.source);
+  if (winner) return { ...winner, tried };
+  return { source: null, error: results[0]?.error || "openalex_source_not_found", tried };
+}
+
+function sourceCountsByYear(source) {
+  const rows = Array.isArray(source?.counts_by_year) ? source.counts_by_year : [];
+  const counts = {};
+  for (const row of rows) {
+    const year = Number.parseInt(String(row?.year || ""), 10);
+    if (!Number.isFinite(year)) continue;
+    counts[year] = {
+      works_count: Math.max(0, Number.parseInt(String(row?.works_count || 0), 10) || 0),
+      cited_by_count: Math.max(0, Number.parseInt(String(row?.cited_by_count || 0), 10) || 0),
+    };
+  }
+  return counts;
+}
+
+function sumOpenAlexCounts(counts, years) {
+  let works = 0;
+  let cited = 0;
+  const presentYears = [];
+  for (const year of years || []) {
+    const row = counts?.[year];
+    if (!row) continue;
+    presentYears.push(year);
+    works += Number(row.works_count || 0);
+    cited += Number(row.cited_by_count || 0);
+  }
+  return {
+    years,
+    present_years: presentYears,
+    works_count: works,
+    cited_by_count: cited,
+    citation_rate: works > 0 ? cited / works : null,
+  };
+}
+
 function normalizeSubmissionStatPayloadLocal(input) {
   const issnKey = normalizeIssnKey(input?.issn);
   if (!issnKey) return { ok: false, error: "invalid_issn" };
@@ -2541,11 +2796,18 @@ function validateSubmissionRatingPayload(body) {
 async function loadElsevierCacheByKey(env, issnKey) {
   const key = normalizeIssnKey(issnKey);
   if (!key) return null;
-  const row = await env.DB.prepare(
-    "SELECT issn_key, issn_display, payload_json, source, updated_unix, expires_unix FROM elsevier_cache WHERE issn_key = ? LIMIT 1"
-  )
-    .bind(key)
-    .first();
+  if (!env.DB?.prepare) return null;
+  let row = null;
+  try {
+    row = await env.DB.prepare(
+      "SELECT issn_key, issn_display, payload_json, source, updated_unix, expires_unix FROM elsevier_cache WHERE issn_key = ? LIMIT 1"
+    )
+      .bind(key)
+      .first();
+  } catch (error) {
+    console.warn("Elsevier cache read failed", error);
+    return null;
+  }
   if (!row || !row.payload_json) return null;
   const payload = safeJsonParse(row.payload_json);
   if (!payload || typeof payload !== "object") return null;
@@ -2565,6 +2827,7 @@ async function loadElsevierCacheByKey(env, issnKey) {
 async function upsertElsevierCacheRecord(env, input) {
   const key = normalizeIssnKey(input?.issn);
   if (!key) return { ok: false, error: "invalid_issn" };
+  if (!env.DB?.prepare) return { ok: false, error: "cache_unavailable" };
   const payload = input?.payload;
   if (!payload || typeof payload !== "object") return { ok: false, error: "invalid_payload" };
   const normalizedPayload = unwrapElsevierPayload(payload);
@@ -2577,20 +2840,25 @@ async function upsertElsevierCacheRecord(env, input) {
   const source = String(input?.source || "elsevier-live").slice(0, 120);
   const nowIso = new Date().toISOString();
 
-  await env.DB.prepare(
-    `INSERT INTO elsevier_cache
-      (issn_key, issn_display, payload_json, source, updated_unix, expires_unix, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(issn_key) DO UPDATE SET
-       issn_display = excluded.issn_display,
-       payload_json = excluded.payload_json,
-       source = excluded.source,
-       updated_unix = excluded.updated_unix,
-       expires_unix = excluded.expires_unix,
-       updated_at = excluded.updated_at`
-  )
-    .bind(key, formatIssnDisplay(key), JSON.stringify(normalizedPayload), source, nowUnix, expiresUnix, nowIso)
-    .run();
+  try {
+    await env.DB.prepare(
+      `INSERT INTO elsevier_cache
+        (issn_key, issn_display, payload_json, source, updated_unix, expires_unix, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(issn_key) DO UPDATE SET
+         issn_display = excluded.issn_display,
+         payload_json = excluded.payload_json,
+         source = excluded.source,
+         updated_unix = excluded.updated_unix,
+         expires_unix = excluded.expires_unix,
+         updated_at = excluded.updated_at`
+    )
+      .bind(key, formatIssnDisplay(key), JSON.stringify(normalizedPayload), source, nowUnix, expiresUnix, nowIso)
+      .run();
+  } catch (error) {
+    console.warn("Elsevier cache write failed", error);
+    return { ok: false, error: "cache_write_failed" };
+  }
 
   return { ok: true, issnKey: key, expiresUnix };
 }

@@ -19,6 +19,7 @@ Cloudflare Worker + D1，实现：
 - `GET /api/me`
 - `GET /api/journals/:issn/submission-stats`
 - `POST /api/journals/:issn/ratings`
+- `GET /api/journals/search?q=nature&limit=12`
 - `POST /api/actions`
 - `GET /api/actions?type=favorite|recent`
 - `GET /api/elsevier/serial-title?issn=xxxx-xxxx`
@@ -127,6 +128,34 @@ wrangler secret put ADMIN_SYNC_TOKEN
 工作流会定时拉取 `https://journal.scansci.com/data/search_index.json` 的 ISSN 列表，
 请求 Elsevier 后批量写入 D1 缓存。
 
+## 期刊搜索索引同步
+
+Journal Scout 首页可优先调用 Worker 的 D1 FTS5 搜索接口：
+
+- `GET /api/journals/search?q=nature&limit=12`
+- `POST /api/admin/journal-search/batch-upsert`（管理员）
+
+可选的专用搜索 Worker 配置为 `wrangler.journal-search.toml`，用于让更具体的
+`www.scansci.com/api/journals/search*` 路由直接命中轻量检索 Worker：
+
+```bash
+npx wrangler deploy --config wrangler.journal-search.toml
+```
+
+同步当前静态 `search_index.json` 到 D1：
+
+```bash
+export SCANSCI_WORKER_BASE=https://www.scansci.com
+export SCANSCI_ADMIN_SYNC_TOKEN=xxxx
+node scripts/sync_journal_search.mjs https://journal.scansci.com/data/search_index.json
+```
+
+本地文件同步示例：
+
+```bash
+node scripts/sync_journal_search.mjs D:/scansci/journal-scout/data/search_index.json
+```
+
 ## 投稿评价同步
 
 - 解析与归一化逻辑：`src/submission-stats.mjs`
@@ -174,6 +203,8 @@ node scripts/sync_letpub_comment_insights.mjs D:/VSP/TEST/outputs/letpub_environ
 - `sql/0002_auth_methods.sql`
 - `sql/0003_elsevier_cache.sql`
 - `sql/0004_submission_stats.sql`
+- `sql/0005_user_actions_profile_lookup.sql`
+- `sql/0006_journal_search.sql`
 
 ## 本地调试
 

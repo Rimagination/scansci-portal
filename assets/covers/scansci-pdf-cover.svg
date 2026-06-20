@@ -1,0 +1,15 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ScanSci PDF</title>
+  <desc id="desc">Black-and-white horizontal ScanSci PDF banner for the ScanSci tools portal</desc>
+  <rect width="900" height="600" rx="42" fill="#f5f5f5"/>
+  <g transform="translate(70 190)">
+    <rect width="760" height="176" rx="58" fill="#fff"/>
+    <g transform="translate(66 33) scale(0.76)">
+      <path d="M18 0 H100 L136 36 V126 C136 140 126 150 112 150 H18 C8 150 0 142 0 132 V18 C0 8 8 0 18 0Z" fill="#050505"/>
+      <path d="M100 0 V28 C100 33 103 36 108 36 H136Z" fill="#fff"/>
+      <path d="M100 0 V28 C100 33 103 36 108 36 H136" fill="none" stroke="#050505" stroke-width="10" stroke-linejoin="round"/>
+      <text x="68" y="99" text-anchor="middle" fill="#fff" font-family="Arial Black, Inter, Avenir Next, Segoe UI, Helvetica, Arial, sans-serif" font-size="50" font-weight="900" letter-spacing="-1">SCI</text>
+    </g>
+    <text x="220" y="109" fill="#050505" font-family="Inter, Avenir Next, Segoe UI, Helvetica, Arial, sans-serif" font-size="68" font-weight="760" letter-spacing="0">ScanSci PDF</text>
+  </g>
+</svg>

@@ -1,6 +1,18 @@
 {
   "apps": [
     {
+      "id": "scansci-pdf",
+      "name": "ScanSci PDF",
+      "description": "学术论文 PDF 获取工具，统一开放/官方渠道、灰色渠道和机构渠道，提供 Python 包、CLI、Web UI 与 MCP 服务。",
+      "cover": "./assets/covers/scansci-pdf-cover.svg",
+      "cover_title": "ScanSci PDF",
+      "cover_subtitle": "论文 PDF 获取 · 多渠道回退",
+      "url": "https://github.com/Rimagination/scansci-pdf",
+      "status": "NEW",
+      "category": "文献获取",
+      "tags": ["pdf", "paper download", "doi", "arXiv", "MCP", "CLI", "Web UI", "Sci-Hub", "LibGen", "WebVPN", "CARSI", "EZProxy", "机构访问", "灰色渠道", "论文下载", "文献获取"]
+    },
+    {
       "id": "easyslides",
       "name": "EasySlides",
       "description": "学术演示与科研汇报样例库，把论文内容、组会汇报和真实 PPT 页面放进可展示的舞台场景。",

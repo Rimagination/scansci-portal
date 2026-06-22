@@ -5,7 +5,9 @@ import worker from "../src/index.js";
 import {
   buildJournalSearchMatchQuery,
   normalizeJournalSearchItem,
+  queryJournalDetail,
   queryJournalSearch,
+  upsertJournalSearchItems,
 } from "../src/journal-search.js";
 
 class FakeD1Statement {
@@ -24,6 +26,10 @@ class FakeD1Statement {
     return { results: this.db.executeAll(this.sql, this.args) };
   }
 
+  async first() {
+    return this.db.executeFirst(this.sql, this.args);
+  }
+
   async run() {
     this.db.executeRun(this.sql, this.args);
     return { success: true };
@@ -33,12 +39,23 @@ class FakeD1Statement {
 class FakeD1Database {
   constructor(seed = {}) {
     this.searchRows = Array.isArray(seed.searchRows) ? seed.searchRows.map((item) => ({ ...item })) : [];
+    this.detailRows = Array.isArray(seed.detailRows) ? seed.detailRows.map((item) => ({ ...item })) : [];
     this.allCalls = [];
+    this.firstCalls = [];
     this.runCalls = [];
+    this.batchCalls = [];
   }
 
   prepare(sql) {
     return new FakeD1Statement(this, sql);
+  }
+
+  async batch(statements) {
+    this.batchCalls.push(statements);
+    for (const statement of statements) {
+      await statement.run();
+    }
+    return statements.map(() => ({ success: true }));
   }
 
   executeAll(sql, args) {
@@ -51,6 +68,15 @@ class FakeD1Database {
 
   executeRun(sql, args) {
     this.runCalls.push({ sql, args });
+  }
+
+  executeFirst(sql, args) {
+    this.firstCalls.push({ sql, args });
+    if (!sql.includes("journal_detail")) {
+      throw new Error(`unexpected detail SQL: ${sql}`);
+    }
+    const id = Number(args[0]);
+    return this.detailRows.find((row) => Number(row.id) === id) || null;
   }
 }
 
@@ -188,4 +214,53 @@ test("worker journal search route returns JSON and avoids DB work for blank quer
   assert.deepEqual(payload.items, []);
   assert.equal(db.allCalls.length, 0);
   assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://journal.scansci.com");
+});
+
+test("journal detail route returns one journal without exposing a list endpoint", async () => {
+  const db = new FakeD1Database({
+    detailRows: [
+      {
+        id: 18,
+        detail_json: JSON.stringify({ id: 18, title: "NATURE", issn: "0028-0836" }),
+        related_json: JSON.stringify([{ id: 19, title: "SCIENCE" }]),
+        updated_at: "2026-06-23T00:00:00.000Z",
+      },
+    ],
+  });
+
+  const direct = await queryJournalDetail({ DB: db }, { id: 18 });
+  assert.equal(direct.ok, true);
+  assert.equal(direct.journal.title, "NATURE");
+  assert.equal(direct.related.length, 1);
+
+  const response = await worker.fetch(new Request("https://www.scansci.com/api/journals/detail?id=18"), {
+    DB: db,
+    CORS_ORIGINS: "https://journal.scansci.com",
+  });
+  const payload = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(payload.ok, true);
+  assert.equal(payload.journal.issn, "0028-0836");
+  assert.equal(db.firstCalls.length, 2);
+});
+
+test("journal search admin upsert batches D1 writes", async () => {
+  const db = new FakeD1Database();
+  const result = await upsertJournalSearchItems({ DB: db }, [
+    {
+      id: 1,
+      title: "NATURE",
+      issn: "0028-0836",
+      eissn: "1476-4687",
+      if_2023: 50,
+      jcr_quartile: "Q1",
+      tags: ["SCIE"],
+    },
+  ]);
+
+  assert.equal(result.ok, true);
+  assert.equal(result.success, 1);
+  assert.equal(db.batchCalls.length, 1);
+  assert.equal(db.batchCalls[0].length, 3);
 });

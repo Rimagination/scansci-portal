@@ -1,4 +1,9 @@
-﻿import { queryJournalSearch, upsertJournalSearchItems } from "./journal-search.js";
+﻿import {
+  queryJournalDetail,
+  queryJournalSearch,
+  upsertJournalDetailItems,
+  upsertJournalSearchItems,
+} from "./journal-search.js";
 
 const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
@@ -123,6 +128,10 @@ async function handleRequest(request, env) {
     return handleJournalSearch(request, env);
   }
 
+  if (url.pathname === "/api/journals/detail" && request.method === "GET") {
+    return handleJournalDetail(request, env);
+  }
+
   if (url.pathname === "/api/elsevier/serial-title" && request.method === "GET") {
     return handleElsevierSerialTitle(request, env);
   }
@@ -152,6 +161,10 @@ async function handleRequest(request, env) {
 
   if (url.pathname === "/api/admin/journal-search/batch-upsert" && request.method === "POST") {
     return handleAdminJournalSearchBatchUpsert(request, env);
+  }
+
+  if (url.pathname === "/api/admin/journal-detail/batch-upsert" && request.method === "POST") {
+    return handleAdminJournalDetailBatchUpsert(request, env);
   }
 
   if (url.pathname === "/api/web/preview-image" && request.method === "GET") {
@@ -895,6 +908,15 @@ async function handleJournalSearch(request, env) {
     minIF: url.searchParams.get("min_if") || url.searchParams.get("minIF") || "",
   });
   const status = result.ok ? 200 : 503;
+  return jsonResponse(request, env, { ok: result.ok, ...result }, status);
+}
+
+async function handleJournalDetail(request, env) {
+  const url = new URL(request.url);
+  const result = await queryJournalDetail(env, {
+    id: url.searchParams.get("id") || "",
+  });
+  const status = result.ok ? 200 : result.error === "journal_not_found" ? 404 : 503;
   return jsonResponse(request, env, { ok: result.ok, ...result }, status);
 }
 
@@ -2572,6 +2594,18 @@ async function handleAdminJournalSearchBatchUpsert(request, env) {
   const body = await parseJsonBody(request);
   const items = Array.isArray(body?.items) ? body.items : [];
   const result = await upsertJournalSearchItems(env, items);
+  const status = result.ok || result.failed > 0 ? 200 : 400;
+  return jsonResponse(request, env, result, status);
+}
+
+async function handleAdminJournalDetailBatchUpsert(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+
+  const body = await parseJsonBody(request);
+  const items = Array.isArray(body?.items) ? body.items : [];
+  const result = await upsertJournalDetailItems(env, items);
   const status = result.ok || result.failed > 0 ? 200 : 400;
   return jsonResponse(request, env, result, status);
 }

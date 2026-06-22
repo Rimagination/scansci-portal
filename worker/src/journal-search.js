@@ -1,6 +1,7 @@
 const DEFAULT_LIMIT = 12;
 const MAX_LIMIT = 20;
 const MAX_QUERY_CHARS = 120;
+const MAX_DETAIL_BATCH_SIZE = 50;
 
 const PUBLIC_COLUMNS = [
   "id",
@@ -185,39 +186,146 @@ export async function queryJournalSearch(env, options = {}) {
   }
 }
 
+export async function queryJournalDetail(env, options = {}) {
+  const id = toInteger(options.id);
+  if (!id) {
+    return { ok: false, id, source: "journal-detail-invalid", error: "invalid_id" };
+  }
+  if (!env?.DB?.prepare) {
+    return { ok: false, id, source: "journal-detail-unavailable", error: "detail_unavailable" };
+  }
+
+  try {
+    const row = await env.DB.prepare(
+      `SELECT id, detail_json, related_json, updated_at
+       FROM journal_detail
+       WHERE id = ?`
+    )
+      .bind(id)
+      .first();
+    if (!row) {
+      return { ok: false, id, source: "journal-detail-d1", error: "journal_not_found" };
+    }
+    const journal = safeJsonParse(row.detail_json, null);
+    const related = safeJsonParse(row.related_json, []);
+    if (!journal || typeof journal !== "object") {
+      return { ok: false, id, source: "journal-detail-d1", error: "invalid_detail_payload" };
+    }
+    return {
+      ok: true,
+      id,
+      journal,
+      related: Array.isArray(related) ? related : [],
+      updated_at: toStringValue(row.updated_at),
+      source: "journal-detail-d1",
+    };
+  } catch (error) {
+    console.warn("Journal detail query failed", error);
+    return { ok: false, id, source: "journal-detail-error", error: "detail_failed" };
+  }
+}
+
 export async function upsertJournalSearchItems(env, items) {
   if (!env?.DB?.prepare) return { ok: false, error: "search_unavailable" };
   if (!Array.isArray(items) || !items.length) return { ok: false, error: "missing_items" };
   if (items.length > 100) return { ok: false, error: "too_many_items", max: 100 };
 
-  let success = 0;
   const failures = [];
+  const records = [];
   for (const item of items) {
     const normalized = normalizeJournalSearchRecord(item);
     if (!normalized.ok) {
       failures.push({ id: item?.id ?? null, title: String(item?.title || ""), error: normalized.error });
       continue;
     }
-    const result = await upsertJournalSearchRecord(env, normalized.record);
-    if (result.ok) {
-      success += 1;
-    } else {
-      failures.push({ id: normalized.record.id, title: normalized.record.title, error: result.error });
+    records.push(normalized.record);
+  }
+
+  if (records.length) {
+    const nowIso = new Date().toISOString();
+    const statements = records.flatMap((record) => buildJournalSearchStatements(env, record, nowIso));
+    const result = await runD1Statements(env, statements);
+    if (!result.ok) {
+      for (const record of records) {
+        failures.push({ id: record.id, title: record.title, error: result.error });
+      }
     }
   }
 
   return {
     ok: failures.length === 0,
-    success,
+    success: records.length - Math.max(0, failures.length - (items.length - records.length)),
     failed: failures.length,
     failures: failures.slice(0, 20),
   };
 }
 
-async function upsertJournalSearchRecord(env, record) {
-  const nowIso = new Date().toISOString();
-  try {
-    await env.DB.prepare(
+export async function upsertJournalDetailItems(env, items) {
+  if (!env?.DB?.prepare) return { ok: false, error: "detail_unavailable" };
+  if (!Array.isArray(items) || !items.length) return { ok: false, error: "missing_items" };
+  if (items.length > MAX_DETAIL_BATCH_SIZE) return { ok: false, error: "too_many_items", max: MAX_DETAIL_BATCH_SIZE };
+
+  const failures = [];
+  const records = [];
+  for (const item of items) {
+    const normalized = normalizeJournalDetailRecord(item);
+    if (!normalized.ok) {
+      failures.push({ id: item?.id ?? item?.journal?.id ?? null, error: normalized.error });
+      continue;
+    }
+    records.push(normalized.record);
+  }
+
+  if (records.length) {
+    const nowIso = new Date().toISOString();
+    const statements = records.map((record) => buildJournalDetailStatement(env, record, nowIso));
+    const result = await runD1Statements(env, statements);
+    if (!result.ok) {
+      for (const record of records) {
+        failures.push({ id: record.id, error: result.error });
+      }
+    }
+  }
+
+  return {
+    ok: failures.length === 0,
+    success: records.length - Math.max(0, failures.length - (items.length - records.length)),
+    failed: failures.length,
+    failures: failures.slice(0, 20),
+  };
+}
+
+export function normalizeJournalDetailRecord(input) {
+  const journal = input?.journal && typeof input.journal === "object" ? input.journal : input;
+  const id = toInteger(journal?.id);
+  if (!id || !journal?.title) {
+    return { ok: false, error: "missing_id_or_title" };
+  }
+  const related = Array.isArray(input?.related) ? input.related : [];
+  return {
+    ok: true,
+    record: {
+      id,
+      detail_json: JSON.stringify(journal),
+      related_json: JSON.stringify(related.slice(0, 24)),
+    },
+  };
+}
+
+function buildJournalDetailStatement(env, record, nowIso) {
+  return env.DB.prepare(
+    `INSERT INTO journal_detail (id, detail_json, related_json, updated_at)
+     VALUES (?, ?, ?, ?)
+     ON CONFLICT(id) DO UPDATE SET
+       detail_json = excluded.detail_json,
+       related_json = excluded.related_json,
+       updated_at = excluded.updated_at`
+  ).bind(record.id, record.detail_json, record.related_json, nowIso);
+}
+
+function buildJournalSearchStatements(env, record, nowIso) {
+  return [
+    env.DB.prepare(
       `INSERT INTO journal_search
         (id, title, issn, eissn, cn_number, if_2023, if_year, jcr_quartile, cas_2025, is_top,
          hq_level, pku_core, cssci_type, cscd_type, warning_latest, xuankan_2026, xuankan_warning,
@@ -247,46 +355,54 @@ async function upsertJournalSearchRecord(env, record) {
          quality_score = excluded.quality_score,
          search_text = excluded.search_text,
          updated_at = excluded.updated_at`
-    )
-      .bind(
-        record.id,
-        record.title,
-        record.issn,
-        record.eissn,
-        record.cn_number,
-        record.if_2023,
-        record.if_year,
-        record.jcr_quartile,
-        record.cas_2025,
-        booleanToInt(record.is_top),
-        record.hq_level,
-        booleanToInt(record.pku_core),
-        record.cssci_type,
-        record.cscd_type,
-        record.warning_latest,
-        record.xuankan_2026,
-        booleanToInt(record.xuankan_warning),
-        nullableBooleanToInt(record.ni_journal),
-        nullableBooleanToInt(record.ni_new),
-        record.tags_json,
-        record.abbrs,
-        record.quality_score,
-        record.search_text,
-        nowIso
-      )
-      .run();
-
-    await env.DB.prepare("DELETE FROM journal_search_fts WHERE rowid = ?").bind(record.id).run();
-    await env.DB.prepare(
+    ).bind(
+      record.id,
+      record.title,
+      record.issn,
+      record.eissn,
+      record.cn_number,
+      record.if_2023,
+      record.if_year,
+      record.jcr_quartile,
+      record.cas_2025,
+      booleanToInt(record.is_top),
+      record.hq_level,
+      booleanToInt(record.pku_core),
+      record.cssci_type,
+      record.cscd_type,
+      record.warning_latest,
+      record.xuankan_2026,
+      booleanToInt(record.xuankan_warning),
+      nullableBooleanToInt(record.ni_journal),
+      nullableBooleanToInt(record.ni_new),
+      record.tags_json,
+      record.abbrs,
+      record.quality_score,
+      record.search_text,
+      nowIso
+    ),
+    env.DB.prepare("DELETE FROM journal_search_fts WHERE rowid = ?").bind(record.id),
+    env.DB.prepare(
       `INSERT INTO journal_search_fts(rowid, title, issn, eissn, cn_number, tags, search_text)
        VALUES (?, ?, ?, ?, ?, ?, ?)`
-    )
-      .bind(record.id, record.title, record.issn, record.eissn, record.cn_number, record.tags.join(" "), record.search_text)
-      .run();
+    ).bind(record.id, record.title, record.issn, record.eissn, record.cn_number, record.tags.join(" "), record.search_text),
+  ];
+}
+
+async function runD1Statements(env, statements) {
+  if (!statements.length) return { ok: true };
+  try {
+    if (typeof env.DB.batch === "function") {
+      await env.DB.batch(statements);
+    } else {
+      for (const statement of statements) {
+        await statement.run();
+      }
+    }
     return { ok: true };
   } catch (error) {
-    console.warn("Journal search upsert failed", error);
-    return { ok: false, error: "journal_search_upsert_failed" };
+    console.warn("Journal D1 batch failed", error);
+    return { ok: false, error: "journal_d1_batch_failed" };
   }
 }
 
@@ -338,6 +454,16 @@ function parseTags(raw) {
       .filter(Boolean);
   }
   return [];
+}
+
+function safeJsonParse(raw, fallback) {
+  if (raw === null || raw === undefined || raw === "") return fallback;
+  if (typeof raw !== "string") return raw;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
 }
 
 function toStringValue(value) {

@@ -1,4 +1,4 @@
-import { queryJournalSearch } from "./journal-search.js";
+import { queryJournalDetail, queryJournalSearch } from "./journal-search.js";
 
 const CORS_ORIGINS = [
   "https://www.scansci.com",
@@ -12,8 +12,16 @@ export default {
     }
 
     const url = new URL(request.url);
-    if (request.method !== "GET" || url.pathname !== "/api/journals/search") {
+    if (request.method !== "GET" || !["/api/journals/search", "/api/journals/detail"].includes(url.pathname)) {
       return jsonResponse(request, { ok: false, error: "not_found" }, 404);
+    }
+
+    if (url.pathname === "/api/journals/detail") {
+      const result = await queryJournalDetail(env, {
+        id: url.searchParams.get("id") || "",
+      });
+      const status = result.ok ? 200 : result.error === "journal_not_found" ? 404 : 503;
+      return jsonResponse(request, { ok: result.ok, ...result }, status);
     }
 
     const result = await queryJournalSearch(env, {

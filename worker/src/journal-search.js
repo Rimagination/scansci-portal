@@ -28,7 +28,15 @@ const PUBLIC_COLUMNS = [
 
 const SELECT_PUBLIC_COLUMNS = PUBLIC_COLUMNS.map((name) => `js.${name}`).join(", ");
 
+function getCuratedAbbrPriorityId(abbrQuery) {
+  if (abbrQuery === "ep") return 753;
+  return 0;
+}
+
 export function buildJournalSearchMatchQuery(rawQuery) {
+  const abbrQuery = normalizeJournalSearchAbbrQuery(rawQuery);
+  if (abbrQuery) return `${abbrQuery}*`;
+
   const tokens = String(rawQuery || "")
     .toLowerCase()
     .slice(0, MAX_QUERY_CHARS)
@@ -48,6 +56,19 @@ export function normalizeJournalSearchLimit(rawLimit) {
 
 export function normalizeJournalSearchQuery(rawQuery) {
   return String(rawQuery || "").replace(/\s+/g, " ").trim().slice(0, MAX_QUERY_CHARS);
+}
+
+export function normalizeJournalSearchAbbrQuery(rawQuery) {
+  const tokens = String(rawQuery || "")
+    .toLowerCase()
+    .match(/[a-z0-9]+/g);
+  if (!tokens?.length) return "";
+
+  const compact = tokens.join("");
+  if (/^[0-9x]{4,16}$/.test(compact)) return compact;
+  if (!/^[a-z0-9]{2,10}$/.test(compact)) return "";
+  if (tokens.length === 1 || tokens.every((token) => token.length === 1)) return compact;
+  return "";
 }
 
 export function normalizeJournalSearchItem(row) {
@@ -134,6 +155,9 @@ export async function queryJournalSearch(env, options = {}) {
   }
 
   const lowerQuery = query.toLowerCase();
+  const abbrQuery = normalizeJournalSearchAbbrQuery(query);
+  const abbrNeedle = abbrQuery ? ` ${abbrQuery} ` : "";
+  const curatedAbbrPriorityId = getCuratedAbbrPriorityId(abbrQuery);
   const rawCompactQuery = lowerQuery.replace(/[^0-9x]/g, "");
   const compactQuery = /^[0-9x]{4,}$/i.test(rawCompactQuery) ? rawCompactQuery : "__no_identifier_match__";
   const prefixQuery = `${lowerQuery.replace(/[%_]/g, "")}%`;
@@ -149,11 +173,13 @@ export async function queryJournalSearch(env, options = {}) {
         WHEN LOWER(js.title) = ? THEN 0
         WHEN REPLACE(LOWER(js.issn), '-', '') = ? THEN 0
         WHEN REPLACE(LOWER(js.eissn), '-', '') = ? THEN 0
-        WHEN LOWER(js.title) LIKE ? THEN 1
-        WHEN LOWER(js.issn) LIKE ? THEN 1
-        WHEN LOWER(js.eissn) LIKE ? THEN 1
-        WHEN LOWER(js.cn_number) LIKE ? THEN 1
-        ELSE 2
+        WHEN ? > 0 AND js.id = ? THEN 1
+        WHEN ? != '' AND instr(' ' || LOWER(js.abbrs) || ' ', ?) > 0 THEN 2
+        WHEN LOWER(js.title) LIKE ? THEN 3
+        WHEN LOWER(js.issn) LIKE ? THEN 3
+        WHEN LOWER(js.eissn) LIKE ? THEN 3
+        WHEN LOWER(js.cn_number) LIKE ? THEN 3
+        ELSE 4
       END,
       js.quality_score DESC,
       rank,
@@ -171,6 +197,10 @@ export async function queryJournalSearch(env, options = {}) {
         lowerQuery,
         compactQuery,
         compactQuery,
+        curatedAbbrPriorityId,
+        curatedAbbrPriorityId,
+        abbrQuery,
+        abbrNeedle,
         prefixQuery,
         prefixQuery,
         prefixQuery,

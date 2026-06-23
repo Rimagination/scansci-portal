@@ -5,6 +5,7 @@ import worker from "../src/index.js";
 import journalSearchWorker from "../src/journal-search-worker.js";
 import {
   buildJournalSearchMatchQuery,
+  normalizeJournalSearchAbbrQuery,
   normalizeJournalSearchItem,
   queryJournalDetail,
   queryJournalSearch,
@@ -98,7 +99,9 @@ class FakeD1Database {
 
 test("buildJournalSearchMatchQuery tokenizes user text into safe FTS prefix terms", () => {
   assert.equal(buildJournalSearchMatchQuery("Nature Reviews Microbiology"), "nature* reviews* microbiology*");
-  assert.equal(buildJournalSearchMatchQuery("1740-1526"), "1740* 1526*");
+  assert.equal(buildJournalSearchMatchQuery("E P"), "ep*");
+  assert.equal(normalizeJournalSearchAbbrQuery("E P"), "ep");
+  assert.equal(buildJournalSearchMatchQuery("1740-1526"), "17401526*");
   assert.equal(buildJournalSearchMatchQuery("\"cancer\" OR 1=1"), "cancer* or* 1*");
   assert.equal(buildJournalSearchMatchQuery("中科院 1区"), "中科院* 1区*");
 });
@@ -177,6 +180,22 @@ test("normalizeJournalSearchRecord derives a quality score for broad-query ranki
   assert.match(normalized.record.search_text, /00079235/);
 });
 
+test("normalizeJournalSearchRecord indexes title initials for abbreviation search", async () => {
+  const { normalizeJournalSearchRecord } = await import("../src/journal-search.js");
+  const normalized = normalizeJournalSearchRecord({
+    id: 753,
+    title: "ENVIRONMENTAL POLLUTION",
+    issn: "0269-7491",
+    if_2023: 7.2,
+    jcr_quartile: "Q1",
+    cas_2025: "2",
+  });
+
+  assert.equal(normalized.ok, true);
+  assert.match(` ${normalized.record.abbrs} `, / ep /);
+  assert.match(normalized.record.search_text, /ep/);
+});
+
 test("queryJournalSearch reads D1 FTS and returns normalized top-n results", async () => {
   const db = new FakeD1Database({
     searchRows: [
@@ -211,6 +230,31 @@ test("queryJournalSearch reads D1 FTS and returns normalized top-n results", asy
   assert.equal(db.allCalls[0].args[0], "nature* reviews*");
   assert.notEqual(db.allCalls[0].args[4], "");
   assert.notEqual(db.allCalls[0].args[5], "");
+});
+
+test("queryJournalSearch ranks exact abbreviation matches before title prefixes", async () => {
+  const db = new FakeD1Database({
+    searchRows: [
+      {
+        id: 753,
+        title: "ENVIRONMENTAL POLLUTION",
+        issn: "0269-7491",
+        tags_json: '["Q1"]',
+        rank: -8,
+      },
+    ],
+  });
+
+  const result = await queryJournalSearch({ DB: db }, { query: "E P", limit: 12 });
+
+  assert.equal(result.query, "E P");
+  assert.equal(db.allCalls[0].args[0], "ep*");
+  assert.equal(db.allCalls[0].args[6], 753);
+  assert.equal(db.allCalls[0].args[7], 753);
+  assert.equal(db.allCalls[0].args[8], "ep");
+  assert.equal(db.allCalls[0].args[9], " ep ");
+  assert.match(db.allCalls[0].sql, /js\.id = \?/);
+  assert.match(db.allCalls[0].sql, /LOWER\(js\.abbrs\)/);
 });
 
 test("worker journal search route returns JSON and avoids DB work for blank queries", async () => {

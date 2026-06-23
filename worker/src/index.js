@@ -4,6 +4,7 @@
   upsertJournalDetailItems,
   upsertJournalSearchItems,
 } from "./journal-search.js";
+import { applyRateLimitHeaders, checkJournalApiRateLimit } from "./rate-limit.js";
 
 const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
@@ -901,6 +902,11 @@ async function handleActionRead(request, env) {
 }
 
 async function handleJournalSearch(request, env) {
+  const rateLimit = await checkJournalApiRateLimit(request, env);
+  if (!rateLimit.allowed) {
+    return journalRateLimitResponse(request, env, rateLimit);
+  }
+
   const url = new URL(request.url);
   const result = await queryJournalSearch(env, {
     query: url.searchParams.get("q") || "",
@@ -908,16 +914,32 @@ async function handleJournalSearch(request, env) {
     minIF: url.searchParams.get("min_if") || url.searchParams.get("minIF") || "",
   });
   const status = result.ok ? 200 : 503;
-  return jsonResponse(request, env, { ok: result.ok, ...result }, status);
+  const response = jsonResponse(request, env, { ok: result.ok, ...result }, status);
+  applyRateLimitHeaders(response.headers, rateLimit);
+  return response;
 }
 
 async function handleJournalDetail(request, env) {
+  const rateLimit = await checkJournalApiRateLimit(request, env);
+  if (!rateLimit.allowed) {
+    return journalRateLimitResponse(request, env, rateLimit);
+  }
+
   const url = new URL(request.url);
   const result = await queryJournalDetail(env, {
     id: url.searchParams.get("id") || "",
   });
   const status = result.ok ? 200 : result.error === "journal_not_found" ? 404 : 503;
-  return jsonResponse(request, env, { ok: result.ok, ...result }, status);
+  const response = jsonResponse(request, env, { ok: result.ok, ...result }, status);
+  applyRateLimitHeaders(response.headers, rateLimit);
+  return response;
+}
+
+function journalRateLimitResponse(request, env, rateLimit) {
+  const response = jsonResponse(request, env, { ok: false, error: "too_many_requests" }, 429);
+  applyRateLimitHeaders(response.headers, rateLimit);
+  response.headers.set("Cache-Control", "no-store");
+  return response;
 }
 
 async function handleElsevierSerialTitle(request, env) {

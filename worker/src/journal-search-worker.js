@@ -1,4 +1,5 @@
 import { queryJournalDetail, queryJournalSearch } from "./journal-search.js";
+import { applyRateLimitHeaders, checkJournalApiRateLimit } from "./rate-limit.js";
 
 const CORS_ORIGINS = [
   "https://www.scansci.com",
@@ -16,12 +17,19 @@ export default {
       return jsonResponse(request, { ok: false, error: "not_found" }, 404);
     }
 
+    const rateLimit = await checkJournalApiRateLimit(request, env);
+    if (!rateLimit.allowed) {
+      return rateLimitResponse(request, rateLimit);
+    }
+
     if (url.pathname === "/api/journals/detail") {
       const result = await queryJournalDetail(env, {
         id: url.searchParams.get("id") || "",
       });
       const status = result.ok ? 200 : result.error === "journal_not_found" ? 404 : 503;
-      return jsonResponse(request, { ok: result.ok, ...result }, status);
+      const response = jsonResponse(request, { ok: result.ok, ...result }, status);
+      applyRateLimitHeaders(response.headers, rateLimit);
+      return response;
     }
 
     const result = await queryJournalSearch(env, {
@@ -30,7 +38,9 @@ export default {
       minIF: url.searchParams.get("min_if") || url.searchParams.get("minIF") || "",
     });
 
-    return jsonResponse(request, { ok: result.ok, ...result }, result.ok ? 200 : 503);
+    const response = jsonResponse(request, { ok: result.ok, ...result }, result.ok ? 200 : 503);
+    applyRateLimitHeaders(response.headers, rateLimit);
+    return response;
   },
 };
 
@@ -54,4 +64,11 @@ function jsonResponse(request, payload, status = 200) {
   const headers = standardHeaders(request);
   headers.set("Content-Type", "application/json; charset=utf-8");
   return new Response(JSON.stringify(payload), { status, headers });
+}
+
+function rateLimitResponse(request, rateLimit) {
+  const response = jsonResponse(request, { ok: false, error: "too_many_requests" }, 429);
+  applyRateLimitHeaders(response.headers, rateLimit);
+  response.headers.set("Cache-Control", "no-store");
+  return response;
 }

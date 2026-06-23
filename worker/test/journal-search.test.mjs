@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import worker from "../src/index.js";
+import journalSearchWorker from "../src/journal-search-worker.js";
 import {
   buildJournalSearchMatchQuery,
   normalizeJournalSearchItem,
@@ -40,6 +41,7 @@ class FakeD1Database {
   constructor(seed = {}) {
     this.searchRows = Array.isArray(seed.searchRows) ? seed.searchRows.map((item) => ({ ...item })) : [];
     this.detailRows = Array.isArray(seed.detailRows) ? seed.detailRows.map((item) => ({ ...item })) : [];
+    this.rateLimitRows = new Map();
     this.allCalls = [];
     this.firstCalls = [];
     this.runCalls = [];
@@ -68,10 +70,24 @@ class FakeD1Database {
 
   executeRun(sql, args) {
     this.runCalls.push({ sql, args });
+    if (sql.includes("api_rate_limits")) {
+      const [key, scope, windowStart, updatedAt] = args;
+      const existing = this.rateLimitRows.get(key);
+      this.rateLimitRows.set(key, {
+        key,
+        scope,
+        window_start: windowStart,
+        count: Number(existing?.count || 0) + 1,
+        updated_at: updatedAt,
+      });
+    }
   }
 
   executeFirst(sql, args) {
     this.firstCalls.push({ sql, args });
+    if (sql.includes("api_rate_limits")) {
+      return this.rateLimitRows.get(args[0]) || null;
+    }
     if (!sql.includes("journal_detail")) {
       throw new Error(`unexpected detail SQL: ${sql}`);
     }
@@ -214,6 +230,8 @@ test("worker journal search route returns JSON and avoids DB work for blank quer
   assert.deepEqual(payload.items, []);
   assert.equal(db.allCalls.length, 0);
   assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://journal.scansci.com");
+  assert.equal(response.headers.get("X-RateLimit-Limit"), "3000");
+  assert.equal(response.headers.get("X-RateLimit-Remaining"), "2999");
 });
 
 test("journal detail route returns one journal without exposing a list endpoint", async () => {
@@ -242,7 +260,37 @@ test("journal detail route returns one journal without exposing a list endpoint"
   assert.equal(response.status, 200);
   assert.equal(payload.ok, true);
   assert.equal(payload.journal.issn, "0028-0836");
-  assert.equal(db.firstCalls.length, 2);
+  assert.equal(response.headers.get("X-RateLimit-Limit"), "3000");
+  assert.equal(db.firstCalls.filter((call) => call.sql.includes("journal_detail")).length, 2);
+});
+
+test("journal API rate limit blocks repeated requests after the configured window limit", async () => {
+  const db = new FakeD1Database();
+  const env = {
+    DB: db,
+    JOURNAL_API_RATE_LIMIT_MAX: "1",
+    JOURNAL_API_RATE_LIMIT_WINDOW_SECONDS: "600",
+  };
+  const headers = { "CF-Connecting-IP": "203.0.113.10" };
+
+  const first = await journalSearchWorker.fetch(
+    new Request("https://www.scansci.com/api/journals/search?q=%20", { headers }),
+    env
+  );
+  const second = await journalSearchWorker.fetch(
+    new Request("https://www.scansci.com/api/journals/search?q=%20", { headers }),
+    env
+  );
+  const payload = await second.json();
+
+  assert.equal(first.status, 200);
+  assert.equal(second.status, 429);
+  assert.equal(payload.error, "too_many_requests");
+  assert.equal(second.headers.get("X-RateLimit-Limit"), "1");
+  assert.equal(second.headers.get("X-RateLimit-Remaining"), "0");
+  assert.equal(second.headers.get("Cache-Control"), "no-store");
+  assert.ok(second.headers.get("Retry-After"));
+  assert.equal(db.allCalls.length, 0);
 });
 
 test("journal search admin upsert batches D1 writes", async () => {

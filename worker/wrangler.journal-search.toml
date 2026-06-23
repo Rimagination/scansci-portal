@@ -3,6 +3,10 @@ main = "src/journal-search-worker.js"
 compatibility_date = "2026-02-26"
 workers_dev = false
 
+[vars]
+JOURNAL_API_RATE_LIMIT_MAX = "3000"
+JOURNAL_API_RATE_LIMIT_WINDOW_SECONDS = "600"
+
 [[routes]]
 pattern = "www.scansci.com/api/journals/search*"
 zone_name = "scansci.com"

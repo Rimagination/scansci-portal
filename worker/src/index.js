@@ -902,11 +902,6 @@ async function handleActionRead(request, env) {
 }
 
 async function handleJournalSearch(request, env) {
-  const rateLimit = await checkJournalApiRateLimit(request, env);
-  if (!rateLimit.allowed) {
-    return journalRateLimitResponse(request, env, rateLimit);
-  }
-
   const url = new URL(request.url);
   const result = await queryJournalSearch(env, {
     query: url.searchParams.get("q") || "",
@@ -914,9 +909,7 @@ async function handleJournalSearch(request, env) {
     minIF: url.searchParams.get("min_if") || url.searchParams.get("minIF") || "",
   });
   const status = result.ok ? 200 : 503;
-  const response = jsonResponse(request, env, { ok: result.ok, ...result }, status);
-  applyRateLimitHeaders(response.headers, rateLimit);
-  return response;
+  return jsonResponse(request, env, { ok: result.ok, ...result }, status);
 }
 
 async function handleJournalDetail(request, env) {

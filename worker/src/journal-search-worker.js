@@ -17,12 +17,12 @@ export default {
       return jsonResponse(request, { ok: false, error: "not_found" }, 404);
     }
 
-    const rateLimit = await checkJournalApiRateLimit(request, env);
-    if (!rateLimit.allowed) {
-      return rateLimitResponse(request, rateLimit);
-    }
-
     if (url.pathname === "/api/journals/detail") {
+      const rateLimit = await checkJournalApiRateLimit(request, env);
+      if (!rateLimit.allowed) {
+        return rateLimitResponse(request, rateLimit);
+      }
+
       const result = await queryJournalDetail(env, {
         id: url.searchParams.get("id") || "",
       });
@@ -39,7 +39,6 @@ export default {
     });
 
     const response = jsonResponse(request, { ok: result.ok, ...result }, result.ok ? 200 : 503);
-    applyRateLimitHeaders(response.headers, rateLimit);
     return response;
   },
 };

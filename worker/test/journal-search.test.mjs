@@ -230,8 +230,8 @@ test("worker journal search route returns JSON and avoids DB work for blank quer
   assert.deepEqual(payload.items, []);
   assert.equal(db.allCalls.length, 0);
   assert.equal(response.headers.get("Access-Control-Allow-Origin"), "https://journal.scansci.com");
-  assert.equal(response.headers.get("X-RateLimit-Limit"), "3000");
-  assert.equal(response.headers.get("X-RateLimit-Remaining"), "2999");
+  assert.equal(response.headers.get("X-RateLimit-Limit"), null);
+  assert.equal(db.runCalls.filter((call) => call.sql.includes("api_rate_limits")).length, 0);
 });
 
 test("journal detail route returns one journal without exposing a list endpoint", async () => {
@@ -265,7 +265,16 @@ test("journal detail route returns one journal without exposing a list endpoint"
 });
 
 test("journal API rate limit blocks repeated requests after the configured window limit", async () => {
-  const db = new FakeD1Database();
+  const db = new FakeD1Database({
+    detailRows: [
+      {
+        id: 18,
+        detail_json: JSON.stringify({ id: 18, title: "NATURE", issn: "0028-0836" }),
+        related_json: "[]",
+        updated_at: "2026-06-23T00:00:00.000Z",
+      },
+    ],
+  });
   const env = {
     DB: db,
     JOURNAL_API_RATE_LIMIT_MAX: "1",
@@ -274,11 +283,11 @@ test("journal API rate limit blocks repeated requests after the configured windo
   const headers = { "CF-Connecting-IP": "203.0.113.10" };
 
   const first = await journalSearchWorker.fetch(
-    new Request("https://www.scansci.com/api/journals/search?q=%20", { headers }),
+    new Request("https://www.scansci.com/api/journals/detail?id=18", { headers }),
     env
   );
   const second = await journalSearchWorker.fetch(
-    new Request("https://www.scansci.com/api/journals/search?q=%20", { headers }),
+    new Request("https://www.scansci.com/api/journals/detail?id=18", { headers }),
     env
   );
   const payload = await second.json();
@@ -290,7 +299,7 @@ test("journal API rate limit blocks repeated requests after the configured windo
   assert.equal(second.headers.get("X-RateLimit-Remaining"), "0");
   assert.equal(second.headers.get("Cache-Control"), "no-store");
   assert.ok(second.headers.get("Retry-After"));
-  assert.equal(db.allCalls.length, 0);
+  assert.equal(db.firstCalls.filter((call) => call.sql.includes("journal_detail")).length, 1);
 });
 
 test("journal search admin upsert batches D1 writes", async () => {

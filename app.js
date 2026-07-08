@@ -2,6 +2,7 @@ const state = {
   apps: [],
   query: "",
   activeFilter: "all",
+  currentView: "online",
   viewMode: "all",
   me: null,
   favorites: new Set(),
@@ -12,6 +13,8 @@ const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
   ? "https://www.scansci.com/api"
   : "/api";
 
+const MINIPROGRAM_POPUP_SEEN_KEY = "scansci:miniprogram-popup-seen";
+
 const els = {
   search: document.getElementById("globalSearch"),
   filters: document.getElementById("categoryFilters"),
@@ -19,6 +22,8 @@ const els = {
   empty: document.getElementById("emptyState"),
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
+  onlineToolsView: document.getElementById("onlineToolsView"),
+  openSourceView: document.getElementById("openSourceView"),
   authDock: document.getElementById("authDock"),
   authModal: document.getElementById("authModal"),
   closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
@@ -35,11 +40,15 @@ const els = {
   sendCodeBtn: document.getElementById("sendCodeBtn"),
   emailLoginBtn: document.getElementById("emailLoginBtn"),
   authHint: document.getElementById("authHint"),
+  miniProgramPopup: document.getElementById("miniProgramPopup"),
+  openMiniProgramPopupBtn: document.getElementById("openMiniProgramPopupBtn"),
+  closeMiniProgramPopupBtn: document.getElementById("closeMiniProgramPopupBtn"),
+  navViewItems: document.querySelectorAll("[data-view]"),
   navActions: document.querySelectorAll("[data-nav-action]"),
 };
 
 const FILTERS = [
-  { key: "all", label: "全部轻工具", terms: [] },
+  { key: "all", label: "在线轻工具", terms: [] },
   { key: "presentation", label: "演示", terms: ["演示", "汇报", "slides", "presentation", "ppt"] },
   { key: "literature", label: "文献", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
   { key: "data", label: "数据", terms: ["数据", "dataset", "open data"] },
@@ -68,6 +77,66 @@ function isValidEmail(email) {
 
 function isModalOpen() {
   return !!els.authModal && !els.authModal.hidden;
+}
+
+function isMiniProgramPopupOpen() {
+  return !!els.miniProgramPopup && !els.miniProgramPopup.hidden;
+}
+
+function hasSeenMiniProgramPopup() {
+  try {
+    return window.sessionStorage?.getItem(MINIPROGRAM_POPUP_SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markMiniProgramPopupSeen() {
+  try {
+    window.sessionStorage?.setItem(MINIPROGRAM_POPUP_SEEN_KEY, "1");
+  } catch {
+    // Session storage can be unavailable in strict privacy modes.
+  }
+}
+
+function viewFromHash() {
+  return window.location.hash === "#open-source" ? "open-source" : "online";
+}
+
+function hashForView(view) {
+  return view === "open-source" ? "#open-source" : "#online-tools";
+}
+
+function updateNavViewState(view) {
+  els.navViewItems.forEach((item) => {
+    const active = item.dataset.view === view;
+    item.classList.toggle("is-active", active);
+    if (active) item.setAttribute("aria-current", "page");
+    else item.removeAttribute("aria-current");
+  });
+}
+
+function setPortalView(view, options = {}) {
+  const nextView = view === "open-source" ? "open-source" : "online";
+  const { updateHash = true } = options;
+  state.currentView = nextView;
+
+  if (els.onlineToolsView) els.onlineToolsView.hidden = nextView !== "online";
+  if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
+  updateNavViewState(nextView);
+
+  if (els.count && nextView === "open-source") {
+    const count = els.openSourceView?.querySelectorAll(".open-source-card").length || 0;
+    els.count.textContent = `${count} 个开源工具`;
+  }
+
+  if (nextView === "online") {
+    renderGrid();
+  }
+
+  if (updateHash && window.location.hash !== hashForView(nextView)) {
+    window.history.pushState(null, "", hashForView(nextView));
+  }
 }
 
 function anonPrompt() {
@@ -119,6 +188,31 @@ function closeAuthModal() {
     const pendingUrl = prompt.consumePendingToolUrl();
     if (pendingUrl) navigateToTool(pendingUrl);
   }
+}
+
+function openMiniProgramPopup() {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = false;
+  document.body.classList.add("is-miniprogram-popup-open");
+  window.setTimeout(() => {
+    if (els.closeMiniProgramPopupBtn) els.closeMiniProgramPopupBtn.focus();
+  }, 10);
+}
+
+function closeMiniProgramPopup(remember = true) {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = true;
+  document.body.classList.remove("is-miniprogram-popup-open");
+  if (remember) markMiniProgramPopupSeen();
+}
+
+function autoOpenMiniProgramPopup() {
+  if (!els.miniProgramPopup || hasSeenMiniProgramPopup()) return;
+  window.setTimeout(() => {
+    if (!hasSeenMiniProgramPopup() && !isModalOpen()) {
+      openMiniProgramPopup();
+    }
+  }, 650);
 }
 
 function setAuthHint(message, type = "info") {
@@ -265,7 +359,9 @@ function renderGrid() {
   const visible = getVisibleApps();
   els.grid.innerHTML = visible.map((app) => cardTemplate(app)).join("");
   els.empty.hidden = visible.length !== 0;
-  els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个轻工具`;
+  if (state.currentView === "online") {
+    els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个在线轻工具`;
+  }
   els.empty.textContent = "未找到匹配轻工具，请调整关键词或分类。";
 
   els.grid.querySelectorAll('[data-action="favorite"]').forEach((btn) => {
@@ -327,7 +423,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("./data/apps.json?v=4", { cache: "no-store" });
+    const res = await fetch("./data/apps.json?v=5", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];
@@ -601,6 +697,21 @@ function bindEvents() {
     });
   }
 
+  els.navViewItems.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      setPortalView(item.dataset.view || "online");
+    });
+  });
+
+  window.addEventListener("hashchange", () => {
+    setPortalView(viewFromHash(), { updateHash: false });
+  });
+
+  window.addEventListener("popstate", () => {
+    setPortalView(viewFromHash(), { updateHash: false });
+  });
+
   if (els.closeAuthModalBtn) {
     els.closeAuthModalBtn.addEventListener("click", closeAuthModal);
   }
@@ -614,9 +725,33 @@ function bindEvents() {
     });
   }
 
+  if (els.openMiniProgramPopupBtn) {
+    els.openMiniProgramPopupBtn.addEventListener("click", openMiniProgramPopup);
+  }
+
+  if (els.closeMiniProgramPopupBtn) {
+    els.closeMiniProgramPopupBtn.addEventListener("click", () => {
+      closeMiniProgramPopup();
+    });
+  }
+
+  if (els.miniProgramPopup) {
+    els.miniProgramPopup.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.dataset.miniprogramClose === "true") {
+        closeMiniProgramPopup();
+      }
+    });
+  }
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && isModalOpen()) {
+    if (event.key !== "Escape") return;
+    if (isModalOpen()) {
       closeAuthModal();
+      return;
+    }
+    if (isMiniProgramPopupOpen()) {
+      closeMiniProgramPopup();
     }
   });
 
@@ -666,6 +801,7 @@ function bindEvents() {
         setAuthHint("请先登录，再查看收藏的轻工具。", "error");
         openAuthModal();
       }
+      setPortalView("online");
       state.viewMode = "all";
       renderGrid();
     });
@@ -705,6 +841,8 @@ async function loadStats() {
 
 async function bootstrap() {
   bindEvents();
+  setPortalView(viewFromHash(), { updateHash: false });
+  autoOpenMiniProgramPopup();
   await loadApps();
   await loadMe();
   void loadStats();

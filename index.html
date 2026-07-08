@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="./assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="./styles.css?v=20260522g" />
+  <link rel="stylesheet" href="./styles.css?v=20260708-views" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -130,12 +130,10 @@
     .sidebar-nav { min-height: 0; flex: 1; overflow-y: auto; }
     .catalog-controls {
       margin-bottom: 18px;
-      display: grid;
-      grid-template-columns: auto auto 1fr;
+      display: flex;
       align-items: center;
       gap: 8px;
     }
-    .category-filters { display: flex; flex-wrap: wrap; gap: 8px; }
     .auth-dock { margin-top: auto; }
     .portal-main {
       margin-left: var(--sidebar-width);
@@ -162,6 +160,20 @@
         margin-left: 0;
         padding: 20px 16px 16px;
       }
+      .catalog-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 14px;
+        padding: 0;
+        overflow: visible;
+      }
+      .global-search-wrap { flex: 0 0 42px; width: 42px; }
+      .global-search { width: 42px; height: 42px; }
+      .global-search-wrap:focus-within {
+        flex: 0 1 min(260px, calc(100vw - 32px));
+        width: min(260px, calc(100vw - 32px));
+      }
     }
   </style>
 </head>
@@ -175,9 +187,13 @@
 
         <div class="sidebar-nav-group">
           <p class="sidebar-nav-heading">ScanSci</p>
-          <a class="sidebar-nav-item is-active" href="/" aria-current="page">
-            <strong>全部轻工具</strong>
+          <a class="sidebar-nav-item is-active" href="#online-tools" data-view="online" aria-current="page">
+            <strong>在线轻工具</strong>
             <span>Quick Tools</span>
+          </a>
+          <a class="sidebar-nav-item" href="#open-source" data-view="open-source">
+            <strong>开源工具</strong>
+            <span>Open Source</span>
           </a>
           <button class="sidebar-nav-item" type="button" data-nav-action="recent">
             <strong>最近使用</strong>
@@ -248,25 +264,79 @@
         <p id="toolCount">加载中...</p>
       </header>
 
-      <section class="catalog-controls" aria-label="轻工具检索与分类">
-        <label class="search-label" for="globalSearch">搜索轻工具</label>
-        <div class="global-search-wrap">
-          <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <circle cx="11" cy="11" r="7"></circle>
-            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-          </svg>
-          <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名、功能或关键词" />
-        </div>
-        <div class="filter-head">
-          <span>轻工具分类</span>
-        </div>
-        <div id="categoryFilters" class="category-filters" role="tablist" aria-label="轻工具分类"></div>
+      <section class="miniprogram-notice" aria-label="ScanSci 小程序上线">
+        <span class="miniprogram-notice__mark" aria-hidden="true"></span>
+        <p class="miniprogram-notice__text">
+          <strong>ScanSci 小程序上线</strong>
+          <span>微信里也能查期刊、测学术人格、核验参考文献。</span>
+        </p>
+        <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
       </section>
 
-      <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
-      <p id="emptyState" class="empty-state" hidden>未找到匹配轻工具，请调整关键词或分类。</p>
-      <p id="errorState" class="error-state" hidden>轻工具列表加载失败，请稍后重试。</p>
+      <section id="onlineToolsView" class="portal-view" data-portal-view="online">
+        <section class="catalog-controls" aria-label="轻工具检索">
+          <label class="search-label" for="globalSearch">搜索轻工具</label>
+          <div class="global-search-wrap">
+            <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名、功能或关键词" />
+          </div>
+        </section>
+
+        <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+        <p id="emptyState" class="empty-state" hidden>未找到匹配轻工具，请调整关键词或分类。</p>
+        <p id="errorState" class="error-state" hidden>轻工具列表加载失败，请稍后重试。</p>
+      </section>
+
+      <section id="openSourceView" class="portal-view open-source-section" aria-labelledby="openSourceTitle" data-portal-view="open-source" hidden>
+        <div class="open-source-section__head">
+          <h2 id="openSourceTitle">开源工具</h2>
+          <a class="open-source-section__all" href="https://github.com/Rimagination?tab=repositories" target="_blank" rel="noopener">全部仓库</a>
+        </div>
+        <div class="open-source-grid">
+          <a class="open-source-card" href="https://github.com/Rimagination/easyslides" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/easyslides</span>
+            <strong>EasySlides</strong>
+            <span>学术演示与科研汇报工具链</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/scansci-pdf" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/scansci-pdf</span>
+            <strong>ScanSci PDF</strong>
+            <span>论文 PDF 获取与多渠道回退</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/easymd" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/easymd</span>
+            <strong>EasyMD</strong>
+            <span>微信公众号与知乎 Markdown 排版</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/gongwen-draft" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/gongwen-draft</span>
+            <strong>Gongwen Draft</strong>
+            <span>中文公文与政务材料写作 Skill</span>
+          </a>
+        </div>
+      </section>
     </main>
+  </div>
+
+  <div id="miniProgramPopup" class="miniprogram-popup" hidden>
+    <div class="miniprogram-popup__backdrop" data-miniprogram-close="true"></div>
+    <section class="miniprogram-popup__card" role="dialog" aria-modal="true" aria-labelledby="miniProgramPopupTitle">
+      <button id="closeMiniProgramPopupBtn" class="miniprogram-popup__close" type="button" aria-label="关闭小程序提示">×</button>
+      <p class="miniprogram-popup__eyebrow">小程序上线</p>
+      <h2 id="miniProgramPopupTitle">ScanSci 微信小程序</h2>
+      <p class="miniprogram-popup__desc">扫码进入，随手查期刊、测学术人格、核验参考文献。</p>
+      <img
+        class="miniprogram-popup__code"
+        src="./assets/brand/scansci-miniprogram-code.jpg?v=20260708"
+        alt="ScanSci 微信小程序码"
+        width="430"
+        height="430"
+        decoding="async"
+      />
+    </section>
   </div>
 
   <div id="authModal" class="auth-modal" hidden>
@@ -291,7 +361,7 @@
   </div>
 
   <script src="./anon-prompt.js?v=20260616b"></script>
-  <script src="./app.js?v=20260620a"></script>
+  <script src="./app.js?v=20260708-online-filter"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

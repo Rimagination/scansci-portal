@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="./assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="./styles.css?v=20260708-views" />
+  <link rel="stylesheet" href="./styles.css?v=20260708-inline-qr" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -119,12 +119,6 @@
     }
     .sidebar-top { display: grid; gap: 8px; }
     .sidebar-nav { min-height: 0; flex: 1; overflow-y: auto; }
-    .catalog-controls {
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
     .auth-dock { margin-top: auto; }
     .portal-main {
       margin-left: var(--sidebar-width);
@@ -150,20 +144,6 @@
       .portal-main {
         margin-left: 0;
         padding: 20px 16px 16px;
-      }
-      .catalog-controls {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 0 0 14px;
-        padding: 0;
-        overflow: visible;
-      }
-      .global-search-wrap { flex: 0 0 42px; width: 42px; }
-      .global-search { width: 42px; height: 42px; }
-      .global-search-wrap:focus-within {
-        flex: 0 1 min(260px, calc(100vw - 32px));
-        width: min(260px, calc(100vw - 32px));
       }
     }
   </style>
@@ -261,21 +241,17 @@
           <strong>ScanSci 小程序上线</strong>
           <span>微信里也能查期刊、测学术人格、核验参考文献。</span>
         </p>
-        <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
+        <img
+          class="miniprogram-notice__code"
+          src="./assets/brand/scansci-miniprogram-code.jpg?v=20260708"
+          alt="ScanSci 微信小程序码"
+          width="430"
+          height="430"
+          decoding="async"
+        />
       </section>
 
       <section id="onlineToolsView" class="portal-view" data-portal-view="online">
-        <section class="catalog-controls" aria-label="轻工具检索">
-          <label class="search-label" for="globalSearch">搜索轻工具</label>
-          <div class="global-search-wrap">
-            <svg class="global-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-            </svg>
-            <input id="globalSearch" class="global-search" type="search" placeholder="搜索工具名、功能或关键词" />
-          </div>
-        </section>
-
         <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
         <p id="emptyState" class="empty-state" hidden>未找到匹配轻工具，请调整关键词或分类。</p>
         <p id="errorState" class="error-state" hidden>轻工具列表加载失败，请稍后重试。</p>
@@ -312,24 +288,6 @@
     </main>
   </div>
 
-  <div id="miniProgramPopup" class="miniprogram-popup" hidden>
-    <div class="miniprogram-popup__backdrop" data-miniprogram-close="true"></div>
-    <section class="miniprogram-popup__card" role="dialog" aria-modal="true" aria-labelledby="miniProgramPopupTitle">
-      <button id="closeMiniProgramPopupBtn" class="miniprogram-popup__close" type="button" aria-label="关闭小程序提示">×</button>
-      <p class="miniprogram-popup__eyebrow">小程序上线</p>
-      <h2 id="miniProgramPopupTitle">ScanSci 微信小程序</h2>
-      <p class="miniprogram-popup__desc">扫码进入，随手查期刊、测学术人格、核验参考文献。</p>
-      <img
-        class="miniprogram-popup__code"
-        src="./assets/brand/scansci-miniprogram-code.jpg?v=20260708"
-        alt="ScanSci 微信小程序码"
-        width="430"
-        height="430"
-        decoding="async"
-      />
-    </section>
-  </div>
-
   <div id="authModal" class="auth-modal" hidden>
     <div class="auth-modal__backdrop" data-auth-close="true"></div>
     <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
@@ -352,7 +310,7 @@
   </div>
 
   <script src="./anon-prompt.js?v=20260616b"></script>
-  <script src="./app.js?v=20260708-online-filter"></script>
+  <script src="./app.js?v=20260708-inline-qr"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

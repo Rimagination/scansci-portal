@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="./assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="./styles.css?v=20260708-inline-qr" />
+  <link rel="stylesheet" href="./styles.css?v=20260708-miniprogram-button" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -241,14 +241,7 @@
           <strong>ScanSci 小程序上线</strong>
           <span>微信里也能查期刊、测学术人格、核验参考文献。</span>
         </p>
-        <img
-          class="miniprogram-notice__code"
-          src="./assets/brand/scansci-miniprogram-code.jpg?v=20260708"
-          alt="ScanSci 微信小程序码"
-          width="430"
-          height="430"
-          decoding="async"
-        />
+        <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
       </section>
 
       <section id="onlineToolsView" class="portal-view" data-portal-view="online">
@@ -288,6 +281,24 @@
     </main>
   </div>
 
+  <div id="miniProgramPopup" class="miniprogram-popup" hidden>
+    <div class="miniprogram-popup__backdrop" data-miniprogram-close="true"></div>
+    <section class="miniprogram-popup__card" role="dialog" aria-modal="true" aria-labelledby="miniProgramPopupTitle">
+      <button id="closeMiniProgramPopupBtn" class="miniprogram-popup__close" type="button" aria-label="关闭小程序提示">×</button>
+      <p class="miniprogram-popup__eyebrow">小程序上线</p>
+      <h2 id="miniProgramPopupTitle">ScanSci 微信小程序</h2>
+      <p class="miniprogram-popup__desc">扫码进入，随手查期刊、测学术人格、核验参考文献。</p>
+      <img
+        class="miniprogram-popup__code"
+        src="./assets/brand/scansci-miniprogram-code.jpg?v=20260708"
+        alt="ScanSci 微信小程序码"
+        width="430"
+        height="430"
+        decoding="async"
+      />
+    </section>
+  </div>
+
   <div id="authModal" class="auth-modal" hidden>
     <div class="auth-modal__backdrop" data-auth-close="true"></div>
     <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
@@ -310,7 +321,7 @@
   </div>
 
   <script src="./anon-prompt.js?v=20260616b"></script>
-  <script src="./app.js?v=20260708-inline-qr"></script>
+  <script src="./app.js?v=20260708-miniprogram-button"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

@@ -38,6 +38,9 @@ const els = {
   sendCodeBtn: document.getElementById("sendCodeBtn"),
   emailLoginBtn: document.getElementById("emailLoginBtn"),
   authHint: document.getElementById("authHint"),
+  miniProgramPopup: document.getElementById("miniProgramPopup"),
+  openMiniProgramPopupBtn: document.getElementById("openMiniProgramPopupBtn"),
+  closeMiniProgramPopupBtn: document.getElementById("closeMiniProgramPopupBtn"),
   navViewItems: document.querySelectorAll("[data-view]"),
   navActions: document.querySelectorAll("[data-nav-action]"),
 };
@@ -72,6 +75,10 @@ function isValidEmail(email) {
 
 function isModalOpen() {
   return !!els.authModal && !els.authModal.hidden;
+}
+
+function isMiniProgramPopupOpen() {
+  return !!els.miniProgramPopup && !els.miniProgramPopup.hidden;
 }
 
 function viewFromHash() {
@@ -163,6 +170,21 @@ function closeAuthModal() {
     const pendingUrl = prompt.consumePendingToolUrl();
     if (pendingUrl) navigateToTool(pendingUrl);
   }
+}
+
+function openMiniProgramPopup() {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = false;
+  document.body.classList.add("is-miniprogram-popup-open");
+  window.setTimeout(() => {
+    if (els.closeMiniProgramPopupBtn) els.closeMiniProgramPopupBtn.focus();
+  }, 10);
+}
+
+function closeMiniProgramPopup() {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = true;
+  document.body.classList.remove("is-miniprogram-popup-open");
 }
 
 function setAuthHint(message, type = "info") {
@@ -675,10 +697,31 @@ function bindEvents() {
     });
   }
 
+  if (els.openMiniProgramPopupBtn) {
+    els.openMiniProgramPopupBtn.addEventListener("click", openMiniProgramPopup);
+  }
+
+  if (els.closeMiniProgramPopupBtn) {
+    els.closeMiniProgramPopupBtn.addEventListener("click", closeMiniProgramPopup);
+  }
+
+  if (els.miniProgramPopup) {
+    els.miniProgramPopup.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.dataset.miniprogramClose === "true") {
+        closeMiniProgramPopup();
+      }
+    });
+  }
+
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (isModalOpen()) {
       closeAuthModal();
+      return;
+    }
+    if (isMiniProgramPopupOpen()) {
+      closeMiniProgramPopup();
     }
   });
 

@@ -1,18 +1,6 @@
 {
   "apps": [
     {
-      "id": "easyslides",
-      "name": "EasySlides",
-      "description": "本地 PPTX 生成工具链，把论文、报告、网页与 Markdown 转换为结构清晰、可继续编辑的学术演示文稿。",
-      "cover": "./assets/covers/easyslides-cover.png",
-      "cover_title": "EasySlides",
-      "cover_subtitle": "本地 PPTX 生成工具链",
-      "url": "https://rimagination.github.io/easyslides/",
-      "status": "NEW",
-      "category": "学术演示",
-      "tags": ["slides", "presentation", "ppt", "academic presentation", "科研汇报", "学术演示", "组会"]
-    },
-    {
       "id": "paper-atlas",
       "name": "Paper Atlas",
       "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。",

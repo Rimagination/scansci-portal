@@ -2,14 +2,18 @@ const state = {
   apps: [],
   query: "",
   activeFilter: "all",
+  currentView: "online",
   viewMode: "all",
   me: null,
   favorites: new Set(),
+  authModalSource: "",
 };
 
 const API_BASE = ["127.0.0.1", "localhost"].includes(window.location.hostname)
   ? "https://www.scansci.com/api"
   : "/api";
+
+const MINIPROGRAM_POPUP_SEEN_KEY = "scansci:miniprogram-popup-seen";
 
 const els = {
   search: document.getElementById("globalSearch"),
@@ -18,6 +22,8 @@ const els = {
   empty: document.getElementById("emptyState"),
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
+  onlineToolsView: document.getElementById("onlineToolsView"),
+  openSourceView: document.getElementById("openSourceView"),
   authDock: document.getElementById("authDock"),
   authModal: document.getElementById("authModal"),
   closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
@@ -34,11 +40,15 @@ const els = {
   sendCodeBtn: document.getElementById("sendCodeBtn"),
   emailLoginBtn: document.getElementById("emailLoginBtn"),
   authHint: document.getElementById("authHint"),
+  miniProgramPopup: document.getElementById("miniProgramPopup"),
+  openMiniProgramPopupBtn: document.getElementById("openMiniProgramPopupBtn"),
+  closeMiniProgramPopupBtn: document.getElementById("closeMiniProgramPopupBtn"),
+  navViewItems: document.querySelectorAll("[data-view]"),
   navActions: document.querySelectorAll("[data-nav-action]"),
 };
 
 const FILTERS = [
-  { key: "all", label: "全部轻工具", terms: [] },
+  { key: "all", label: "在线轻工具", terms: [] },
   { key: "presentation", label: "演示", terms: ["演示", "汇报", "slides", "presentation", "ppt"] },
   { key: "literature", label: "文献", terms: ["文献", "paper", "citation", "graph", "recommendation", "semantic-scholar"] },
   { key: "data", label: "数据", terms: ["数据", "dataset", "open data"] },
@@ -69,8 +79,95 @@ function isModalOpen() {
   return !!els.authModal && !els.authModal.hidden;
 }
 
-function openAuthModal() {
+function isMiniProgramPopupOpen() {
+  return !!els.miniProgramPopup && !els.miniProgramPopup.hidden;
+}
+
+function hasSeenMiniProgramPopup() {
+  try {
+    return window.sessionStorage?.getItem(MINIPROGRAM_POPUP_SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markMiniProgramPopupSeen() {
+  try {
+    window.sessionStorage?.setItem(MINIPROGRAM_POPUP_SEEN_KEY, "1");
+  } catch {
+    // Session storage can be unavailable in strict privacy modes.
+  }
+}
+
+function viewFromHash() {
+  return window.location.hash === "#open-source" ? "open-source" : "online";
+}
+
+function hashForView(view) {
+  return view === "open-source" ? "#open-source" : "#online-tools";
+}
+
+function updateNavViewState(view) {
+  els.navViewItems.forEach((item) => {
+    const active = item.dataset.view === view;
+    item.classList.toggle("is-active", active);
+    if (active) item.setAttribute("aria-current", "page");
+    else item.removeAttribute("aria-current");
+  });
+}
+
+function setPortalView(view, options = {}) {
+  const nextView = view === "open-source" ? "open-source" : "online";
+  const { updateHash = true } = options;
+  state.currentView = nextView;
+
+  if (els.onlineToolsView) els.onlineToolsView.hidden = nextView !== "online";
+  if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
+  updateNavViewState(nextView);
+
+  if (els.count && nextView === "open-source") {
+    const count = els.openSourceView?.querySelectorAll(".open-source-card").length || 0;
+    els.count.textContent = `${count} 个开源工具`;
+  }
+
+  if (nextView === "online") {
+    renderGrid();
+  }
+
+  if (updateHash && window.location.hash !== hashForView(nextView)) {
+    window.history.pushState(null, "", hashForView(nextView));
+  }
+}
+
+function anonPrompt() {
+  return window.ScanSciAnonPrompt || null;
+}
+
+function normalizeAppUrl(url) {
+  const value = String(url || "").trim();
+  if (!value) return "";
+  try {
+    return new URL(value, window.location.href).href.replace(/\/$/, "");
+  } catch {
+    return value.replace(/\/$/, "");
+  }
+}
+
+function isKnownAppUrl(url) {
+  const value = normalizeAppUrl(url);
+  if (!value) return false;
+  return state.apps.some((app) => normalizeAppUrl(app.url) === value);
+}
+
+function navigateToTool(url) {
+  const value = String(url || "").trim();
+  if (!value || !isKnownAppUrl(value)) return;
+  window.location.href = value;
+}
+
+function openAuthModal(source = "manual") {
   if (!els.authModal) return;
+  state.authModalSource = source;
   els.authModal.hidden = false;
   document.body.classList.add("is-modal-open");
   window.setTimeout(() => {
@@ -80,8 +177,42 @@ function openAuthModal() {
 
 function closeAuthModal() {
   if (!els.authModal) return;
+  const source = state.authModalSource;
+  state.authModalSource = "";
   els.authModal.hidden = true;
   document.body.classList.remove("is-modal-open");
+
+  const prompt = anonPrompt();
+  if (source === "anon-auto" && prompt) {
+    prompt.markDismissed();
+    const pendingUrl = prompt.consumePendingToolUrl();
+    if (pendingUrl) navigateToTool(pendingUrl);
+  }
+}
+
+function openMiniProgramPopup() {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = false;
+  document.body.classList.add("is-miniprogram-popup-open");
+  window.setTimeout(() => {
+    if (els.closeMiniProgramPopupBtn) els.closeMiniProgramPopupBtn.focus();
+  }, 10);
+}
+
+function closeMiniProgramPopup(remember = true) {
+  if (!els.miniProgramPopup) return;
+  els.miniProgramPopup.hidden = true;
+  document.body.classList.remove("is-miniprogram-popup-open");
+  if (remember) markMiniProgramPopupSeen();
+}
+
+function autoOpenMiniProgramPopup() {
+  if (!els.miniProgramPopup || hasSeenMiniProgramPopup()) return;
+  window.setTimeout(() => {
+    if (!hasSeenMiniProgramPopup() && !isModalOpen()) {
+      openMiniProgramPopup();
+    }
+  }, 650);
 }
 
 function setAuthHint(message, type = "info") {
@@ -97,6 +228,15 @@ function setAuthHint(message, type = "info") {
   els.authHint.classList.remove("is-error", "is-success");
   if (type === "error") els.authHint.classList.add("is-error");
   if (type === "success") els.authHint.classList.add("is-success");
+}
+
+function finishAuthenticatedPromptFlow() {
+  const prompt = anonPrompt();
+  if (!prompt || !state.me) return;
+  const pendingUrl = prompt.consumePendingToolUrl();
+  prompt.clearState();
+  state.authModalSource = "";
+  if (pendingUrl) navigateToTool(pendingUrl);
 }
 
 function appSearchText(app) {
@@ -219,7 +359,9 @@ function renderGrid() {
   const visible = getVisibleApps();
   els.grid.innerHTML = visible.map((app) => cardTemplate(app)).join("");
   els.empty.hidden = visible.length !== 0;
-  els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个轻工具`;
+  if (state.currentView === "online") {
+    els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个在线轻工具`;
+  }
   els.empty.textContent = "未找到匹配轻工具，请调整关键词或分类。";
 
   els.grid.querySelectorAll('[data-action="favorite"]').forEach((btn) => {
@@ -346,6 +488,7 @@ async function loadMe() {
     const payload = await res.json();
     state.me = payload?.user || null;
     state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
+    finishAuthenticatedPromptFlow();
   } catch (err) {
     console.warn("Auth API unavailable, running as guest:", err);
     state.me = null;
@@ -443,6 +586,7 @@ async function loginByEmailCode() {
     setAuthHint("");
     renderAuth();
     renderGrid();
+    finishAuthenticatedPromptFlow();
   } catch (err) {
     console.error(err);
     setAuthHint("邮箱登录失败，请重试。", "error");
@@ -523,10 +667,23 @@ async function trackOpenTool(appId) {
 
 function onOpenToolClick(event) {
   const link = event.currentTarget;
-  if (!(link instanceof HTMLElement)) return;
+  if (!(link instanceof HTMLAnchorElement)) return;
   const card = link.closest(".tool-card");
   if (!(card instanceof HTMLElement)) return;
   const appId = card.dataset.appId;
+  const toolUrl = link.href;
+
+  if (!state.me) {
+    const prompt = anonPrompt();
+    const promptState = prompt ? prompt.recordToolOpen() : null;
+    if (prompt && promptState && prompt.shouldPrompt(promptState) && isKnownAppUrl(toolUrl)) {
+      event.preventDefault();
+      prompt.setPendingToolUrl(toolUrl);
+      openAuthModal("anon-auto");
+      return;
+    }
+  }
+
   if (appId) {
     void trackOpenTool(appId);
   }
@@ -539,6 +696,21 @@ function bindEvents() {
       renderGrid();
     });
   }
+
+  els.navViewItems.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      setPortalView(item.dataset.view || "online");
+    });
+  });
+
+  window.addEventListener("hashchange", () => {
+    setPortalView(viewFromHash(), { updateHash: false });
+  });
+
+  window.addEventListener("popstate", () => {
+    setPortalView(viewFromHash(), { updateHash: false });
+  });
 
   if (els.closeAuthModalBtn) {
     els.closeAuthModalBtn.addEventListener("click", closeAuthModal);
@@ -553,9 +725,33 @@ function bindEvents() {
     });
   }
 
+  if (els.openMiniProgramPopupBtn) {
+    els.openMiniProgramPopupBtn.addEventListener("click", openMiniProgramPopup);
+  }
+
+  if (els.closeMiniProgramPopupBtn) {
+    els.closeMiniProgramPopupBtn.addEventListener("click", () => {
+      closeMiniProgramPopup();
+    });
+  }
+
+  if (els.miniProgramPopup) {
+    els.miniProgramPopup.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.dataset.miniprogramClose === "true") {
+        closeMiniProgramPopup();
+      }
+    });
+  }
+
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && isModalOpen()) {
+    if (event.key !== "Escape") return;
+    if (isModalOpen()) {
       closeAuthModal();
+      return;
+    }
+    if (isMiniProgramPopupOpen()) {
+      closeMiniProgramPopup();
     }
   });
 
@@ -605,6 +801,7 @@ function bindEvents() {
         setAuthHint("请先登录，再查看收藏的轻工具。", "error");
         openAuthModal();
       }
+      setPortalView("online");
       state.viewMode = "all";
       renderGrid();
     });
@@ -644,6 +841,8 @@ async function loadStats() {
 
 async function bootstrap() {
   bindEvents();
+  setPortalView(viewFromHash(), { updateHash: false });
+  autoOpenMiniProgramPopup();
   await loadApps();
   await loadMe();
   void loadStats();

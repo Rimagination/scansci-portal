@@ -39,6 +39,7 @@ class FakeD1Statement {
 class FakeD1Database {
   constructor(seed = {}) {
     this.searchRows = Array.isArray(seed.searchRows) ? seed.searchRows.map((item) => ({ ...item })) : [];
+    this.ftsRows = Array.isArray(seed.ftsRows) ? seed.ftsRows.map((item) => ({ ...item })) : this.searchRows;
     this.detailRows = Array.isArray(seed.detailRows) ? seed.detailRows.map((item) => ({ ...item })) : [];
     this.allCalls = [];
     this.firstCalls = [];
@@ -60,10 +61,16 @@ class FakeD1Database {
 
   executeAll(sql, args) {
     this.allCalls.push({ sql, args });
+    if (sql.includes("FROM journal_search js") && sql.includes("LOWER(js.abbrs)")) {
+      const pattern = String(args[0] || "").replace(/%/g, "").trim().toLowerCase();
+      return this.searchRows
+        .filter((row) => (` ${String(row.abbrs || "").toLowerCase()} `).includes(` ${pattern} `))
+        .slice(0, Number(args.at(-1) || 12));
+    }
     if (!sql.includes("journal_search_fts")) {
       throw new Error(`unexpected search SQL: ${sql}`);
     }
-    return this.searchRows.slice(0, Number(args.at(-1) || 12));
+    return this.ftsRows.slice(0, Number(args.at(-1) || 12));
   }
 
   executeRun(sql, args) {
@@ -72,6 +79,10 @@ class FakeD1Database {
 
   executeFirst(sql, args) {
     this.firstCalls.push({ sql, args });
+    if (sql.includes("journal_search")) {
+      const id = Number(args[0]);
+      return this.searchRows.find((row) => Number(row.id) === id) || null;
+    }
     if (!sql.includes("journal_detail")) {
       throw new Error(`unexpected detail SQL: ${sql}`);
     }
@@ -161,6 +172,23 @@ test("normalizeJournalSearchRecord derives a quality score for broad-query ranki
   assert.match(normalized.record.search_text, /00079235/);
 });
 
+test("normalizeJournalSearchRecord indexes explicit journal abbreviations", async () => {
+  const { normalizeJournalSearchRecord } = await import("../src/journal-search.js");
+  const normalized = normalizeJournalSearchRecord({
+    id: 19471,
+    title: "Transactions in GIS",
+    issn: "1361-1682",
+    eissn: "1467-9671",
+    abbreviations: ["T GIS"],
+    tags: ["SSCI"],
+  });
+
+  assert.equal(normalized.ok, true);
+  assert.match(normalized.record.abbrs, /\btgis\b/);
+  assert.match(normalized.record.search_text, /T GIS/);
+  assert.match(normalized.record.search_text, /\btgis\b/);
+});
+
 test("queryJournalSearch reads D1 FTS and returns normalized top-n results", async () => {
   const db = new FakeD1Database({
     searchRows: [
@@ -195,6 +223,47 @@ test("queryJournalSearch reads D1 FTS and returns normalized top-n results", asy
   assert.equal(db.allCalls[0].args[0], "nature* reviews*");
   assert.notEqual(db.allCalls[0].args[4], "");
   assert.notEqual(db.allCalls[0].args[5], "");
+});
+
+test("queryJournalSearch short-circuits on exact abbreviation rows", async () => {
+  const db = new FakeD1Database({
+    searchRows: [
+      {
+        id: 19471,
+        title: "Transactions in GIS",
+        issn: "1361-1682",
+        eissn: "1467-9671",
+        abbrs: "tig tg tgis",
+        if_2023: 2.4,
+        if_year: "2025",
+        jcr_quartile: "Q2",
+        tags_json: '["SSCI","Q2"]',
+      },
+    ],
+    ftsRows: [],
+  });
+
+  const result = await queryJournalSearch({ DB: db }, { query: "tgis", limit: 5 });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.source, "journal-search-abbr-exact");
+  assert.equal(result.items.length, 1);
+  assert.equal(result.items[0].title, "Transactions in GIS");
+  assert.equal(db.allCalls.length, 1);
+  assert.match(db.allCalls[0].sql, /LOWER\(js\.abbrs\)/);
+});
+
+test("queryJournalSearch ignores filter-only quality tokens", async () => {
+  const db = new FakeD1Database({
+    searchRows: [{ id: 1, title: "NATURE", tags_json: '["Q1"]' }],
+  });
+
+  const result = await queryJournalSearch({ DB: db }, { query: "Q1", limit: 5 });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.source, "journal-search-filter-token");
+  assert.deepEqual(result.items, []);
+  assert.equal(db.allCalls.length, 0);
 });
 
 test("worker journal search route returns JSON and avoids DB work for blank queries", async () => {
@@ -243,6 +312,42 @@ test("journal detail route returns one journal without exposing a list endpoint"
   assert.equal(payload.ok, true);
   assert.equal(payload.journal.issn, "0028-0836");
   assert.equal(db.firstCalls.length, 2);
+});
+
+test("journal detail falls back to public search row when detail row is missing", async () => {
+  const db = new FakeD1Database({
+    searchRows: [
+      {
+        id: 385,
+        title: "Environmental Science and Ecotechnology",
+        issn: "2666-4984",
+        eissn: "2666-4984",
+        if_2023: 14.3,
+        if_year: "2025",
+        jcr_quartile: "Q1",
+        cas_2025: "1区",
+        is_top: 1,
+        tags_json: '["1区","Q1","SCIE"]',
+      },
+    ],
+  });
+
+  const direct = await queryJournalDetail({ DB: db }, { id: 385 });
+  assert.equal(direct.ok, true);
+  assert.equal(direct.journal.title, "Environmental Science and Ecotechnology");
+  assert.equal(direct.related.length, 0);
+  assert.equal(direct.source, "journal-detail-search-fallback");
+
+  const response = await worker.fetch(new Request("https://www.scansci.com/api/journals/detail?id=385"), {
+    DB: db,
+    CORS_ORIGINS: "https://journal.scansci.com",
+  });
+  const payload = await response.json();
+
+  assert.equal(response.status, 200);
+  assert.equal(payload.ok, true);
+  assert.equal(payload.journal.issn, "2666-4984");
+  assert.equal(payload.source, "journal-detail-search-fallback");
 });
 
 test("journal search admin upsert batches D1 writes", async () => {

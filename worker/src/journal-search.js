@@ -80,7 +80,8 @@ export function normalizeJournalSearchItem(row) {
 export function normalizeJournalSearchRecord(input) {
   const publicItem = normalizeJournalSearchItem(input);
   const tags = Array.isArray(publicItem.tags) ? publicItem.tags : [];
-  const abbrs = buildTitleAbbrVariants(publicItem.title);
+  const explicitAbbreviations = parseAbbreviations(input?.abbreviations ?? input?.abbreviation ?? input?.abbrJournal);
+  const abbrs = buildJournalAbbrVariants(publicItem.title, explicitAbbreviations);
   const searchText = [
     publicItem.title,
     publicItem.issn,
@@ -96,6 +97,7 @@ export function normalizeJournalSearchRecord(input) {
     publicItem.warning_latest,
     publicItem.xuankan_2026,
     tags.join(" "),
+    explicitAbbreviations.join(" "),
     abbrs.join(" "),
   ]
     .filter(Boolean)
@@ -134,9 +136,19 @@ export async function queryJournalSearch(env, options = {}) {
   }
 
   const lowerQuery = query.toLowerCase();
+  if (isJournalSearchFilterOnlyQuery(query)) {
+    return { ok: true, query, limit, items: [], source: "journal-search-filter-token" };
+  }
+
   const rawCompactQuery = lowerQuery.replace(/[^0-9x]/g, "");
   const compactQuery = /^[0-9x]{4,}$/i.test(rawCompactQuery) ? rawCompactQuery : "__no_identifier_match__";
+  const abbrQuery = normalizeAbbrValue(query);
+  const abbrExactPattern = /^[a-z0-9]{2,10}$/.test(abbrQuery) ? `% ${abbrQuery} %` : "__no_abbr_match__";
   const prefixQuery = `${lowerQuery.replace(/[%_]/g, "")}%`;
+  const exactAbbrItems = await queryJournalSearchExactAbbr(env, abbrExactPattern, minIf, limit);
+  if (exactAbbrItems.length) {
+    return { ok: true, query, limit, items: exactAbbrItems.slice(0, limit), source: "journal-search-abbr-exact" };
+  }
   const sql = `
     SELECT ${SELECT_PUBLIC_COLUMNS},
       bm25(journal_search_fts, 8.0, 5.0, 5.0, 5.0, 2.0, 1.0) AS rank
@@ -149,6 +161,7 @@ export async function queryJournalSearch(env, options = {}) {
         WHEN LOWER(js.title) = ? THEN 0
         WHEN REPLACE(LOWER(js.issn), '-', '') = ? THEN 0
         WHEN REPLACE(LOWER(js.eissn), '-', '') = ? THEN 0
+        WHEN (' ' || LOWER(js.abbrs) || ' ') LIKE ? THEN 0
         WHEN LOWER(js.title) LIKE ? THEN 1
         WHEN LOWER(js.issn) LIKE ? THEN 1
         WHEN LOWER(js.eissn) LIKE ? THEN 1
@@ -171,19 +184,54 @@ export async function queryJournalSearch(env, options = {}) {
         lowerQuery,
         compactQuery,
         compactQuery,
+        abbrExactPattern,
         prefixQuery,
         prefixQuery,
         prefixQuery,
         prefixQuery,
-        limit
+        Math.min(limit * 2, MAX_LIMIT * 2)
       )
       .all();
-    const items = (Array.isArray(results) ? results : []).map(normalizeJournalSearchItem);
+    const ftsItems = (Array.isArray(results) ? results : []).map(normalizeJournalSearchItem);
+    const items = mergeJournalSearchItems([], ftsItems, limit);
     return { ok: true, query, limit, items, source: "journal-search-d1" };
   } catch (error) {
     console.warn("Journal search query failed", error);
     return { ok: false, query, limit, items: [], source: "journal-search-error", error: "search_failed" };
   }
+}
+
+async function queryJournalSearchExactAbbr(env, abbrExactPattern, minIf, limit) {
+  if (!abbrExactPattern || abbrExactPattern === "__no_abbr_match__") return [];
+  try {
+    const { results } = await env.DB.prepare(
+      `SELECT ${SELECT_PUBLIC_COLUMNS}, 0 AS rank
+       FROM journal_search js
+       WHERE (' ' || LOWER(js.abbrs) || ' ') LIKE ?
+         AND (? IS NULL OR js.if_2023 >= ?)
+       ORDER BY js.quality_score DESC, COALESCE(js.if_2023, -1) DESC, js.title ASC
+       LIMIT ?`
+    )
+      .bind(abbrExactPattern, minIf, minIf, limit)
+      .all();
+    return (Array.isArray(results) ? results : []).map(normalizeJournalSearchItem);
+  } catch (error) {
+    console.warn("Journal exact abbreviation query failed", error);
+    return [];
+  }
+}
+
+function mergeJournalSearchItems(primary, secondary, limit) {
+  const seen = new Set();
+  const out = [];
+  for (const item of [...primary, ...secondary]) {
+    const id = toInteger(item?.id);
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    out.push(item);
+    if (out.length >= limit) break;
+  }
+  return out;
 }
 
 export async function queryJournalDetail(env, options = {}) {
@@ -204,6 +252,8 @@ export async function queryJournalDetail(env, options = {}) {
       .bind(id)
       .first();
     if (!row) {
+      const fallback = await queryJournalDetailSearchFallback(env, id);
+      if (fallback) return fallback;
       return { ok: false, id, source: "journal-detail-d1", error: "journal_not_found" };
     }
     const journal = safeJsonParse(row.detail_json, null);
@@ -222,6 +272,31 @@ export async function queryJournalDetail(env, options = {}) {
   } catch (error) {
     console.warn("Journal detail query failed", error);
     return { ok: false, id, source: "journal-detail-error", error: "detail_failed" };
+  }
+}
+
+async function queryJournalDetailSearchFallback(env, id) {
+  try {
+    const row = await env.DB.prepare(
+      `SELECT ${SELECT_PUBLIC_COLUMNS}
+       FROM journal_search js
+       WHERE js.id = ?
+       LIMIT 1`
+    )
+      .bind(id)
+      .first();
+    if (!row) return null;
+    return {
+      ok: true,
+      id,
+      journal: normalizeJournalSearchItem(row),
+      related: [],
+      updated_at: toStringValue(row.updated_at),
+      source: "journal-detail-search-fallback",
+    };
+  } catch (error) {
+    console.warn("Journal detail search fallback failed", error);
+    return null;
   }
 }
 
@@ -419,20 +494,67 @@ function compactIdentifier(value) {
   return String(value || "").replace(/[^0-9Xx]/g, "").toUpperCase();
 }
 
+function normalizeAbbrValue(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+function isJournalSearchFilterOnlyQuery(query) {
+  const normalized = String(query || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "");
+  const compact = normalizeAbbrValue(query);
+  if (!normalized && !compact) return false;
+  if (/^q[1-4]$/.test(compact)) return true;
+  if (/^[1-4][区區]$/.test(normalized)) return true;
+  if (/^新锐[1-4][区區]$/.test(normalized)) return true;
+  if (/^(中科院|中国科学院|中科院top|中国科学院top)$/.test(normalized)) return true;
+  if (/^(cas|top|hq|t[1-4]|scie|ssci|esci|ahci)$/.test(compact)) return true;
+  if (/^(高质量|高质量目录)$/.test(normalized)) return true;
+  return false;
+}
+
+function parseAbbreviations(raw) {
+  const values = Array.isArray(raw)
+    ? raw
+    : String(raw || "")
+        .split(/[;,|]+/)
+        .filter(Boolean);
+  return values.map((value) => String(value || "").trim()).filter(Boolean);
+}
+
+function buildJournalAbbrVariants(title, explicitAbbreviations = []) {
+  const variants = new Set(buildTitleAbbrVariants(title));
+  for (const abbreviation of explicitAbbreviations) {
+    const normalized = normalizeAbbrValue(abbreviation);
+    if (normalized.length >= 2) variants.add(normalized);
+  }
+  return [...variants];
+}
+
 function buildTitleAbbrVariants(title) {
   const stopwords = new Set(["a", "an", "and", "as", "at", "by", "for", "from", "in", "of", "on", "or", "the", "to", "with"]);
+  const titleText = String(title || "");
   const words = String(title || "")
     .split(/[^A-Za-z0-9]+/)
     .filter(Boolean);
   if (!words.length) return [];
 
   const variants = new Set();
+  const hasLowercase = /[a-z]/.test(titleText);
   const allInitials = words.map((word) => word[0]).join("").toLowerCase();
   if (allInitials.length >= 2) variants.add(allInitials);
 
   const coreWords = words.filter((word) => !stopwords.has(word.toLowerCase()));
   const coreInitials = coreWords.map((word) => word[0]).join("").toLowerCase();
   if (coreInitials.length >= 2) variants.add(coreInitials);
+  const coreAcronymAware = coreWords
+    .map((word) => (hasLowercase && /^[A-Z0-9]{2,6}$/.test(word) ? word : word[0]))
+    .join("")
+    .toLowerCase();
+  if (coreAcronymAware.length >= 2) variants.add(coreAcronymAware);
 
   if (coreWords.length >= 2) {
     variants.add((coreWords[0][0] + coreWords[1][0]).toLowerCase());

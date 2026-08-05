@@ -15,6 +15,10 @@ const ONLY_ISSN = String(process.env.ONLY_ISSN || "").trim();
 const PRIORITY_ISSN = String(process.env.PRIORITY_ISSN || "").trim();
 const FAIL_ON_PRIORITY_MISS = String(process.env.FAIL_ON_PRIORITY_MISS || "0").trim() === "1";
 const REQUEST_TIMEOUT_MS = Math.max(3000, parseInt(process.env.REQUEST_TIMEOUT_MS || "12000", 10));
+const REQUESTS_PER_SECOND = Math.max(1, Math.min(6, parseInt(process.env.REQUESTS_PER_SECOND || "4", 10)));
+const ROTATION_TOTAL = Math.max(0, parseInt(process.env.ISSN_ROTATION_TOTAL || "0", 10));
+const ROTATION_HOURS = Math.max(1, parseInt(process.env.ISSN_ROTATION_HOURS || "12", 10));
+let nextElsevierRequestAt = 0;
 
 function assertEnv() {
   const missing = [];
@@ -53,7 +57,7 @@ async function fetchJson(url, options = {}, timeoutMs = REQUEST_TIMEOUT_MS) {
     } catch {
       json = null;
     }
-    return { ok: resp.ok, status: resp.status, json, text };
+    return { ok: resp.ok, status: resp.status, json, text, headers: resp.headers };
   } finally {
     clearTimeout(timer);
   }
@@ -96,8 +100,16 @@ async function loadSeedIssns() {
   const workerUrl = new URL(WORKER_BASE);
   if (sourceUrl.origin === workerUrl.origin && sourceUrl.pathname.startsWith("/api/admin/")) {
     sourceHeaders["X-ScanSci-Admin-Token"] = ADMIN_TOKEN;
+    sourceUrl.searchParams.set("limit", String(ISSN_LIMIT));
+    if (ROTATION_TOTAL > ISSN_LIMIT) {
+      const pageCount = Math.ceil(ROTATION_TOTAL / ISSN_LIMIT);
+      const rotationWindow = Math.floor(Date.now() / (ROTATION_HOURS * 60 * 60 * 1000));
+      const page = rotationWindow % pageCount;
+      sourceUrl.searchParams.set("offset", String(page * ISSN_LIMIT));
+      console.log(`[sync] rotation page=${page + 1}/${pageCount} offset=${page * ISSN_LIMIT}`);
+    }
   }
-  const src = await fetchJson(ISSN_SOURCE_URL, { headers: sourceHeaders });
+  const src = await fetchJson(sourceUrl.toString(), { headers: sourceHeaders });
   if (!src.ok || !src.json) {
     if (priority.length) {
       console.warn(`[sync] ISSN source unavailable (${src.status}); continuing with priority ISSNs`);
@@ -118,14 +130,11 @@ async function loadSeedIssns() {
 }
 
 function buildElsevierUrls(issn) {
-  const compact = issn.replace("-", "");
-  const variants = [issn, compact];
-  return variants.map(
-    (variant) =>
-      `https://api.elsevier.com/content/serial/title?issn=${encodeURIComponent(
-        variant
-      )}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`
-  );
+  return [
+    `https://api.elsevier.com/content/serial/title?issn=${encodeURIComponent(
+      issn
+    )}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`,
+  ];
 }
 
 function unwrapElsevierPayload(payload) {
@@ -137,8 +146,10 @@ function unwrapElsevierPayload(payload) {
 
 async function fetchElsevierPayload(issn) {
   const urls = buildElsevierUrls(issn);
+  let lastStatus = 0;
   for (const url of urls) {
-    const res = await fetchJson(
+    await waitForElsevierSlot();
+    let res = await fetchJson(
       url,
       {
         method: "GET",
@@ -150,11 +161,48 @@ async function fetchElsevierPayload(issn) {
       },
       REQUEST_TIMEOUT_MS
     );
-    if (!res.ok || !res.json) continue;
+    lastStatus = res.status;
+    if (res.status === 429) {
+      await sleep(readRetryDelayMs(res.headers));
+      await waitForElsevierSlot();
+      res = await fetchJson(
+        url,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "X-ELS-APIKey": ELSEVIER_API_KEY,
+            "User-Agent": "ScanSci-ElsevierSync/1.0",
+          },
+        },
+        REQUEST_TIMEOUT_MS
+      );
+      lastStatus = res.status;
+    }
+    if (!res.ok || !res.json) break;
     const payload = unwrapElsevierPayload(res.json);
-    if (payload) return payload;
+    if (payload) return { payload, status: res.status };
   }
-  return null;
+  return { payload: null, status: lastStatus };
+}
+
+async function waitForElsevierSlot() {
+  const intervalMs = Math.ceil(1000 / REQUESTS_PER_SECOND);
+  const scheduledAt = Math.max(Date.now(), nextElsevierRequestAt);
+  nextElsevierRequestAt = scheduledAt + intervalMs;
+  const waitMs = scheduledAt - Date.now();
+  if (waitMs > 0) await sleep(waitMs);
+}
+
+function readRetryDelayMs(headers) {
+  const raw = String(headers?.get?.("retry-after") || "").trim();
+  const seconds = Number(raw);
+  if (Number.isFinite(seconds) && seconds > 0) return Math.min(60000, Math.ceil(seconds * 1000));
+  return 2000;
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, Math.max(0, ms)));
 }
 
 async function mapLimit(items, limit, mapper) {
@@ -204,24 +252,29 @@ async function main() {
   assertEnv();
   console.log(`[sync] source=${ISSN_SOURCE_URL}`);
   console.log(`[sync] worker=${WORKER_BASE}`);
-  console.log(`[sync] limit=${ISSN_LIMIT} concurrency=${CONCURRENCY} batch=${BATCH_SIZE} ttl=${TTL_SECONDS}s`);
+  console.log(
+    `[sync] limit=${ISSN_LIMIT} concurrency=${CONCURRENCY} rate=${REQUESTS_PER_SECOND}/s batch=${BATCH_SIZE} ttl=${TTL_SECONDS}s`
+  );
 
   const seedIssns = await loadSeedIssns();
   console.log(`[sync] seed issn count=${seedIssns.length}`);
 
   let okCount = 0;
   let failCount = 0;
+  const failureStatuses = new Map();
 
   const mapped = await mapLimit(seedIssns, CONCURRENCY, async (issn) => {
-    const payload = await fetchElsevierPayload(issn);
-    if (!payload) {
+    const result = await fetchElsevierPayload(issn);
+    if (!result.payload) {
       failCount += 1;
+      const status = String(result.status || "network");
+      failureStatuses.set(status, Number(failureStatuses.get(status) || 0) + 1);
       return null;
     }
     okCount += 1;
     return {
       issn,
-      payload,
+      payload: result.payload,
       ttlSeconds: TTL_SECONDS,
       source: "gha-sync",
     };
@@ -237,9 +290,6 @@ async function main() {
   const missingPriority = priority.filter((issn) => !fetchedIssns.has(issn));
   if (missingPriority.length) {
     console.warn(`[sync] priority ISSNs missing=${missingPriority.join(",")}`);
-    if (FAIL_ON_PRIORITY_MISS) {
-      throw new Error(`Priority ISSN sync incomplete: ${missingPriority.join(",")}`);
-    }
   }
 
   let workerSuccess = 0;
@@ -251,10 +301,16 @@ async function main() {
   }
 
   console.log(`[sync] elsevier success=${okCount} fail=${failCount}`);
+  if (failureStatuses.size) {
+    console.log(`[sync] failure statuses=${JSON.stringify(Object.fromEntries(failureStatuses))}`);
+  }
   console.log(`[sync] worker upsert success=${workerSuccess} fail=${workerFailed}`);
 
   if (workerSuccess === 0) {
     throw new Error("Worker accepted zero cache records.");
+  }
+  if (missingPriority.length && FAIL_ON_PRIORITY_MISS) {
+    throw new Error(`Priority ISSN sync incomplete: ${missingPriority.join(",")}`);
   }
 }
 

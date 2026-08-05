@@ -136,6 +136,10 @@ async function handleRequest(request, env) {
     return handleAdminElsevierCacheBatchUpsert(request, env);
   }
 
+  if (url.pathname === "/api/admin/journal-search/issns" && request.method === "GET") {
+    return handleAdminJournalIssnSeeds(request, env);
+  }
+
   if (url.pathname === "/api/admin/submission-stats/batch-upsert" && request.method === "POST") {
     return handleAdminSubmissionStatsBatchUpsert(request, env);
   }
@@ -2382,6 +2386,46 @@ async function handleAdminElsevierCacheBatchUpsert(request, env) {
   });
 }
 
+async function handleAdminJournalIssnSeeds(request, env) {
+  if (!isAdminTokenValid(request, env)) {
+    return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+  }
+
+  const url = new URL(request.url);
+  const requestedLimit = Number.parseInt(String(url.searchParams.get("limit") || "800"), 10);
+  const requestedOffset = Number.parseInt(String(url.searchParams.get("offset") || "0"), 10);
+  const limit = Number.isFinite(requestedLimit) ? Math.max(1, Math.min(5000, requestedLimit)) : 800;
+  const offset = Number.isFinite(requestedOffset) ? Math.max(0, Math.min(100000, requestedOffset)) : 0;
+
+  try {
+    const rows = await env.DB.prepare(
+      `SELECT issn, eissn
+       FROM journal_search
+       WHERE TRIM(COALESCE(issn, '')) <> ''
+          OR TRIM(COALESCE(eissn, '')) <> ''
+       ORDER BY COALESCE(quality_score, 0) DESC,
+                COALESCE(if_2023, -1) DESC,
+                id ASC
+       LIMIT ? OFFSET ?`
+    )
+      .bind(limit, offset)
+      .all();
+    return jsonResponse(request, env, {
+      ok: true,
+      items: (rows.results || []).map((row) => ({
+        issn: String(row?.issn || ""),
+        eissn: String(row?.eissn || ""),
+      })),
+      limit,
+      offset,
+      source: "journal-issn-seeds-d1",
+    });
+  } catch (error) {
+    console.warn("Journal ISSN seed query failed", error);
+    return jsonResponse(request, env, { ok: false, error: "search_failed" }, 503);
+  }
+}
+
 async function handleAdminSubmissionStatsBatchUpsert(request, env) {
   if (!isAdminTokenValid(request, env)) {
     return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
@@ -3012,53 +3056,45 @@ function buildElsevierIssnVariants(issnRaw) {
   return [...variants];
 }
 
-async function requestElsevierSerialTitle(issn, apiKey, env) {
-  const publicOrigin = "https://www.scansci.com";
+export async function requestElsevierSerialTitle(issn, apiKey, env) {
   const defaultTimeout = 3500;
   const parsedTimeout = Number.parseInt(String(env?.ELSEVIER_UPSTREAM_TIMEOUT_MS || ""), 10);
   const runtimeTimeout =
     Number.isFinite(parsedTimeout) && parsedTimeout >= 1200
       ? parsedTimeout
       : Number.parseInt(String(defaultTimeout), 10);
-  const baseUrl =
+  const citeScoreUrl =
+    `https://api.elsevier.com/content/serial/title?` +
+    `issn=${encodeURIComponent(issn)}&view=CITESCORE`;
+  const standardUrl =
     `https://api.elsevier.com/content/serial/title?` +
     `issn=${encodeURIComponent(issn)}&view=STANDARD&field=citeScoreYearInfoList,SJR,SNIP,subject-area`;
 
+  const baseHeaders = {
+    Accept: "application/json",
+    "Accept-Language": "en-US,en;q=0.9",
+    "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
+  };
   const attempts = [
     {
-      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      url: citeScoreUrl,
       timeoutMs: runtimeTimeout,
-      headers: {
-        Accept: "application/json",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
-        Origin: publicOrigin,
-        Referer: `${publicOrigin}/`,
-      },
+      headers: { ...baseHeaders, "X-ELS-APIKey": apiKey },
     },
     {
-      url: baseUrl,
+      url: `${citeScoreUrl}&apiKey=${encodeURIComponent(apiKey)}`,
       timeoutMs: runtimeTimeout,
-      headers: {
-        Accept: "application/json",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
-        Origin: publicOrigin,
-        Referer: `${publicOrigin}/`,
-        "X-ELS-APIKey": apiKey,
-      },
+      headers: baseHeaders,
     },
     {
-      url: `${baseUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      url: standardUrl,
       timeoutMs: runtimeTimeout,
-      headers: {
-        Accept: "application/json",
-        "Accept-Language": "en-US,en;q=0.9",
-        "User-Agent": "ScanSci-Worker/1.0 (+https://www.scansci.com)",
-        Origin: publicOrigin,
-        Referer: `${publicOrigin}/`,
-        "X-ELS-APIKey": apiKey,
-      },
+      headers: { ...baseHeaders, "X-ELS-APIKey": apiKey },
+    },
+    {
+      url: `${standardUrl}&apiKey=${encodeURIComponent(apiKey)}`,
+      timeoutMs: runtimeTimeout,
+      headers: baseHeaders,
     },
   ];
 
@@ -3082,7 +3118,6 @@ async function requestElsevierOnce(url, headers, timeoutMsRaw = null) {
       method: "GET",
       headers,
       signal: controller.signal,
-      cf: { cacheTtl: 1800, cacheEverything: false },
     });
   } catch (error) {
     const isAbort = String(error?.name || "") === "AbortError";

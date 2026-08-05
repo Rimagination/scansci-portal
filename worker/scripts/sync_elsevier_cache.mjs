@@ -5,13 +5,15 @@ const ELSEVIER_API_KEY = String(process.env.ELSEVIER_API_KEY || "").trim();
 const ADMIN_TOKEN = String(process.env.SCANSCI_ADMIN_SYNC_TOKEN || "").trim();
 const WORKER_BASE = String(process.env.SCANSCI_WORKER_BASE || "https://www.scansci.com").trim().replace(/\/+$/, "");
 const ISSN_SOURCE_URL = String(
-  process.env.ISSN_SOURCE_URL || "https://journal.scansci.com/data/search_index.json"
+  process.env.ISSN_SOURCE_URL || `${WORKER_BASE}/api/admin/journal-search/issns?limit=800`
 ).trim();
 const ISSN_LIMIT = parseInt(process.env.ISSN_LIMIT || "800", 10);
 const CONCURRENCY = Math.max(1, parseInt(process.env.CONCURRENCY || "6", 10));
 const BATCH_SIZE = Math.max(1, Math.min(100, parseInt(process.env.BATCH_SIZE || "25", 10)));
 const TTL_SECONDS = Math.max(300, parseInt(process.env.TTL_SECONDS || "1209600", 10));
 const ONLY_ISSN = String(process.env.ONLY_ISSN || "").trim();
+const PRIORITY_ISSN = String(process.env.PRIORITY_ISSN || "").trim();
+const FAIL_ON_PRIORITY_MISS = String(process.env.FAIL_ON_PRIORITY_MISS || "0").trim() === "1";
 const REQUEST_TIMEOUT_MS = Math.max(3000, parseInt(process.env.REQUEST_TIMEOUT_MS || "12000", 10));
 
 function assertEnv() {
@@ -88,18 +90,31 @@ async function loadSeedIssns() {
     return direct.slice(0, ISSN_LIMIT);
   }
 
-  const src = await fetchJson(ISSN_SOURCE_URL, {
-    headers: { Accept: "application/json", "User-Agent": "ScanSci-ElsevierSync/1.0" },
-  });
+  const priority = uniqIssn(PRIORITY_ISSN.split(",").map((x) => x.trim()));
+  const sourceHeaders = { Accept: "application/json", "User-Agent": "ScanSci-ElsevierSync/1.0" };
+  const sourceUrl = new URL(ISSN_SOURCE_URL);
+  const workerUrl = new URL(WORKER_BASE);
+  if (sourceUrl.origin === workerUrl.origin && sourceUrl.pathname.startsWith("/api/admin/")) {
+    sourceHeaders["X-ScanSci-Admin-Token"] = ADMIN_TOKEN;
+  }
+  const src = await fetchJson(ISSN_SOURCE_URL, { headers: sourceHeaders });
   if (!src.ok || !src.json) {
+    if (priority.length) {
+      console.warn(`[sync] ISSN source unavailable (${src.status}); continuing with priority ISSNs`);
+      return priority.slice(0, ISSN_LIMIT);
+    }
     throw new Error(`Failed to load ISSN source (${src.status}): ${ISSN_SOURCE_URL}`);
   }
 
   const list = extractIssnListFromSource(src.json);
   if (!list.length) {
+    if (priority.length) {
+      console.warn("[sync] ISSN source returned no usable rows; continuing with priority ISSNs");
+      return priority.slice(0, ISSN_LIMIT);
+    }
     throw new Error(`No ISSN extracted from source: ${ISSN_SOURCE_URL}`);
   }
-  return list.slice(0, ISSN_LIMIT);
+  return [...new Set([...priority, ...list])].slice(0, ISSN_LIMIT);
 }
 
 function buildElsevierUrls(issn) {
@@ -215,6 +230,16 @@ async function main() {
   const successItems = mapped.filter(Boolean);
   if (!successItems.length) {
     throw new Error("No Elsevier payload fetched successfully.");
+  }
+
+  const priority = uniqIssn(PRIORITY_ISSN.split(",").map((x) => x.trim()));
+  const fetchedIssns = new Set(successItems.map((item) => item.issn));
+  const missingPriority = priority.filter((issn) => !fetchedIssns.has(issn));
+  if (missingPriority.length) {
+    console.warn(`[sync] priority ISSNs missing=${missingPriority.join(",")}`);
+    if (FAIL_ON_PRIORITY_MISS) {
+      throw new Error(`Priority ISSN sync incomplete: ${missingPriority.join(",")}`);
+    }
   }
 
   let workerSuccess = 0;

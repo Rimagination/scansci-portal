@@ -3,7 +3,7 @@ name: Elsevier Cache Sync
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17 */12 * * *"
 
 jobs:
   sync:
@@ -27,7 +27,10 @@ jobs:
           PRIORITY_ISSN: "0378-3774,1873-2283,0028-0836,1476-4687,2210-6707,2210-6715"
           FAIL_ON_PRIORITY_MISS: "1"
           CONCURRENCY: "6"
+          REQUESTS_PER_SECOND: "4"
           BATCH_SIZE: "25"
-          TTL_SECONDS: "1209600"
+          TTL_SECONDS: "2592000"
+          ISSN_ROTATION_TOTAL: "22799"
+          ISSN_ROTATION_HOURS: "12"
           REQUEST_TIMEOUT_MS: "12000"
         run: node worker/scripts/sync_elsevier_cache.mjs

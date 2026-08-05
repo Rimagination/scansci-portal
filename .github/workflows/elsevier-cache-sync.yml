@@ -15,15 +15,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Sync Elsevier cache to Cloudflare Worker (D1)
         env:
           ELSEVIER_API_KEY: ${{ secrets.ELSEVIER_API_KEY }}
           SCANSCI_ADMIN_SYNC_TOKEN: ${{ secrets.SCANSCI_ADMIN_SYNC_TOKEN }}
           SCANSCI_WORKER_BASE: "https://www.scansci.com"
-          ISSN_SOURCE_URL: "https://journal.scansci.com/data/search_index.json"
+          ISSN_SOURCE_URL: "https://www.scansci.com/api/admin/journal-search/issns?limit=800"
           ISSN_LIMIT: "800"
+          PRIORITY_ISSN: "0378-3774,1873-2283,0028-0836,1476-4687,2210-6707,2210-6715"
+          FAIL_ON_PRIORITY_MISS: "1"
           CONCURRENCY: "6"
           BATCH_SIZE: "25"
           TTL_SECONDS: "1209600"

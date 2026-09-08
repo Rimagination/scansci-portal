@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>倒木</title>
+<desc>倒伏木段、断枝、裂纹与局部苔状覆盖的林地枯木示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="deadwood" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="deadwood-object">
+      <g id="deadwood-broken-branch"><path fill="#9d8064" d="M145 165 L156 133 L153 112 L167 119 L177 100 L181 121 L194 120 L183 133 L165 173Z"/><path fill="none" d="M161 156 L172 128"/></g>
+      <g id="deadwood-log"><path fill="#9d8064" d="M63 177 C97 154 184 131 246 143 C273 148 285 173 277 195 C266 217 163 249 91 249Z"/><path fill="none" d="M96 184 Q162 158 232 159 L250 156 M106 201 L152 189 L164 194 L188 182 L253 172 M113 223 Q171 211 204 197 L211 202 L262 185 M132 238 Q208 223 247 207"/><path fill="#d0b89a" d="M62 177 C84 166 110 182 117 205 C127 229 113 250 91 253 C68 257 46 240 41 217 C36 198 45 184 62 177Z"/><path fill="none" d="M65 189 C83 181 103 197 107 216 C111 233 100 243 85 243 C66 244 51 228 51 212 C49 201 55 193 65 189Z M70 202 C81 195 96 207 97 219 C99 230 88 235 78 229 C66 223 63 210 70 202Z M83 216 L64 180 M101 240 L88 225"/></g>
+      <g id="deadwood-moss"><path fill="#67925d" d="M97 164 C97 153 107 151 115 155 C116 141 133 137 141 146 C153 133 171 137 175 146 C190 136 204 143 202 152 C176 160 157 158 138 167 C119 169 111 174 97 164Z"/><path fill="none" d="M116 158 L121 153 L124 158 M143 151 L148 147 L154 151 M174 148 L179 144"/></g>
+      <g id="deadwood-loose-bark"><path fill="#d0b89a" d="M177 258 L212 242 L232 248 L201 267Z"/><path fill="none" d="M191 258 L215 251"/></g>
+    </g></g>
+</svg>

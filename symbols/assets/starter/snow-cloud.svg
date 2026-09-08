@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>降雪云</title>
+<desc>云体与雪晶的示意，晶体为几何简化。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="snow-cloud" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="cloud"><path d="M75 172C38 174 35 121 72 114C68 70 127 54 153 87C180 54 232 77 230 114C277 103 291 168 244 174Z" fill="#e5ebee" /></g><g id="snowflake-0" transform="translate(90 229)"><path d="M0 -15V15M-13 -8L13 8M-13 8L13 -8" fill="none" stroke="#71a0b1" stroke-width="3"/></g><g id="snowflake-1" transform="translate(158 229)"><path d="M0 -15V15M-13 -8L13 8M-13 8L13 -8" fill="none" stroke="#71a0b1" stroke-width="3"/></g><g id="snowflake-2" transform="translate(226 229)"><path d="M0 -15V15M-13 -8L13 8M-13 8L13 -8" fill="none" stroke="#71a0b1" stroke-width="3"/></g></g>
+</svg>

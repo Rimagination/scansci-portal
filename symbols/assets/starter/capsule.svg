@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>胶囊</title>
+<desc>以两段套合外壳表现的通用胶囊剂型，配色不对应特定药品。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="capsule" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="capsule-object" fill="none" transform="rotate(36 160 160)">
+      <g id="capsule-lower-shell">
+        <path d="M110 148H210V230A50 50 0 0 1 110 230Z" fill="#e5ebee"/>
+        <path d="M198 164V227Q198 260 169 266" stroke="#b4c4ce" stroke-width="9"/>
+        <path d="M125 181V224" stroke="#f2f7f7" stroke-width="6"/>
+      </g>
+      <g id="capsule-upper-shell">
+        <path d="M110 160V90A50 50 0 0 1 210 90V160Q160 172 110 160Z" fill="#79a57c"/>
+        <path d="M178 55Q199 68 199 94V148" stroke="#5f8869" stroke-width="8"/>
+        <path d="M124 103V92Q124 69 144 61" stroke="#bbd0b7" stroke-width="7"/>
+        <path d="M111 150Q160 163 209 150" stroke="#bbd0b7"/>
+      </g>
+    </g></g>
+</svg>

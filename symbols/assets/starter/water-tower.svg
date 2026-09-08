@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>水塔</title>
+<desc>高架储水罐及支撑结构的概念示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="water-tower" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="legs"><path d="M110 171L88 280M210 171L232 280M99 224H221M99 224L232 280M221 224L88 280" fill="none" stroke="#708992" stroke-width="7"/></g><g id="tank"><path d="M85 70H235V151Q160 199 85 151Z" fill="#b4cbd0" /><ellipse cx="160" cy="70" rx="75" ry="26" fill="#e5ebee"/><path d="M102 91V148" fill="none" stroke="#edf4f5" stroke-width="6"/></g><g id="outlet"><path d="M168 174V269H256" fill="none" stroke="#8cb8c4" stroke-width="9"/></g></g>
+</svg>

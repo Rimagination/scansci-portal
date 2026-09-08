@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>杆状细菌</title>
+<desc>杆状微生物的概念性剖示，内部线团和颗粒仅作图形表达。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="rod-bacterium" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="rod-bacterium-organism" transform="translate(53 -30) scale(.72 1.25)">
+      <g id="rod-bacterium-surface-filaments" fill="none"><path d="M100 94 L84 74 M131 81 L128 55 M167 82 L173 57 M200 100 L216 82 M75 124 L50 113 M68 158 L42 161 M80 195 L56 210 M111 222 L99 246 M146 234 L146 260 M181 222 L197 244 M208 196 L230 208"/><path d="M220 158 C251 143 251 171 272 163 C290 154 273 126 257 133 C236 141 260 116 273 108"/></g>
+      <g id="rod-bacterium-envelope"><path fill="#91b575" d="M69 137 C69 104 103 78 145 78 C187 78 221 104 221 137 L221 176 C221 209 187 235 145 235 C103 235 69 209 69 176Z"/><path fill="#c5d8a7" d="M83 138 C83 111 111 92 145 92 C180 92 207 111 207 138 L207 175 C207 202 180 221 145 221 C111 221 83 202 83 175Z"/></g>
+      <g id="rod-bacterium-interior" fill="none"><path d="M115 177 C94 156 121 121 139 136 C161 152 121 182 137 194 C158 212 179 172 162 154 C149 136 158 110 178 133 C197 156 175 193 155 181 C130 167 150 140 131 126"/><ellipse cx="181" cy="196" rx="9" ry="5" transform="rotate(-35 181 196)"/><path d="M102 129 L108 133 M115 111 L121 112 M172 112 L177 117 M189 149 L194 147 M100 183 L106 188 M125 207 L131 208"/></g>
+    </g></g>
+</svg>

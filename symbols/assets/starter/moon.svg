@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>月球</title>
+<desc>月球圆盘及撞击坑的艺术简化，不代表真实月面地形。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="moon" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="lunar-disc"><ellipse cx="160" cy="160" rx="107" ry="107" fill="#e0e2dc"/></g><g id="craters"><ellipse cx="118" cy="118" rx="24" ry="23" fill="#bfc6c2"/><ellipse cx="200" cy="169" rx="29" ry="31" fill="#c4cbc5"/><ellipse cx="137" cy="216" rx="16" ry="17" fill="#bbc4c0"/><ellipse cx="200" cy="102" rx="11" ry="10" fill="#c4cbc5"/><path d="M103 116Q118 99 132 112M181 169Q200 148 219 166" fill="none" stroke="#9caeaa"/></g></g>
+</svg>

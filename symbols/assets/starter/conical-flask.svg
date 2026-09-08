@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>锥形瓶</title>
+<desc>窄颈、斜肩和宽底构成的通用锥形瓶，内含示意液体与非定量刻线。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="conical-flask" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="conical-flask-object" fill="none">
+      <g id="conical-flask-glass">
+        <path d="M137 58H183V118L247 253Q257 275 233 279H87Q63 275 73 253L137 118Z" fill="#d3edf0"/>
+        <path d="M175 77V122L234 249Q241 263 229 265" stroke="#8cb8c4" stroke-width="8"/>
+        <path d="M147 83V121L113 194" stroke="#f2f7f7" stroke-width="5"/>
+        <rect x="130" y="46" width="60" height="17" rx="5" fill="#e5ebee"/>
+      </g>
+      <g id="conical-flask-liquid">
+        <path d="M102 195Q160 184 218 195L245 254Q254 275 233 277H87Q66 275 75 254Z" fill="#79a57c"/>
+        <ellipse cx="160" cy="195" rx="58" ry="9" fill="#bbd0b7"/>
+        <path d="M85 254Q82 265 96 265H135" stroke="#bbd0b7" stroke-width="5"/>
+      </g>
+      <g id="conical-flask-markings">
+        <path d="M166 158H185M170 180H194M176 224H215M181 246H225"/>
+        <rect x="110" y="216" width="42" height="27" rx="4" fill="#e5ebee"/>
+      </g>
+    </g></g>
+</svg>

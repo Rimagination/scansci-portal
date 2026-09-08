@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>加热磁力搅拌器</title>
+<desc>烧杯放置于通用加热磁力搅拌器上，液体中的短棒表示搅拌子，不表达温度或转速。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="hotplate-stirrer" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="hotplate-stirrer-object" fill="none">
+      <g id="hotplate-stirrer-housing">
+        <path d="M76 210H244L265 242V278H55V242Z" fill="#e5ebee"/>
+        <path d="M55 242H265V278H55Z" fill="#b4c4ce"/>
+        <path d="M72 195H248V213H72Z" fill="#3e5563"/>
+        <path d="M72 195L91 184H229L248 195Z" fill="#e5ebee"/>
+      </g>
+      <g id="hotplate-stirrer-beaker">
+        <path d="M113 57H212L204 73V178Q204 189 192 189H125Q113 189 113 178V75L104 63Q101 57 113 57Z" fill="#d3edf0"/>
+        <path d="M115 122Q159 114 202 122V177Q202 187 191 187H126Q115 187 115 177Z" fill="#8cb8c4"/>
+        <ellipse cx="158.5" cy="122" rx="43.5" ry="6" fill="#b9dde0"/>
+        <path d="M126 79V109" stroke="#f2f7f7" stroke-width="5"/>
+        <path d="M178 89H194M185 106H194M178 142H194M185 158H194"/>
+        <rect x="140" y="170" width="39" height="9" rx="4.5" fill="#e5ebee" transform="rotate(-8 160 174)"/>
+        <path d="M135 149C141 142 171 140 181 148M132 156C142 165 173 165 184 157" stroke="#d3edf0"/>
+      </g>
+      <g id="hotplate-stirrer-controls">
+        <circle cx="99" cy="259" r="13" fill="#dba68a"/>
+        <path d="M99 250V255"/>
+        <circle cx="220" cy="259" r="13" fill="#79a57c"/>
+        <path d="M220 250V255"/>
+        <rect x="137" y="248" width="46" height="22" rx="4" fill="#3e5563"/>
+        <path d="M148 259H171" stroke="#d3edf0"/>
+      </g>
+    </g></g>
+</svg>

@@ -1,6 +1,22 @@
 {
   "apps": [
     {
+      "id": "scansci-symbols",
+      "name": "科研素材库",
+      "description": "按对象分类浏览、搜索和下载科研 SVG 矢量素材，支持按部件编辑。",
+      "cover": "./assets/covers/scansci-symbols.svg",
+      "cover_title": "科研素材库",
+      "cover_subtitle": "科学表达 · 可编辑 SVG 素材",
+      "url": "https://www.scansci.com/symbols/",
+      "category": "科研绘图",
+      "tags": [
+        "SVG",
+        "矢量素材",
+        "科研绘图",
+        "illustration"
+      ]
+    },
+    {
       "id": "paper-atlas",
       "name": "Paper Atlas",
       "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。",
@@ -9,7 +25,14 @@
       "cover_subtitle": "研究图谱",
       "url": "https://paperatlas.scansci.com",
       "category": "文献图谱",
-      "tags": ["paper", "citation", "graph", "visualization", "semantic-scholar", "文献发现"]
+      "tags": [
+        "paper",
+        "citation",
+        "graph",
+        "visualization",
+        "semantic-scholar",
+        "文献发现"
+      ]
     },
     {
       "id": "dataraven",
@@ -20,7 +43,12 @@
       "cover_subtitle": "科研数据发现与开放数据检索",
       "url": "https://dataset.scansci.com",
       "category": "科研数据检索",
-      "tags": ["dataset", "open data", "search", "数据集"]
+      "tags": [
+        "dataset",
+        "open data",
+        "search",
+        "数据集"
+      ]
     },
     {
       "id": "journal-scout",
@@ -31,7 +59,13 @@
       "cover_subtitle": "期刊信息查询",
       "url": "https://journal.scansci.com",
       "category": "期刊查询",
-      "tags": ["journal", "jcr", "分区", "citescore", "影响因子"]
+      "tags": [
+        "journal",
+        "jcr",
+        "分区",
+        "citescore",
+        "影响因子"
+      ]
     },
     {
       "id": "citation-integrity-lab",
@@ -42,7 +76,12 @@
       "cover_subtitle": "参考文献一致性与证据核查",
       "url": "https://citation.scansci.com",
       "category": "引文核查",
-      "tags": ["citation", "integrity", "validation", "参考文献"]
+      "tags": [
+        "citation",
+        "integrity",
+        "validation",
+        "参考文献"
+      ]
     },
     {
       "id": "paper-deck",
@@ -53,7 +92,14 @@
       "cover_subtitle": "每日论文卡片 · 画像驱动",
       "url": "https://paperdeck.scansci.com",
       "category": "每日论文卡片",
-      "tags": ["paper", "recommendation", "daily", "profile", "semantic-scholar", "文献发现"]
+      "tags": [
+        "paper",
+        "recommendation",
+        "daily",
+        "profile",
+        "semantic-scholar",
+        "文献发现"
+      ]
     },
     {
       "id": "sci-skills",
@@ -64,7 +110,15 @@
       "cover_subtitle": "科研 Skills 检索目录",
       "url": "https://skills.scansci.com",
       "category": "科研技能库",
-      "tags": ["skills", "agent", "research workflow", "bioinformatics", "statistics", "visualization", "AI Agent"]
+      "tags": [
+        "skills",
+        "agent",
+        "research workflow",
+        "bioinformatics",
+        "statistics",
+        "visualization",
+        "AI Agent"
+      ]
     },
     {
       "id": "acti",
@@ -76,7 +130,14 @@
       "url": "https://acti.scansci.com",
       "status": "题库升级",
       "category": "学术人格测试",
-      "tags": ["academic personality", "assessment", "research profile", "test", "ACTI", "测评"]
+      "tags": [
+        "academic personality",
+        "assessment",
+        "research profile",
+        "test",
+        "ACTI",
+        "测评"
+      ]
     }
   ]
 }

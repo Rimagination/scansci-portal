@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>培养皿</title>
+<desc>带透明盖沿、培养基和抽象菌落的浅圆培养皿；菌落形状不指代特定物种。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="petri-dish" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="petri-dish-object" fill="none">
+      <g id="petri-dish-base">
+        <path d="M49 163C49 132 99 107 160 107C221 107 271 132 271 163V210C271 241 221 266 160 266C99 266 49 241 49 210Z" fill="#d3edf0"/>
+        <path d="M62 206C62 229 106 249 160 249C214 249 258 229 258 206V183H62Z" fill="#8cb8c4"/>
+      </g>
+      <g id="petri-dish-culture">
+        <ellipse cx="160" cy="180" rx="98" ry="47" fill="#dba68a"/>
+        <ellipse cx="120" cy="164" rx="17" ry="9" fill="#79a57c"/>
+        <ellipse cx="179" cy="151" rx="10" ry="6" fill="#bbd0b7"/>
+        <ellipse cx="197" cy="186" rx="23" ry="12" fill="#79a57c"/>
+        <ellipse cx="141" cy="202" rx="12" ry="7" fill="#bbd0b7"/>
+        <ellipse cx="92" cy="185" rx="6" ry="4" fill="#b66f6a"/>
+        <ellipse cx="155" cy="174" rx="5" ry="3" fill="#b66f6a"/>
+      </g>
+      <g id="petri-dish-lid">
+        <path d="M45 125C45 94 96 70 160 70C224 70 275 94 275 125V144C275 175 224 199 160 199C96 199 45 175 45 144Z" fill="#d3edf0" fill-opacity="0.3"/>
+        <ellipse cx="160" cy="125" rx="115" ry="55"/>
+        <path d="M68 108C87 90 123 81 158 81" stroke="#f2f7f7" stroke-width="5"/>
+        <path d="M57 226Q72 240 92 246" stroke="#f2f7f7" stroke-width="4"/>
+      </g>
+    </g></g>
+</svg>

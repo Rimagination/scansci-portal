@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>吸入器</title>
+<desc>金属罐装入弯折外壳并连接侧向口含部的通用定量吸入器外形示意，不含用药步骤。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="inhaler" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="inhaler-object" fill="none">
+      <g id="inhaler-canister">
+        <path d="M119 119V61Q119 43 137 43H167Q185 43 185 61V119Z" fill="#b4c4ce"/>
+        <ellipse cx="152" cy="48" rx="27" ry="8" fill="#e5ebee"/>
+        <path d="M132 68V100" stroke="#e5ebee" stroke-width="6"/>
+        <path d="M171 64V104" stroke="#8eabb9" stroke-width="5"/>
+      </g>
+      <g id="inhaler-housing">
+        <path d="M107 110H198V205H228V256H137Q107 256 107 226Z" fill="#79a57c"/>
+        <path d="M184 122H198V205H228V256H137Q114 256 109 239H177Q184 239 184 231Z" fill="#5f8869"/>
+        <path d="M121 129V207" stroke="#bbd0b7" stroke-width="6"/>
+        <rect x="135" y="145" width="39" height="49" rx="5" fill="#e5ebee"/>
+        <path d="M145 159H164M145 170H164M145 181H156"/>
+        <path d="M106 110H199V122H106Z" fill="#bbd0b7"/>
+      </g>
+      <g id="inhaler-mouthpiece">
+        <path d="M218 210L258 216V249L218 255Z" fill="#e5ebee"/>
+        <path d="M249 215L262 217V250L249 252Z" fill="#b4c4ce"/>
+        <path d="M253 223L258 224V243L253 244Z" fill="#3e5563"/>
+        <path d="M226 221L241 224" stroke="#f2f7f7" stroke-width="4"/>
+      </g>
+    </g></g>
+</svg>

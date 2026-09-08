@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>岩石露头</title>
+<desc>棱角状岩石露头示意，颜色不用于判定岩性。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="rock-outcrop" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="main-rock"><path d="M56 233L65 118L130 69L206 90L254 164L244 245L143 269Z" fill="#b6b0a0" /><path d="M130 69L153 161L56 233L65 118Z" fill="#d1cbbc" /><path d="M153 161L206 90L254 164L244 245L143 269Z" fill="#928f82" /></g><g id="fractures"><path d="M82 139L117 153L107 196M181 122L171 187L203 208M174 249L203 208L235 221" fill="none" stroke="#696f65"/></g></g>
+</svg>

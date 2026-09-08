@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>污水处理池</title>
+<desc>敞口圆池与跨池桥架的通用示意；不表示特定处理工艺。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="treatment-tank" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="basin"><path d="M41 132V217C41 285 279 285 279 217V132Z" fill="#aabcc5" /><ellipse cx="160" cy="132" rx="119" ry="53" fill="#d8e1e2"/><ellipse cx="160" cy="133" rx="101" ry="39" fill="#8cb8c4"/></g><g id="bridge"><path d="M58 133L64 120L265 120L271 133Z" fill="#e5ebee" /><rect x="151" y="102" width="18" height="93" rx="0" fill="#7a969f"/></g><g id="surface-ripples"><path d="M80 153Q108 165 130 161M190 151Q215 156 237 145" fill="none" stroke="#d3edf0"/></g></g>
+</svg>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>水坝</title>
+<desc>重力式水坝和上下游水体的概念示意，不作工程设计。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="dam" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="upstream"><path d="M27 109L149 82L232 119L119 169L27 154Z" fill="#8cb8c4" stroke="none"/></g><g id="dam-wall"><path d="M119 96L185 112L237 247L147 274L95 239Z" fill="#c5cfd0" /><path d="M119 96L185 112L178 142L114 126Z" fill="#e5ebee" /><path d="M185 112L237 247L210 255L178 142Z" fill="#8fa4aa" /></g><g id="downstream"><path d="M52 239Q87 219 134 250Q197 276 269 239L289 264Q205 300 133 275Q71 252 33 273Z" fill="#8cb8c4" stroke="none"/></g></g>
+</svg>

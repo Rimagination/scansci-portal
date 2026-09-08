@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>微量移液器</title>
+<desc>包含按压头、握柄、退尖机构和锥形吸头的通用手持移液器示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="pipette" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="pipette-object" fill="none" transform="rotate(28 160 160)">
+      <g id="pipette-plunger">
+        <rect x="153" y="47" width="14" height="36" rx="3" fill="#b4c4ce"/>
+        <rect x="139" y="30" width="42" height="20" rx="7" fill="#79a57c"/>
+      </g>
+      <g id="pipette-handle">
+        <path d="M143 72H176Q190 72 190 89V153Q190 175 176 190H146Q130 174 130 151V91Q130 72 143 72Z" fill="#e5ebee"/>
+        <path d="M178 87V151Q178 169 169 181" stroke="#b4c4ce" stroke-width="8"/>
+        <rect x="141" y="105" width="27" height="37" rx="4" fill="#3e5563"/>
+        <path d="M148 116H160M148 124H160M148 132H155" stroke="#d3edf0"/>
+        <path d="M132 82H117Q111 82 111 89V102H131" fill="#79a57c"/>
+      </g>
+      <g id="pipette-ejector">
+        <path d="M191 93H201V189Q201 201 188 201H175" stroke="#b4c4ce" stroke-width="7"/>
+        <rect x="192" y="79" width="19" height="18" rx="4" fill="#dba68a"/>
+      </g>
+      <g id="pipette-tip">
+        <path d="M146 190H175L171 221H150Z" fill="#b4c4ce"/>
+        <path d="M149 218H173L165 266H157Z" fill="#d3edf0"/>
+        <path d="M157 248H168L165 266H159Z" fill="#8cb8c4"/>
+        <path d="M161 273C157 279 155 282 155 286A6 6 0 0 0 167 286C167 282 164 278 161 273Z" fill="#8cb8c4"/>
+      </g>
+    </g></g>
+</svg>

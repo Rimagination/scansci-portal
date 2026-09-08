@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>蝴蝶</title>
+<desc>展开双翅的蝴蝶通用示意，按前翅、后翅和躯体分组。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="butterfly" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="butterfly-organism">
+      <g id="butterfly-hindwings" fill="#dba68a"><path d="M151 163 C117 153 66 165 65 207 C63 239 89 267 112 251 C121 275 151 248 155 219Z"/><path d="M169 163 C203 153 254 165 255 207 C257 239 231 267 208 251 C199 275 169 248 165 219Z"/><path fill="none" d="M148 182 Q105 187 82 221 M151 192 Q132 230 112 251 M172 182 Q215 187 238 221 M169 192 Q188 230 208 251"/></g>
+      <g id="butterfly-forewings" fill="#b66f6a"><path d="M151 174 C110 179 53 151 43 106 C36 80 34 46 49 41 C74 33 112 65 132 97 C146 117 151 145 151 174Z"/><path d="M169 174 C210 179 267 151 277 106 C284 80 286 46 271 41 C246 33 208 65 188 97 C174 117 169 145 169 174Z"/><path fill="#dba68a" d="M138 156 C106 143 66 110 60 66 C94 78 121 111 138 156Z M182 156 C214 143 254 110 260 66 C226 78 199 111 182 156Z"/><path fill="none" d="M149 166 L89 91 M171 166 L231 91 M119 131 L73 126 M201 131 L247 126"/></g>
+      <g id="butterfly-body"><path fill="#9d8064" d="M154 133 C148 152 149 209 160 235 C171 209 172 152 166 133Z"/><ellipse cx="160" cy="124" rx="9" ry="12" fill="#d0b89a"/><path fill="none" d="M156 114 Q144 90 130 89 M164 114 Q176 90 190 89 M151 169 L169 169 M152 186 L168 186 M154 203 L166 203"/></g>
+    </g></g>
+</svg>

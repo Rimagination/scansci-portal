@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>鱼</title>
+<desc>侧视鱼体及尾鳍、背鳍等外部结构的通用示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="fish" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="fish-organism">
+      <g id="fish-fins" fill="#8cb8c4">
+        <path d="M118 120 C133 91 156 72 190 72 C185 94 192 106 208 124Z"/>
+        <path d="M127 190 Q143 231 172 246 Q172 218 184 198Z"/>
+        <path d="M209 140 C232 123 253 105 280 99 C270 129 270 176 282 204 C253 201 235 181 211 176Z"/>
+        <path fill="none" d="M143 115 L155 88 M165 113 L176 87 M144 203 L164 230 M235 151 L267 117 M235 167 L268 188 M240 160 L269 158"/>
+      </g>
+      <g id="fish-body"><path fill="#d3edf0" d="M38 158 C61 126 91 113 135 115 C178 115 207 133 237 154 L237 169 C201 187 167 208 127 206 C83 205 55 185 38 163 Q48 163 51 160Z"/><path fill="#8cb8c4" stroke="none" d="M47 150 C106 96 183 118 237 154 C169 132 102 130 47 150Z"/><path fill="none" d="M87 132 C110 151 108 178 88 191 M117 149 Q156 143 203 158"/></g>
+      <g id="fish-pectoral-fin"><path fill="#8cb8c4" d="M109 164 C128 158 151 167 162 185 C137 190 119 181 109 164Z"/><path fill="none" d="M115 167 L148 180"/></g>
+      <g id="fish-eye"><circle cx="70" cy="149" r="7" fill="#d0b89a"/><circle cx="70" cy="149" r="2.8" fill="#3e5563" stroke="none"/></g>
+    </g></g>
+</svg>

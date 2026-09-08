@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>试管架</title>
+<desc>四支装有不同液位样品的试管置于双层支架中，为通用实验摆放示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="test-tube-rack" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="test-tube-rack-object" fill="none">
+      <g id="test-tube-rack-frame">
+        <path d="M52 150H65V266H52ZM255 150H268V266H255Z" fill="#b4c4ce"/>
+        <path d="M49 244H271V261H49Z" fill="#e5ebee"/>
+        <rect x="43" y="263" width="234" height="15" rx="5" fill="#b4c4ce"/>
+      </g>
+      <g id="test-tube-rack-tube-1">
+        <path d="M68 70H98V222A15 15 0 0 1 68 222Z" fill="#d3edf0"/>
+        <path d="M70 171H96V221A13 13 0 0 1 70 221Z" fill="#8cb8c4"/>
+        <path d="M76 88V116" stroke="#f2f7f7" stroke-width="4"/>
+        <rect x="64" y="60" width="38" height="13" rx="4" fill="#e5ebee"/>
+      </g><g id="test-tube-rack-tube-2">
+        <path d="M119 70H149V222A15 15 0 0 1 119 222Z" fill="#d3edf0"/>
+        <path d="M121 139H147V221A13 13 0 0 1 121 221Z" fill="#79a57c"/>
+        <path d="M127 88V116" stroke="#f2f7f7" stroke-width="4"/>
+        <rect x="115" y="60" width="38" height="13" rx="4" fill="#e5ebee"/>
+      </g><g id="test-tube-rack-tube-3">
+        <path d="M170 70H200V222A15 15 0 0 1 170 222Z" fill="#d3edf0"/>
+        <path d="M172 158H198V221A13 13 0 0 1 172 221Z" fill="#8cb8c4"/>
+        <path d="M178 88V116" stroke="#f2f7f7" stroke-width="4"/>
+        <rect x="166" y="60" width="38" height="13" rx="4" fill="#e5ebee"/>
+      </g><g id="test-tube-rack-tube-4">
+        <path d="M221 70H251V222A15 15 0 0 1 221 222Z" fill="#d3edf0"/>
+        <path d="M223 121H249V221A13 13 0 0 1 223 221Z" fill="#79a57c"/>
+        <path d="M229 88V116" stroke="#f2f7f7" stroke-width="4"/>
+        <rect x="217" y="60" width="38" height="13" rx="4" fill="#e5ebee"/>
+      </g>
+      <g id="test-tube-rack-front-rail">
+        <rect x="45" y="148" width="230" height="20" rx="4" fill="#e5ebee"/>
+        <path d="M57 159H263" stroke="#b4c4ce"/>
+      </g>
+    </g></g>
+</svg>

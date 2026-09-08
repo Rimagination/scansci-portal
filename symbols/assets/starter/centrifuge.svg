@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>台式离心机</title>
+<desc>开启上盖的通用台式离心机，示意转子孔位与控制面板，不表达运行中的开盖状态。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="centrifuge" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="centrifuge-object" fill="none">
+      <g id="centrifuge-lid">
+        <path d="M72 126L81 60Q85 37 110 37H210Q235 37 239 60L248 126Z" fill="#e5ebee"/>
+        <path d="M92 109L99 65Q101 54 115 54H205Q219 54 221 65L228 109Z" fill="#b4c4ce"/>
+        <path d="M103 67H214" stroke="#e5ebee" stroke-width="5"/>
+        <path d="M90 116V134M230 116V134" stroke-width="8"/>
+      </g>
+      <g id="centrifuge-housing">
+        <path d="M60 161Q60 127 90 127H230Q260 127 260 161V249Q260 270 238 270H82Q60 270 60 249Z" fill="#e5ebee"/>
+        <path d="M244 169H260V249Q260 270 238 270H82V257H233Q244 257 244 246Z" fill="#b4c4ce"/>
+        <ellipse cx="160" cy="159" rx="89" ry="31" fill="#3e5563"/>
+      </g>
+      <g id="centrifuge-rotor">
+        <ellipse cx="160" cy="157" rx="68" ry="25" fill="#b4c4ce"/>
+        <ellipse id="centrifuge-slot-1" cx="117" cy="157" rx="9" ry="5" fill="#3e5563"/><ellipse id="centrifuge-slot-2" cx="138" cy="143" rx="9" ry="5" fill="#3e5563"/><ellipse id="centrifuge-slot-3" cx="182" cy="143" rx="9" ry="5" fill="#3e5563"/><ellipse id="centrifuge-slot-4" cx="203" cy="157" rx="9" ry="5" fill="#3e5563"/><ellipse id="centrifuge-slot-5" cx="182" cy="171" rx="9" ry="5" fill="#3e5563"/><ellipse id="centrifuge-slot-6" cx="138" cy="171" rx="9" ry="5" fill="#3e5563"/>
+        <ellipse cx="160" cy="157" rx="13" ry="8" fill="#e5ebee"/>
+      </g>
+      <g id="centrifuge-controls">
+        <rect x="84" y="207" width="83" height="33" rx="5" fill="#3e5563"/>
+        <path d="M96 218H136M96 228H121" stroke="#d3edf0"/>
+        <circle cx="198" cy="222" r="15" fill="#79a57c"/>
+        <path d="M198 213V219"/>
+        <circle cx="231" cy="222" r="5" fill="#dba68a"/>
+      </g>
+    </g></g>
+</svg>

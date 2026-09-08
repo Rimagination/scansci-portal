@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>圆底烧瓶</title>
+<desc>长颈连接球形瓶腹的通用圆底烧瓶，液面与玻璃高光用于表现形体。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="round-flask" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="round-flask-object" fill="none">
+      <g id="round-flask-glass">
+        <path d="M140 50H180V119C217 129 242 159 242 199C242 244 206 280 160 280C114 280 78 244 78 199C78 159 103 129 140 119Z" fill="#d3edf0"/>
+        <path d="M176 71V127C211 141 229 166 229 197" stroke="#8cb8c4" stroke-width="7"/>
+        <path d="M150 77V128C120 139 104 157 99 176" stroke="#f2f7f7" stroke-width="6"/>
+        <rect x="133" y="38" width="54" height="17" rx="5" fill="#e5ebee"/>
+      </g>
+      <g id="round-flask-liquid">
+        <path d="M80 199Q160 182 240 199C240 243 205 278 160 278C115 278 80 243 80 199Z" fill="#8cb8c4"/>
+        <ellipse cx="160" cy="199" rx="80" ry="13" fill="#b9dde0"/>
+        <path d="M100 221Q112 252 141 259" stroke="#d3edf0" stroke-width="6"/>
+      </g>
+      <g id="round-flask-label">
+        <rect x="146" y="226" width="48" height="23" rx="5" fill="#e5ebee"/>
+        <path d="M157 237H183"/>
+      </g>
+    </g></g>
+</svg>

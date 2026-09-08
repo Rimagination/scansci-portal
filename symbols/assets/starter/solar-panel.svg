@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>光伏组件</title>
+<desc>光伏组件与支架示意，不表示电气连接或安装规范。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="solar-panel" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="support"><path d="M97 213V269H80M213 213V269H230M97 252H213" fill="none" stroke="#6a7f86" stroke-width="9"/></g><g id="panel"><path d="M67 62H249L270 209H45Z" fill="#657f95" /><path d="M112 63L101 208" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M156 63L155 208" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M200 63L209 208" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M63 91H253" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M58.8 120H257.2" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M54.6 149H261.4" fill="none" stroke="#b8d0d8" stroke-width="2"/><path d="M50.4 178H265.6" fill="none" stroke="#b8d0d8" stroke-width="2"/></g></g>
+</svg>

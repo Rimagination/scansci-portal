@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>蘑菇</title>
+<desc>拱形菌盖、下缘纹理与菌柄组成的通用大型真菌示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="mushroom" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="mushroom-organism">
+      <g id="mushroom-stalk"><path fill="#d0b89a" d="M143 139 C148 173 136 221 124 256 C115 281 151 288 181 279 C200 273 192 260 185 242 C173 211 176 173 178 140Z"/><path fill="none" d="M154 169 Q158 215 145 263 M168 199 Q165 243 177 267"/></g>
+      <g id="mushroom-cap">
+        <path fill="#d0b89a" d="M46 148 C75 124 232 122 275 148 C255 174 200 182 160 178 C111 181 65 170 46 148Z"/>
+        <path fill="none" d="M64 151 L143 161 M84 160 L141 164 M110 169 L145 167 M256 151 L178 162 M235 162 L180 166 M209 173 L178 170"/>
+        <path fill="#b66f6a" d="M46 148 C58 118 75 74 114 54 C147 36 181 39 213 60 C245 80 260 117 275 148 C229 138 192 146 161 145 C119 143 83 155 46 148Z"/>
+        <path fill="none" d="M65 134 C95 126 124 132 145 131 M174 129 Q221 122 255 134"/>
+        <path fill="#dba68a" stroke="none" d="M95 97 C113 62 156 52 188 68 C149 62 122 81 109 103 C104 110 90 107 95 97Z"/>
+      </g>
+    </g></g>
+</svg>

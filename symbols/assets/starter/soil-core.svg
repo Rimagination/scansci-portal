@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>土壤柱样</title>
+<desc>柱状土样和分层示意，层色和厚度仅作概念表达。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="soil-core" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="sample"><path d="M105 64L215 64V249C215 272 105 272 105 249Z" fill="#b99a73" /><path d="M105 115Q157 133 215 115V171Q161 187 105 170Z" fill="#d7bb8d" /><path d="M105 170Q161 187 215 171V222Q160 235 105 221Z" fill="#aa8765" /><ellipse cx="160" cy="64" rx="55" ry="17" fill="#765f47"/></g><g id="surface-organics"><path d="M126 58l15 7m29-10l-9 12m22-8l13 5" fill="none" stroke="#b7a477"/></g><g id="sample-sleeve"><path d="M105 64V249C105 272 215 272 215 249V64" fill="none" stroke="#536d75" stroke-width="4"/><path d="M117 84V240" fill="none" stroke="#edf4ef" stroke-width="4"/></g></g>
+</svg>

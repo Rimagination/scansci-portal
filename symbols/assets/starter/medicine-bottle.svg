@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>药瓶</title>
+<desc>带旋盖、瓶肩和空白信息标签的通用药品容器，不表示具体药物或剂量。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="medicine-bottle" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="medicine-bottle-object" fill="none">
+      <g id="medicine-bottle-glass">
+        <path d="M126 75H194V96Q194 103 213 114Q226 122 226 140V252Q226 276 204 276H116Q94 276 94 252V140Q94 122 107 114Q126 103 126 96Z" fill="#dba68a"/>
+        <path d="M211 139V249Q211 261 200 261H120" stroke="#b66f6a" stroke-width="8"/>
+        <path d="M113 136V165" stroke="#efd5c4" stroke-width="6"/>
+      </g>
+      <g id="medicine-bottle-cap">
+        <rect x="119" y="44" width="82" height="41" rx="7" fill="#e5ebee"/>
+        <path d="M120 72H200V79Q200 85 194 85H126Q120 85 120 79Z" fill="#b4c4ce"/>
+        <path d="M131 53V66M143 53V66M155 53V66M167 53V66M179 53V66M191 53V66"/>
+      </g>
+      <g id="medicine-bottle-label">
+        <rect x="99" y="155" width="122" height="82" rx="4" fill="#e5ebee"/>
+        <path d="M99 155H221V174H99Z" fill="#79a57c"/>
+        <path d="M118 191H201M118 204H188M118 220H153"/>
+        <path d="M181 216H201" stroke="#b66f6a" stroke-width="4"/>
+      </g>
+    </g></g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>实验室天平</title>
+<desc>带金属称盘和数字显示窗的通用实验室电子天平，不指代特定精度等级。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="laboratory-balance" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="laboratory-balance-object" fill="none">
+      <g id="laboratory-balance-feet">
+        <rect x="78" y="260" width="33" height="17" rx="5" fill="#3e5563"/>
+        <rect x="210" y="260" width="33" height="17" rx="5" fill="#3e5563"/>
+      </g>
+      <g id="laboratory-balance-housing">
+        <path d="M81 173H239L270 233V259H50V233Z" fill="#e5ebee"/>
+        <path d="M50 233H270V259H50Z" fill="#b4c4ce"/>
+        <path d="M81 173L98 196H222L239 173"/>
+      </g>
+      <g id="laboratory-balance-pan">
+        <path d="M147 139H173V174H147Z" fill="#b4c4ce"/>
+        <path d="M80 118V134C80 149 116 160 160 160C204 160 240 149 240 134V118Z" fill="#b4c4ce"/>
+        <ellipse cx="160" cy="118" rx="80" ry="25" fill="#e5ebee"/>
+        <path d="M102 113Q135 98 179 104" stroke="#f2f7f7" stroke-width="5"/>
+      </g>
+      <g id="laboratory-balance-sample">
+        <path d="M142 78H178L183 117Q160 126 137 117Z" fill="#dba68a"/>
+        <ellipse cx="160" cy="78" rx="18" ry="6" fill="#e8c7b4"/>
+        <path d="M153 78V65Q153 58 160 58Q167 58 167 65V78" fill="#b4c4ce"/>
+      </g>
+      <g id="laboratory-balance-controls">
+        <path d="M100 205H180L189 226H91Z" fill="#3e5563"/>
+        <path d="M110 214H130M137 214H153M161 214H170" stroke="#d3edf0"/>
+        <path d="M207 205H225L232 221H214Z" fill="#79a57c"/>
+      </g>
+    </g></g>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>血液袋</title>
+<desc>带悬挂孔、血液色填充、标签及管路的通用血液袋；不标注血型、容量或使用条件。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="blood-bag" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="blood-bag-object" fill="none">
+      <g id="blood-bag-pouch">
+        <path d="M144 31H176V54H195Q212 54 217 73L226 188Q228 215 201 219H119Q92 215 94 188L103 73Q108 54 125 54H144ZM154 38V46H166V38Z" fill="#d3edf0" fill-rule="evenodd"/>
+        <path d="M103 97Q160 109 217 97L224 188Q226 212 201 216H119Q94 212 96 188Z" fill="#b66f6a"/>
+        <path d="M210 119L216 185Q218 202 201 205" stroke="#965d5b" stroke-width="7"/>
+        <path d="M115 77L112 94M110 119L106 180" stroke="#efd5c4" stroke-width="5"/>
+        <path d="M124 64H196" stroke="#8cb8c4"/>
+      </g>
+      <g id="blood-bag-label">
+        <rect x="126" y="116" width="69" height="70" rx="5" fill="#e5ebee"/>
+        <path d="M160 126C155 134 150 139 150 145A10 10 0 0 0 170 145C170 139 165 132 160 126Z" fill="#b66f6a"/>
+        <path d="M138 164H183M138 176H168"/>
+      </g>
+      <g id="blood-bag-tubing">
+        <path d="M132 219H146V237H132Z" fill="#b4c4ce"/>
+        <rect x="129" y="232" width="20" height="10" rx="3" fill="#dba68a"/>
+        <path d="M176 219H190V236H176Z" fill="#b4c4ce"/>
+        <path d="M183 236V254Q183 280 212 280H231Q251 280 251 260V248" stroke="#3e5563" stroke-width="7"/>
+        <path d="M183 236V254Q183 280 212 280H231Q251 280 251 260V248" stroke="#b66f6a" stroke-width="3"/>
+        <rect x="244" y="232" width="14" height="18" rx="3" fill="#e5ebee"/>
+        <rect x="241" y="227" width="20" height="9" rx="3" fill="#dba68a"/>
+      </g>
+    </g></g>
+</svg>

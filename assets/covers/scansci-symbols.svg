@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 405">
+  <rect width="720" height="405" fill="#eef5f0"/>
+  <g fill="white" stroke="#cbdcd3" stroke-width="2">
+    <rect x="56" y="56" width="184" height="192" rx="18"/>
+    <rect x="268" y="56" width="184" height="192" rx="18"/>
+    <rect x="480" y="56" width="184" height="192" rx="18"/>
+  </g>
+  <path d="M108 126h80v70h-80z" fill="#92c5b1"/><circle cx="360" cy="160" r="42" fill="#709bac"/>
+  <path d="m572 115 47 82h-94z" fill="#dab66d"/>
+  <g fill="#10223c" font-family="sans-serif"><text x="56" y="311" font-size="31" font-weight="700">ScanSci / SVG Library</text><text x="56" y="353" font-size="20" fill="#527069">SHARE · DISCOVER · CREATE</text></g>
+</svg>

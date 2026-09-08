@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>听诊器</title>
+<desc>双耳管汇入柔性软管并连接圆形胸件的通用听诊器示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="stethoscope" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="stethoscope-object" fill="none">
+      <g id="stethoscope-ear-tubes">
+        <path d="M102 51L79 88V130Q79 166 118 177" stroke="#3e5563" stroke-width="13"/>
+        <path d="M102 51L79 88V130Q79 166 118 177" stroke="#b4c4ce" stroke-width="8"/>
+        <path d="M158 51L181 88V130Q181 166 142 177" stroke="#3e5563" stroke-width="13"/>
+        <path d="M158 51L181 88V130Q181 166 142 177" stroke="#b4c4ce" stroke-width="8"/>
+        <rect x="98" y="38" width="15" height="28" rx="7" fill="#79a57c" transform="rotate(28 105 52)"/>
+        <rect x="147" y="38" width="15" height="28" rx="7" fill="#79a57c" transform="rotate(-28 154 52)"/>
+      </g>
+      <g id="stethoscope-hose">
+        <path d="M87 145Q92 186 130 188Q168 186 173 145M130 188V231C130 288 228 298 240 243V191" stroke="#3e5563" stroke-width="15"/>
+        <path d="M87 145Q92 186 130 188Q168 186 173 145M130 188V231C130 288 228 298 240 243V191" stroke="#79a57c" stroke-width="10"/>
+      </g>
+      <g id="stethoscope-chestpiece">
+        <path d="M234 194V174H246V194Z" fill="#b4c4ce"/>
+        <circle cx="240" cy="152" r="31" fill="#b4c4ce"/>
+        <circle cx="240" cy="149" r="25" fill="#e5ebee"/>
+        <circle cx="240" cy="149" r="15" fill="#d3edf0"/>
+        <path d="M225 138Q232 131 243 132" stroke="#f2f7f7" stroke-width="4"/>
+      </g>
+    </g></g>
+</svg>

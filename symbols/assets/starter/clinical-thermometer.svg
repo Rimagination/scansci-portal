@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>电子体温计</title>
+<desc>带显示窗、开关和金属探头的通用电子体温计，屏幕使用抽象笔画而非测量读数。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="clinical-thermometer" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="clinical-thermometer-object" fill="none" transform="rotate(30 160 160)">
+      <g id="clinical-thermometer-shell">
+        <path d="M150 35H170Q187 35 187 54V160Q187 183 174 202L168 229H152L146 202Q133 183 133 160V54Q133 35 150 35Z" fill="#e5ebee"/>
+        <path d="M177 53V161Q177 180 165 200" stroke="#b4c4ce" stroke-width="6"/>
+        <path d="M136 60H184V78H136Z" fill="#79a57c"/>
+      </g>
+      <g id="clinical-thermometer-display">
+        <rect x="142" y="94" width="36" height="57" rx="5" fill="#3e5563"/>
+        <path d="M151 107H168M151 120H168M151 133H160" stroke="#d3edf0" stroke-width="3"/>
+        <circle cx="160" cy="173" r="8" fill="#79a57c"/>
+        <path d="M160 167V171"/>
+      </g>
+      <g id="clinical-thermometer-probe">
+        <path d="M152 227H168L166 270Q166 284 160 284Q154 284 154 270Z" fill="#b4c4ce"/>
+        <path d="M159 235V270" stroke="#e5ebee" stroke-width="3"/>
+        <path d="M154 264H166"/>
+      </g>
+    </g></g>
+</svg>

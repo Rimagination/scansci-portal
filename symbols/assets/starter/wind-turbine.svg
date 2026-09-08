@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>风力发电机</title>
+<desc>三叶片风机示意；叶片、轮毂和塔筒分别分组。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="wind-turbine" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="tower"><path d="M152 133H169L182 286H140Z" fill="#cbd6d8" /></g><g id="blade-0" transform="rotate(0 160 132)"><path d="M159 126Q142 94 157 31Q165 23 167 39L173 105L162 132Z" fill="#e5ebee" /></g><g id="blade-1" transform="rotate(120 160 132)"><path d="M159 126Q142 94 157 31Q165 23 167 39L173 105L162 132Z" fill="#e5ebee" /></g><g id="blade-2" transform="rotate(240 160 132)"><path d="M159 126Q142 94 157 31Q165 23 167 39L173 105L162 132Z" fill="#e5ebee" /></g><g id="hub"><ellipse cx="160" cy="132" rx="15" ry="15" fill="#8fa9b0"/></g></g>
+</svg>

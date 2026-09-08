@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>烧杯</title>
+<desc>带倾倒口、液面和示意刻线的通用玻璃烧杯；刻线不代表校准容量。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="beaker" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="beaker-object" fill="none">
+      <g id="beaker-vessel">
+        <path d="M83 62H230L217 85V258Q217 278 197 278H107Q87 278 87 258V85L72 70Q68 62 83 62Z" fill="#d3edf0"/>
+        <path d="M199 86V255Q199 263 191 263H113" stroke="#8cb8c4" stroke-width="9"/>
+        <path d="M102 91V150" stroke="#f2f7f7" stroke-width="6"/>
+        <path d="M89 78H208"/>
+      </g>
+      <g id="beaker-liquid">
+        <path d="M89 181Q151 170 215 181V257Q215 276 196 276H108Q89 276 89 257Z" fill="#8cb8c4"/>
+        <ellipse cx="152" cy="181" rx="63" ry="9" fill="#b9dde0"/>
+        <path d="M102 205V249Q102 261 114 261" stroke="#d3edf0" stroke-width="5"/>
+      </g>
+      <g id="beaker-graduations">
+        <path d="M175 111H198M185 132H198M175 153H198M185 174H198M175 195H198M185 216H198M175 237H198"/>
+      </g>
+    </g></g>
+</svg>

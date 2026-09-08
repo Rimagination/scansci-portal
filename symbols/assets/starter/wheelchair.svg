@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>轮椅</title>
+<desc>包含座背、扶手、大驱动轮、前脚轮与脚踏板的通用手动轮椅侧视示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="wheelchair" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="wheelchair-object" fill="none">
+      <g id="wheelchair-frame">
+        <path d="M83 56H105L114 170H206L239 243H258" stroke="#3e5563" stroke-width="12"/>
+        <path d="M83 56H105L114 170H206L239 243H258" stroke="#b4c4ce" stroke-width="7"/>
+        <path d="M134 213L195 169M179 180L204 252H230" stroke="#b4c4ce" stroke-width="8"/>
+        <rect x="68" y="48" width="31" height="14" rx="6" fill="#3e5563"/>
+      </g>
+      <g id="wheelchair-seat">
+        <path d="M107 76H125L134 159H115Z" fill="#79a57c"/>
+        <path d="M121 159H209V176H121Z" fill="#79a57c"/>
+        <path d="M137 134V160M198 134V160" stroke="#b4c4ce" stroke-width="7"/>
+        <rect x="129" y="123" width="78" height="15" rx="6" fill="#3e5563"/>
+      </g>
+      <g id="wheelchair-drive-wheel">
+        <circle cx="124" cy="218" r="65" stroke="#3e5563" stroke-width="12"/>
+        <circle cx="124" cy="218" r="51" stroke="#b4c4ce" stroke-width="4"/>
+        <path d="M124 167V269M73 218H175M88 182L160 254M88 254L160 182" stroke="#b4c4ce"/>
+        <circle cx="124" cy="218" r="10" fill="#e5ebee"/>
+      </g>
+      <g id="wheelchair-caster-and-footrest">
+        <circle cx="233" cy="267" r="17" fill="#b4c4ce" stroke-width="5"/>
+        <circle cx="233" cy="267" r="5" fill="#e5ebee"/>
+        <path d="M230 248V267" stroke-width="6"/>
+        <path d="M244 239H278V250H244Z" fill="#3e5563"/>
+      </g>
+    </g></g>
+</svg>

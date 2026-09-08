@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>针叶树</title>
+<desc>渐尖树冠、弧形层枝与可见树干组成的通用针叶树示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="conifer-tree" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="conifer-tree-organism">
+      <g id="conifer-tree-trunk"><path fill="#9d8064" d="M153 191 L169 191 L168 264 Q171 280 185 288 L156 282 L137 289 Q153 269 153 247Z"/></g>
+      <g id="conifer-tree-lower-boughs"><path fill="#67925d" d="M160 128 C146 149 117 177 90 190 Q96 191 111 188 C98 207 69 224 43 230 C62 243 87 242 105 235 C114 252 143 256 160 242 C178 259 204 252 217 237 C239 247 264 241 279 230 C245 222 224 206 213 187 Q229 192 234 188 C202 173 177 150 160 128Z"/><path fill="none" d="M69 231 Q119 219 150 188 M252 232 Q203 219 171 188 M118 238 Q140 225 153 210 M199 239 Q180 228 168 211"/></g>
+      <g id="conifer-tree-middle-boughs"><path fill="#91b575" d="M160 78 C147 106 126 128 105 139 L120 136 C108 153 90 168 68 176 C86 189 111 185 127 177 C143 191 164 182 171 180 C188 193 211 184 219 178 Q237 187 253 175 C228 163 209 148 201 133 L217 138 C190 115 175 98 160 78Z"/><path fill="none" d="M94 175 Q130 162 150 140 M225 176 Q192 162 172 140"/></g>
+      <g id="conifer-tree-top-boughs"><path fill="#67925d" d="M160 27 C155 49 146 65 133 80 L143 77 C130 100 116 111 100 119 Q120 128 137 119 Q161 133 182 118 Q199 128 219 119 C199 106 186 91 178 76 L186 79 C172 59 165 43 160 27Z"/><path fill="none" d="M160 54 L160 113 M126 114 Q148 96 157 80 M195 114 Q175 96 163 79"/></g>
+    </g></g>
+</svg>

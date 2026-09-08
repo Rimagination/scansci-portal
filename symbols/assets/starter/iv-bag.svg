@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>输液袋</title>
+<desc>带悬挂孔、标签、出口和滴斗的通用输液袋，连接管仅作结构示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="iv-bag" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="iv-bag-object" fill="none">
+      <g id="iv-bag-pouch">
+        <path d="M145 30H175V52H194Q211 52 215 71L224 178Q227 204 202 208H118Q93 204 96 178L105 71Q109 52 126 52H145ZM154 37V45H166V37Z" fill="#d3edf0" fill-rule="evenodd"/>
+        <path d="M105 117Q158 126 215 117L222 178Q225 201 201 205H119Q95 201 98 178Z" fill="#8cb8c4"/>
+        <path d="M117 73L111 110M109 137L106 174" stroke="#f2f7f7" stroke-width="5"/>
+        <path d="M123 61H197M114 196H205" stroke="#8cb8c4"/>
+      </g>
+      <g id="iv-bag-label">
+        <rect x="131" y="91" width="59" height="66" rx="5" fill="#e5ebee"/>
+        <path d="M143 108H178M143 119H173M143 143H161"/>
+        <path d="M143 131H178" stroke="#79a57c" stroke-width="5"/>
+      </g>
+      <g id="iv-bag-ports">
+        <path d="M132 208H145V225H132Z" fill="#b4c4ce"/>
+        <rect x="128" y="219" width="21" height="10" rx="3" fill="#dba68a"/>
+        <path d="M174 208H187V224H174Z" fill="#b4c4ce"/>
+        <rect x="170" y="224" width="22" height="37" rx="7" fill="#d3edf0"/>
+        <path d="M172 249H190V254Q190 259 185 259H177Q172 259 172 254Z" fill="#8cb8c4"/>
+        <path d="M181 231V239" stroke="#8cb8c4" stroke-width="4"/>
+        <path d="M181 261V274Q181 291 199 291H223Q240 291 240 274V261" stroke="#8cb8c4" stroke-width="5"/>
+      </g>
+    </g></g>
+</svg>

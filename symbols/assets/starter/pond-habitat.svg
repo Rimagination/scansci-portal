@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>池塘生境</title>
+<desc>池塘水面、岸缘植物与浮叶组成的小型湿地场景示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="pond-habitat" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="pond-habitat-scene">
+      <g id="pond-habitat-bank"><path fill="#d0b89a" d="M46 188 C59 160 100 158 124 145 C157 127 181 142 205 153 C242 154 277 170 283 198 C293 223 256 249 224 255 C186 275 160 261 127 265 C83 270 38 246 36 220 Q33 203 46 188Z"/></g>
+      <g id="pond-habitat-water"><path fill="#d3edf0" d="M57 190 C84 173 104 179 132 159 C154 144 181 154 205 166 C232 167 266 181 271 199 C277 219 245 237 217 241 C184 258 156 246 127 251 C90 256 51 235 48 217 Q44 202 57 190Z"/><path fill="none" stroke="#8cb8c4" d="M65 208 Q88 202 108 208 M151 226 Q178 216 204 223 M220 204 Q240 199 256 205 M90 234 Q105 228 120 232"/></g>
+      <g id="pond-habitat-shore-plants"><path fill="none" d="M79 180 L75 91 M96 178 Q91 128 107 73 M230 174 L240 92 M245 181 L260 117"/><path fill="#67925d" d="M79 165 Q48 143 47 114 Q68 132 79 165Z M93 151 Q112 124 128 114 Q122 144 93 151Z M233 157 Q211 140 213 114 Q229 132 233 157Z M247 163 Q269 140 282 138 Q272 160 247 163Z"/><path fill="#9d8064" d="M71 91 L68 68 Q72 60 77 67 L79 90 Q76 97 71 91Z M104 75 L108 52 Q115 47 117 55 L112 77 Q107 83 104 75Z M236 96 L239 76 Q244 69 248 78 L245 98 Q239 104 236 96Z"/></g>
+      <g id="pond-habitat-floating-leaves" fill="#91b575"><path d="M139 198 L154 181 C139 170 112 176 108 189 C102 204 134 212 153 203Z"/><path d="M195 190 L207 179 C217 179 226 184 225 191 C224 205 192 209 183 198 C178 191 183 184 190 182Z"/><path fill="none" d="M139 198 Q119 189 117 190 M195 190 L212 197"/></g>
+    </g></g>
+</svg>

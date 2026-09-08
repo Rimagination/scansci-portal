@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>降雨云</title>
+<desc>云体与降雨的概念示意；雨滴数量不表示降雨强度。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="rain-cloud" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="cloud"><path d="M75 172C38 174 35 121 72 114C68 70 127 54 153 87C180 54 232 77 230 114C277 103 291 168 244 174Z" fill="#e5ebee" /></g><g id="rain"><path d="M74 205l-12 25" fill="none" stroke="#71a0b1" stroke-width="7"/><path d="M113 205l-12 25" fill="none" stroke="#71a0b1" stroke-width="7"/><path d="M152 205l-12 25" fill="none" stroke="#71a0b1" stroke-width="7"/><path d="M191 205l-12 25" fill="none" stroke="#71a0b1" stroke-width="7"/><path d="M230 205l-12 25" fill="none" stroke="#71a0b1" stroke-width="7"/></g></g>
+</svg>

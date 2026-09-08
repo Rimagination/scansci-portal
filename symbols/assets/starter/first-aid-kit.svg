@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>急救箱</title>
+<desc>带提手、锁扣和绷带图案标识的通用急救箱示意，不代表任何组织标志。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="first-aid-kit" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="first-aid-kit-object" fill="none">
+      <g id="first-aid-kit-handle">
+        <path d="M115 106V69Q115 52 132 52H188Q205 52 205 69V106H189V72Q189 68 185 68H135Q131 68 131 72V106Z" fill="#b4c4ce"/>
+      </g>
+      <g id="first-aid-kit-case">
+        <rect x="49" y="101" width="222" height="164" rx="18" fill="#e5ebee"/>
+        <path d="M254 105Q271 108 271 123V247Q271 265 253 265H67Q52 265 49 251H242Q254 251 254 240Z" fill="#b4c4ce"/>
+        <path d="M49 148H271"/>
+        <path d="M67 120H110M210 120H242" stroke="#f2f7f7" stroke-width="5"/>
+      </g>
+      <g id="first-aid-kit-latches">
+        <rect x="86" y="137" width="25" height="29" rx="4" fill="#79a57c"/>
+        <rect x="209" y="137" width="25" height="29" rx="4" fill="#79a57c"/>
+        <path d="M93 148H104M216 148H227"/>
+      </g>
+      <g id="first-aid-kit-bandage-emblem" transform="rotate(-25 160 205)">
+        <rect x="111" y="187" width="98" height="36" rx="17" fill="#dba68a"/>
+        <rect x="145" y="190" width="30" height="30" rx="4" fill="#e8c7b4"/>
+        <path d="M124 198V199M133 211V212M187 198V199M196 211V212" stroke-width="3"/>
+      </g>
+    </g></g>
+</svg>

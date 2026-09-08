@@ -1,0 +1,54 @@
+<!-- Local demo / unpublished submission. License pending author confirmation. Original: seedling_opposite_leaves.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="640" viewBox="0 0 480 640">
+  <g id="seedling" stroke-linecap="round" stroke-linejoin="round">
+    <g id="roots" fill="#92704D">
+      <path id="root-main" d="M236 470 C237 499 250 515 244 542 C238 566 245 590 233 615 C240 586 234 566 239 541 C244 515 232 498 232 473 Z"/>
+      <path id="root-left-upper" d="M238 490 C218 501 199 502 186 520 C172 538 151 539 136 553 C149 536 170 533 182 516 C196 496 217 495 235 486 Z"/>
+      <path id="root-right-upper" d="M241 501 C265 505 273 525 291 534 C309 542 323 557 330 574 C319 558 306 546 288 538 C269 529 261 510 240 506 Z"/>
+      <path id="root-left-lower" d="M242 529 C223 540 215 557 202 568 C190 578 185 592 183 606 C182 590 186 576 198 565 C211 553 219 535 242 525 Z"/>
+      <path id="root-right-lower" d="M240 558 C256 564 260 582 278 595 C259 586 254 568 240 562 Z"/>
+      <g id="rootlets" fill="none" stroke="#92704D" stroke-width="1.6">
+        <path id="rootlet-01" d="M202 503 C188 498 176 505 164 506"/>
+        <path id="rootlet-02" d="M176 526 C169 539 171 553 163 565"/>
+        <path id="rootlet-03" d="M265 516 C276 514 286 520 298 519"/>
+        <path id="rootlet-04" d="M301 543 C299 555 305 566 306 581"/>
+        <path id="rootlet-05" d="M212 553 C203 552 192 555 181 564"/>
+        <path id="rootlet-06" d="M238 581 C229 586 226 596 218 601"/>
+        <path id="rootlet-07" d="M264 582 C274 579 285 583 294 589"/>
+      </g>
+    </g>
+    <path id="stem" fill="#648347" d="M232 477 C233 447 224 431 225 405 C226 361 246 332 245 290 C244 247 227 211 231 175 C233 155 238 141 241 129 Q242 126 244 129 C242 144 240 158 239 175 C235 211 252 246 253 290 C254 333 235 362 235 405 C234 431 242 449 240 477 Z"/>
+    <g id="petioles" fill="none" stroke="#648347" stroke-width="4">
+      <path id="petiole-top-left" d="M235 175 Q218 171 204 155"/>
+      <path id="petiole-top-right" d="M235 175 Q254 170 269 153"/>
+      <path id="petiole-middle-left" d="M249 290 Q222 285 202 269"/>
+      <path id="petiole-middle-right" d="M249 290 Q273 283 293 263"/>
+      <path id="petiole-bottom-left" d="M230 405 Q207 397 190 381"/>
+      <path id="petiole-bottom-right" d="M230 405 Q257 399 280 380"/>
+    </g>
+    <g id="leaf-top-left" fill="#60954B">
+      <path id="blade-top-left" d="M204 155 C164 160 133 129 127 70 C170 76 210 109 204 155 Z"/>
+      <path id="vein-top-left" d="M204 155 Q161 117 136 82" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    </g>
+    <g id="leaf-top-right" fill="#73A653">
+      <path id="blade-top-right" d="M269 153 C263 109 304 75 350 65 C343 117 311 154 269 153 Z"/>
+      <path id="vein-top-right" d="M269 153 Q310 106 341 77" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    </g>
+    <g id="leaf-middle-left" fill="#4F873F">
+      <path id="blade-middle-left" d="M202 269 C145 283 93 250 70 195 C129 188 190 216 202 269 Z"/>
+      <path id="vein-middle-left" d="M202 269 Q148 227 83 202" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2.3"/>
+    </g>
+    <g id="leaf-middle-right" fill="#60954B">
+      <path id="blade-middle-right" d="M293 263 C294 215 349 184 410 187 C389 241 343 274 293 263 Z"/>
+      <path id="vein-middle-right" d="M293 263 Q344 217 397 195" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2.3"/>
+    </g>
+    <g id="leaf-bottom-left" fill="#4F873F">
+      <path id="blade-bottom-left" d="M190 381 C131 398 81 366 58 313 C115 303 177 329 190 381 Z"/>
+      <path id="vein-bottom-left" d="M190 381 Q134 340 72 319" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2.3"/>
+    </g>
+    <g id="leaf-bottom-right" fill="#60954B">
+      <path id="blade-bottom-right" d="M280 380 C295 329 356 307 418 320 C388 372 334 398 280 380 Z"/>
+      <path id="vein-bottom-right" d="M280 380 Q342 341 403 325" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2.3"/>
+    </g>
+  </g>
+</svg>

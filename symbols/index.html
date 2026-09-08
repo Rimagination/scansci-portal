@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN" data-community="off">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ScanSci 科研素材库：按对象分类浏览、搜索与下载可编辑的科研 SVG 矢量素材。">
+  <meta name="referrer" content="no-referrer">
+  <title>科研素材库 · ScanSci</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./starter-catalog.js" defer></script>
+  <script src="./expanded-catalog.js" defer></script>
+  <script src="./plant-catalog.js" defer></script>
+  <script src="./browse-taxonomy.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#library">跳到素材库</a>
+  <header class="site-header">
+    <a class="identity" href="/symbols/" aria-label="ScanSci 科研素材库首页"><span class="brand"><img class="brand-logo" src="/assets/brand/scansci-app-icon-64.png" alt="" aria-hidden="true" width="24" height="24"><span>ScanSci 出品</span></span><span class="identity-divider" aria-hidden="true"></span><span>科研素材库</span></a>
+    <nav class="header-actions" aria-label="主导航">
+      <a class="portal-link" href="/">返回门户 <span aria-hidden="true">↗</span></a>
+      <button class="button quiet" id="loginButton" type="button">登录</button>
+      <span class="account" id="account" hidden></span>
+      <button class="button primary" id="contributeButton" type="button">上传 SVG</button>
+    </nav>
+  </header>
+
+  <main class="page-shell" id="library">
+    <h1 id="pageTitle" class="sr-only">科研素材库</h1>
+
+    <section class="library" aria-label="浏览素材">
+      <div class="browse-toolbar">
+        <div class="scope-tabs" role="group" aria-label="素材范围">
+          <button type="button" data-scope="public" class="scope-tab" aria-pressed="true">社区素材</button>
+          <button type="button" data-scope="mine" class="scope-tab" aria-pressed="false" hidden>我的投稿</button>
+          <button type="button" data-scope="review" class="scope-tab" aria-pressed="false" hidden>待审核</button>
+        </div>
+        <button type="button" class="text-button" id="demoToggle" aria-pressed="false">原创素材</button>
+      </div>
+      <form id="searchForm" class="search-form" role="search">
+        <span class="search-icon" aria-hidden="true"></span><label class="sr-only" for="searchInput">搜索名称、作者或标签</label>
+        <input id="searchInput" name="q" type="search" placeholder="搜索名称、作者或标签…" maxlength="80" autocomplete="off">
+        <button class="button search-button" type="submit">搜索</button>
+      </form>
+      <div class="category-row"><button class="category-chip" type="button" id="allCategories" aria-pressed="true">全部</button><span class="category-divider" aria-hidden="true"></span><div id="categories" class="categories" role="group" aria-label="素材分类"></div></div>
+      <div class="original-filters" id="originalFilters" hidden>
+        <label>大类<select id="domainFilter"><option value="">全部大类</option></select></label>
+        <label>小类<select id="subcategoryFilter"><option value="">先选择大类</option></select></label>
+      </div>
+      <p class="demo-notice" id="demoNotice" hidden>按对象大类和小类浏览 SVG 素材</p>
+      <p class="notice" id="sessionNotice" role="status" hidden></p>
+      <div class="results-heading"><h2 id="resultsTitle" class="sr-only">社区素材</h2><p id="resultsCount" role="status" aria-live="polite">正在连接素材库…</p></div>
+      <div id="gallery" class="gallery" aria-busy="true"></div>
+      <div class="empty-state" id="emptyState" hidden><span class="empty-mark" aria-hidden="true">＋</span><h3 id="emptyTitle"></h3><p id="emptyCopy"></p><button class="button secondary" type="button" id="retryButton" hidden>重新连接</button></div>
+      <div class="load-more"><button class="button secondary" type="button" id="loadMoreButton" hidden>加载更多</button></div>
+      <p id="pageMessage" class="page-message" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <noscript><p class="notice">请启用 JavaScript，以浏览素材和提交投稿。</p></noscript>
+
+  <dialog id="detailDialog" class="detail-dialog" aria-labelledby="detailTitle">
+    <button class="dialog-close" type="button" data-close="detailDialog" aria-label="关闭素材详情">×</button>
+    <div class="detail-layout"><div class="detail-preview" id="detailPreview"></div><div class="detail-info">
+      <p class="detail-category" id="detailCategory"></p><h2 id="detailTitle"></h2><p class="detail-author" id="detailAuthor"></p><p class="detail-description" id="detailDescription"></p>
+      <div class="tags" id="detailTags"></div><dl class="metadata"><div><dt>状态</dt><dd id="detailStatus"></dd></div><div><dt>使用许可</dt><dd id="detailLicense"></dd></div><div><dt>日期</dt><dd id="detailDate"></dd></div></dl>
+      <p class="license-explanation" id="licenseExplanation"></p><a id="sourceLink" class="text-link" target="_blank" rel="noopener noreferrer" hidden>查看原始来源 ↗</a>
+      <div class="notice rejection" id="rejectionNotice" hidden></div>
+      <div class="attribution-block"><label for="attributionText">署名参考</label><textarea id="attributionText" readonly rows="3"></textarea><button class="text-button" id="copyAttribution" type="button">复制署名</button></div>
+      <a class="button primary download-button" id="downloadLink" download>下载 SVG <span aria-hidden="true">↓</span></a><p class="field-hint" id="demoDownloadNote" hidden>本地示例暂不提供下载，授权待作者确认。</p>
+      <form id="moderationForm" class="moderation" hidden><fieldset id="moderationFields"><legend id="moderationTitle">投稿审核</legend><label for="moderationReason">审核说明 <span class="optional" id="moderationHint">（退回时必填，投稿者可见）</span></label><textarea id="moderationReason" maxlength="500" rows="3" placeholder="说明需要修改或补充的内容"></textarea><div class="form-actions"><button class="button secondary" id="rejectButton" type="submit" value="rejected">退回投稿</button><button class="button primary" id="publishButton" type="submit" value="published">审核并发布</button></div></fieldset></form>
+      <p class="form-message" id="detailMessage" role="status" aria-live="polite"></p>
+    </div></div>
+  </dialog>
+
+  <dialog id="uploadDialog" class="upload-dialog" aria-labelledby="uploadTitle">
+    <button class="dialog-close" type="button" data-close="uploadDialog" aria-label="关闭投稿窗口">×</button>
+    <div class="dialog-heading"><h2 id="uploadTitle">上传 SVG</h2><p>审核通过后公开。</p></div>
+    <form id="uploadForm"><fieldset id="uploadFields">
+      <div class="drop-zone" id="dropZone"><input id="svgFile" type="file" accept=".svg,image/svg+xml" aria-label="选择 SVG 文件" aria-describedby="fileHelp svgSafetyNote"><div class="upload-preview" id="uploadPreview" hidden></div><span class="upload-mark" aria-hidden="true">↑</span><strong id="fileLabel">拖入 SVG 文件，或点击选择</strong><span id="fileHelp">单个 SVG，最大 200 KiB</span></div>
+      <details class="format-help"><summary id="svgSafetyNote">SVG 格式要求</summary><p class="field-hint">支持静态路径、分组、文字和渐变。本地预览不支持 <code>use</code>、<code>filter</code>、<code>mask</code>、<code>foreignObject</code>、<code>script</code>，以及 <code>clipPath</code> 内部的再次裁剪引用；最多 5000 个 XML 节点、48 层嵌套。外部引用或编辑器私有属性也可能被服务器拒绝。请导出为精简的静态 SVG，最终以服务器校验结果为准。</p></details>
+      <div class="form-grid"><div><label for="uploadTitleInput">素材名称 <span class="required">*</span></label><input id="uploadTitleInput" name="title" required maxlength="80" placeholder="例如：对生叶幼苗"></div><div><label for="uploadAuthor">作者署名 <span class="required">*</span></label><input id="uploadAuthor" name="author" required maxlength="80" placeholder="你希望公开展示的名字" aria-describedby="authorHint"><p id="authorHint" class="field-hint">将公开展示；请填写公开姓名或昵称。</p></div></div>
+      <label for="uploadDescription">素材说明 <span class="optional">（选填）</span></label><textarea id="uploadDescription" name="description" rows="2" maxlength="1000" placeholder="介绍图中内容、适用场景或科学细节"></textarea>
+      <div class="form-grid"><div><label for="uploadCategory">分类 <span class="required">*</span></label><select id="uploadCategory" name="category" required><option value="" disabled selected>选择一个分类</option></select></div><div><label for="uploadTags">标签 <span class="optional">（选填）</span></label><input id="uploadTags" name="tags" placeholder="植物，幼苗，根系"><p class="field-hint">用逗号分隔，最多 8 个标签，每个不超过 24 字。</p></div></div>
+      <label for="uploadLicense">公开授权 <span class="required">*</span></label><select id="uploadLicense" name="license" required aria-describedby="licenseHint"><option value="" disabled selected>请主动选择授权方式</option><option value="CC0-1.0">CC0 1.0 · 公众可自由使用，无须署名</option><option value="CC-BY-4.0">CC BY 4.0 · 允许再使用，须注明作者</option></select><p class="field-hint" id="licenseHint">两种许可均允许修改与商业使用，发布后的许可无法针对已获授权者撤回。请确认后选择。</p>
+      <label for="uploadSource">来源链接 <span class="optional">（选填，公开展示）</span></label><input id="uploadSource" name="source_url" type="url" maxlength="500" pattern="https://.*" placeholder="https://…" aria-describedby="sourceHint"><p class="field-hint" id="sourceHint">仅支持 HTTPS 公开页面链接，勿包含访问令牌或私人文件链接。</p>
+      <label class="checkbox-label"><input type="checkbox" id="rightsConfirmed" required><span>我确认拥有该素材的著作权或充分的再分发授权，并有权按所选许可公开分享此素材。<span class="required">*</span></span></label>
+      <div class="form-actions"><span class="field-hint">提交后可在「我的投稿」查看审核进度。</span><button class="button primary" type="submit" id="uploadSubmit">提交审核 <span aria-hidden="true">↗</span></button></div>
+    </fieldset><p class="form-message" id="uploadMessage" role="status" aria-live="polite"></p></form>
+  </dialog>
+
+  <dialog id="authDialog" class="auth-dialog" aria-labelledby="authTitle">
+    <button class="dialog-close" type="button" data-close="authDialog" aria-label="关闭登录窗口">×</button>
+    <div class="dialog-heading"><h2 id="authTitle">登录</h2></div>
+    <a class="button github-button" href="/api/auth/github/start?return_to=%2Fsymbols%2F">使用 GitHub 登录 <span aria-hidden="true">↗</span></a>
+    <div class="auth-divider"><span>或使用邮箱验证码</span></div>
+    <form id="authForm"><fieldset id="authFields"><label for="authEmail">邮箱</label><input id="authEmail" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"><label for="authCode">验证码</label><div class="code-row"><input id="authCode" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required placeholder="6 位数字"><button class="button secondary" type="button" id="sendCode">发送验证码</button></div><button class="button primary auth-submit" type="submit">验证并登录</button></fieldset><p class="form-message" id="authMessage" role="status" aria-live="polite"></p></form>
+  </dialog>
+</body>
+</html>

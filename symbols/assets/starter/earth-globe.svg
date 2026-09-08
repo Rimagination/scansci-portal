@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>地球</title>
+<desc>示意性地球与陆地区域；非测绘底图，陆地边界经过简化。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="earth-globe" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="ocean"><ellipse cx="160" cy="160" rx="111" ry="111" fill="#a9cdd3"/></g><g id="land"><path d="M96 75L131 55L145 81L132 108L107 122L102 149L77 132L64 110Z" fill="#91b575" /><path d="M106 161L144 176L151 205L132 241L117 234L119 203L101 187Z" fill="#91b575" /><path d="M176 67L211 81L242 110L237 132L213 129L198 152L179 133L157 135L163 108L183 96Z" fill="#91b575" /><path d="M172 151L200 154L214 176L198 220L180 226L170 196L158 172Z" fill="#91b575" /><path d="M224 212L249 218L245 238L217 242L211 228Z" fill="#91b575" /></g></g>
+</svg>

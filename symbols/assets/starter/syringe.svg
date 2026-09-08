@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>注射器</title>
+<desc>由推杆、透明针筒、活塞、针座和针头构成的通用注射器，刻线仅用于示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="syringe" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="syringe-object" fill="none" transform="rotate(32 160 160)">
+      <g id="syringe-plunger">
+        <rect x="153" y="45" width="14" height="67" fill="#b4c4ce"/>
+        <rect x="133" y="31" width="54" height="15" rx="4" fill="#e5ebee"/>
+      </g>
+      <g id="syringe-barrel">
+        <path d="M138 84H182V207Q182 217 173 217H147Q138 217 138 207Z" fill="#d3edf0"/>
+        <path d="M140 143H180V207Q180 215 172 215H148Q140 215 140 207Z" fill="#8cb8c4"/>
+        <path d="M147 94V198" stroke="#f2f7f7" stroke-width="4"/>
+        <rect x="125" y="79" width="70" height="11" rx="3" fill="#e5ebee"/>
+        <rect x="140" y="107" width="40" height="13" rx="3" fill="#3e5563"/>
+        <path d="M164 133H179M169 149H179M164 165H179M169 181H179M164 197H179"/>
+      </g>
+      <g id="syringe-needle">
+        <path d="M151 217H169V235H151Z" fill="#dba68a"/>
+        <path d="M156 235H164V252H156Z" fill="#b4c4ce"/>
+        <path d="M159 252H162V282L159 287Z" fill="#b4c4ce"/>
+      </g>
+    </g></g>
+</svg>

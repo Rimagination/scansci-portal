@@ -1,0 +1,62 @@
+<!-- Local demo / unpublished submission. License pending author confirmation. Original: new_monitoring_station.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="430" viewBox="0 0 560 430">
+  <g id="monitoring_station" stroke-linejoin="round" stroke-linecap="round">
+    <g id="two_storey_building" transform="translate(-50 0)">
+      <g id="front_facade">
+        <polygon id="front_wall" points="128,106 254,179 254,323 128,250" fill="#E8E4D5"/>
+        <g id="front_windows" fill="#548A96" stroke="#F8F6EB" stroke-width="3">
+          <polygon id="upper_left_window" points="147,143 175,159.22 175,189.22 147,173"/>
+          <polygon id="upper_right_window" points="203,175.44 231,191.67 231,221.67 203,205.44"/>
+          <polygon id="lower_left_window" points="147,209 175,225.22 175,255.22 147,239"/>
+        </g>
+        <polygon id="entrance_door" points="203,247.45 231,263.67 231,309.67 203,293.45" fill="#54756F"/>
+        <path id="door_handle" d="M224 284 L224 291" fill="none" stroke="#E8E4D5" stroke-width="2.5"/>
+      </g>
+      <g id="side_facade">
+        <polygon id="side_wall" points="254,179 326,137 326,281 254,323" fill="#B8C6BA"/>
+        <g id="side_windows" fill="#3B6875" stroke="#DDE6D9" stroke-width="3">
+          <polygon id="side_upper_window" points="268,188.83 310,164.33 310,194.33 268,218.83"/>
+          <polygon id="side_lower_window" points="268,256.83 310,232.33 310,262.33 268,286.83"/>
+        </g>
+      </g>
+      <path id="floor_division" d="M128 178 L254 251 L326 209" fill="none" stroke="#90A79C" stroke-width="4"/>
+      <g id="flat_roof">
+        <polygon id="roof_fascia" points="122,103 254,179 332,134 332,141 254,186 122,110" fill="#658B84"/>
+        <polygon id="roof_top" points="200,58 332,134 254,179 122,103" fill="#D7E2D6"/>
+        <polygon id="roof_inset" points="200,68 315,134 254,169 139,103" fill="#B6CDC1"/>
+      </g>
+      <g id="roof_monitoring_sensor">
+        <ellipse id="sensor_foot" cx="211" cy="111" rx="10" ry="5.8" fill="#658B84"/>
+        <path id="sensor_mast_and_arm" d="M211 110 V37 M194 48 H228" fill="none" stroke="#476C70" stroke-width="4"/>
+        <g id="anemometer_cups" fill="#648D91">
+          <circle id="left_cup" cx="193" cy="48" r="5"/>
+          <circle id="right_cup" cx="229" cy="48" r="5"/>
+          <circle id="upper_cup" cx="211" cy="35" r="5"/>
+        </g>
+        <g id="sensor_shield" stroke="#F4F3E8" stroke-width="5">
+          <path id="shield_louvres" d="M204 69 H218 M202 76 H220 M204 83 H218"/>
+        </g>
+      </g>
+    </g>
+    <g id="rear_bank_grass">
+      <path id="rear_grass_dark" d="M478 298 Q461 273 458 246 Q474 264 479 282 Q477 245 489 223 Q491 259 487 282 Q501 249 520 243 Q505 267 494 299 Z" fill="#527C60"/>
+      <path id="rear_grass_light" d="M480 299 Q475 278 466 263 Q484 273 486 288 Q493 260 506 255 Q501 280 491 300 Z" fill="#83A36A"/>
+    </g>
+    <g id="circular_sampling_pool">
+      <path id="pool_outer_wall" d="M268 310 A112 65 0 0 0 492 310 L492 330 A112 65 0 0 1 268 330 Z" fill="#A5B8B0"/>
+      <ellipse id="pool_rim" cx="380" cy="310" rx="112" ry="65" fill="#DBDED0"/>
+      <ellipse id="pool_inner_wall" cx="380" cy="310" rx="99" ry="53" fill="#6A9291"/>
+      <path id="pool_water" d="M281.63 316 A99 53 0 0 1 478.37 316 A99 53 0 0 1 281.63 316 Z" fill="#84BEC5"/>
+      <path id="water_ripples" d="M323 311 Q343 306 364 311 M386 336 Q410 342 433 335" fill="none" stroke="#C3E1DE" stroke-width="3"/>
+      <g id="sampling_probe">
+        <path id="probe_support" d="M459 273 V249 H418 V296" fill="none" stroke="#496E73" stroke-width="4"/>
+        <rect id="probe_tip" x="414" y="291" width="8" height="16" rx="3" fill="#E5E9DD"/>
+        <ellipse id="probe_mount" cx="459" cy="273" rx="7" ry="4" fill="#496E73"/>
+      </g>
+    </g>
+    <g id="front_bank_grass">
+      <path id="front_grass_dark" d="M315 392 Q294 373 290 348 Q307 359 319 379 Q315 349 325 327 Q332 350 328 377 Q340 348 359 341 Q347 368 333 390 Z" fill="#527C60"/>
+      <path id="front_grass_light" d="M319 392 Q309 370 300 365 Q317 368 325 383 Q330 360 343 354 Q338 378 330 393 Z" fill="#91AA70"/>
+    </g>
+  </g>
+</svg>

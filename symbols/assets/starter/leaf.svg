@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>叶片</title>
+<desc>完整叶片、叶柄与分支叶脉的通用形态示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="leaf" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="leaf-organism">
+      <g id="leaf-petiole" fill="none"><path d="M86 254 Q74 272 61 286"/></g>
+      <g id="leaf-blade">
+        <path fill="#91b575" d="M84 258 C40 209 58 139 105 98 C145 64 216 57 261 30 C266 94 254 159 214 205 C179 245 125 263 84 258Z"/>
+        <path fill="#c5d8a7" stroke="none" d="M85 256 C110 192 184 117 260 32 C244 123 184 221 85 256Z"/>
+        <path fill="none" d="M84 258 C123 192 193 115 261 30 M112 214 Q91 177 97 133 M137 180 Q119 140 135 98 M165 147 Q153 110 170 78 M193 115 Q191 86 214 59 M111 215 Q157 228 185 207 M138 181 Q186 188 218 166 M166 147 Q210 151 239 121 M194 114 Q229 112 252 80"/>
+      </g>
+    </g></g>
+</svg>

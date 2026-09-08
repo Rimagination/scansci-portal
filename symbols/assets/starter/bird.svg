@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>鸟</title>
+<desc>侧视鸟体、折叠翅膀、喙和足的通用形态示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="bird" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="bird-organism">
+      <g id="bird-feet" fill="none"><path d="M150 224 L147 262 L127 275 M147 262 L166 272 M185 221 L193 257 L180 273 M193 257 L213 268"/></g>
+      <g id="bird-tail"><path fill="#9d8064" d="M101 165 C84 174 60 187 36 219 C64 218 85 209 116 192Z"/><path fill="none" d="M46 213 L104 181"/></g>
+      <g id="bird-beak"><path fill="#d0b89a" d="M245 99 Q268 101 283 115 L246 122Z"/></g>
+      <g id="bird-body"><path fill="#d0b89a" d="M78 176 C91 142 131 147 156 131 C173 121 173 94 188 77 C204 59 236 62 249 82 C263 103 249 126 241 143 C235 165 233 197 211 216 C172 251 108 233 87 201 Q81 190 78 176Z"/><path fill="#dba68a" stroke="none" d="M241 125 C235 158 234 190 212 211 C203 188 202 156 214 137Z"/></g>
+      <g id="bird-wing"><path fill="#9d8064" d="M176 139 C159 135 115 147 100 177 C117 198 148 202 174 190 C192 181 201 156 176 139Z"/><path fill="none" d="M111 178 Q147 184 173 158 M122 188 Q156 192 181 171"/></g>
+      <g id="bird-face"><path fill="none" d="M209 86 Q222 78 235 88"/><circle cx="228" cy="98" r="4" fill="#3e5563" stroke="none"/></g>
+    </g></g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>花朵</title>
+<desc>展开花瓣、花心及带叶花茎的通用植物示意。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="flower" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="flower-organism">
+      <g id="flower-stem" fill="none"><path d="M160 155 C154 195 171 239 155 291"/></g>
+      <g id="flower-left-leaf"><path fill="#67925d" d="M161 243 C124 244 94 220 80 191 C114 187 150 210 161 243Z"/><path fill="none" d="M161 243 Q124 221 91 198"/></g>
+      <g id="flower-right-leaf"><path fill="#91b575" d="M162 220 C166 187 197 176 230 177 C215 207 189 222 162 220Z"/><path fill="none" d="M162 220 Q185 198 220 182"/></g>
+      <g id="flower-corolla" fill="#dba68a">
+        <path d="M145 107 C124 82 123 39 150 30 C181 18 202 50 187 81 L175 109Z"/>
+        <path d="M177 106 C190 69 227 59 244 83 C268 115 239 141 202 139 L180 130Z"/>
+        <path d="M184 132 C221 139 235 173 214 193 C190 214 159 193 157 158Z"/>
+        <path d="M155 146 C151 184 122 207 98 189 C73 169 94 134 129 125Z"/>
+        <path d="M132 124 C96 134 66 111 78 82 C89 54 127 67 148 100Z"/>
+        <path fill="none" d="M157 88 Q155 64 160 48 M195 115 Q218 101 230 102 M181 154 L201 178 M127 148 L109 170 M119 103 L93 92"/>
+      </g>
+      <g id="flower-center"><path fill="#c5d8a7" d="M132 109 C142 93 165 91 181 105 C197 119 187 145 168 150 C145 156 125 135 132 109Z"/><path fill="none" d="M145 113 L150 117 M163 108 L165 113 M175 123 L170 125 M155 136 L158 131 M143 127 L147 129"/></g>
+    </g></g>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 320 320">
+<title>动物细胞</title>
+<desc>细胞边界、中央核区与若干内部结构的概念性示意，比例经过简化。 ScanSci AI 辅助原创示意素材。CC BY 4.0，署名 ScanSci。https://creativecommons.org/licenses/by/4.0/</desc>
+<g id="animal-cell" fill="none" stroke="#3e5563" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><g id="animal-cell-organism">
+      <g id="animal-cell-boundary"><path fill="#dba68a" d="M50 111 C63 67 110 36 152 46 C193 26 244 62 262 103 C290 132 281 182 260 209 C255 252 208 280 167 274 C117 291 76 263 60 227 C31 200 31 146 50 111Z"/><path fill="#d0b89a" d="M62 116 C74 78 114 49 153 59 C193 40 235 72 250 110 C276 136 267 179 248 205 C244 241 203 268 166 261 C122 276 88 253 72 220 C47 194 44 150 62 116Z"/></g>
+      <g id="animal-cell-nucleus"><path fill="#b66f6a" d="M108 127 C119 106 157 100 181 119 C204 138 193 174 169 187 C140 203 106 180 104 155 Q102 139 108 127Z"/><path fill="#dba68a" d="M119 134 C132 116 156 116 174 131 C188 146 177 170 159 178 C138 184 117 167 117 149Z"/><circle cx="149" cy="149" r="11" fill="#b66f6a"/></g>
+      <g id="animal-cell-folded-membranes" fill="none"><path d="M104 110 C84 129 87 157 95 176 M97 99 C69 124 73 166 89 190 M115 200 C138 218 174 213 190 195 M109 212 C138 234 178 226 200 206 M107 224 C137 247 178 239 195 225"/></g>
+      <g id="animal-cell-internal-bodies" fill="#91b575"><path d="M194 86 C209 74 235 89 232 104 C227 122 198 113 191 103 Q186 94 194 86Z"/><path d="M206 163 C216 147 238 153 240 169 C245 186 227 205 215 197 C203 190 199 176 206 163Z"/><path fill="none" d="M200 94 L210 100 L215 91 L224 102 M215 165 L226 168 L215 179 L228 184"/></g>
+      <g id="animal-cell-vesicles" fill="#8cb8c4"><circle cx="88" cy="214" r="10"/><circle cx="145" cy="84" r="8"/><circle cx="220" cy="229" r="8"/></g>
+      <g id="animal-cell-particles" fill="#3e5563" stroke="none"><circle cx="107" cy="87" r="2.5"/><circle cx="177" cy="81" r="2.5"/><circle cx="222" cy="132" r="2.5"/><circle cx="78" cy="179" r="2.5"/><circle cx="183" cy="246" r="2.5"/><circle cx="245" cy="202" r="2.5"/></g>
+    </g></g>
+</svg>

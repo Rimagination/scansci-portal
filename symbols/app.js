@@ -134,7 +134,7 @@
   }
 
   function fileURL(item, download = false) {
-    if (item.demo) return item.preview_url;
+    if (item.demo) return item.preview_url + (item.visual_revision ? `?v=${encodeURIComponent(item.visual_revision)}` : '');
     const canonical = `/api/symbols/${encodeURIComponent(String(item.id))}/file`;
     try {
       const value = new URL((download ? item.download_url : item.preview_url) || canonical, location.origin);

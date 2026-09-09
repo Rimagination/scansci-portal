@@ -560,6 +560,6 @@
 
   // No account data or unpublished submissions are persisted in browser storage.
   window.addEventListener('pagehide', () => { if (state.objectURL) URL.revokeObjectURL(state.objectURL); });
-  state.demo = !COMMUNITY_ENABLED || new URLSearchParams(location.search).get('demo') === '1';
+  state.demo = !COMMUNITY_ENABLED || new URLSearchParams(location.search).get('demo') !== '0';
   void Promise.all([loadSession(), loadItems()]);
 })();

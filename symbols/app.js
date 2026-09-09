@@ -12,10 +12,11 @@
     const [domain, title] = taxonomy.assets[item.id] || taxonomy.subcategories[item.subcategory];
     return { ...item, domain, subcategory: `${domain}/${title}`, subcategory_title: title };
   }
+  const NATURE = (window.ScanSciNatureAssets || []).map(classify);
   const EXPANDED = (window.ScanSciExpandedAssets || []).map(classify);
   const WHOLE_PLANTS = (window.ScanSciPlantAssets || []).map(classify);
   const STARTER = (window.ScanSciStarterAssets || []).map(classify);
-  const DEMOS = [...WHOLE_PLANTS, ...EXPANDED, ...STARTER, ...[
+  const DEMOS = [...NATURE, ...WHOLE_PLANTS, ...EXPANDED, ...STARTER, ...[
     { id: 'demo-seedling', title: '对生叶幼苗', category: 'plants', tags: ['植物', '幼苗', '根系'], description: '对生叶、茎与根系的矢量示意。', preview_url: './assets/demo-seedling.svg' },
     { id: 'demo-incubator', title: '实验室培养箱', category: 'laboratory', tags: ['培养箱', '实验仪器'], description: '带观察窗与搁板的培养箱示意。', preview_url: './assets/demo-incubator.svg' },
     { id: 'demo-station', title: '环境监测站', category: 'ecology', tags: ['环境监测', '采样', '水体'], description: '监测建筑、屋顶传感器与水体采样池的组合示意。', preview_url: './assets/demo-station.svg' }
@@ -168,7 +169,7 @@
       const button = node('button', 'card-button');
       button.type = 'button';
       button.setAttribute('aria-label', `查看 ${item.title} 的详情`);
-      const art = node('div', `card-preview${String(item.id).startsWith('whole-') ? ' whole-plant' : ''}`);
+      const art = node('div', `card-preview${(item.portrait || String(item.id).startsWith('whole-')) ? ' whole-plant' : ''}`);
       preview(item, art, true);
       const info = node('div', 'card-info');
       if (item.status !== 'published' && !item.demo) info.append(node('span', `status-badge ${item.status === 'rejected' ? 'rejected' : ''}`, statusLabel(item)));
@@ -254,7 +255,7 @@
     state.detail = item;
     state.detailScope = state.scope;
     $('detailPreview').replaceChildren();
-    $('detailPreview').classList.toggle('whole-plant', String(item.id).startsWith('whole-'));
+    $('detailPreview').classList.toggle('whole-plant', (item.portrait || String(item.id).startsWith('whole-')));
     preview(item, $('detailPreview'));
     $('detailTitle').textContent = item.title;
     $('detailCategory').textContent = `${item.domain ? item.domain + ' / ' + item.subcategory_title : CATEGORIES[item.category] || CATEGORIES.other} / SVG`;

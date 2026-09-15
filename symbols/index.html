@@ -13,7 +13,7 @@
   <script src="./plant-catalog.js?v=20260909-maize-r2" defer></script>
   <script src="./nature-catalog.js?v=20260909" defer></script>
   <script src="./browse-taxonomy.js" defer></script>
-  <script src="./app.js?v=20260909-upload" defer></script>
+  <script src="./app.js?v=20260915-unified" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#library">跳到素材库</a>
@@ -33,11 +33,11 @@
     <section class="library" aria-label="浏览素材">
       <div class="browse-toolbar">
         <div class="scope-tabs" role="group" aria-label="素材范围">
-          <button type="button" data-scope="public" class="scope-tab" aria-pressed="true">社区素材</button>
+          <button type="button" data-scope="public" class="scope-tab" aria-pressed="true">全部素材</button>
           <button type="button" data-scope="mine" class="scope-tab" aria-pressed="false" hidden>我的投稿</button>
           <button type="button" data-scope="review" class="scope-tab" aria-pressed="false" hidden>待审核</button>
         </div>
-        <button type="button" class="text-button" id="demoToggle" aria-pressed="false">原创素材</button>
+        <button type="button" class="text-button" id="demoToggle" hidden aria-pressed="false">原创素材</button>
       </div>
       <form id="searchForm" class="search-form" role="search">
         <span class="search-icon" aria-hidden="true"></span><label class="sr-only" for="searchInput">搜索名称、作者或标签</label>
@@ -51,7 +51,7 @@
       </div>
       <p class="demo-notice" id="demoNotice" hidden>按对象大类和小类浏览 SVG 素材</p>
       <p class="notice" id="sessionNotice" role="status" hidden></p>
-      <div class="results-heading"><h2 id="resultsTitle" class="sr-only">社区素材</h2><p id="resultsCount" role="status" aria-live="polite">正在连接素材库…</p></div>
+      <div class="results-heading"><h2 id="resultsTitle" class="sr-only">全部素材</h2><p id="resultsCount" role="status" aria-live="polite">正在连接素材库…</p></div>
       <div id="gallery" class="gallery" aria-busy="true"></div>
       <div class="empty-state" id="emptyState" hidden><span class="empty-mark" aria-hidden="true">＋</span><h3 id="emptyTitle"></h3><p id="emptyCopy"></p><button class="button secondary" type="button" id="retryButton" hidden>重新连接</button></div>
       <div class="load-more"><button class="button secondary" type="button" id="loadMoreButton" hidden>加载更多</button></div>

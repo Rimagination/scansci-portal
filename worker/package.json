@@ -1,0 +1,7 @@
+{
+  "name": "scansci-api",
+  "private": true,
+  "type": "module",
+  "scripts": { "test:symbols": "node --test test/symbols.test.mjs" },
+  "dependencies": { "@xmldom/xmldom": "0.9.12" }
+}

@@ -23,6 +23,8 @@
   ].map(item => classify({ ...item, demo: true, author: '本地原创示例', status: 'demo', license: '', source_url: '' }))];
   const LOCAL_PAGE_SIZE = 24;
   const original = { domain: '', subcategory: '' };
+  let publicItems = [];
+  const browseItems = () => [...publicItems, ...DEMOS];
   const MAX_SVG_BYTES = 200 * 1024;
   const $ = id => document.getElementById(id);
   const state = { user: null, canReview: false, sessionAvailable: false, scope: 'public', demo: false, category: '', query: '', page: 0, hasMore: false, items: [], listRequest: 0, controller: null, detail: null, detailScope: '', svg: '', fileVersion: 0, objectURL: '', uploadBusy: false, moderationBusy: false, authBusy: false, afterLogin: false };
@@ -104,7 +106,7 @@
     document.querySelectorAll('[data-scope]').forEach(button => {
       const scope = button.dataset.scope;
       button.hidden = scope === 'mine' ? !state.sessionAvailable || !state.user : scope === 'review' ? !state.sessionAvailable || !state.user || !state.canReview : false;
-      button.setAttribute('aria-pressed', String(scope === state.scope && !state.demo));
+      button.setAttribute('aria-pressed', String(scope === state.scope));
     });
   }
 
@@ -172,6 +174,7 @@
       const art = node('div', `card-preview${(item.portrait || String(item.id).startsWith('whole-')) ? ' whole-plant' : ''}`);
       preview(item, art, true);
       const info = node('div', 'card-info');
+      if (!item.demo && !item.official) info.append(node('span', 'status-badge', '社区素材'));
       if (item.status !== 'published' && !item.demo) info.append(node('span', `status-badge ${item.status === 'rejected' ? 'rejected' : ''}`, statusLabel(item)));
       const heading = node('div', 'card-heading');
       heading.append(node('h3', '', item.title));
@@ -201,18 +204,41 @@
     $('loadMoreButton').hidden = true;
     message('pageMessage', '');
     $('resultsCount').textContent = '正在加载…';
-    $('resultsTitle').textContent = state.demo ? '原创素材与示例' : ({ public: '社区素材', mine: '我的投稿', review: '待审核' }[state.scope]);
+    $('resultsTitle').textContent = state.demo ? '全部素材' : ({ public: '全部素材', mine: '我的投稿', review: '待审核' }[state.scope]);
     $('demoNotice').hidden = !state.demo;
     $('demoNotice').textContent = '按对象大类和小类查找，输入物种、器官或场景名称可进一步搜索。';
     $('originalFilters').hidden = !state.demo;
     document.querySelector('.category-row').hidden = state.demo;
     $('demoToggle').setAttribute('aria-pressed', String(state.demo));
-    $('demoToggle').textContent = state.demo ? '返回社区' : '原创素材';
+    $('demoToggle').hidden = true;
     renderSession();
     try {
       let items, localTotal = 0;
       if (state.demo) {
-        const source = DEMOS;
+        if (COMMUNITY_ENABLED && !append) {
+          const gathered = [];
+          try {
+            // Small catalog: fetch paginated metadata only; SVG bodies remain lazy-loaded.
+            for (let page = 1; ; page++) {
+              const data = await api(`/api/symbols?scope=public&page=${page}`, { signal: controller.signal });
+              if (request !== state.listRequest) return;
+              if (!Array.isArray(data.items)) throw new Error('素材数据无效');
+              gathered.push(...data.items.filter(item => item.status === 'published').map(item => {
+                const tags = Array.isArray(item.tags) ? item.tags : [];
+                const domain = {animals:'动物',plants:'植物',biology:'微生物与病毒',ecology:'生态系统与生境',earth:'地貌、岩石与土壤',laboratory:'实验仪器',medicine:'人体与组织',engineering:'工程设备',other:'信息与系统图'}[item.category] || '信息与系统图';
+                const title = domain === '动物' && tags.includes('鸟类') ? '鸟类' : '其他';
+                return {...item, demo:false, tags, domain, subcategory:`${domain}/${title}`, subcategory_title:title};
+              }));
+              if (!data.has_more) break;
+            }
+            publicItems = gathered;
+            populateDomains();
+          } catch (error) {
+            if (controller.signal.aborted) throw error;
+            message('pageMessage', `投稿素材暂未加载，仍可浏览内置素材。${error.message}`, true);
+          }
+        }
+        const source = browseItems();
         const matches = source.filter(item => (!original.domain || item.domain === original.domain) && (!original.subcategory || item.subcategory === original.subcategory) && [item.title, item.author, item.description, item.domain, item.subcategory_title, ...item.tags].join(' ').toLowerCase().includes(state.query.toLowerCase()));
         localTotal = matches.length;
         items = matches.slice((nextPage - 1) * LOCAL_PAGE_SIZE, nextPage * LOCAL_PAGE_SIZE);
@@ -357,7 +383,13 @@
     } catch (error) { if (version === state.fileVersion) { $('svgFile').value = ''; message('uploadMessage', error.message, true); } }
   }
 
-  function openUpload() { message('uploadMessage', ''); $('uploadDialog').showModal(); }
+  function openUpload() {
+    message('uploadMessage', '');
+    if (state.canReview) { $('uploadAuthor').value = 'ScanSci'; $('uploadLicense').value = 'CC-BY-4.0'; $('rightsConfirmed').checked = true; }
+    $('uploadSubmit').textContent = state.canReview ? '直接发布' : '提交审核';
+    $('uploadDialog').querySelector('.dialog-heading p')?.replaceChildren(document.createTextNode(state.canReview ? '管理员上传直接发布，署名 ScanSci，许可 CC BY 4.0。' : '审核通过后公开。'));
+    $('uploadDialog').showModal();
+  }
 
   async function contribute() {
     if ($('authDialog').open || $('uploadDialog').open) return;
@@ -389,7 +421,7 @@
     message('uploadMessage', '正在提交，请稍候…');
     try {
       const data = await api('/api/symbols', { method: 'POST', body: { svg: state.svg, title, description, author, category, tags, license, source_url: source, rights_confirmed: true } });
-      if (!data.id || data.status !== 'pending') throw new Error('服务未返回明确的投稿结果。请先查看「我的投稿」，避免重复提交。');
+      if (!data.id || !['pending', 'published'].includes(data.status)) throw new Error('服务未返回明确的投稿结果。请先查看「我的投稿」，避免重复提交。');
       state.uploadBusy = false;
       $('uploadForm').reset();
       resetFile();
@@ -400,7 +432,7 @@
       $('searchInput').value = '';
       setCategory('');
       await loadItems();
-      message('pageMessage', '投稿已提交，状态为「待审核」。感谢分享！');
+      message('pageMessage', data.status === 'published' ? '素材已直接发布，署名 ScanSci · CC BY 4.0。' : '投稿已提交，状态为「待审核」。感谢分享！');
     } catch (error) { message('uploadMessage', `${error.message} 如提交结果不明确，请先查看「我的投稿」，确认后再重试。`, true); }
     finally { state.uploadBusy = false; $('uploadFields').disabled = false; }
   }
@@ -450,11 +482,11 @@
     const scope = button.dataset.scope;
     if ((scope === 'mine' && !state.user) || (scope === 'review' && !state.canReview)) return;
     state.scope = scope;
-    state.demo = false;
+    state.demo = scope === 'public';
     void loadItems();
   }));
   function populateSubcategories() {
-    const items = DEMOS.filter(item => !original.domain || item.domain === original.domain);
+    const items = browseItems().filter(item => !original.domain || item.domain === original.domain);
     const groups = new Map();
     for (const item of items) {
       const group = groups.get(item.subcategory) || { title: item.subcategory_title, count: 0 };
@@ -468,7 +500,7 @@
   }
   function populateDomains() {
     const groups = new Map();
-    for (const item of DEMOS) groups.set(item.domain, (groups.get(item.domain) || 0) + 1);
+    for (const item of browseItems()) groups.set(item.domain, (groups.get(item.domain) || 0) + 1);
     const all = node('option', '', `全部大类 · ${groups.size} 类`); all.value = '';
     $('domainFilter').replaceChildren(all, ...[...groups].map(([id, count]) => {
       const option = node('option', '', `${id} · ${count} 件`); option.value = id; return option;
@@ -560,6 +592,6 @@
 
   // No account data or unpublished submissions are persisted in browser storage.
   window.addEventListener('pagehide', () => { if (state.objectURL) URL.revokeObjectURL(state.objectURL); });
-  state.demo = !COMMUNITY_ENABLED || new URLSearchParams(location.search).get('demo') !== '0';
+  state.demo = true;
   void Promise.all([loadSession(), loadItems()]);
 })();

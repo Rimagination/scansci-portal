@@ -20,7 +20,7 @@
     { id: 'demo-seedling', title: '对生叶幼苗', category: 'plants', tags: ['植物', '幼苗', '根系'], description: '对生叶、茎与根系的矢量示意。', preview_url: './assets/demo-seedling.svg' },
     { id: 'demo-incubator', title: '实验室培养箱', category: 'laboratory', tags: ['培养箱', '实验仪器'], description: '带观察窗与搁板的培养箱示意。', preview_url: './assets/demo-incubator.svg' },
     { id: 'demo-station', title: '环境监测站', category: 'ecology', tags: ['环境监测', '采样', '水体'], description: '监测建筑、屋顶传感器与水体采样池的组合示意。', preview_url: './assets/demo-station.svg' }
-  ].map(item => classify({ ...item, demo: true, author: '本地原创示例', status: 'demo', license: '', source_url: '' }))];
+  ].map(item => classify({ ...item, demo: true, author: 'ScanSci', local_original: true, status: 'original', license: 'CC-BY-4.0', source_url: '' }))];
   const LOCAL_PAGE_SIZE = 24;
   const original = { domain: '', subcategory: '' };
   let publicItems = [];

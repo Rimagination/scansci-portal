@@ -1,4 +1,5 @@
 import { validateSvg, MAX_SVG_BYTES } from './svg-validation.js';
+import { handleSymbolSocial } from './symbol-social.js';
 
 const CATEGORIES = new Set(['plants','animals','biology','ecology','earth','laboratory','medicine','engineering','other']);
 const LICENSES = new Set(['CC0-1.0','CC-BY-4.0']);
@@ -77,6 +78,8 @@ export async function handleSymbols(request, env, authTools) {
     }
     async function member() { const current = await user(); if (!current) fail(401, '请先登录 ScanSci。'); return current; }
     async function admin() { const current = await member(); if (!await authTools.isAdminUser(current, env)) fail(403, '需要审核员权限。'); return current; }
+    const social = await handleSymbolSocial(request, env, { user, member, reply, fail, readLimitedJson });
+    if (social) return social;
     if (path === '/api/symbols/session' && request.method === 'GET') {
       const current = await user();
       return reply({ ok: true, user: current ? { id: current.id, login: current.login } : null, can_review: current ? await authTools.isAdminUser(current, env) : false });
@@ -106,23 +109,24 @@ export async function handleSymbols(request, env, authTools) {
       const official = await authTools.isAdminUser(current, env);
       const fields = submissionFields(official ? { ...body, author: 'ScanSci', license: 'CC-BY-4.0', rights_confirmed: true } : body);
       const status = official ? 'published' : 'pending';
+      const quota = official ? { daily: 200, pending: 50, total: 2000 } : { daily: 20, pending: 50, total: 200 };
       let svg;
       try { svg = validateSvg(body.svg); } catch (error) { fail(400, error.message); }
       const hashBytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(svg));
       const hash = Array.from(new Uint8Array(hashBytes), n => n.toString(16).padStart(2, '0')).join('');
       const id = crypto.randomUUID(), now = new Date().toISOString(), day = new Date(Date.now() - 86400000).toISOString();
-      // ponytail: small-library SVG text lives in D1 (200 KiB/file, 200 submissions/user).
+      // ponytail: SVG text lives in D1 (200 KiB/file; 200/user, 2000/admin).
       // Move bodies to R2 when measured storage usage warrants it; metadata/API can stay unchanged.
       const result = await env.DB.prepare(`INSERT INTO symbols (id,user_id,title,description,author,category,tags_json,license,source_url,svg,sha256,created_at,status,reviewer_id,reviewed_at,published_at,official)
         SELECT ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-        WHERE (SELECT COUNT(*) FROM symbols WHERE user_id = ? AND created_at > ?) < 20
-          AND (SELECT COUNT(*) FROM symbols WHERE user_id = ? AND status = 'pending') < 50
-          AND (SELECT COUNT(*) FROM symbols WHERE user_id = ?) < 200
+        WHERE (SELECT COUNT(*) FROM symbols WHERE user_id = ? AND created_at > ?) < ?
+          AND (SELECT COUNT(*) FROM symbols WHERE user_id = ? AND status = 'pending') < ?
+          AND (SELECT COUNT(*) FROM symbols WHERE user_id = ?) < ?
           AND NOT EXISTS (SELECT 1 FROM symbols WHERE user_id = ? AND sha256 = ?)`)
-        .bind(id,current.id,fields.title,fields.description,fields.author,fields.category,JSON.stringify(fields.tags),fields.license,fields.source_url,svg,hash,now,status,official ? current.id : null,official ? now : null,official ? now : null,official ? 1 : 0,current.id,day,current.id,current.id,current.id,hash).run();
+        .bind(id,current.id,fields.title,fields.description,fields.author,fields.category,JSON.stringify(fields.tags),fields.license,fields.source_url,svg,hash,now,status,official ? current.id : null,official ? now : null,official ? now : null,official ? 1 : 0,current.id,day,quota.daily,current.id,quota.pending,current.id,quota.total,current.id,hash).run();
       if (!result.meta.changes) {
         const duplicate = await env.DB.prepare('SELECT id FROM symbols WHERE user_id = ? AND sha256 = ?').bind(current.id,hash).first();
-        fail(duplicate ? 409 : 429, duplicate ? '你已提交过相同素材，请查看我的投稿。' : '已达到投稿限额（每天 20 件、待审 50 件、累计 200 件）。');
+        fail(duplicate ? 409 : 429, duplicate ? '你已提交过相同素材，请查看我的投稿。' : `已达到投稿限额（滚动 24 小时 ${quota.daily} 件、待审 ${quota.pending} 件、累计 ${quota.total} 件）。`);
       }
       return reply({ ok: true, id, status }, 201);
     }

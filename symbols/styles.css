@@ -211,3 +211,41 @@ html[data-community="off"] .browse-toolbar,
 html[data-community="off"] #loginButton,
 html[data-community="off"] #account,
 html[data-community="off"] #contributeButton { display: none; }
+
+/* Gallery interactions stay outside the preview button for keyboard access. */
+.results-heading { align-items:center; margin-top:22px; }
+.results-heading h2 { font-size:18px; letter-spacing:.02em; }
+.sort-control { display:flex; align-items:center; gap:10px; margin:0; color:var(--muted); white-space:nowrap; }
+.sort-control select { width:auto; padding:8px 30px 8px 12px; min-height:42px; }
+.discovery-note { font-size:12px; color:var(--muted); margin:-4px 0 20px; }
+.social-actions { display:flex; align-items:center; gap:9px; padding:0 0 12px; border-bottom:1px solid var(--line); }
+.social-button { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-width:56px; min-height:44px; padding:8px; background:transparent; border-radius:7px; color:var(--muted); }
+.social-button svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.social-button:hover { background:var(--soft); }
+.social-button.like[aria-pressed="true"] { color:#b34450; }
+.social-button.save[aria-pressed="true"] { color:var(--brand); }
+.social-button[aria-pressed="true"] svg { fill:currentColor; }
+.social-count,.download-count { font-size:12px; font-variant-numeric:tabular-nums; }
+.download-count { color:var(--muted); margin-left:auto; padding:8px; }
+.detail-social .social-actions { border:0; padding:0; margin:12px 0 4px; }
+.card-info { padding-bottom:4px; }
+.card-preview,.card-preview.whole-plant { height:300px; padding:24px; }
+.scope-tabs { flex-wrap:wrap; gap:18px; }
+@media(max-width:480px){
+  .original-filters { grid-template-columns:1fr 1fr; gap:10px; margin:14px 0 8px; }
+  .original-filters label { margin:0; font-size:12px; }
+  .original-filters select { padding:9px; font-size:12px; }
+  .demo-notice { display:none; }
+  .browse-toolbar { margin-bottom:14px; }
+  .gallery { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 12px; }
+  .card-preview,.card-preview.whole-plant { height:195px; padding:14px; }
+  .card-heading h3 { font-size:13px; }
+  .card-author,.card-license { font-size:10px; }
+  .social-actions { gap:0; }
+  .social-button { min-width:44px; gap:4px; padding:6px; }
+  .download-count { padding:6px 0; font-size:10px; }
+  .sort-control { font-size:11px; gap:5px; }
+  .sort-control select { padding:8px; max-width:122px; }
+  .results-heading { gap:8px; }
+  .results-heading h2 { font-size:16px; }
+}

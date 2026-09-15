@@ -28,6 +28,69 @@
   const MAX_SVG_BYTES = 200 * 1024;
   const $ = id => document.getElementById(id);
   const state = { user: null, canReview: false, sessionAvailable: false, scope: 'public', demo: false, category: '', query: '', page: 0, hasMore: false, items: [], listRequest: 0, controller: null, detail: null, detailScope: '', svg: '', fileVersion: 0, objectURL: '', uploadBusy: false, moderationBusy: false, authBusy: false, afterLogin: false };
+  const metrics = new Map(), socialBusy = new Set();
+  state.sort = 'recommended';
+  state.socialAvailable = false;
+
+  async function loadSocial(items, signal) {
+    const ids=[...new Set(items.map(item=>String(item.id)))];
+    const gathered=[];
+    for(let i=0;i<ids.length;i+=100) {
+      const data=await api(`/api/symbols/social?ids=${encodeURIComponent(ids.slice(i,i+100).join(','))}`,{signal});
+      gathered.push(...data.items);
+    }
+    if(signal.aborted) return;
+    metrics.clear();
+    for(const item of gathered) metrics.set(item.id,item);
+    state.socialAvailable=true;
+  }
+  function socialIcon(kind) {
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('aria-hidden','true');
+    const path=document.createElementNS(svg.namespaceURI,'path');
+    path.setAttribute('d',kind==='like'?'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z':'M6 3h12v18l-6-4-6 4Z');
+    svg.append(path); return svg;
+  }
+  function updateSocial() {
+    document.querySelectorAll('[data-social-id]').forEach(element=>{
+      const data=metrics.get(element.dataset.socialId);
+      const kind=element.dataset.kind;
+      if(kind==='downloads') {element.textContent=`↓ ${data?.downloads??'—'}`;return;}
+      const active=!!data?.[kind==='like'?'liked':'saved'];
+      element.setAttribute('aria-pressed',String(active));
+      element.setAttribute('aria-label',`${active?'取消':''}${kind==='like'?'点赞':'收藏'} ${element.dataset.title}`);
+      element.querySelector('.social-count').textContent=data?.[kind==='like'?'likes':'saves']??'—';
+      element.disabled=!state.socialAvailable||socialBusy.has(`${element.dataset.socialId}:${kind}`);
+    });
+  }
+  function socialControls(item) {
+    const row=node('div','social-actions');
+    if(!item.demo&&item.status!=='published') return row;
+    for(const kind of ['like','save']) {
+      const button=node('button',`social-button ${kind}`);button.type='button';
+      button.dataset.socialId=item.id;button.dataset.kind=kind;button.dataset.title=item.title;
+      button.append(socialIcon(kind),node('span','social-count','—'));
+      button.addEventListener('click',()=>void react(item,kind));row.append(button);
+    }
+    const downloads=node('span','download-count');downloads.dataset.socialId=item.id;downloads.dataset.kind='downloads';
+    downloads.title='每日去重下载点击量';row.append(downloads);return row;
+  }
+  async function react(item,kind) {
+    if(!state.user){state.afterLogin=false;message('authMessage','登录后即可点赞、收藏，收藏会随账号同步。');$('authDialog').showModal();return;}
+    const key=`${item.id}:${kind}`;
+    if(socialBusy.has(key))return;
+    socialBusy.add(key);updateSocial();
+    try {
+      const field=kind==='like'?'liked':'saved';
+      const data=await api(`/api/symbols/${encodeURIComponent(item.id)}/reaction`,{method:'POST',body:{kind,active:!metrics.get(item.id)?.[field]}});
+      metrics.set(item.id,data.item);
+      if(state.scope==='saved'&&kind==='save'&&!data.item.saved){
+        // Removing a saved item changes offset pagination; reload to avoid skipping the next item.
+        await loadItems();
+      }
+    } catch(error){message(state.detail?'detailMessage':'pageMessage',error.message,true);}
+    finally{socialBusy.delete(key);updateSocial();}
+  }
 
   function node(tag, className, value) {
     const element = document.createElement(tag);
@@ -46,6 +109,8 @@
     state.canReview = false;
     state.sessionAvailable = false;
     state.afterLogin = false;
+    for(const data of metrics.values()){data.liked=false;data.saved=false;}
+    updateSocial();
     if (state.scope !== 'public') {
       state.scope = 'public';
       state.controller?.abort();
@@ -105,7 +170,7 @@
     if (!state.user || !state.canReview) $('moderationForm').hidden = true;
     document.querySelectorAll('[data-scope]').forEach(button => {
       const scope = button.dataset.scope;
-      button.hidden = scope === 'mine' ? !state.sessionAvailable || !state.user : scope === 'review' ? !state.sessionAvailable || !state.user || !state.canReview : false;
+      button.hidden = ['mine','saved'].includes(scope) ? !state.sessionAvailable || !state.user : scope === 'review' ? !state.sessionAvailable || !state.user || !state.canReview : false;
       button.setAttribute('aria-pressed', String(scope === state.scope));
     });
   }
@@ -118,7 +183,7 @@
       state.canReview = !!state.user && data.can_review === true;
       state.sessionAvailable = true;
       $('sessionNotice').hidden = true;
-      if ((state.scope === 'mine' && !state.user) || (state.scope === 'review' && !state.canReview)) forgetSession();
+      if ((['mine','saved'].includes(state.scope) && !state.user) || (state.scope === 'review' && !state.canReview)) forgetSession();
       renderSession();
       return true;
     } catch (error) {
@@ -187,9 +252,11 @@
       button.append(art, info);
       button.addEventListener('click', () => openDetail(item));
       card.append(button);
+      card.append(socialControls(item));
       fragment.append(card);
     }
     $('gallery').replaceChildren(fragment);
+    updateSocial();
   }
 
   async function loadItems(append = false) {
@@ -204,7 +271,10 @@
     $('loadMoreButton').hidden = true;
     message('pageMessage', '');
     $('resultsCount').textContent = '正在加载…';
-    $('resultsTitle').textContent = state.demo ? '全部素材' : ({ public: '全部素材', mine: '我的投稿', review: '待审核' }[state.scope]);
+    $('resultsTitle').textContent = state.scope==='saved'?'我的收藏':state.demo ? $('sortOrder').selectedOptions[0].textContent : ({ public: '全部素材', mine: '我的投稿', review: '待审核' }[state.scope]);
+    $('sortControl').hidden=!state.demo;
+    $('discoveryNote').hidden=!state.demo;
+    $('discoveryNote').textContent=state.sort==='recommended'?'精选鸟类、植物与昆虫优先展示，其余素材按点赞与收藏热度排列。':state.sort==='downloads'?'按上线后每日去重下载点击量排序；不代表完成传输。':'按所选指标排序；数据相同时沿用精选顺序。';
     $('demoNotice').hidden = !state.demo;
     $('demoNotice').textContent = '按对象大类和小类查找，输入物种、器官或场景名称可进一步搜索。';
     $('originalFilters').hidden = !state.demo;
@@ -226,7 +296,7 @@
               gathered.push(...data.items.filter(item => item.status === 'published').map(item => {
                 const tags = Array.isArray(item.tags) ? item.tags : [];
                 const domain = {animals:'动物',plants:'植物',biology:'微生物与病毒',ecology:'生态系统与生境',earth:'地貌、岩石与土壤',laboratory:'实验仪器',medicine:'人体与组织',engineering:'工程设备',other:'信息与系统图'}[item.category] || '信息与系统图';
-                const title = domain === '动物' && tags.includes('鸟类') ? '鸟类' : '其他';
+                const title = domain === '动物' ? (['鸟类','昆虫','鱼类'].find(label=>tags.includes(label))||'其他') : '其他';
                 return {...item, demo:false, tags, domain, subcategory:`${domain}/${title}`, subcategory_title:title};
               }));
               if (!data.has_more) break;
@@ -239,7 +309,20 @@
           }
         }
         const source = browseItems();
-        const matches = source.filter(item => (!original.domain || item.domain === original.domain) && (!original.subcategory || item.subcategory === original.subcategory) && [item.title, item.author, item.description, item.domain, item.subcategory_title, ...item.tags].join(' ').toLowerCase().includes(state.query.toLowerCase()));
+        if(!append&&COMMUNITY_ENABLED){
+          try{await loadSocial(source,controller.signal);}
+          catch(error){
+            if(controller.signal.aborted)throw error;
+            state.socialAvailable=false;
+            if(state.scope==='saved')throw error;
+            if(['likes','saves','downloads'].includes(state.sort)){state.sort='recommended';$('sortOrder').value=state.sort;$('resultsTitle').textContent='精选推荐';}
+            message('pageMessage',`互动数据暂不可用，仍可浏览与下载。${error.message}`,true);
+          }
+        }
+        if(request!==state.listRequest)return;
+        // Keep the ordering stable during pagination; refreshed metrics apply on the next full load.
+        const matches = append&&state.localMatches ? state.localMatches : globalThis.ScanSciSymbolDiscovery.sort(source.filter(item => (state.scope!=='saved'||metrics.get(item.id)?.saved) && (!original.domain || item.domain === original.domain) && (!original.subcategory || item.subcategory === original.subcategory) && [item.title, item.author, item.description, item.domain, item.subcategory_title, ...item.tags].join(' ').toLowerCase().includes(state.query.toLowerCase())),state.sort,metrics);
+        state.localMatches=matches;
         localTotal = matches.length;
         items = matches.slice((nextPage - 1) * LOCAL_PAGE_SIZE, nextPage * LOCAL_PAGE_SIZE);
         state.hasMore = nextPage * LOCAL_PAGE_SIZE < localTotal;
@@ -250,6 +333,7 @@
         if (!Array.isArray(data.items) || data.page !== nextPage || typeof data.has_more !== 'boolean') throw new Error('服务返回的数据格式暂不兼容，请稍后重试。');
         items = data.items.filter(item => item && ['string', 'number'].includes(typeof item.id) && (state.scope !== 'public' || item.status === 'published')).map(item => ({ ...item, demo: false, tags: Array.isArray(item.tags) ? item.tags.filter(tag => typeof tag === 'string') : [] }));
         state.hasMore = data.has_more;
+        if(items.length&&COMMUNITY_ENABLED){try{await loadSocial(append?[...state.items,...items]:items,controller.signal);}catch(error){if(controller.signal.aborted)throw error;state.socialAvailable=false;}}
       }
       if (request !== state.listRequest) return;
       state.items = append ? [...state.items, ...items.filter(item => !state.items.some(existing => String(existing.id) === String(item.id)))] : items;
@@ -260,7 +344,7 @@
       $('loadMoreButton').hidden = !state.hasMore;
       if (!state.items.length) {
         const filtered = state.query || (state.demo ? original.domain || original.subcategory : state.category);
-        showEmpty(filtered ? '没有匹配的素材' : state.scope === 'mine' ? '暂无投稿' : state.scope === 'review' ? '暂无待审核投稿' : '暂无公开素材', filtered ? '换个关键词，或选择全部分类。' : state.scope === 'mine' ? '点击「上传 SVG」提交素材。' : state.scope === 'review' ? '新的投稿会显示在这里。' : '上传 SVG，或浏览原创素材。');
+        showEmpty(filtered ? '没有匹配的素材' : state.scope==='saved'?'暂无收藏':state.scope === 'mine' ? '暂无投稿' : state.scope === 'review' ? '暂无待审核投稿' : '暂无公开素材', filtered ? '换个关键词，或选择全部分类。' : state.scope==='saved'?'点击素材下方的书签图标，收藏喜欢的配图。':state.scope === 'mine' ? '点击「上传 SVG」提交素材。' : state.scope === 'review' ? '新的投稿会显示在这里。' : '上传 SVG，或浏览原创素材。');
       }
     } catch (error) {
       if (request !== state.listRequest || controller.signal.aborted) return;
@@ -280,6 +364,7 @@
   function openDetail(item) {
     state.detail = item;
     state.detailScope = state.scope;
+    $('detailSocial').replaceChildren(socialControls(item));updateSocial();
     $('detailPreview').replaceChildren();
     $('detailPreview').classList.toggle('whole-plant', (item.portrait || String(item.id).startsWith('whole-')));
     preview(item, $('detailPreview'));
@@ -480,9 +565,9 @@
   $('allCategories').addEventListener('click', () => { setCategory(''); void loadItems(); });
   document.querySelectorAll('[data-scope]').forEach(button => button.addEventListener('click', () => {
     const scope = button.dataset.scope;
-    if ((scope === 'mine' && !state.user) || (scope === 'review' && !state.canReview)) return;
+    if ((['mine','saved'].includes(scope) && !state.user) || (scope === 'review' && !state.canReview)) return;
     state.scope = scope;
-    state.demo = scope === 'public';
+    state.demo = ['public','saved'].includes(scope);
     void loadItems();
   }));
   function populateSubcategories() {
@@ -517,6 +602,13 @@
   function toggleDemo() { state.demo = !state.demo; if (state.demo) state.scope = 'public'; void loadItems(); }
   $('demoToggle').addEventListener('click', toggleDemo);
   $('searchForm').addEventListener('submit', event => { event.preventDefault(); state.query = $('searchInput').value.trim().slice(0, 80); void loadItems(); });
+  $('sortOrder').addEventListener('change',()=>{state.sort=$('sortOrder').value;void loadItems();});
+  $('downloadLink').addEventListener('click',()=>{
+    const item=state.detail;
+    if(!item||!COMMUNITY_ENABLED||(!item.demo&&item.status!=='published'))return;
+    // Record a download click without delaying or blocking the native file download.
+    void api(`/api/symbols/${encodeURIComponent(item.id)}/download`,{method:'POST',body:{}}).then(data=>{metrics.set(item.id,data.item);updateSocial();}).catch(()=>{message('detailMessage','下载已发起，本次统计暂未记录。');});
+  });
   $('searchInput').addEventListener('input', () => { if (!$('searchInput').value && state.query) { state.query = ''; void loadItems(); } });
   $('loadMoreButton').addEventListener('click', () => { void loadItems(true); });
   $('retryButton').addEventListener('click', () => { void Promise.all([loadSession(), loadItems()]); });
@@ -594,5 +686,5 @@
   // No account data or unpublished submissions are persisted in browser storage.
   window.addEventListener('pagehide', () => { if (state.objectURL) URL.revokeObjectURL(state.objectURL); });
   state.demo = true;
-  void Promise.all([loadSession(), loadItems()]);
+  void loadSession().then(()=>loadItems());
 })();

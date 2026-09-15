@@ -5,7 +5,7 @@ import { createHmac } from 'node:crypto';
 // Local-only test adapter: executes the real migration and SQL against SQLite.
 export function createSymbolsFixture() {
   const sqlite = new DatabaseSync(':memory:');
-  for (const name of ['0001_init.sql', '0002_auth_methods.sql', '0008_symbols.sql', '0009_symbols_official.sql']) sqlite.exec(readFileSync(new URL(`../sql/${name}`, import.meta.url), 'utf8'));
+  for (const name of ['0001_init.sql', '0002_auth_methods.sql', '0008_symbols.sql', '0009_symbols_official.sql', '0010_symbol_social.sql']) sqlite.exec(readFileSync(new URL(`../sql/${name}`, import.meta.url), 'utf8'));
   sqlite.exec("INSERT INTO users (id,github_id,login,email,created_at,updated_at) VALUES (1,'test:1','本地投稿者','author@example.test','2026-09-07','2026-09-07'),(2,'test:2','本地审核员','review@example.test','2026-09-07','2026-09-07'),(3,'test:3','其他用户','other@example.test','2026-09-07','2026-09-07')");
   const DB = {
     prepare(sql) {

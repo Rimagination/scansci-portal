@@ -1,4 +1,6 @@
-﻿const PKCE_COOKIE = "__Host-scansci_pkce";
+﻿import { handleSymbols } from './symbols.js';
+
+const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
 const SESSION_COOKIE = "__Secure-scansci_session";
 const LEGACY_SESSION_COOKIE = "__Host-scansci_session";
@@ -56,6 +58,10 @@ async function handleRequest(request, env) {
 
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: standardHeaders(request, env) });
+  }
+
+  if (url.pathname === "/api/symbols" || url.pathname.startsWith("/api/symbols/")) {
+    return handleSymbols(request, env, { requireAuth, getUserById, isAdminUser });
   }
 
   if (url.pathname === "/api/auth/github/start" && request.method === "GET") {
@@ -3358,6 +3364,26 @@ async function getUserById(env, userId) {
     github_linked: githubLinked,
     email_verified: !!emailVerified,
   };
+}
+
+async function isAdminUser(user, env) {
+  const email = normalizeEmail(user?.email);
+  const configuredEmails = String(env.ADMIN_USER_EMAILS || '')
+    .split(/[\s,]+/)
+    .map(normalizeEmail)
+    .filter(Boolean);
+  if (email && configuredEmails.includes(email)) return true;
+
+  const configuredGithubIds = String(env.ADMIN_USER_GITHUB_IDS || '')
+    .split(/[\s,]+/)
+    .map(value => String(value || '').trim())
+    .filter(value => value && !value.startsWith('email:'));
+  if (!configuredGithubIds.length) return false;
+
+  const ids = [user?.github_id];
+  const links = await env.DB.prepare('SELECT github_id FROM github_links WHERE user_id = ?').bind(user.id).all();
+  ids.push(...(links.results || []).map(row => row.github_id));
+  return ids.some(value => configuredGithubIds.includes(String(value || '').trim()));
 }
 
 async function findUserByEmail(env, email) {

@@ -7,13 +7,14 @@
   <meta name="referrer" content="no-referrer">
   <title>科研素材库 · ScanSci</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=20260915-social">
   <script src="./starter-catalog.js?v=20260915-insects" defer></script>
   <script src="./expanded-catalog.js?v=20260915-insects" defer></script>
   <script src="./plant-catalog.js?v=20260915-license" defer></script>
   <script src="./nature-catalog.js?v=20260915-common-insects" defer></script>
   <script src="./browse-taxonomy.js" defer></script>
-  <script src="./app.js?v=20260915-insects" defer></script>
+  <script src="./discovery.js?v=20260915-social" defer></script>
+  <script src="./app.js?v=20260915-social" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#library">跳到素材库</a>
@@ -34,6 +35,7 @@
       <div class="browse-toolbar">
         <div class="scope-tabs" role="group" aria-label="素材范围">
           <button type="button" data-scope="public" class="scope-tab" aria-pressed="true">全部素材</button>
+          <button type="button" data-scope="saved" class="scope-tab" aria-pressed="false" hidden>我的收藏</button>
           <button type="button" data-scope="mine" class="scope-tab" aria-pressed="false" hidden>我的投稿</button>
           <button type="button" data-scope="review" class="scope-tab" aria-pressed="false" hidden>待审核</button>
         </div>
@@ -51,7 +53,8 @@
       </div>
       <p class="demo-notice" id="demoNotice" hidden>按对象大类和小类浏览 SVG 素材</p>
       <p class="notice" id="sessionNotice" role="status" hidden></p>
-      <div class="results-heading"><h2 id="resultsTitle" class="sr-only">全部素材</h2><p id="resultsCount" role="status" aria-live="polite">正在连接素材库…</p></div>
+      <div class="results-heading"><div><h2 id="resultsTitle">精选推荐</h2><p id="resultsCount" role="status" aria-live="polite">正在连接素材库…</p></div><label class="sort-control" id="sortControl">排序<select id="sortOrder"><option value="recommended">精选推荐</option><option value="latest">最新发布</option><option value="likes">最多点赞</option><option value="saves">最多收藏</option><option value="downloads">最多下载</option></select></label></div>
+      <p class="discovery-note" id="discoveryNote">精选鸟类、植物与昆虫，发现适合你的科研配图。</p>
       <div id="gallery" class="gallery" aria-busy="true"></div>
       <div class="empty-state" id="emptyState" hidden><span class="empty-mark" aria-hidden="true">＋</span><h3 id="emptyTitle"></h3><p id="emptyCopy"></p><button class="button secondary" type="button" id="retryButton" hidden>重新连接</button></div>
       <div class="load-more"><button class="button secondary" type="button" id="loadMoreButton" hidden>加载更多</button></div>
@@ -64,6 +67,8 @@
     <button class="dialog-close" type="button" data-close="detailDialog" aria-label="关闭素材详情">×</button>
     <div class="detail-layout"><div class="detail-preview" id="detailPreview"></div><div class="detail-info">
       <p class="detail-category" id="detailCategory"></p><h2 id="detailTitle"></h2><p class="detail-author" id="detailAuthor"></p><p class="detail-description" id="detailDescription"></p>
+      <div id="detailSocial" class="detail-social"></div>
+      <p class="field-hint">点赞、收藏可取消并随账号同步。下载量为上线后按账号或网络标识每日去重的下载点击量，不代表完成传输。</p>
       <div class="tags" id="detailTags"></div><dl class="metadata"><div><dt>状态</dt><dd id="detailStatus"></dd></div><div><dt>使用许可</dt><dd id="detailLicense"></dd></div><div><dt>日期</dt><dd id="detailDate"></dd></div></dl>
       <p class="license-explanation" id="licenseExplanation"></p><a id="sourceLink" class="text-link" target="_blank" rel="noopener noreferrer" hidden>查看原始来源 ↗</a>
       <div class="notice rejection" id="rejectionNotice" hidden></div>

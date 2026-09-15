@@ -496,6 +496,7 @@
     $('subcategoryFilter').replaceChildren(all, ...(original.domain ? [...groups].map(([id, group]) => {
       const option = node('option', '', `${group.title} · ${group.count} 件`); option.value = id; return option;
     }) : []));
+    $('subcategoryFilter').value = original.subcategory;
     $('subcategoryFilter').disabled = !original.domain;
   }
   function populateDomains() {

@@ -103,21 +103,20 @@
     },
     {
       "id": "sci-skills",
-      "name": "SCI Skills",
-      "description": "科研 Agent 技能库，聚合文献综述、统计分析、科研绘图、生物信息、医学医药、遥感与 GIS 等数百个科学研究相关 skills。",
-      "cover": "./assets/covers/scansci-skills.svg",
-      "cover_title": "SCI Skills",
-      "cover_subtitle": "科研 Skills 检索目录",
+      "name": "Agent 拓展",
+      "description": "Rimagination 制作与维护的科研 Agent 拓展，涵盖 Skill、Plugin、MCP 与 CLI，服务文献获取、数据分析、科研绘图与论文写作。",
+      "cover": "./assets/covers/scansci-skills.svg?v=20261010-agent-extensions",
+      "cover_title": "Agent 拓展",
+      "cover_subtitle": "Skill · Plugin · MCP · CLI",
       "url": "https://skills.scansci.com",
-      "category": "科研技能库",
+      "category": "科研 Agent 拓展",
       "tags": [
-        "skills",
+        "skill",
+        "plugin",
+        "mcp",
+        "cli",
         "agent",
-        "research workflow",
-        "bioinformatics",
-        "statistics",
-        "visualization",
-        "AI Agent"
+        "research workflow"
       ]
     },
     {

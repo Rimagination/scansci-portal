@@ -55,6 +55,6 @@
     <text x="400" y="66" fill="#6d8d78" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="18">Submission</text>
   </g>
 
-  <text x="150" y="548" fill="#18324a" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="56" font-weight="800" letter-spacing="-1">SCI Skills</text>
-  <text x="150" y="592" fill="#5b7186" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="22">A lighter entry card for the research skill library.</text>
+  <text x="150" y="548" fill="#18324a" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="56" font-weight="800" letter-spacing="-1">Agent 拓展</text>
+  <text x="150" y="592" fill="#5b7186" font-family="Manrope, 'Noto Sans SC', sans-serif" font-size="22">Skill · Plugin · MCP · CLI</text>
 </svg>

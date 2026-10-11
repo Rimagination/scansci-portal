@@ -470,24 +470,22 @@ body.is-miniprogram-popup-open {
 
 .miniprogram-notice {
   display: grid;
-  grid-template-columns: 8px minmax(0, 1fr) auto;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
   min-height: 42px;
   margin: 0 0 14px;
-  border: 1px solid #d4e0ec;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.74);
-  padding: 8px 10px;
+  border: 0;
+  border-left: 3px solid #0f8f7b;
+  border-radius: 6px;
+  background: #eaf5f0;
+  padding: 8px 12px;
 }
 
 .miniprogram-notice__mark {
-  width: 8px;
-  height: 8px;
-  flex: 0 0 8px;
-  border-radius: 50%;
-  background: #0f8f7b;
-  box-shadow: 0 0 0 4px rgba(15, 143, 123, 0.12);
+  width: 20px;
+  height: 20px;
+  color: #087568;
 }
 
 .miniprogram-notice__text {
@@ -508,6 +506,7 @@ body.is-miniprogram-popup-open {
 
 .miniprogram-notice__button {
   flex: 0 0 auto;
+  min-height: 44px;
   border: 1px solid #90bcb5;
   border-radius: 8px;
   background: #eef8f5;
@@ -1040,7 +1039,7 @@ body.is-miniprogram-popup-open {
   }
 
   .miniprogram-notice {
-    grid-template-columns: 8px minmax(0, 1fr);
+    grid-template-columns: 20px minmax(0, 1fr);
     align-items: start;
     margin-bottom: 14px;
     min-height: 42px;
@@ -1048,7 +1047,7 @@ body.is-miniprogram-popup-open {
   }
 
   .miniprogram-notice__mark {
-    margin-top: 4px;
+    margin-top: 0;
   }
 
   .miniprogram-notice__text {
@@ -1059,7 +1058,7 @@ body.is-miniprogram-popup-open {
 
   .miniprogram-notice__button {
     grid-column: 2;
-    justify-self: start;
+    justify-self: end;
   }
 
   .miniprogram-popup {

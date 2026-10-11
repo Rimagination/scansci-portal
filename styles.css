@@ -1288,3 +1288,51 @@ html.dark #easymdRoot { --background: #16221d; --foreground: #e6eee8; --primary:
 .user-account-menu__item:hover, .user-account-menu__item:focus-visible { background: #e8f1ee; outline: none; }
 .user-account-menu__item[hidden] { display: none; }
 .is-sidebar-collapsed .user-account-button { justify-content: center; }
+
+/* Developer information is available from the top-right of each portal view. */
+.main-head-actions, .easymd-head-actions { display: flex; align-items: center; justify-content: flex-end; gap: 14px; min-width: 0; }
+.main-head-actions { margin-left: auto; }
+.main-head > .stats-inline { flex: 1; min-width: 0; }
+.main-head-actions #toolCount { min-width: 0; }
+.developer-about-entry { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid #c9e7de; border-radius: 8px; background: var(--brand-soft); color: #0e4f48; font: 700 13px var(--font-ui); white-space: nowrap; cursor: pointer; }
+.developer-about-entry:hover { border-color: #90bcb5; background: #d0eee5; color: #0e4f48; }
+.developer-about-entry:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.stats-source { color: inherit; text-underline-offset: 3px; }
+.stats-source:hover { color: var(--brand); }
+.stats-source:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.developer-about-popover { position: fixed; inset: 0; width: min(680px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 26px 24px 24px; overflow-y: auto; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--ink); box-shadow: var(--shadow); }
+.developer-about-popover:popover-open { display: grid; grid-template-columns: minmax(0, 1fr) 240px; align-items: start; gap: 22px 28px; }
+.developer-about-popover::backdrop { background: rgb(16 34 60 / 16%); }
+.developer-about-popover h2 { grid-column: 1 / -1; margin: 0; font-size: 22px; line-height: 1.3; }
+.developer-about-copy h3 { margin: 0 0 10px; color: #0e4f48; font-size: 20px; line-height: 1.4; }
+.developer-about-copy p { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.developer-about-copy p + p { margin-top: 14px; }
+.developer-about-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; margin-top: 14px; }
+.developer-about-projects { display: inline-flex; align-items: center; min-height: 44px; color: #0e4f48; font-size: 14px; font-weight: 700; text-underline-offset: 4px; }
+.developer-about-projects:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.developer-about-copy .developer-about-contact { margin-top: 14px; }
+.developer-about-contact a { color: #0e4f48; text-underline-offset: 3px; }
+.developer-about-contact a:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.developer-about-popover__close { position: absolute; top: 4px; right: 4px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font: inherit; font-size: 24px; cursor: pointer; }
+.developer-about-popover__close:hover { background: #f1f5f9; color: var(--ink); }
+.developer-about-wechat { display: grid; justify-items: center; gap: 10px; }
+.developer-about-wechat__title { margin: 0; color: var(--ink); font-size: 14px; font-weight: 700; }
+.developer-about-wechat__intro { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
+.developer-about-wechat__code { display: block; width: min(240px, 100%); height: auto; aspect-ratio: 1; object-fit: contain; }
+.developer-about-wechat__save { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 18px; border: 1px solid #90bcb5; border-radius: 8px; background: #eef8f5; color: #0e4f48; font-size: 14px; font-weight: 700; text-decoration: none; }
+.developer-about-wechat__save:hover { background: #e2f2ee; }
+.developer-about-popover__close:focus-visible, .developer-about-wechat__save:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.developer-about-wechat__hint { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; text-align: center; }
+.developer-about-xhs { width: 100%; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
+.developer-about-xhs summary { min-height: 44px; padding: 10px 0; color: var(--ink); font-size: 14px; font-weight: 700; list-style-position: inside; cursor: pointer; }
+.developer-about-xhs summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.developer-about-xhs__code { display: block; width: 100%; max-width: 240px; height: auto; margin: 8px auto; }
+.developer-about-xhs .developer-about-wechat__save { display: flex; width: fit-content; max-width: 100%; margin: 0 auto 10px; }
+@media (max-width: 760px) {
+  .main-head-actions { order: -1; justify-self: end; max-width: 100%; }
+}
+@media (max-width: 540px) {
+  .easymd-head-actions .easymd-subtitle { display: none; }
+  .developer-about-popover { padding: 24px 16px 20px; }
+  .developer-about-popover:popover-open { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+}

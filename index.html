@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="/styles.css?v=20261011-card-copy" />
+  <link rel="stylesheet" href="/styles.css?v=20261012-creator-wechat" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -221,12 +221,19 @@
     <main class="portal-main">
       <header class="main-head">
         <h1 id="catalogTitle" hidden>素材库</h1>
-        <p class="stats-inline" aria-label="平台概况">
-          今日访客 <strong id="stat24h">—</strong> 人&thinsp;·&thinsp;
-          月活用户 <strong id="stat30d">—</strong> 人&thinsp;·&thinsp;
-          本月累计服务 <strong id="statReq">—</strong> 次
+        <p class="stats-inline" aria-label="Cloudflare 访问统计">
+          <span title="Cloudflare 每小时独立 IP 数相加，同一 IP 跨小时会重复计入。">近24小时访问 <strong id="stat24h">—</strong> 人次</span>&thinsp;·&thinsp;
+          <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。">近30天访问 <strong id="stat30d">—</strong> 人次</span>&thinsp;·&thinsp;
+          <span title="Cloudflare 统计的网络请求次数，包含页面、资源和自动访问请求。">近30天请求 <strong id="statReq">—</strong> 次</span>&thinsp;·&thinsp;
+          <a class="stats-source" href="https://developers.cloudflare.com/analytics/faq/about-analytics/" target="_blank" rel="noopener noreferrer" aria-label="Cloudflare 数据来源与统计说明">Cloudflare</a>
         </p>
-        <p id="toolCount">加载中...</p>
+        <div class="main-head-actions">
+          <p id="toolCount">加载中...</p>
+          <button id="openDeveloperAboutBtn" class="developer-about-entry" type="button" popovertarget="developerAboutPopover">
+            <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+            <span>关于开发者</span>
+          </button>
+        </div>
       </header>
 
       <p id="cardOrderStatus" class="card-order-status" role="status" aria-live="polite" hidden></p>
@@ -246,7 +253,10 @@
             <span id="easymdToolsToggle"></span>
             <h1>EasyMD</h1>
           </div>
-          <span class="easymd-subtitle">编辑 · 排版 · 预览</span>
+          <div class="easymd-head-actions">
+            <span class="easymd-subtitle">编辑 · 排版 · 预览</span>
+            <button id="openEasyMdDeveloperAboutBtn" class="developer-about-entry" type="button" popovertarget="developerAboutPopover">关于开发者</button>
+          </div>
         </header>
         <div id="easymdRoot" class="scansci-easymd" aria-busy="true"><p class="easymd-loading" role="status">正在打开编辑器…</p></div>
         <noscript>启用 JavaScript 后可以使用编辑器。</noscript>
@@ -288,6 +298,35 @@
       </section>
     </main>
   </div>
+
+  <section id="developerAboutPopover" class="developer-about-popover" popover="auto" role="dialog" aria-labelledby="developerAboutTitle" aria-describedby="developerAboutBio">
+    <button class="developer-about-popover__close" type="button" popovertarget="developerAboutPopover" popovertargetaction="hide" aria-label="关闭开发者介绍" autofocus>×</button>
+    <h2 id="developerAboutTitle">关于开发者</h2>
+    <div class="developer-about-copy">
+      <h3>川柏同学</h3>
+      <p id="developerAboutBio">你好，我是任梁，也叫川柏同学，清华大学环境学院在读博士生。我关注能源系统的生态环境效应，以及 AI 在生态环境研究中的应用。</p>
+      <p>我热爱 Vibe Coding，喜欢把科研中的想法做成工具，开发了 ScanSci、scansci-pdf、easygee 等项目，也开发了 R 语言包 ggmapcn。早期，我在“植物功能生态”公众号分享 R 语言教程。</p>
+      <p>现在，我致力于打造 AI4S 社群，在“川柏同学”公众号分享 AI for Science 原创干货，探索如何用 Agent 重构科研工作流。欢迎关注，也欢迎交流科研实践与合作想法。</p>
+      <div class="developer-about-links">
+        <a class="developer-about-projects" href="https://github.com/Rimagination?tab=repositories" target="_blank" rel="noopener noreferrer">GitHub 项目 ↗</a>
+        <a class="developer-about-projects" href="https://space.bilibili.com/46786764" target="_blank" rel="noopener noreferrer">B 站主页 ↗</a>
+      </div>
+      <p class="developer-about-contact">联系我：<a href="mailto:rl23@mails.tsinghua.edu.cn">rl23@mails.tsinghua.edu.cn</a><br />或在“川柏同学”公众号留言。</p>
+    </div>
+    <div class="developer-about-wechat">
+      <p class="developer-about-wechat__title">公众号：川柏同学</p>
+      <p class="developer-about-wechat__intro">AI for Science 原创干货<br />用 Agent 重构科研工作流</p>
+      <img class="developer-about-wechat__code" src="/assets/brand/chuanbai-wechat-qrcode.jpg" alt="川柏同学微信公众号二维码" width="860" height="860" decoding="async" />
+      <a class="developer-about-wechat__save" href="/assets/brand/chuanbai-wechat-qrcode.jpg" download="川柏同学-公众号二维码.jpg">保存二维码</a>
+      <p class="developer-about-wechat__hint">手机上可保存图片后，在微信中识别。</p>
+      <details class="developer-about-xhs">
+        <summary>小红书：川柏同学</summary>
+        <img class="developer-about-xhs__code" src="/assets/brand/chuanbai-xiaohongshu-qrcode.jpg" alt="川柏同学小红书二维码，小红书号 42885010517" width="987" height="1347" decoding="async" />
+        <a class="developer-about-wechat__save" href="/assets/brand/chuanbai-xiaohongshu-qrcode.jpg" download="川柏同学-小红书二维码.jpg">保存小红书二维码</a>
+        <p class="developer-about-wechat__hint">小红书号：42885010517</p>
+      </details>
+    </div>
+  </section>
 
   <div id="miniProgramPopup" class="miniprogram-popup" hidden>
     <div class="miniprogram-popup__backdrop" data-miniprogram-close="true"></div>

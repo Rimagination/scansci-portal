@@ -14,6 +14,7 @@ async (page) => {
       await check.locator('.tool-card').first().waitFor();
       assert(await check.locator('#easymdRoot .cm-content').count() === 0, 'Home eagerly loaded the editor');
       assert(await check.locator('.sidebar-nav-item[aria-label="Logo 库"]').count() === 0, 'Logo remains in the sidebar');
+      assert(await check.locator('#portalNavigation [data-view="open-source"]').count() === 0, 'Open-source tools remain in the sidebar');
       assert(await check.locator('article[data-app-id="scansci-logos"]').count() === 0, 'Logo remains in online tools');
       await check.getByRole('link', { name: '素材库', exact: true }).click();
       assert(await check.locator('article[data-app-id="scansci-logos"] .tool-card__status').innerText() === 'NEW', 'Logo card is missing its NEW badge');
@@ -138,7 +139,7 @@ async (page) => {
       await check.reload({ waitUntil: 'domcontentloaded' });
       assert(await check.locator('#sidebarToggle').getAttribute('aria-expanded') === 'false', 'Collapse preference was not restored');
       await check.getByRole('button', { name: '展开侧边栏', exact: true }).click();
-      await check.getByRole('link', { name: '开源工具', exact: true }).click();
+      await check.goto(origin + '/#open-source', { waitUntil: 'domcontentloaded' });
       assert(await check.locator('#openSourceView').isVisible() && await check.locator('#easymdView').isHidden(), 'The open-source route regressed');
       await check.getByRole('link', { name: '在线轻工具', exact: true }).click();
       await check.locator('#guestLoginBtn').waitFor();

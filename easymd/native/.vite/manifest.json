@@ -1,11 +1,11 @@
 {
-  "_editor-BiuOcFbq.js": {
-    "file": "assets/editor-BiuOcFbq.js",
+  "_editor-BHrw7m2v.js": {
+    "file": "assets/editor-BHrw7m2v.js",
     "name": "editor",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ],
     "dynamicImports": [
       "node_modules/.pnpm/@codemirror+lang-sql@6.10.0/node_modules/@codemirror/lang-sql/dist/index.js",
@@ -139,12 +139,12 @@
       "node_modules/.pnpm/@codemirror+lang-angular@0.1.4/node_modules/@codemirror/lang-angular/dist/index.js"
     ]
   },
-  "_jspdf.es.min-BKYEx3Qq.js": {
-    "file": "assets/jspdf.es.min-BKYEx3Qq.js",
+  "_jspdf.es.min-CksTVcRp.js": {
+    "file": "assets/jspdf.es.min-CksTVcRp.js",
     "name": "jspdf.es.min",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ],
     "dynamicImports": [
       "node_modules/.pnpm/html2canvas@1.4.1/node_modules/html2canvas/dist/html2canvas.esm.js",
@@ -152,21 +152,17 @@
       "node_modules/.pnpm/canvg@3.0.11/node_modules/canvg/lib/index.es.js"
     ]
   },
-  "_scansci-entry-CElRicYE.css": {
-    "file": "assets/scansci-entry-CElRicYE.css",
-    "src": "_scansci-entry-CElRicYE.css"
-  },
-  "_scansci-entry-CuHoQVvp.js": {
-    "file": "assets/scansci-entry-CuHoQVvp.js",
+  "_scansci-entry-5lEPLV_r.js": {
+    "file": "assets/scansci-entry-5lEPLV_r.js",
     "name": "scansci-entry",
     "dynamicImports": [
       "src/lib/markdown/browser.ts",
       "src/lib/markdown/browser.ts",
       "src/lib/markdown/browser.ts",
-      "_editor-BiuOcFbq.js",
-      "_snapdom-CfU4BBCZ.js",
-      "_snapdom-CfU4BBCZ.js",
-      "_jspdf.es.min-BKYEx3Qq.js",
+      "_editor-BHrw7m2v.js",
+      "_snapdom-BB6n8Yjm.js",
+      "_snapdom-BB6n8Yjm.js",
+      "_jspdf.es.min-CksTVcRp.js",
       "src/lib/markdown/browser.ts",
       "src/themes/markdown-style/ayu-light.css?raw",
       "src/themes/markdown-style/bauhaus.css?raw",
@@ -197,16 +193,20 @@
       "assets/scansci-entry-CElRicYE.css"
     ]
   },
+  "_scansci-entry-CElRicYE.css": {
+    "file": "assets/scansci-entry-CElRicYE.css",
+    "src": "_scansci-entry-CElRicYE.css"
+  },
   "_simple-mode-GW_nhZxv.js": {
     "file": "assets/simple-mode-GW_nhZxv.js",
     "name": "simple-mode"
   },
-  "_snapdom-CfU4BBCZ.js": {
-    "file": "assets/snapdom-CfU4BBCZ.js",
+  "_snapdom-BB6n8Yjm.js": {
+    "file": "assets/snapdom-BB6n8Yjm.js",
     "name": "snapdom",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ],
     "dynamicImports": [
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toImg.js",
@@ -227,198 +227,198 @@
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toImg.js"
     ]
   },
-  "_use-scroll-sync-BYhf1t5a.js": {
-    "file": "assets/use-scroll-sync-BYhf1t5a.js",
+  "_use-scroll-sync-VusM2tyo.js": {
+    "file": "assets/use-scroll-sync-VusM2tyo.js",
     "name": "use-scroll-sync",
     "imports": [
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-angular@0.1.4/node_modules/@codemirror/lang-angular/dist/index.js": {
-    "file": "assets/index-BAjk3CaN.js",
+    "file": "assets/index-YWAYowym.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-angular@0.1.4/node_modules/@codemirror/lang-angular/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-cpp@6.0.3/node_modules/@codemirror/lang-cpp/dist/index.js": {
-    "file": "assets/index-Bi2fdGxo.js",
+    "file": "assets/index-_LOStFyS.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-cpp@6.0.3/node_modules/@codemirror/lang-cpp/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-go@6.0.1/node_modules/@codemirror/lang-go/dist/index.js": {
-    "file": "assets/index-KyEpHiyD.js",
+    "file": "assets/index-CMSKmYzi.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-go@6.0.1/node_modules/@codemirror/lang-go/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-java@6.0.2/node_modules/@codemirror/lang-java/dist/index.js": {
-    "file": "assets/index-CVwognj3.js",
+    "file": "assets/index-Bhm1vwop.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-java@6.0.2/node_modules/@codemirror/lang-java/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-jinja@6.0.0/node_modules/@codemirror/lang-jinja/dist/index.js": {
-    "file": "assets/index-BFuzvsap.js",
+    "file": "assets/index-ByfzHRan.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-jinja@6.0.0/node_modules/@codemirror/lang-jinja/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-json@6.0.2/node_modules/@codemirror/lang-json/dist/index.js": {
-    "file": "assets/index-DnRdri_s.js",
+    "file": "assets/index-B2LM_2aM.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-json@6.0.2/node_modules/@codemirror/lang-json/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-less@6.0.2/node_modules/@codemirror/lang-less/dist/index.js": {
-    "file": "assets/index-551F4hIj.js",
+    "file": "assets/index-jK8fj5Uz.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-less@6.0.2/node_modules/@codemirror/lang-less/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-liquid@6.3.1/node_modules/@codemirror/lang-liquid/dist/index.js": {
-    "file": "assets/index-CZxH2pdT.js",
+    "file": "assets/index-CPgz-dNb.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-liquid@6.3.1/node_modules/@codemirror/lang-liquid/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-php@6.0.2/node_modules/@codemirror/lang-php/dist/index.js": {
-    "file": "assets/index-DWUDvFlX.js",
+    "file": "assets/index-DTxIJtzW.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-php@6.0.2/node_modules/@codemirror/lang-php/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-python@6.2.1/node_modules/@codemirror/lang-python/dist/index.js": {
-    "file": "assets/index-Cn0IB9zW.js",
+    "file": "assets/index-ZBbEIJg6.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-python@6.2.1/node_modules/@codemirror/lang-python/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-rust@6.0.2/node_modules/@codemirror/lang-rust/dist/index.js": {
-    "file": "assets/index-CsPE0xkp.js",
+    "file": "assets/index-C5E93dbz.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-rust@6.0.2/node_modules/@codemirror/lang-rust/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-sass@6.0.2/node_modules/@codemirror/lang-sass/dist/index.js": {
-    "file": "assets/index-C0DonhMe.js",
+    "file": "assets/index-CHfcSW-w.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-sass@6.0.2/node_modules/@codemirror/lang-sass/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-sql@6.10.0/node_modules/@codemirror/lang-sql/dist/index.js": {
-    "file": "assets/index-DamNDP92.js",
+    "file": "assets/index-BVY6wV3A.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-sql@6.10.0/node_modules/@codemirror/lang-sql/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-vue@0.1.3/node_modules/@codemirror/lang-vue/dist/index.js": {
-    "file": "assets/index-BhUuOm8d.js",
+    "file": "assets/index-DoT57BFE.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-vue@0.1.3/node_modules/@codemirror/lang-vue/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-wast@6.0.2/node_modules/@codemirror/lang-wast/dist/index.js": {
-    "file": "assets/index-D1r1Ft5Q.js",
+    "file": "assets/index-PyteLo_Y.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-wast@6.0.2/node_modules/@codemirror/lang-wast/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-xml@6.1.0/node_modules/@codemirror/lang-xml/dist/index.js": {
-    "file": "assets/index-CnMP97u1.js",
+    "file": "assets/index-CyfTDZVh.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-xml@6.1.0/node_modules/@codemirror/lang-xml/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+lang-yaml@6.1.2/node_modules/@codemirror/lang-yaml/dist/index.js": {
-    "file": "assets/index-Cr3F99rH.js",
+    "file": "assets/index-k6ZOTJD9.js",
     "name": "index",
     "src": "node_modules/.pnpm/@codemirror+lang-yaml@6.1.2/node_modules/@codemirror/lang-yaml/dist/index.js",
     "isDynamicEntry": true,
     "imports": [
-      "_editor-BiuOcFbq.js",
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_editor-BHrw7m2v.js",
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ]
   },
   "node_modules/.pnpm/@codemirror+legacy-modes@6.5.2/node_modules/@codemirror/legacy-modes/mode/apl.js": {
@@ -998,69 +998,69 @@
     "isDynamicEntry": true
   },
   "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/chunks/rasterize-34PCWURX.js": {
-    "file": "assets/rasterize-34PCWURX-BFfEnnbg.js",
+    "file": "assets/rasterize-34PCWURX-D6RCqSMs.js",
     "name": "rasterize-34PCWURX",
     "src": "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/chunks/rasterize-34PCWURX.js",
     "isDynamicEntry": true,
     "imports": [
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js",
-      "_snapdom-CfU4BBCZ.js",
-      "_scansci-entry-CuHoQVvp.js"
+      "_snapdom-BB6n8Yjm.js",
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/download.js": {
-    "file": "assets/download-CSBCcIWv.js",
+    "file": "assets/download-DxcM-dxa.js",
     "name": "download",
     "src": "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/download.js",
     "isDynamicEntry": true,
     "imports": [
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toBlob.js",
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js",
-      "_snapdom-CfU4BBCZ.js",
-      "_scansci-entry-CuHoQVvp.js"
+      "_snapdom-BB6n8Yjm.js",
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toBlob.js": {
-    "file": "assets/toBlob-BKqKKtjZ.js",
+    "file": "assets/toBlob-CrUYsATc.js",
     "name": "toBlob",
     "src": "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toBlob.js",
     "isDynamicEntry": true,
     "imports": [
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js",
-      "_snapdom-CfU4BBCZ.js",
-      "_scansci-entry-CuHoQVvp.js"
+      "_snapdom-BB6n8Yjm.js",
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js": {
-    "file": "assets/toCanvas-BnFjlEgq.js",
+    "file": "assets/toCanvas-BinapZtc.js",
     "name": "toCanvas",
     "src": "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js",
     "isDynamicEntry": true,
     "imports": [
-      "_snapdom-CfU4BBCZ.js",
-      "_scansci-entry-CuHoQVvp.js"
+      "_snapdom-BB6n8Yjm.js",
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toImg.js": {
-    "file": "assets/toImg-DfaytZRg.js",
+    "file": "assets/toImg-wCUmU-HL.js",
     "name": "toImg",
     "src": "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toImg.js",
     "isDynamicEntry": true,
     "imports": [
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/chunks/rasterize-34PCWURX.js",
-      "_snapdom-CfU4BBCZ.js",
+      "_snapdom-BB6n8Yjm.js",
       "node_modules/.pnpm/@zumer+snapdom@2.0.2/node_modules/@zumer/snapdom/dist/modules/exporters/toCanvas.js",
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "node_modules/.pnpm/canvg@3.0.11/node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es-C8iLEG1t.js",
+    "file": "assets/index.es-CtYDxQ8F.js",
     "name": "index.es",
     "src": "node_modules/.pnpm/canvg@3.0.11/node_modules/canvg/lib/index.es.js",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js",
-      "_jspdf.es.min-BKYEx3Qq.js"
+      "_scansci-entry-5lEPLV_r.js",
+      "_jspdf.es.min-CksTVcRp.js"
     ]
   },
   "node_modules/.pnpm/dompurify@3.3.1/node_modules/dompurify/dist/purify.es.mjs": {
@@ -1076,25 +1076,25 @@
     "isDynamicEntry": true
   },
   "src/components/markdown/previewer/render.tsx": {
-    "file": "assets/render-BLgzQRzA.js",
+    "file": "assets/render-zokW9qyb.js",
     "name": "render",
     "src": "src/components/markdown/previewer/render.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js",
-      "_use-scroll-sync-BYhf1t5a.js"
+      "_scansci-entry-5lEPLV_r.js",
+      "_use-scroll-sync-VusM2tyo.js"
     ],
     "dynamicImports": [
       "src/lib/markdown/browser.ts"
     ]
   },
   "src/lib/markdown/browser.ts": {
-    "file": "assets/browser-7Aonl45w.js",
+    "file": "assets/browser-B4T2lqPk.js",
     "name": "browser",
     "src": "src/lib/markdown/browser.ts",
     "isDynamicEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ],
     "dynamicImports": [
       "src/lib/markdown/worker.ts?worker"
@@ -1107,12 +1107,12 @@
     "isDynamicEntry": true
   },
   "src/scansci-entry.tsx": {
-    "file": "assets/scansci-Dve83loV.js",
+    "file": "assets/scansci-B_l2eZiq.js",
     "name": "scansci",
     "src": "src/scansci-entry.tsx",
     "isEntry": true,
     "imports": [
-      "_scansci-entry-CuHoQVvp.js"
+      "_scansci-entry-5lEPLV_r.js"
     ]
   },
   "src/themes/markdown-style/ayu-light.css?raw": {

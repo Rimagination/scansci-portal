@@ -114,7 +114,7 @@ async function loadEasyMD() {
   if (!els.easymdRoot || state.easymdLoading) return;
   state.easymdLoading = true;
   try {
-    const editor = await import("/easymd/bootstrap.js?v=20261011-phone-1");
+    const editor = await import("/easymd/bootstrap.js?v=20261011-header-tools-2");
     await editor.mountEasyMD(els.easymdRoot);
     els.easymdRoot.setAttribute("aria-busy", "false");
   } catch (error) {

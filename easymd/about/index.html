@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="/styles.css?v=20261011-phone-1" />
+  <link rel="stylesheet" href="/styles.css?v=20261011-header-tools-1" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -244,7 +244,10 @@
 
       <section id="easymdView" class="portal-view easymd-view" data-portal-view="easymd" aria-label="EasyMD 编辑器">
         <header class="easymd-head">
-          <h1>EasyMD</h1>
+          <div class="easymd-title">
+            <span id="easymdToolsToggle"></span>
+            <h1>EasyMD</h1>
+          </div>
           <span class="easymd-subtitle">编辑 · 排版 · 预览</span>
         </header>
         <div id="easymdRoot" class="scansci-easymd" aria-busy="true"><p class="easymd-loading" role="status">正在打开编辑器…</p></div>
@@ -328,7 +331,7 @@
   </div>
 
   <script src="/anon-prompt.js?v=20260616b"></script>
-  <script src="/app.js?v=20261011-reader-entry-1"></script>
+  <script src="/app.js?v=20261011-header-tools-2"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

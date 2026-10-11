@@ -22,6 +22,14 @@ async (page) => {
       const button = name => editor.getByRole('button', { name, exact: true }).filter({ visible: true }).first();
       const input = editor.locator('.cm-content:visible').first();
       await input.waitFor({ timeout: 45000 });
+      const headerTools = name => check.locator('.easymd-head').getByRole('button', { name, exact: true }).filter({ visible: true });
+      const tools = headerTools('打开组件工具');
+      assert(await tools.count() === 1, 'The title must have one visible component toggle');
+      const toolsBox = await tools.boundingBox();
+      const titleBox = await check.locator('.easymd-head h1').boundingBox();
+      assert(toolsBox.x + toolsBox.width <= titleBox.x && Math.abs((toolsBox.y + toolsBox.height / 2) - (titleBox.y + titleBox.height / 2)) < 2, 'Component toggle is not directly before the EasyMD title');
+      assert(await tools.getAttribute('aria-expanded') === 'false', 'Component button has no closed state');
+      assert(await tools.locator('svg.lucide-shapes').count() === 1, 'Component button is not the Lucide Shapes design icon');
       assert(check.frames().every(frame => frame === check.mainFrame() || frame.url() === 'about:srcdoc'), 'Editor is hosted in an external frame');
       assert(await check.locator('#sidebarToggle svg:visible').count() === 1, 'Sidebar toggle shows overlapping icons');
       await button('新建文件').click();
@@ -30,19 +38,30 @@ async (page) => {
       await input.press('Enter');
       await input.pressSequentially('草稿保留检查');
       if (width >= 1024) {
-        const tools = button('打开组件工具');
-        assert(await tools.getAttribute('aria-expanded') === 'false', 'Component button has no closed state');
-        assert(await tools.locator('svg.lucide-blocks').count() === 1, 'Component button is not the Lucide Blocks tool icon');
+        const panels = editor.locator('[data-slot="resizable-panel"]:visible');
+        const contentBox = await input.boundingBox();
+        const rootBox = await editor.boundingBox();
+        assert(await panels.count() === 2, 'Collapsed component tools still occupy a panel');
+        assert(Math.abs((await panels.first().boundingBox()).x - rootBox.x) <= 1, 'An empty component rail remains beside the editor');
+        await input.evaluate(element => { window.__toolsEditorContent = element; });
         await tools.click();
-        assert(await button('收起组件工具').getAttribute('aria-expanded') === 'true', 'Component tools did not open');
+        assert(await headerTools('收起组件工具').getAttribute('aria-expanded') === 'true', 'Component tools did not open');
+        assert(await panels.count() === 3, 'The component library did not expand');
+        assert(await input.evaluate(element => element === window.__toolsEditorContent), 'Opening components remounted the editor');
+        assert((await input.boundingBox()).width < contentBox.width, 'Opening the component library did not allocate its width');
         await check.getByRole('button', { name: '插入居中短线标题', exact: true }).click();
         assert((await input.innerText()).includes('居中短线标题'), 'Selecting a component did not insert content');
         const inserted = await input.innerText();
         assert(inserted.indexOf('居中短线标题') > inserted.indexOf('草稿保留检查'), 'Opening component tools lost the editor cursor');
-        await button('收起组件工具').click();
+        await headerTools('收起组件工具').click();
+        assert(await panels.count() === 2, 'Closing components did not release the column');
+        assert(await input.evaluate(element => element === window.__toolsEditorContent), 'Closing components remounted the editor');
+        assert(Math.abs((await panels.first().boundingBox()).x - rootBox.x) <= 1, 'Closing tools left an empty rail');
       } else {
-        await button('插入组件').click();
+        await tools.click();
+        assert(await headerTools('收起组件工具').getAttribute('aria-expanded') === 'true', 'Mobile header tools did not open');
         await check.getByRole('button', { name: '插入居中短线标题', exact: true }).click();
+        await headerTools('打开组件工具').waitFor();
       }
       const draft = await input.innerText();
       assert(draft.includes('草稿保留检查'), 'The native editor cannot edit');

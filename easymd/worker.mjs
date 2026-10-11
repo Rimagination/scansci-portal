@@ -1,14 +1,15 @@
 import { fetchWechatRequest } from './wechat/server.mjs';
+import { readImage, uploadImage } from './images.mjs';
 
 const UPSTREAM = 'https://easymd.vercel.app';
 const ORIGIN = 'https://www.scansci.com';
 const PREFIX = '/easymd';
 const API_PATHS = new Set(['/api/upload/image', '/api/import/wechat', '/api/wechat/draft/session', '/api/wechat/draft', '/api/wechat/authorize', '/api/wechat/callback', '/api/wechat/account', '/api/wechat/component']);
 
-function toolUrl(value, pathPrefix) {
+function toolUrl(value) {
   try {
     const target = new URL(value, UPSTREAM);
-    if (target.origin !== UPSTREAM || (pathPrefix && !target.pathname.startsWith(pathPrefix))) return value;
+    if (target.origin !== UPSTREAM) return value;
     return ORIGIN + (target.pathname.startsWith(PREFIX + '/') ? '' : PREFIX) + target.pathname + target.search + target.hash;
   } catch { return value; }
 }
@@ -37,6 +38,8 @@ export default {
     } });
 
     if (isWechat) return fetchWechatRequest(request, bindings);
+    if (path === '/api/upload/image') return uploadImage(request, bindings);
+    if (path.startsWith('/uploads/images/')) return readImage(request, bindings);
 
     const headers = new Headers();
     for (const name of ['accept', 'accept-language', 'content-type', 'mcp-session-id', 'mcp-protocol-version', 'last-event-id']) {
@@ -69,20 +72,6 @@ export default {
         responseHeaders.set('location', toolUrl(location));
       }
     }
-    let body;
-    if (path === '/api/upload/image' && upstream.ok && responseHeaders.get('content-type')?.includes('application/json')) {
-      try {
-        const payload = await upstream.clone().json();
-        if (typeof payload?.url === 'string') {
-          const uploadUrl = toolUrl(payload.url, '/uploads/');
-          if (uploadUrl !== payload.url) {
-            body = JSON.stringify({ ...payload, url: uploadUrl });
-            responseHeaders.delete('content-length');
-            responseHeaders.delete('content-encoding');
-          }
-        }
-      } catch { /* Preserve the upstream response if it did not return upload metadata. */ }
-    }
     if (isUpload) {
       // User uploads remain viewable images without becoming active main-site documents.
       responseHeaders.set('content-security-policy', "sandbox; default-src 'none'; style-src 'unsafe-inline'");
@@ -93,6 +82,6 @@ export default {
       responseHeaders.set('access-control-allow-origin', ORIGIN);
       responseHeaders.set('access-control-allow-credentials', 'true');
     }
-    return new Response(body ?? upstream.body, { status: upstream.status, headers: responseHeaders });
+    return new Response(upstream.body, { status: upstream.status, headers: responseHeaders });
   },
 };

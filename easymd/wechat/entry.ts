@@ -5,6 +5,8 @@ import { handlers as component } from '@/lib/wechat-draft/http/component'
 import { handlers as draft } from '@/lib/wechat-draft/http/draft'
 import { withWechatEnvironment } from './environment.mjs'
 
+export { readLimitedBytes } from '@/lib/wechat-draft/service'
+
 const routes = {
   account, authorize, callback, component, draft,
   'draft/session': { GET: account.GET },

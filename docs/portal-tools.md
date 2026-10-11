@@ -39,7 +39,9 @@ node --test tests/anon-prompt.test.mjs tests/easymd-worker.test.mjs tests/easymd
 
 主站账户区域继续使用 ScanSci 现有登录机制。编辑草稿保存在当前浏览器；此次没有添加草稿的账户同步。
 
-独立 Cloudflare Worker `scansci-easymd-api` 在主站处理公众号授权、账户查询、草稿同步、解除连接与微信消息回调，复用 EasyMD 的服务处理函数。授权数据放在独立 D1 `scansci_easymd_private`，使用 AES-256-GCM 加密；OAuth state 使用带期限的单次原子消费。签名会话 Cookie 限定在 `/easymd/`；其他图片和 MCP 代理服务不接收这些 Cookie，也不能写回同名 Cookie。
+独立 Cloudflare Worker `scansci-easymd-api` 在主站处理图片上传、公众号授权、账户查询、草稿同步、解除连接与微信消息回调，复用 EasyMD 的服务处理函数。授权数据放在独立 D1 `scansci_easymd_private`，使用 AES-256-GCM 加密；OAuth state 使用带期限的单次原子消费。签名会话 Cookie 限定在 `/easymd/`；旧图片和 MCP 代理服务不接收这些 Cookie，也不能写回同名 Cookie。
+
+图片通过 `POST /easymd/api/upload/image` 保存到专用 KV `scansci-easymd-images`，单图上限 5MB；返回 `/easymd/uploads/images/日期/随机标识.扩展名`，支持 GET/HEAD 和图片安全响应头。上传失败保留编辑器正文和光标，不插入无效图片链接。原有 `/easymd/uploads/` 链接继续代理读取。KV 跨地区同步可能需要约 60 秒；启用 R2 后可迁移图片存储。定向验证：`node --test tests/easymd-images.test.mjs tests/easymd-worker.test.mjs`。
 
 刷新令牌使用条件更新，解除连接或换号后旧请求不会恢复旧账户；最终写入草稿前核对连接代次。微信消息使用验签、微信 32 字节 PKCS7 解密和受限流读取，超限即取消。
 

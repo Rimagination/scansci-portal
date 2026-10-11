@@ -19098,5 +19098,6 @@ function fetchWechatRequest(request, bindings) {
   });
 }
 export {
-  fetchWechatRequest
+  fetchWechatRequest,
+  readLimitedBytes
 };

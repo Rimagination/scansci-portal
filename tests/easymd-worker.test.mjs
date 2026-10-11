@@ -38,9 +38,9 @@ test('the proxy rejects unknown paths and cross-site or origin-less API writes',
 });
 
 test('same-origin API bodies and MCP transport headers retain their meaning', async () => {
-  const request = new Request('https://www.scansci.com/easymd/api/upload/image', { method: 'POST', headers: { origin: 'https://www.scansci.com', 'content-type': 'text/plain' }, body: 'image bytes' });
+  const request = new Request('https://www.scansci.com/easymd/api/import/wechat', { method: 'POST', headers: { origin: 'https://www.scansci.com', 'content-type': 'text/plain' }, body: 'request bytes' });
   assert.equal((await worker.fetch(request)).status, 200);
-  assert.equal(await new Response(forwarded.body).text(), 'image bytes');
+  assert.equal(await new Response(forwarded.body).text(), 'request bytes');
   assert.equal(forwarded.headers.get('content-type'), 'text/plain');
   await worker.fetch(new Request('https://www.scansci.com/easymd/mcp', { method: 'POST', headers: { 'mcp-session-id': 'abc', authorization: 'Bearer tool-token' }, body: '{}' }));
   assert.equal(forwarded.headers.get('mcp-session-id'), 'abc');
@@ -53,21 +53,6 @@ test('uploads are read-only and unavailable upstreams produce a usable failure',
   globalThis.fetch = async () => { throw new Error('Offline'); };
   try {
     assert.equal((await worker.fetch(new Request('https://www.scansci.com/easymd/api/import/wechat'))).status, 502);
-  } finally { globalThis.fetch = fetchBefore; }
-});
-
-test('local uploads use the tool path while external CDN URLs retain their origin', async () => {
-  const fetchBefore = globalThis.fetch;
-  try {
-    for (const [source, expected] of [
-      ['/uploads/picture.png', 'https://www.scansci.com/easymd/uploads/picture.png'],
-      ['https://easymd.vercel.app/uploads/picture.png', 'https://www.scansci.com/easymd/uploads/picture.png'],
-      ['https://cdn.example/picture.png', 'https://cdn.example/picture.png'],
-    ]) {
-      globalThis.fetch = async () => Response.json({ url: source, other: 'retained' });
-      const response = await worker.fetch(new Request('https://www.scansci.com/easymd/api/upload/image', { method: 'POST', headers: { origin: 'https://www.scansci.com' }, body: 'image' }));
-      assert.deepEqual(await response.json(), { url: expected, other: 'retained' });
-    }
   } finally { globalThis.fetch = fetchBefore; }
 });
 

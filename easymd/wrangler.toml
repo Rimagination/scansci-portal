@@ -8,6 +8,10 @@ compatibility_flags = ["nodejs_compat"]
 VITE_APP_URL = "https://www.scansci.com/easymd/"
 WECHAT_IMAGE_HOSTS = "www.scansci.com"
 
+[[kv_namespaces]]
+binding = "IMAGES"
+id = "cc1115347d9048d1afc66545dd4592c4"
+
 [[d1_databases]]
 binding = "WECHAT_DATA"
 database_name = "scansci_easymd_private"

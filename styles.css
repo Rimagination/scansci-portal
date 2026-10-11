@@ -1259,7 +1259,7 @@ html.is-sidebar-collapsed { --sidebar-width: 72px; }
 #easymdRoot .easymd-shell { height: 100%; max-width: none; padding: 0; }
 #easymdRoot .easymd-workspace { border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; }
 #easymdRoot [data-slot='resizable-panel']:not(:first-child) { min-width: 0 !important; }
-#easymdRoot .pointer-events-none.absolute { display: none; }
+#easymdRoot > .relative > .pointer-events-none.absolute { display: none; }
 #easymdRoot [data-slot='dropdown-menu-content'], #easymdRoot [data-slot='popover-content'], #easymdRoot [data-slot='dialog-content'] { border-radius: 12px; }
 #easymdRoot [data-slot='button'] { border-radius: 8px; }
 .easymd-loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--muted-foreground); font-size: 13px; }

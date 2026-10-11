@@ -321,6 +321,7 @@ function appSearchText(app) {
     app.id,
     app.name,
     app.description,
+    app.summary,
     app.cover_title,
     app.cover_subtitle,
     app.status,
@@ -364,13 +365,6 @@ function isFavorite(appId) {
 
 function favoriteLabel(appId) {
   return isFavorite(appId) ? "取消常用" : "加入常用";
-}
-
-function compactDescription(app) {
-  const description = String(app.description || "").trim();
-  if (!description) return "";
-  const firstSentence = description.match(/^[^。.!?！？]+[。.!?！？]?/)?.[0] || description;
-  return firstSentence.length > 58 ? `${firstSentence.slice(0, 56)}…` : firstSentence;
 }
 
 const cardOrderQueues = new Map();
@@ -681,7 +675,7 @@ function cardTemplate(app) {
             </svg>
           </button>
         </div>
-        <p class="tool-card__desc">${escapeHtml(compactDescription(app))}</p>
+        <p class="tool-card__desc">${escapeHtml(String(app.summary || app.description || "").trim())}</p>
       </div>
       ${cardOrderHandle(appId, englishTitle)}
     </article>
@@ -784,7 +778,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("/data/apps.json?v=20261011-materials-1", { cache: "no-store" });
+    const res = await fetch("/data/apps.json?v=20261011-card-copy", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];

@@ -863,14 +863,12 @@ body.is-miniprogram-popup-open {
 }
 
 .tool-card__desc {
-  display: -webkit-box;
+  display: block;
+  min-height: 2lh;
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 13px;
   line-height: 1.48;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
 }
 
 .tool-card__meta {
@@ -1136,7 +1134,6 @@ body.is-miniprogram-popup-open {
     margin-top: 7px;
     font-size: 13px;
     line-height: 1.42;
-    -webkit-line-clamp: 2;
   }
 
   .tool-card__fav {

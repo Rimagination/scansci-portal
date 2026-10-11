@@ -1,8 +1,9 @@
+import { fetchWechatRequest } from './wechat/server.mjs';
+
 const UPSTREAM = 'https://easymd.vercel.app';
 const ORIGIN = 'https://www.scansci.com';
 const PREFIX = '/easymd';
-const COOKIE_NAMES = new Set(['easymd_wechat_browser', 'easymd_wechat_draft_session']);
-const API_PATHS = new Set(['/api/upload/image', '/api/import/wechat', '/api/wechat/draft/session', '/api/wechat/draft', '/api/wechat/authorize', '/api/wechat/callback', '/api/wechat/account']);
+const API_PATHS = new Set(['/api/upload/image', '/api/import/wechat', '/api/wechat/draft/session', '/api/wechat/draft', '/api/wechat/authorize', '/api/wechat/callback', '/api/wechat/account', '/api/wechat/component']);
 
 function toolUrl(value, pathPrefix) {
   try {
@@ -13,15 +14,17 @@ function toolUrl(value, pathPrefix) {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, bindings = {}) {
     const url = new URL(request.url);
     const path = url.pathname.startsWith(PREFIX + '/') ? url.pathname.slice(PREFIX.length) : '';
     const isMcp = path === '/mcp';
+    const isWechat = path.startsWith('/api/wechat/');
+    const isComponentCallback = path === '/api/wechat/component';
     const isUpload = /^\/uploads\/[\w./-]+$/.test(path) && !path.split('/').includes('..');
     if (!isMcp && !isUpload && !API_PATHS.has(path)) return new Response('Not found', { status: 404 });
     const origin = request.headers.get('Origin');
     const write = !['GET', 'HEAD', 'OPTIONS'].includes(request.method);
-    if ((origin && origin !== ORIGIN) || (write && !isMcp && origin !== ORIGIN)) {
+    if ((origin && origin !== ORIGIN) || (write && !isMcp && !isComponentCallback && origin !== ORIGIN)) {
       return Response.json({ error: '请求来源不受支持。' }, { status: 403 });
     }
     if (isUpload && !['GET', 'HEAD'].includes(request.method)) return new Response('Method not allowed', { status: 405 });
@@ -33,15 +36,15 @@ export default {
       'Cache-Control': 'no-store',
     } });
 
+    if (isWechat) return fetchWechatRequest(request, bindings);
+
     const headers = new Headers();
     for (const name of ['accept', 'accept-language', 'content-type', 'mcp-session-id', 'mcp-protocol-version', 'last-event-id']) {
       const value = request.headers.get(name);
       if (value) headers.set(name, value);
     }
     if (isMcp && request.headers.has('authorization')) headers.set('authorization', request.headers.get('authorization'));
-    // Forward only this tool's cookies; the ScanSci account session stays on the main site.
-    const cookies = (request.headers.get('cookie') || '').split(';').map(value => value.trim()).filter(value => COOKIE_NAMES.has(value.split('=')[0]));
-    if (cookies.length) headers.set('cookie', cookies.join('; '));
+    // Proxy services receive no ScanSci or locally owned WeChat session cookies.
     headers.set('origin', UPSTREAM);
 
     let upstream;
@@ -59,23 +62,11 @@ export default {
     for (const name of [...responseHeaders.keys()]) {
       if (name.startsWith('access-control-')) responseHeaders.delete(name);
     }
-    const setCookies = upstream.headers.getSetCookie?.() || (upstream.headers.get('set-cookie') ? [upstream.headers.get('set-cookie')] : []);
-    for (const cookie of setCookies) {
-      if (!COOKIE_NAMES.has(cookie.split('=')[0])) continue;
-      const scoped = cookie.replace(/;\s*Domain=[^;]*/gi, '').replace(/;\s*Path=[^;]*/gi, '') + '; Path=/easymd/';
-      responseHeaders.append('set-cookie', scoped);
-    }
     const location = responseHeaders.get('location');
     if (location) {
       const redirect = new URL(location, UPSTREAM);
       if (redirect.origin === UPSTREAM) {
         responseHeaders.set('location', toolUrl(location));
-      } else if (redirect.origin === 'https://mp.weixin.qq.com' && redirect.pathname === '/cgi-bin/componentloginpage') {
-        const callback = redirect.searchParams.get('redirect_uri');
-        if (callback) {
-          redirect.searchParams.set('redirect_uri', toolUrl(callback, '/api/wechat/callback'));
-          responseHeaders.set('location', redirect.href);
-        }
       }
     }
     let body;

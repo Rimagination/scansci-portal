@@ -1,5 +1,5 @@
-import { mountEasyMD as mount } from "/easymd/native/assets/scansci-CCWgnyKk.js";
-const styles = ["/easymd/native/assets/scansci-entry-DDrX8oAq.css"];
+import { mountEasyMD as mount } from "/easymd/native/assets/scansci-Dj1uPNwz.js";
+const styles = ["/easymd/native/assets/scansci-entry-DOU-IDgl.css"];
 export async function mountEasyMD(element) {
   await Promise.all(styles.map(href => new Promise((resolve, reject) => {
     const link = document.createElement('link');

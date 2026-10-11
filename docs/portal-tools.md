@@ -2,7 +2,7 @@
 
 主站左侧的「Logo 库」打开现有 `/logos/`。「EasyMD」打开 `/easymd/`，直接在主站 DOM 内运行编辑组件，使用主站配色和导航。编辑器首次进入时加载，切换主站栏目时保留同一个实例。
 
-主站侧栏用 Lucide PanelLeftClose / PanelLeftOpen，记住浏览器中的折叠偏好；EasyMD 组件工具用 Lucide Blocks，提供独立的打开/收起状态。工具栏复制和导出按钮也使用 Lucide。桌面支持左右编辑与预览，手机使用编辑/预览切换。
+主站侧栏用 Lucide PanelLeftClose / PanelLeftOpen，记住浏览器中的折叠偏好；EasyMD 组件工具用 Lucide Blocks，提供独立的打开/收起状态。工具栏通用操作使用 Lucide，微信导出复用项目已有的线条双气泡品牌图标；发送到公众号使用 Send，两者明确区分。桌面支持左右编辑与预览，手机使用编辑/预览切换。
 
 ## 构建与路由
 
@@ -18,7 +18,7 @@ node node_modules/vite/bin/vite.js build --config vite.scansci.config.ts
 node scripts/build-easymd-bootstrap.mjs
 node scripts/build-easymd-page.mjs
 node --check app.js
-node --test tests/anon-prompt.test.mjs tests/easymd-worker.test.mjs
+node --test tests/anon-prompt.test.mjs tests/easymd-worker.test.mjs tests/easymd-wechat.test.mjs
 ```
 
 `/easymd/`、`/easymd/about/`、`/easymd/docs/mcp/`、`/easymd/docs/skill/` 均生成可直接刷新访问的主站页面。同步发布 HTML、bootstrap 和 native 资源。客户端对应源码包位于 `/easymd/source/easymd-native-source.zip`。
@@ -27,13 +27,16 @@ node --test tests/anon-prompt.test.mjs tests/easymd-worker.test.mjs
 
 主站账户区域继续使用 ScanSci 现有登录机制。编辑草稿保存在当前浏览器；此次没有添加草稿的账户同步。
 
-独立 Cloudflare Worker `scansci-easymd-api` 接入既有 EasyMD 服务，用固定上游处理图片导入/上传、MCP 和公众号相关端点。主站登录 Cookie 与账户令牌不会传给上游，仅传递工具自己的两种会话 Cookie，并将其限定在 `/easymd/`。写入 API 检查请求来源，上传文档使用 CSP sandbox；根相对上传 URL 会归一到工具目录，外部 CDN 地址保持原样。
+独立 Cloudflare Worker `scansci-easymd-api` 在主站处理公众号授权、账户查询、草稿同步、解除连接与微信消息回调，复用 EasyMD 的服务处理函数。授权数据放在独立 D1 `scansci_easymd_private`，使用 AES-256-GCM 加密；OAuth state 使用带期限的单次原子消费。签名会话 Cookie 限定在 `/easymd/`；其他图片和 MCP 代理服务不接收这些 Cookie，也不能写回同名 Cookie。
+
+刷新令牌使用条件更新，解除连接或换号后旧请求不会恢复旧账户；最终写入草稿前核对连接代次。微信消息使用验签、微信 32 字节 PKCS7 解密和受限流读取，超限即取消。
 
 ```powershell
+node scripts/build-easymd-wechat.mjs
 npx --offline wrangler deploy --config easymd/wrangler.toml
 ```
 
-当前上游公众号状态接口返回 `configured:false`，公众号草稿发送需要先配置上游服务和微信授权回调域。上游现有授权 URL 还需携带其已创建的 `state`；此项未接入真实公众号授权验证。编辑、预览、复制和文件导出可独立使用。
+当前已配置私有存储和服务器加密密钥；尚未登记 ScanSci 的微信第三方平台 AppID / AppSecret，扫码直写草稿未启用。页面此时提供「复制排版」和「打开公众号后台」，普通管理员可将排版粘贴到图文草稿。平台接入准备见 [公众号服务接入](easymd-wechat.md)。真实文章不会在验证中发送。
 
 ## 验证
 

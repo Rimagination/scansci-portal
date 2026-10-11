@@ -2,6 +2,16 @@ name = "scansci-easymd-api"
 main = "worker.mjs"
 compatibility_date = "2026-10-10"
 workers_dev = false
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+VITE_APP_URL = "https://www.scansci.com/easymd/"
+WECHAT_IMAGE_HOSTS = "www.scansci.com"
+
+[[d1_databases]]
+binding = "WECHAT_DATA"
+database_name = "scansci_easymd_private"
+database_id = "b73f4f7c-9802-40e9-baaa-5c341460dc0c"
 
 [[routes]]
 pattern = "www.scansci.com/easymd/api/*"

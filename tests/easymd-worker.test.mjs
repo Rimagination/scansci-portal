@@ -14,16 +14,15 @@ before(() => { globalThis.fetch = async (url, init) => {
 after(() => { globalThis.fetch = originalFetch; });
 
 test('tool requests keep the main account cookie and authorization private', async () => {
-  const response = await worker.fetch(new Request('https://www.scansci.com/easymd/api/wechat/draft/session', { headers: {
+  const response = await worker.fetch(new Request('https://www.scansci.com/easymd/api/import/wechat', { headers: {
     cookie: 'scansci_session=private; easymd_wechat_browser=tool; other=private', authorization: 'Bearer main-token',
   } }));
-  assert.equal(forwarded.url, 'https://easymd.vercel.app/api/wechat/draft/session');
-  assert.equal(forwarded.headers.get('cookie'), 'easymd_wechat_browser=tool');
+  assert.equal(forwarded.url, 'https://easymd.vercel.app/api/import/wechat');
+  assert.equal(forwarded.headers.has('cookie'), false);
   assert.equal(forwarded.headers.has('authorization'), false);
   assert.equal(forwarded.headers.get('origin'), 'https://easymd.vercel.app');
   assert.equal(response.headers.get('cache-control'), 'no-store');
-  assert.match(response.headers.get('set-cookie'), /Path=\/easymd\//);
-  assert.doesNotMatch(response.headers.get('set-cookie'), /Domain=|scansci_session/);
+  assert.equal(response.headers.get('set-cookie'), null);
   assert.equal(response.headers.get('location'), 'https://www.scansci.com/easymd/?connected=1');
 });
 
@@ -53,18 +52,7 @@ test('uploads are read-only and unavailable upstreams produce a usable failure',
   const fetchBefore = globalThis.fetch;
   globalThis.fetch = async () => { throw new Error('Offline'); };
   try {
-    assert.equal((await worker.fetch(new Request('https://www.scansci.com/easymd/api/wechat/draft/session'))).status, 502);
-  } finally { globalThis.fetch = fetchBefore; }
-});
-
-test('trusted WeChat authorization redirects keep the callback on the tool origin', async () => {
-  const fetchBefore = globalThis.fetch;
-  globalThis.fetch = async () => new Response(null, { status: 302, headers: { location: 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=app&redirect_uri=' + encodeURIComponent('https://easymd.vercel.app/api/wechat/callback?state=bound') } });
-  try {
-    const response = await worker.fetch(new Request('https://www.scansci.com/easymd/api/wechat/authorize'));
-    const url = new URL(response.headers.get('location'));
-    assert.equal(url.origin, 'https://mp.weixin.qq.com');
-    assert.equal(url.searchParams.get('redirect_uri'), 'https://www.scansci.com/easymd/api/wechat/callback?state=bound');
+    assert.equal((await worker.fetch(new Request('https://www.scansci.com/easymd/api/import/wechat'))).status, 502);
   } finally { globalThis.fetch = fetchBefore; }
 });
 

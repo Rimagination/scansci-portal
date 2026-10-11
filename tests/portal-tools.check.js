@@ -56,6 +56,34 @@ async (page) => {
         await button('导出 Markdown').click();
         await (await downloadPromise).saveAs('.local/portal-tools/editor-export.md');
       }
+      if (width === 1600 || width === 375) {
+        if (width < 1024) await button('预览').click();
+        const exportIcon = await button('导出到微信').locator('svg').innerHTML();
+        const sendIcon = await button('发送到公众号').locator('svg').innerHTML();
+        assert(exportIcon !== sendIcon, 'WeChat export and sending reuse the same icon');
+        await button('导出到微信').click();
+        await check.waitForFunction(async () => (await navigator.clipboard.readText()).includes('ScanSci 接入检查'), null, { timeout: 12000 });
+        await button('发送到公众号').click();
+        const dialog = check.getByRole('dialog');
+        await dialog.getByText('导出到微信公众号', { exact: true }).waitFor({ timeout: 12000 });
+        const copy = dialog.getByRole('button', { name: '复制排版', exact: true });
+        await copy.click();
+        await dialog.getByRole('button', { name: '已复制 · 再次复制', exact: true }).waitFor();
+        await check.waitForFunction(async () => (await navigator.clipboard.readText()).includes('ScanSci 接入检查'));
+        const accountLink = dialog.getByRole('link', { name: '打开公众号后台 ↗', exact: true });
+        assert(await accountLink.getAttribute('href') === 'https://mp.weixin.qq.com/', 'The WeChat account link is incorrect');
+        if (width === 1600) {
+          const popupPromise = check.waitForEvent('popup');
+          await accountLink.click();
+          const popup = await popupPromise;
+          await popup.waitForURL(url => url.origin === 'https://mp.weixin.qq.com', { timeout: 10000 });
+          await popup.close();
+          await check.bringToFront();
+        }
+        await check.keyboard.press('Escape');
+        await dialog.waitFor({ state: 'hidden' });
+        if (width < 1024) await button('编辑').click();
+      }
       const before = await check.locator('#easymdRoot').boundingBox();
       await check.getByRole('button', { name: '折叠侧边栏', exact: true }).click();
       await check.waitForFunction(() => document.documentElement.classList.contains('is-sidebar-collapsed'));

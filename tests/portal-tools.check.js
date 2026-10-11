@@ -108,6 +108,7 @@ async (page) => {
       await check.reload({ waitUntil: 'domcontentloaded' });
       await input.waitFor({ timeout: 45000 });
       assert(new URL(check.url()).pathname === '/easymd/', 'Refreshing the direct URL failed');
+      await check.waitForFunction(() => document.querySelector('#easymdRoot .cm-content')?.textContent?.includes('草稿保留检查'), null, { timeout: 12000 });
       assert((await input.innerText()).includes('草稿保留检查'), 'Saved editor draft did not survive a refresh');
       await check.getByRole('button', { name: '折叠侧边栏', exact: true }).click();
       await check.reload({ waitUntil: 'domcontentloaded' });

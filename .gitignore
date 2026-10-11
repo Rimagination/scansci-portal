@@ -1,2 +1,7 @@
 worker/.wrangler/
 worker/.dev.vars
+.local/
+reader/.wrangler/
+worker/node_modules/
+worker/data/reader-scientists/
+worker/scripts/__pycache__/

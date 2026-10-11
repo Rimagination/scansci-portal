@@ -1,0 +1,38 @@
+name = "scansci-reader"
+main = "cloud-worker.mjs"
+compatibility_date = "2026-02-26"
+account_id = "85907a1d340c85dadc36e8e47fa63afe"
+workers_dev = false
+
+[assets]
+directory = "../.local/reader-site"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "none"
+not_found_handling = "none"
+
+[[services]]
+binding = "ACCOUNT_API"
+service = "scansci-api"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "scansci_auth"
+database_id = "4ea255cf-6c0e-4bd5-bafb-16e6bfda7689"
+
+[[d1_databases]]
+binding = "SCIENTISTS_DB"
+database_name = "scansci_reader_scientists"
+database_id = "d83c7bec-94c4-42c9-9cdb-1f1f26ba970a"
+
+[[routes]]
+pattern = "reader.scansci.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.scansci.com/reader"
+zone_name = "scansci.com"
+
+[[routes]]
+pattern = "www.scansci.com/reader/*"
+zone_name = "scansci.com"

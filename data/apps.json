@@ -17,6 +17,42 @@
       ]
     },
     {
+      "id": "scansci-reader",
+      "status": "NEW",
+      "name": "ScanSci Reader",
+      "description": "跨学科论文发现、期刊更新与学术阅读。",
+      "cover": "./assets/covers/scansci-reader-handdrawn.webp",
+      "cover_title": "ScanSci Reader",
+      "cover_subtitle": "全学科论文发现与阅读",
+      "url": "https://reader.scansci.com/",
+      "category": "论文发现与阅读",
+      "tags": [
+        "论文",
+        "全学科",
+        "文献发现",
+        "学术阅读",
+        "期刊更新"
+      ]
+    },
+    {
+      "id": "scansci-logos",
+      "name": "Logo 库",
+      "description": "搜索、筛选和下载高校与企业标识，支持通过 API 调用。",
+      "cover": "./assets/covers/scansci-logos-handdrawn.webp",
+      "cover_title": "ScanSci Logo 库",
+      "cover_subtitle": "高校与企业标识",
+      "url": "https://www.scansci.com/logos/",
+      "category": "机构标识",
+      "status": "NEW",
+      "tags": [
+        "Logo",
+        "校徽",
+        "高校",
+        "企业",
+        "API"
+      ]
+    },
+    {
       "id": "paper-atlas",
       "name": "Paper Atlas",
       "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。",

@@ -1,0 +1,32 @@
+{
+  "title": "Updated science-wide author databases of standardized citation indicators",
+  "version": 9,
+  "edition": 2026,
+  "citationYear": 2025,
+  "extracted": "2026-08",
+  "published": "2026-10-07",
+  "doi": "10.17632/btchxktzyw.9",
+  "url": "https://elsevier.digitalcommonsdata.com/datasets/btchxktzyw/9/",
+  "credit": "John P. A. Ioannidis · Stanford University · Elsevier",
+  "license": "CC BY-NC 3.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by-nc/3.0/",
+  "files": [
+    {
+      "list": "career",
+      "filename": "Table_1_Authors_career_2025_pubs_since_1788_wopp_extracted_202608.xlsx",
+      "url": "https://data.mendeley.com/public-files/datasets/btchxktzyw/files/fb2e80e7-fa49-43e3-abe1-e31d15231314/file_downloaded",
+      "bytes": 103226624,
+      "sha256": "cf5fd523dcb369b066a41b901f861c703d696ca7d3be907a94ff6ec0f59e4ec1",
+      "assetUrl": "https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/9405aa75-b63e-4cec-b99a-6764d97b5feb"
+    },
+    {
+      "list": "annual",
+      "filename": "Table_1_Authors_singleyr_2025_pubs_since_1788_wopp_extracted_202608.xlsx",
+      "url": "https://data.mendeley.com/public-files/datasets/btchxktzyw/files/a517a94c-3fb0-4cee-b97f-f2d476df66f0/file_downloaded",
+      "bytes": 101670201,
+      "sha256": "8bd46b5cbdc4de05ea09afc662623ca3059b4d705d4582045c5244edf94b02f5",
+      "assetUrl": "https://prod-dcd-datasets-public-files-eu-west-1.s3.eu-west-1.amazonaws.com/1f273187-33af-4b00-a7cf-728056351978"
+    }
+  ],
+  "careerCitationStartYear": 1996
+}

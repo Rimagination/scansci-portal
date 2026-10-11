@@ -260,7 +260,26 @@ function setAuthHint(message, type = "info") {
   if (type === "success") els.authHint.classList.add("is-success");
 }
 
+function readerAuthReturnTo() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("reader_login") !== "1") return "";
+  try {
+    const target = new URL(params.get("return_to") || "", window.location.origin);
+    if (target.origin === "https://reader.scansci.com" && !target.username && !target.password) return target.href;
+    if (target.origin !== window.location.origin || !/^\/reader(?:\/|$)/.test(target.pathname)) return "";
+    return `${target.pathname}${target.search}${target.hash}`;
+  } catch {
+    return "";
+  }
+}
+
 function finishAuthenticatedPromptFlow() {
+  if (!state.me) return;
+  const readerReturnTo = readerAuthReturnTo();
+  if (readerReturnTo) {
+    window.location.replace(readerReturnTo);
+    return;
+  }
   const prompt = anonPrompt();
   if (!prompt || !state.me) return;
   const pendingUrl = prompt.consumePendingToolUrl();
@@ -453,7 +472,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("/data/apps.json?v=20261011-phone-1", { cache: "no-store" });
+    const res = await fetch("/data/apps.json?v=20261011-reader-entry-1", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];
@@ -877,6 +896,7 @@ async function bootstrap() {
   setPortalView(viewFromLocation(), { updateHash: false });
   await loadApps();
   await loadMe();
+  if (!state.me && readerAuthReturnTo()) openAuthModal();
   void loadStats();
 }
 

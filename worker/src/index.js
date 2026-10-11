@@ -1,4 +1,6 @@
 ﻿import { handleSymbols } from './symbols.js';
+import { handleOpenAlexKeyStatus, handleOpenAlexKeyWrite, handleOpenAlexProxy } from "./reader-openalex.js";
+import { getOrcidProfile } from "./orcid-profile.js";
 
 const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
@@ -99,6 +101,33 @@ async function handleRequest(request, env) {
 
   if (url.pathname === "/api/me" && request.method === "GET") {
     return handleMe(request, env);
+  }
+
+  if (url.pathname === "/api/orcid/profile") {
+    if (request.method !== "GET") {
+      const response = jsonResponse(request, env, { ok: false, error: "method_not_allowed" }, 405);
+      response.headers.set("Allow", "GET, OPTIONS");
+      return response;
+    }
+    const result = await getOrcidProfile(request, env);
+    const response = jsonResponse(request, env, result.body, result.status);
+    if (result.cacheControl) response.headers.set("Cache-Control", result.cacheControl);
+    return response;
+  }
+
+  if (url.pathname === "/api/reader/openalex-key") {
+    if (request.method === "GET") return handleOpenAlexKeyStatus(request, env, { requireAuth, jsonResponse });
+    if (request.method === "POST") return handleOpenAlexKeyWrite(request, env, { requireAuth, jsonResponse });
+    const response = jsonResponse(request, env, { ok: false, error: "method_not_allowed" }, 405);
+    response.headers.set("Allow", "GET, POST, OPTIONS");
+    return response;
+  }
+
+  if (url.pathname === "/api/reader/openalex") {
+    if (request.method === "POST") return handleOpenAlexProxy(request, env, { requireAuth, jsonResponse });
+    const response = jsonResponse(request, env, { ok: false, error: "method_not_allowed" }, 405);
+    response.headers.set("Allow", "POST, OPTIONS");
+    return response;
   }
 
   if (submissionStatsMatch && request.method === "GET") {
@@ -649,7 +678,12 @@ async function handleMe(request, env) {
   }
 
   const favorites = await getUserFavorites(env, auth.userId);
-  return jsonResponse(request, env, { ok: true, user, favorites });
+  const response = jsonResponse(request, env, { ok: true, user, favorites });
+  const cookies = parseCookies(request.headers.get("Cookie") || "");
+  if (!cookies[SESSION_COOKIE] && cookies[LEGACY_SESSION_COOKIE]) {
+    await appendSessionCookie(response.headers, env, user);
+  }
+  return response;
 }
 
 async function handleJournalSubmissionStats(request, env, rawIssn) {

@@ -36,6 +36,8 @@ async (page) => {
         assert(await button('收起组件工具').getAttribute('aria-expanded') === 'true', 'Component tools did not open');
         await check.getByRole('button', { name: '插入居中短线标题', exact: true }).click();
         assert((await input.innerText()).includes('居中短线标题'), 'Selecting a component did not insert content');
+        const inserted = await input.innerText();
+        assert(inserted.indexOf('居中短线标题') > inserted.indexOf('草稿保留检查'), 'Opening component tools lost the editor cursor');
         await button('收起组件工具').click();
       } else {
         await button('插入组件').click();

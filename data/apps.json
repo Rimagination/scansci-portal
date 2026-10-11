@@ -141,6 +141,7 @@
     },
     {
       "id": "sci-skills",
+      "status": "NEW",
       "name": "Agent 拓展",
       "description": "Rimagination 制作与维护的科研 Agent 拓展，涵盖 Skill、Plugin、MCP 与 CLI，服务文献获取、数据分析、科研绘图与论文写作。",
       "cover": "./assets/covers/scansci-skills-handdrawn-white.webp",

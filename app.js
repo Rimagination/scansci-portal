@@ -152,11 +152,17 @@ function restoreSidebar() {
 }
 
 function updateNavViewState(view) {
+  const favoritesView = state.viewMode === "favorites";
   els.navViewItems.forEach((item) => {
-    const active = item.dataset.view === view;
+    const active = !favoritesView && item.dataset.view === view;
     item.classList.toggle("is-active", active);
     if (active) item.setAttribute("aria-current", "page");
     else item.removeAttribute("aria-current");
+  });
+  els.navActions.forEach((item) => {
+    const active = favoritesView && item.dataset.navAction === "favorites";
+    item.classList.toggle("is-active", active);
+    item.setAttribute("aria-pressed", String(active));
   });
 }
 
@@ -176,7 +182,7 @@ function setPortalView(view, options = {}) {
   if (els.catalogTitle) els.catalogTitle.hidden = nextView !== "materials";
   if (els.stats) els.stats.hidden = nextView === "materials";
   if (els.miniProgramNotice) els.miniProgramNotice.hidden = nextView === "materials";
-  if (els.filters) els.filters.hidden = nextView !== "online";
+  if (els.filters) els.filters.hidden = nextView !== "online" || state.viewMode === "favorites";
   if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
   if (els.easymdView) els.easymdView.hidden = nextView !== "easymd";
   document.body.classList.toggle("is-easymd", nextView === "easymd");
@@ -345,7 +351,11 @@ function getSectionApps() {
 
 function getVisibleApps() {
   const q = normalize(state.query);
-  return orderedCards(getSectionApps(), state.currentView).filter((app) => (state.currentView === "materials" || matchesFilter(app, state.activeFilter)) && matchesQuery(app, q));
+  const favoritesView = state.viewMode === "favorites";
+  const apps = favoritesView
+    ? state.apps.filter((app) => isFavorite(app.id))
+    : orderedCards(getSectionApps(), state.currentView);
+  return apps.filter((app) => (favoritesView || state.currentView === "materials" || matchesFilter(app, state.activeFilter)) && matchesQuery(app, q));
 }
 
 function isFavorite(appId) {
@@ -389,6 +399,7 @@ function orderedCards(cards, section) {
 }
 
 function cardOrderHandle(id, name) {
+  if (state.viewMode === "favorites") return "";
   const label = state.me ? `拖动调整 ${name} 顺序；也可使用方向键` : `登录后调整 ${name} 顺序`;
   return `<button class="card-order-handle" type="button" data-card-move="${escapeHtml(id)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grip-vertical" aria-hidden="true"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg></button>`;
 }
@@ -487,7 +498,7 @@ function saveCardOrder(section) {
       }
       const payload = await safeJson(response);
       if (!response.ok || !payload?.ok || payload.user_id !== userId) throw Error("card_order_save_failed");
-      if (state.cardOrders[section] === order) cardOrderFeedback.set(section, { message: "卡片顺序已保存到账号" });
+      if (state.cardOrders[section] === order) cardOrderFeedback.delete(section);
     } catch {
       if (state.accountVersion === version && state.cardOrders[section] === order) {
         cardOrderFeedback.set(section, { message: "卡片顺序暂未保存，请重试。", retry: true });
@@ -559,6 +570,7 @@ function drawCardDrag() {
 }
 
 function beginCardDrag(event) {
+  if (state.viewMode === "favorites") return;
   const handle = event.target.closest(".card-order-handle");
   const card = event.target.closest(".tool-card, .open-source-card");
   if (!card || event.button !== 0 || !event.isPrimary || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -696,14 +708,20 @@ function renderFilters() {
 
 function renderGrid() {
   if (!els.grid || !els.empty || !els.count) return;
+  updateNavViewState(state.currentView);
+  if (els.filters) els.filters.hidden = state.currentView !== "online" || state.viewMode === "favorites";
   const visible = getVisibleApps();
   els.grid.innerHTML = visible.map((app) => cardTemplate(app)).join("");
   els.empty.hidden = visible.length !== 0;
-  if (["online", "materials"].includes(state.currentView)) {
+  if (state.viewMode === "favorites") {
+    els.count.textContent = `共 ${visible.length} 个收藏`;
+  } else if (["online", "materials"].includes(state.currentView)) {
     const label = state.currentView === "materials" ? "素材库" : "在线轻工具";
     els.count.textContent = `共 ${visible.length} / ${getSectionApps().length} 个${label}`;
   }
-  els.empty.textContent = state.currentView === "materials" ? "未找到匹配素材库，请调整关键词。" : "未找到匹配轻工具，请调整关键词或分类。";
+  els.empty.textContent = state.viewMode === "favorites"
+    ? "还没有收藏的卡片。点击卡片上的心形图标即可收藏。"
+    : state.currentView === "materials" ? "未找到匹配素材库，请调整关键词。" : "未找到匹配轻工具，请调整关键词或分类。";
 
   els.grid.querySelectorAll('[data-action="favorite"]').forEach((btn) => {
     btn.addEventListener("click", onFavoriteClick);
@@ -717,6 +735,7 @@ function renderGrid() {
 
 function renderAuth() {
   const loggedIn = !!state.me;
+  if (!loggedIn && state.viewMode === "favorites") state.viewMode = "all";
 
   if (els.authDock) {
     els.authDock.hidden = false;
@@ -1064,6 +1083,7 @@ function bindEvents() {
     item.addEventListener("click", (event) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
+      state.viewMode = "all";
       setPortalView(item.dataset.view || "online");
     });
   });
@@ -1160,13 +1180,12 @@ function bindEvents() {
   els.navActions.forEach((btn) => {
     btn.addEventListener("click", () => {
       const action = btn.dataset.navAction || "all";
+      state.viewMode = action === "favorites" ? "favorites" : "all";
+      setPortalView("online");
       if (action === "favorites" && !state.me) {
-        setAuthHint("请先登录，再查看收藏的轻工具。", "error");
+        setAuthHint("请先登录，再查看收藏的卡片。", "error");
         openAuthModal();
       }
-      setPortalView("online");
-      state.viewMode = "all";
-      renderGrid();
     });
   });
 }

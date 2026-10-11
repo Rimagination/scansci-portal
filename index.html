@@ -175,10 +175,7 @@
           <a class="sidebar-nav-item" href="/#open-source" data-view="open-source" aria-label="开源工具" title="开源工具">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code sidebar-icon" aria-hidden="true" focusable="false"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg><strong>开源工具</strong><span>Open Source</span>
           </a>
-          <button class="sidebar-nav-item" type="button" data-nav-action="recent" aria-label="最近使用" title="最近使用">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock sidebar-icon" aria-hidden="true" focusable="false"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="10"></circle></svg><strong>最近使用</strong><span>Recent</span>
-          </button>
-          <button class="sidebar-nav-item" type="button" data-nav-action="favorites" aria-label="收藏" title="收藏">
+          <button class="sidebar-nav-item" type="button" data-nav-action="favorites" aria-label="收藏" title="收藏" aria-pressed="false">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark sidebar-icon" aria-hidden="true" focusable="false"><path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"></path></svg><strong>收藏</strong><span>Favorites</span>
           </button>
         </nav>
@@ -207,7 +204,7 @@
           <div class="guest-auth-card__body">
             <p class="guest-auth-card__eyebrow">未登录</p>
             <h3 class="guest-auth-card__title">登录 ScanSci</h3>
-            <p class="guest-auth-card__desc">登录后保存常用工具、继续最近使用，并同步你的科研工具偏好。</p>
+            <p class="guest-auth-card__desc">登录后保存常用工具，并同步你的科研工具偏好。</p>
           </div>
           <button id="guestLoginBtn" class="guest-auth-card__button" type="button" aria-label="登录 ScanSci" title="登录 ScanSci"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round sidebar-icon" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg><span>立即登录</span></button>
         </div>
@@ -318,7 +315,7 @@
     <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
       <button id="closeAuthModalBtn" class="auth-modal__close" type="button" aria-label="关闭登录窗口">×</button>
       <h3 id="authModalTitle" class="auth-modal__title">登录 / 注册</h3>
-      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录，保存常用工具、最近使用和科研偏好。</p>
+      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录，保存常用工具和科研偏好。</p>
 
       <div id="authGuest" class="auth-state">
         <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
@@ -335,7 +332,7 @@
   </div>
 
   <script src="/anon-prompt.js?v=20260616b"></script>
-  <script src="/app.js?v=20261011-image-upload"></script>
+  <script src="/app.js?v=20261011-favorites"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

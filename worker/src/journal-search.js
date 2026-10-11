@@ -149,7 +149,7 @@ export async function queryJournalSearch(env, options = {}) {
   const abbrExactPattern = /^[a-z0-9]{2,10}$/.test(abbrQuery) ? `% ${abbrQuery} %` : "__no_abbr_match__";
   const prefixQuery = `${lowerQuery.replace(/[%_]/g, "")}%`;
   const sql = `
-    SELECT ${SELECT_PUBLIC_COLUMNS},
+    SELECT ${SELECT_PUBLIC_COLUMNS}, js.abbrs,
       bm25(journal_search_fts, 8.0, 5.0, 5.0, 5.0, 2.0, 1.0) AS rank
     FROM journal_search_fts
     JOIN journal_search js ON js.id = journal_search_fts.rowid
@@ -191,7 +191,29 @@ export async function queryJournalSearch(env, options = {}) {
         limit
       )
       .all();
-    const items = (Array.isArray(results) ? results : []).map(normalizeJournalSearchItem);
+    let rows = Array.isArray(results) ? results : [];
+    if (/^[a-z]{2,10}$/.test(abbrQuery)) {
+      // ponytail: legacy FTS rows can omit abbreviations. This bounded catalogue
+      // scan can be removed when all legacy search_text rows have been reindexed.
+      const abbreviations = await env.DB.prepare(`
+        SELECT ${SELECT_PUBLIC_COLUMNS}, js.abbrs
+        FROM journal_search js
+        WHERE (' ' || LOWER(js.abbrs) || ' ') LIKE ?
+          AND (? IS NULL OR js.if_2023 >= ?)
+        ORDER BY CASE WHEN (' ' || LOWER(js.abbrs) || ' ') LIKE ? THEN 0 ELSE 1 END,
+                 js.quality_score DESC, COALESCE(js.if_2023, -1) DESC, js.title ASC
+        LIMIT ?
+      `).bind(`% ${abbrQuery}%`, minIf, minIf, abbrExactPattern, limit).all();
+      const priority = row => {
+        if (String(row.title).toLowerCase() === lowerQuery || [row.issn, row.eissn].some(value => compactIdentifier(value).toLowerCase() === compactQuery)) return 0;
+        const values = String(row.abbrs || '').toLowerCase().split(/\s+/);
+        if (values.includes(abbrQuery)) return 1;
+        return values.some(value => value.startsWith(abbrQuery)) ? 2 : 3;
+      };
+      rows = [...new Map([...(abbreviations.results || []), ...rows].map(row => [row.id, row])).values()]
+        .sort((a, b) => priority(a) - priority(b)).slice(0, limit);
+    }
+    const items = rows.map(normalizeJournalSearchItem);
     return { ok: true, query, limit, items, source: "journal-search-d1" };
   } catch (error) {
     console.warn("Journal search query failed", error);

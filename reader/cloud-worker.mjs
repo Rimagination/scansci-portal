@@ -1,7 +1,7 @@
 import { getReaderMedia } from '../worker/src/reader-media.js';
 import { getScientistDirectory } from '../worker/src/reader-scientists.js';
 import { getOrcidProfile } from '../worker/src/orcid-profile.js';
-import { queryJournalClassifications } from '../worker/src/journal-search.js';
+import { queryJournalClassifications, queryJournalSearch } from '../worker/src/journal-search.js';
 
 const READER_ORIGIN = 'https://reader.scansci.com';
 const ACCOUNT_ORIGIN = 'https://www.scansci.com';
@@ -15,6 +15,18 @@ const ACCOUNT_METHODS = new Map([
 const json = (body, status = 200, cache = 'no-store') => Response.json(body, {
   status, headers: { 'Cache-Control': cache, 'X-Content-Type-Options': 'nosniff' },
 });
+
+export function journalScoutRedirect(result) {
+  const query = result.query || '';
+  const identifier = query.replace(/[^0-9X]/gi, '').toUpperCase();
+  const journal = (result.items || []).find(item => /^\d{7}[\dX]$/.test(identifier)
+    ? [item.issn, item.eissn].some(value => String(value || '').replace(/[^0-9X]/gi, '').toUpperCase() === identifier)
+    : item.title.toLowerCase() === query.toLowerCase());
+  const target = new URL(journal ? '/journal.html' : '/', 'https://journal.scansci.com');
+  if (journal) target.searchParams.set('id', journal.id);
+  if (query) target.searchParams.set('q', query);
+  return new Response(null, { status: 302, headers: { Location: target.href, 'Cache-Control': result.ok ? 'public, max-age=60' : 'no-store' } });
+}
 
 export default {
   async fetch(request, env) {
@@ -52,6 +64,11 @@ export default {
     }
     if (request.method !== 'GET') return json({ ok: false, error: 'method_not_allowed' }, 405);
     try {
+      if (['/api/reader/journals/search', '/api/reader/journals/lookup'].includes(url.pathname)) {
+        const result = await queryJournalSearch(env, { query: url.searchParams.get('q'), limit: url.pathname.endsWith('/lookup') ? 20 : url.searchParams.get('limit') });
+        if (url.pathname.endsWith('/lookup')) return journalScoutRedirect(result);
+        return json(result, result.ok ? 200 : 503, result.ok ? 'public, max-age=60, s-maxage=300' : 'no-store');
+      }
       if (url.pathname === '/api/reader/media') return await getReaderMedia(request, env);
       if (url.pathname === '/api/reader/researchers') {
         const result = await getScientistDirectory(request, { ...env, DB: env.SCIENTISTS_DB });

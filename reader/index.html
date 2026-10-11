@@ -80,7 +80,8 @@
     .theme-option[aria-checked="true"] { color: var(--green); background: var(--green-soft); }
     .account-dock { display: grid; gap: 8px; margin: 12px 16px 0; padding-top: 12px; border-top: 1px solid var(--line); }
     .account-guest, .account-user { min-height: 48px; display: flex; align-items: center; gap: 9px; padding: 7px; border: 1px solid var(--line); border-radius: 11px; color: var(--text); background: #fff; }
-    .account-guest:hover { border-color: #b8c9bf; background: #f8faf8; }
+    .account-user { width: 100%; text-align: left; }
+    .account-guest:hover, .account-user:hover { border-color: #b8c9bf; background: #f8faf8; }
     .account-guest[hidden], .account-user[hidden] { display: none !important; }
     .account-symbol, .account-avatar { width: 32px; height: 32px; flex: 0 0 32px; display: grid; place-items: center; overflow: hidden; border-radius: 50%; color: var(--green); background: var(--green-soft); }
     .account-symbol svg { width: 19px; height: 19px; }
@@ -91,9 +92,6 @@
     .account-copy { min-width: 0; display: grid; gap: 2px; }
     .account-copy strong { overflow: hidden; color: var(--text); font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
     .account-copy small { color: #777975; font-size: 10px; }
-    .account-logout { width: 30px; height: 30px; flex: 0 0 30px; display: grid; place-items: center; margin-left: auto; border: 1px solid var(--line); border-radius: 8px; color: #555954; background: white; }
-    .account-logout:hover { color: var(--green); border-color: #b8c9bf; background: #f8faf8; }
-    .account-logout svg { width: 16px; height: 16px; }
     .footer-links { display: flex; gap: 18px; padding: 16px 28px 0; color: #767674; font-size: 11px; }
     .main { min-height: 100vh; margin: 0 15px 0 225px; transition: margin-left .3s var(--interaction-ease); }
     .content { width: min(100%, 980px); min-height: 100vh; margin: 0 auto; padding: 24px 40px 72px; }
@@ -111,7 +109,21 @@
     .suggestion-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .searchbar { width: 100%; height: 46px; display: flex; align-items: center; gap: 8px; margin-top: 20px; padding: 4px 5px 4px 16px; border: 1px solid #d9d6d4; border-radius: 999px; background: white; box-shadow: 0 2px 5px rgba(30,25,22,.08); text-align: left; }
     .searchbar[hidden], .toolbar[hidden], .intro[hidden] { display: none !important; }
+    .searchbar { position: relative; }
     .searchbar:focus-within { border-color: #a8b9ad; box-shadow: 0 0 0 2px rgba(27,77,57,.09), 0 2px 5px rgba(30,25,22,.08); }
+    .journal-search-menu { position: absolute; inset: calc(100% + 8px) 0 auto; z-index: 20; padding: 6px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: 0 10px 28px rgba(20,40,28,.12); text-align: left; }
+    .journal-search-menu[hidden] { display: none; }
+    .journal-search-options { max-height: min(360px, 45svh); overflow-y: auto; overscroll-behavior: contain; }
+    .journal-search-option { width: 100%; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 10px 12px; border: 0; border-radius: 12px; background: transparent; text-align: left; }
+    .journal-search-option:hover, .journal-search-option[aria-selected="true"] { background: var(--green-soft-2); }
+    .journal-search-icon { display: grid; place-items: center; flex: 0 0 34px; height: 34px; border-radius: 10px; background: var(--green-soft); color: var(--green); }
+    .journal-search-icon svg { width: 18px; height: 18px; }
+    .journal-search-copy { flex: 1; min-width: 0; }
+    .journal-search-name { display: block; font: 600 15px/1.45 var(--title); overflow-wrap: anywhere; color: var(--text); }
+    .journal-search-meta { display: block; margin-top: 3px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+    .journal-search-status { margin: 0; padding: 16px 12px; font-size: 14px; color: var(--muted); }
+    .journal-search-status[hidden] { display: none; }
+    .journal-search-hint { margin: 4px 6px 0; padding: 8px 6px 4px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
     .searchbar input { width: 100%; min-width: 0; height: 34px; padding: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 15px; }
     .searchbar input::placeholder { color: #8b8a88; opacity: 1; }
     .search-send { width: 36px; height: 36px; flex: 0 0 36px; display: grid; place-items: center; border: 0; border-radius: 50%; background: #688675; color: white; transition: background .15s ease; }
@@ -404,6 +416,13 @@
     .entity-action.is-following:hover { background: #365d4c; }
     .entity-action:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
     .journal-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .journal-metrics { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 12px; }
+    .journal-metrics .partition-badge { white-space: nowrap; }
+    .journal-scout-button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .journal-scout-mark { display: block; width: 18px; height: 18px; object-fit: contain; }
+    .journal-scout-link { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 7px; transition: background .16s ease; }
+    .journal-scout-link .journal-scout-mark { width: 22px; height: 22px; }
+    .journal-scout-link:hover { background: var(--green-soft); }
     .journal-hub { display: grid; gap: 14px; margin-top: 17px; }
     .journal-hub-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
     .journal-hub-title h2 { margin: 0; font: 700 24px/1.2 var(--title); letter-spacing: -.3px; }
@@ -537,14 +556,14 @@
     .toast { position: fixed; bottom: 24px; left: 50%; z-index: 50; transform: translate(-50%, 12px); opacity: 0; pointer-events: none; padding: 10px 15px; border-radius: 999px; color: white; background: #303431; box-shadow: 0 5px 18px rgba(0,0,0,.16); font-size: 12px; transition: .18s ease; }
     .toast.show { transform: translate(-50%, 0); opacity: 1; }
     :root[data-theme="dark"] .paper-card { --text: inherit; --muted: inherit; --line: inherit; --light: inherit; }
-    :root[data-theme="dark"] :is(.account-guest, .account-user, .account-logout, .suggestion, .searchbar, .source-dialog, .source-form select, .source-form input, .source-migrate, .filter-menu, .partition-filter-grid select, .classification-filter-label select, .paper-card, .institution-popover, .person-card, .journal-card, .journal-mode-tab.active, .interest-control, .interest-term-form input, .interest-empty, .detail-author, .abstract-panel, .reading-panel-head, .reader-notes textarea, .aside-card) { background: var(--surface); }
-    :root[data-theme="dark"] :is(.collapse-button:hover, .nav-link:hover, .round-control:hover, .account-guest:hover, .account-logout:hover, .source-form input:disabled, .skeleton-line, .journal-mode-tabs, .reading-panel.is-embedded, .orcid-profile-panel) { background: var(--light); }
-    :root[data-theme="dark"] :is(.round-control, .account-logout, .orcid-profile-list, .reader-back, .reader-action, .detail-author, .abstract-panel p, .aside-title, .aside-meta dd, .related-paper, .interest-results-head strong) { color: var(--text); }
+    :root[data-theme="dark"] :is(.account-guest, .account-user, .suggestion, .searchbar, .source-dialog, .source-form select, .source-form input, .source-migrate, .filter-menu, .partition-filter-grid select, .classification-filter-label select, .paper-card, .institution-popover, .person-card, .journal-card, .journal-mode-tab.active, .interest-control, .interest-term-form input, .interest-empty, .detail-author, .abstract-panel, .reading-panel-head, .reader-notes textarea, .aside-card) { background: var(--surface); }
+    :root[data-theme="dark"] :is(.collapse-button:hover, .nav-link:hover, .round-control:hover, .account-guest:hover, .account-user:hover, .source-form input:disabled, .skeleton-line, .journal-mode-tabs, .reading-panel.is-embedded, .orcid-profile-panel) { background: var(--light); }
+    :root[data-theme="dark"] :is(.round-control, .orcid-profile-list, .reader-back, .reader-action, .detail-author, .abstract-panel p, .aside-title, .aside-meta dd, .related-paper, .interest-results-head strong) { color: var(--text); }
     :root[data-theme="dark"] :is(.brand-company, .nav-count, .account-copy small, .subtitle, .source-help, .source-key-state, .sample-note, .filter-heading, .partition-filter-heading, .partition-filter-grid label, .classification-filter-label, .partition-filter-note, .institution-logo, .empty, .person-card p, .journal-card p, .orcid-missing, .orcid-profile-panel p, .orcid-profile-section h3, .entity-meta, .journal-hub-title p, .journal-mode-tab, .interest-match, .interest-results-head, .interest-empty, .modal-kicker, .reader-bar-label, .detail-kicker, .detail-metadata, .detail-section-heading small, .reading-panel-head, .reading-fallback p, .reading-unavailable, .reader-notes p, .reader-outline a, .aside-meta dt, .related-paper small, .reader-empty) { color: var(--muted); }
     :root[data-theme="dark"] .orcid-profile-note { color: var(--muted) !important; }
     :root[data-theme="dark"] :is(.partition-badge, .author-avatar) { color: var(--green); border-color: var(--line); background: var(--green-soft-2); }
     :root[data-theme="dark"] .detail-metadata .partition-badge { color: var(--green); }
-    :root[data-theme="dark"] :is(.account-guest:hover, .account-logout, .account-logout:hover, .entity-action.is-follow, .empty, .interest-empty, .detail-author, .reading-panel-head, .reader-empty, .interest-seeds) { border-color: var(--line); }
+    :root[data-theme="dark"] :is(.account-guest:hover, .account-user:hover, .entity-action.is-follow, .empty, .interest-empty, .detail-author, .reading-panel-head, .reader-empty, .interest-seeds) { border-color: var(--line); }
     :root[data-theme="dark"] .entity-action.is-follow { background: transparent; }
     :root[data-theme="dark"] :is(.reader-action.primary, #save-source, .entity-action.is-following, .search-send, .interest-toggle[aria-checked="true"] .interest-toggle-track, .institution-mark) { color: #fff; background: #285d43; }
     :root[data-theme="dark"] :is(.reader-action.primary:hover, .entity-action.is-following:hover, .search-send:hover) { background: #347653; }
@@ -585,27 +604,27 @@
     .collapsed .brand-name, .collapsed .nav-label, .collapsed .nav-count { max-width: 0; opacity: 0; pointer-events: none; }
     .collapsed .nav-count { margin-left: 0; }
     .collapsed .side-tools, .collapsed .footer-links { display: none; }
-    .collapsed .sidebar-head { position: relative; justify-content: center; padding: 0; }
-    .collapsed .brand { position: absolute; top: 50%; left: 50%; width: 29px; height: 29px; min-width: 29px; flex: 0 0 29px; gap: 0; transform: translate(-50%, -50%); }
+    .collapsed .sidebar-head { justify-content: center; gap: 4px; padding: 0 8px; }
+    .collapsed .brand { width: 29px; height: 29px; min-width: 29px; flex: 0 0 29px; gap: 0; }
     .collapsed .brand-mark { width: 29px; height: 29px; flex-basis: 29px; transition: opacity .12s ease; }
-    .collapsed .collapse-button { display: none; }
+    .collapsed .collapse-button { flex: 0 0 26px; }
     .collapsed .side-nav { padding-inline: 13px; }
     .collapsed .nav-link { justify-content: center; gap: 0; padding: 0; }
     .collapsed .nav-link svg { margin: 0; }
     .collapsed .account-dock { margin-inline: 8px; border-top: 0; padding-top: 0; }
-    .collapsed .account-copy, .collapsed .account-logout { display: none; }
+    .collapsed .account-copy { display: none; }
     .collapsed .account-guest, .collapsed .account-user { justify-content: center; padding: 4px; border-color: transparent; background: transparent; }
     @media (max-width: 900px) {
       .sidebar { width: 76px; }
       .brand-name, .nav-label, .nav-count, .side-tools, .footer-links { display: none; }
-      .sidebar-head { position: relative; justify-content: center; padding: 0; }
-      .brand { position: absolute; top: 50%; left: 50%; width: 29px; height: 29px; min-width: 29px; flex: 0 0 29px; gap: 0; transform: translate(-50%, -50%); }
+      .sidebar-head, .collapsed .sidebar-head { position: relative; justify-content: center; padding: 0; }
+      .brand, .collapsed .brand { position: absolute; top: 50%; left: 50%; width: 29px; height: 29px; min-width: 29px; flex: 0 0 29px; gap: 0; transform: translate(-50%, -50%); }
       .brand-mark { width: 29px; height: 29px; flex-basis: 29px; }
-      .collapse-button { display: none; }
+      .collapse-button, .collapsed .collapse-button { display: none; }
       .side-nav { padding-inline: 13px; }
       .nav-link { justify-content: center; padding: 0; }
       .account-dock { margin-inline: 8px; border-top: 0; padding-top: 0; }
-      .account-copy, .account-logout { display: none; }
+      .account-copy { display: none; }
       .account-guest, .account-user { justify-content: center; padding: 4px; border-color: transparent; background: transparent; }
       .side-tools { display: grid; padding-inline: 13px; }
       .side-tools > :not([data-reader-settings]):not(#theme-button):not([data-reader-language]) { display: none; }
@@ -632,7 +651,7 @@
       .journal-card-layout { column-gap: 12px; row-gap: 0; }
       .journal-card-main { display: contents; }
       .journal-card-main h2 { grid-column: 1 / -1; }
-      .journal-card-main :is(p, .entity-meta, .journal-actions) { grid-column: 1; }
+      .journal-card-main :is(p, .entity-meta, .journal-metrics, .journal-actions) { grid-column: 1; }
       .journal-update-stat { grid-column: 2; grid-row: 2 / span 3; min-width: 84px; align-self: center; }
       .journal-update-number strong { font-size: 32px; }
       .paper-card { flex-direction: column; gap: 12px; }
@@ -680,7 +699,7 @@
   <div class="app" id="app">
     <aside class="sidebar" aria-label="主导航">
       <div class="sidebar-head">
-        <a class="brand" href="#top" aria-label="ScanSci Reader 首页">
+        <a class="brand" href="https://www.scansci.com/" aria-label="ScanSci 主站" title="前往 ScanSci 主站">
           <img class="brand-mark" src="data:image/png;base64,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" alt="" aria-hidden="true">
           <span class="brand-name"><span class="brand-company">ScanSci</span><span class="brand-product">Reader</span></span>
         </a>
@@ -704,11 +723,10 @@
           <span class="account-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M4.2 20c.3-3.3 2.9-5.4 7.8-5.4s7.5 2.1 7.8 5.4"/></svg></span>
           <span class="account-copy"><strong>登录 ScanSci</strong><small>使用主站账户</small></span>
         </a>
-        <div class="account-user" id="account-user" hidden>
+        <button class="account-user" id="account-user" type="button" popovertarget="account-menu" aria-haspopup="menu" aria-controls="account-menu" aria-expanded="false" hidden>
           <span class="account-avatar" aria-hidden="true"><img id="account-avatar" alt="" referrerpolicy="no-referrer" hidden><span id="account-initial"></span></span>
           <span class="account-copy"><strong id="account-name"></strong><small>ScanSci 已登录</small></span>
-          <button class="account-logout" id="account-logout" type="button" title="退出 ScanSci 账户" aria-label="退出 ScanSci 账户"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 4H5v16h5m4-12 5 4-5 4m5-4H9"/></svg></button>
-        </div>
+        </button>
       </section>
     </aside>
 
@@ -727,6 +745,11 @@
           <form class="searchbar" id="search-form" role="search">
             <input id="search-input" type="search" autocomplete="off" placeholder="搜索所有学科的论文、研究者或期刊" aria-label="搜索所有学科的论文、研究者或期刊">
             <button class="search-send" type="submit" aria-label="搜索"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button>
+            <div class="journal-search-menu" id="journal-search-menu" hidden>
+              <div class="journal-search-options" id="journal-search-options" role="listbox" aria-label="匹配期刊"></div>
+              <p class="journal-search-status" id="journal-search-status" role="status" hidden></p>
+              <p class="journal-search-hint">↑ ↓ 选择 · Enter 查看更新 · Esc 收起</p>
+            </div>
           </form>
         </section>
           <div class="toolbar">
@@ -810,6 +833,9 @@
     <button class="theme-option" data-reader-theme="system" type="button" role="menuitemradio" aria-checked="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 21h8m-4-5v5"/></svg><span>跟随系统</span></button>
     <button class="theme-option" data-reader-theme="dark" type="button" role="menuitemradio" aria-checked="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg><span>深色</span></button>
   </div>
+  <div class="theme-menu" id="account-menu" popover="auto" role="menu" aria-label="账户操作">
+    <button class="theme-option" id="account-logout" type="button" role="menuitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 4H5v16h5m4-12 5 4-5 4m5-4H9"/></svg><span>退出登录</span></button>
+  </div>
   <section class="settings-page" id="settings-page" aria-labelledby="settings-title" hidden>
     <h1 id="settings-title" tabindex="-1">设置</h1>
     <div class="settings-layout">
@@ -883,7 +909,7 @@
     <div class="detail-layout">
       <article class="detail-main">
         <header class="detail-header">
-          <div class="detail-kicker"><span class="institution-mark" id="detail-journal-mark" aria-hidden="true"></span><span id="detail-journal"></span><span class="detail-separator">·</span><span id="detail-date"></span><span class="detail-separator">·</span><span id="detail-source"></span></div>
+          <div class="detail-kicker"><span class="institution-mark" id="detail-journal-mark" aria-hidden="true"></span><span id="detail-journal"></span><span id="detail-journal-scout"></span><span class="detail-separator">·</span><span id="detail-date"></span><span class="detail-separator">·</span><span id="detail-source"></span></div>
           <h1 class="detail-title" id="detail-title" tabindex="-1"></h1>
           <div class="paper-affiliations detail-affiliations" id="detail-institutions" aria-label="通讯作者所属机构" hidden></div>
           <div class="detail-authors" id="detail-authors"></div>
@@ -985,6 +1011,9 @@
     const dataStatus = document.getElementById("data-status");
     let apiController;
     let searchTimer;
+    const journalSearchMenu = document.getElementById("journal-search-menu");
+    const journalSearchOptions = document.getElementById("journal-search-options");
+    let journalSearchOpen = false, journalSearchIndex = -1, loadedJournalSearchQuery = "";
     let detailReturnFocus = null;
     let toastTimer;
     let openAlexKeyConfigured = false;
@@ -996,6 +1025,8 @@
     } catch {}
     let scansciAccountUser = null;
     const themeMenu = document.getElementById("theme-menu"), themeButton = document.getElementById("theme-button");
+    const accountMenu = document.getElementById("account-menu"), accountButton = document.getElementById("account-user");
+    let accountMenuAnchor = accountButton;
     const systemTheme = matchMedia("(prefers-color-scheme: dark)");
     const citationStyles = {
       apa: { label: "APA", csl: "apa" }, gbt7714: { label: "GB/T 7714—2015", csl: "china-national-standard-gb-t-7714-2015-numeric" },
@@ -1172,7 +1203,7 @@
         try { sessionStorage.removeItem("allfield-openalex-key"); } catch {}
       }
       const nextIdentity = String(scansciAccountUser?.id || scansciAccountUser?.login || scansciAccountUser?.email || "");
-      if (previousIdentity !== nextIdentity) responseCache.clear();
+      if (previousIdentity !== nextIdentity) { responseCache.clear(); accountMenu.hidePopover(); }
       const loggedIn = Boolean(scansciAccountUser);
       const guest = document.getElementById("account-login");
       const userCard = document.getElementById("account-user");
@@ -1180,6 +1211,7 @@
       guest.href = readerLoginUrl();
       guest.hidden = loggedIn;
       userCard.hidden = !loggedIn;
+      userCard.setAttribute("aria-label", `账户菜单：${name}`);
       document.getElementById("account-name").textContent = loggedIn ? name : "";
       const avatar = document.getElementById("account-avatar");
       const initial = document.getElementById("account-initial");
@@ -1196,8 +1228,11 @@
         avatar.onerror = () => { avatar.hidden = true; initial.hidden = false; };
       } else avatar.removeAttribute("src");
       const mobileButton = document.getElementById("mobile-account-button");
-      document.getElementById("mobile-account-label").textContent = loggedIn ? "退出" : "登录";
-      mobileButton.setAttribute("aria-label", loggedIn ? `退出 ScanSci 账户（${name}）` : "登录 ScanSci 账户");
+      document.getElementById("mobile-account-label").textContent = loggedIn ? "账户" : "登录";
+      mobileButton.setAttribute("aria-label", loggedIn ? `账户菜单：${name}` : "登录 ScanSci 账户");
+      mobileButton.setAttribute("aria-haspopup", loggedIn ? "menu" : "false");
+      if (loggedIn) mobileButton.setAttribute("popovertarget", "account-menu");
+      else mobileButton.removeAttribute("popovertarget");
     }
     function resetOpenAlexKeyStatus() {
       openAlexKeyConfigured = false;
@@ -1455,9 +1490,9 @@
       const profilePanel = orcid ? '<div class="orcid-profile-panel" hidden aria-live="polite"></div>' : "";
       return `<article class="person-card"><div class="scientist-profile-head">${scientistAvatar({})}<div class="scientist-copy"><h2>${escapeHtml(person.name)}</h2><p>${escapeHtml(person.affiliation || "学术记录未提供机构信息")}</p><div class="entity-meta"><span>${escapeHtml(person.field)}</span><span>·</span><span>当前结果中 ${person.count} 条记录</span></div><div class="researcher-orcid">${identifier}</div></div></div><div class="researcher-actions"><button class="entity-action" type="button" data-person="${escapeHtml(person.id)}">查看研究成果</button>${profileAction}</div>${profilePanel}</article>`;
     }
-    function scientistAvatar(profile, name = "", className = "scientist-avatar") {
-      const photo = safeHttpUrl(profile.photoUrl || "");
-      return `<span class="${escapeHtml(className)}">${icons.user}${photo ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(name)}的头像" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-scientist-photo>` : ""}</span>`;
+    function scientistAvatar(profile, name = "", className = "scientist-avatar", priority = "auto") {
+      const photo = /^\/assets\/portraits\/[a-f0-9]{32}(?:-\d+)?\/[a-f0-9]{64}\.webp$/.test(profile.photoAsset || "") ? profile.photoAsset : safeHttpUrl(profile.photoUrl || "");
+      return `<span class="${escapeHtml(className)}">${icons.user}${photo ? `<img src="${escapeHtml(photo)}" alt="${escapeHtml(name)}的头像" width="256" height="256" loading="eager" decoding="auto" fetchpriority="${escapeHtml(priority)}" referrerpolicy="no-referrer" data-scientist-photo>` : ""}</span>`;
     }
     function scientistFollowButton(person) {
       const active = followedScientists.has(person.id);
@@ -1475,12 +1510,12 @@
       const profile = person.profile || {};
       return { logo: profile.currentInstitutionLogo || profile.institutionLogo || "", name: profile.currentInstitutionLogoFor || profile.institutionLogoFor || profile.currentInstitution || profile.institutionLocalName || person.institution || "机构未提供" };
     }
-    function renderScientistCard(person) {
+    function renderScientistCard(person, index = 0) {
       const profile = person.profile || {}, metrics = person[scientistDirectory.list];
       const institution = scientistInstitution(person);
       const description = profile.bio || `${person.fieldLabel} · ${person.subfield}`;
       const links = scientistProfileLinks(person);
-      return `<article class="scientist-card" data-scientist-card="${escapeHtml(person.id)}"><a href="#researcher/${encodeURIComponent(person.id)}" data-scientist-open="${escapeHtml(person.id)}" aria-label="查看${escapeHtml(person.name)}的资料">${scientistAvatar(profile, person.name)}</a><div class="scientist-copy"><div class="scientist-card-top"><a class="scientist-name" href="#researcher/${encodeURIComponent(person.id)}" data-scientist-open="${escapeHtml(person.id)}">${escapeHtml(person.name)}${profile.localName ? `<span class="scientist-local-name">${escapeHtml(profile.localName)}</span>` : ""}</a>${scientistFollowButton(person)}</div><div class="scientist-institution" title="${escapeHtml(person.institution)}">${institutionLogo(institution)}<span>${escapeHtml(institution.name)}</span></div>${profile.role ? `<span class="scientist-role">${escapeHtml(profile.role)}</span>` : ""}<p class="scientist-description">${escapeHtml(description)}</p><div class="scientist-card-metrics"><span title="${scientistNumber(metrics?.citations)} 次引用；${scientistDirectory.list === "annual" ? scientistDirectory.source?.citationYear : "1996—" + scientistDirectory.source?.citationYear} 年，排除自引"><strong>${scientistNumber(metrics?.citations, true)}</strong> ${scientistDirectory.list === "annual" ? "年度被引" : "累计被引"}</span><span><strong>${scientistNumber(person.career?.hIndex ?? metrics?.hIndex)}</strong> ${person.career ? "h 指数" : "年度 h 指数"}</span></div></div>${links ? `<div class="scientist-card-footer"><div class="scientist-links">${links}</div></div>` : ""}</article>`;
+      return `<article class="scientist-card" data-scientist-card="${escapeHtml(person.id)}"><a href="#researcher/${encodeURIComponent(person.id)}" data-scientist-open="${escapeHtml(person.id)}" aria-label="查看${escapeHtml(person.name)}的资料">${scientistAvatar(profile, person.name, "scientist-avatar", index < 2 ? "high" : "auto")}</a><div class="scientist-copy"><div class="scientist-card-top"><a class="scientist-name" href="#researcher/${encodeURIComponent(person.id)}" data-scientist-open="${escapeHtml(person.id)}">${escapeHtml(person.name)}${profile.localName ? `<span class="scientist-local-name">${escapeHtml(profile.localName)}</span>` : ""}</a>${scientistFollowButton(person)}</div><div class="scientist-institution" title="${escapeHtml(person.institution)}">${institutionLogo(institution)}<span>${escapeHtml(institution.name)}</span></div>${profile.role ? `<span class="scientist-role">${escapeHtml(profile.role)}</span>` : ""}<p class="scientist-description">${escapeHtml(description)}</p><div class="scientist-card-metrics"><span title="${scientistNumber(metrics?.citations)} 次引用；${scientistDirectory.list === "annual" ? scientistDirectory.source?.citationYear : "1996—" + scientistDirectory.source?.citationYear} 年，排除自引"><strong>${scientistNumber(metrics?.citations, true)}</strong> ${scientistDirectory.list === "annual" ? "年度被引" : "累计被引"}</span><span><strong>${scientistNumber(person.career?.hIndex ?? metrics?.hIndex)}</strong> ${person.career ? "h 指数" : "年度 h 指数"}</span></div></div>${links ? `<div class="scientist-card-footer"><div class="scientist-links">${links}</div></div>` : ""}</article>`;
     }
     function scientistSourceNote() {
       const source = scientistDirectory.source;
@@ -1603,7 +1638,7 @@
       const worksList = works?.papers.length ? works.papers.map(renderPaper).join("") : works?.loading ? '<div class="empty" role="status">正在加载研究成果…</div>' : works?.error ? `<div class="empty">${escapeHtml(works.error)}<br><button class="entity-action" data-scientist-works-retry>重试</button></div>` : profile.orcid ? '<div class="empty">暂未找到可关联的研究成果。</div>' : `<p>研究成果尚未关联。${profile.profileUrl ? `<a class="orcid-link" href="${escapeHtml(safeHttpUrl(profile.profileUrl))}" target="_blank" rel="noopener noreferrer">查看个人主页 ↗</a>` : ""}</p>`;
       const coauthors = scientistCoauthors(person, works);
       const metricRows = [person.career ? ["生涯被引", person.career.citations] : null, person.annual ? [`${source?.citationYear || ""} 年被引`, person.annual.citations] : null, person.career ? ["h 指数", person.career.hIndex] : null, ["论文（1960—2025）", person.publications]].filter(Boolean);
-      return `<article class="scientist-page"><button class="scientist-back" type="button" data-scientist-back>${icons.back}返回研究者</button><header class="scientist-profile-head">${scientistAvatar(profile, person.name)}<div class="scientist-profile-identity"><h1 id="scientist-profile-name" tabindex="-1">${escapeHtml(person.name)}${profile.localName ? `<span class="scientist-local-name">${escapeHtml(profile.localName)}</span>` : ""}</h1>${profile.role ? `<span class="scientist-role">${escapeHtml(profile.role)}</span>` : ""}<div class="scientist-institution" title="榜单记录的机构">${institutionLogo(scientistInstitution(person))}<span>${escapeHtml(scientistInstitution(person).name)}</span></div><div class="scientist-links">${scientistProfileLinks(person)}</div></div>${scientistFollowButton(person)}</header><div class="scientist-profile-layout"><div class="scientist-profile-main"><section class="scientist-section"><h2>研究简介</h2><p>${escapeHtml(profile.bio || `${person.fieldLabel} · ${person.subfield}`)}</p><div class="scientist-fields"><span>${escapeHtml(person.fieldLabel)}</span><span>${escapeHtml(person.subfield)}</span></div>${profile.bioSource ? `<p class="scientist-photo-credit"><a href="${escapeHtml(safeHttpUrl(profile.bioSource))}" target="_blank" rel="noopener noreferrer">简介来源 ↗</a></p>` : ""}</section>${experience}${education}<section class="scientist-section"><div class="scientist-works-head"><h2>已关联成果${works?.total ? ` <small class="researcher-count">${scientistNumber(works.total)}</small>` : ""}</h2>${profile.orcid ? `<div class="researcher-list-switch" aria-label="研究成果排序"><button data-scientist-works-sort="recent" aria-pressed="${scientistWorksSort === "recent"}">最新发表</button><button data-scientist-works-sort="cited" aria-pressed="${scientistWorksSort === "cited"}">引用最多</button></div>` : ""}</div><div class="scientist-works">${worksList}</div>${works?.error && works.papers.length ? `<p class="scientist-photo-credit" role="alert">${escapeHtml(works.error)} <button class="entity-action" data-scientist-works-retry>重试</button></p>` : ""}${works?.hasMore ? `<button class="entity-action" data-scientist-works-more${works.loading ? " disabled" : ""}>${works.loading ? "正在加载…" : "加载更多成果"}</button>` : ""}</section></div><aside class="scientist-profile-side"><section class="scientist-metrics"><h2>学术影响力</h2><dl>${metricRows.map(([label,value]) => `<div><dt>${label}</dt><dd>${scientistNumber(value)}</dd></div>`).join("")}</dl>${scientistSourceNote()}</section>${coauthors ? `<section class="scientist-metrics"><h2>近期共同作者</h2><ul class="scientist-coauthors">${coauthors}</ul></section>` : ""}${profile.photoSource ? `<p class="scientist-photo-credit">头像来源：<a href="${escapeHtml(safeHttpUrl(profile.photoSource))}" target="_blank" rel="noopener noreferrer">原始资料 ↗</a>${profile.photoCredit ? `<br>© ${escapeHtml(profile.photoCredit)}` : ""}</p>` : ""}</aside></div></article>`;
+      return `<article class="scientist-page"><button class="scientist-back" type="button" data-scientist-back>${icons.back}返回研究者</button><header class="scientist-profile-head">${scientistAvatar(profile, person.name, "scientist-avatar", "high")}<div class="scientist-profile-identity"><h1 id="scientist-profile-name" tabindex="-1">${escapeHtml(person.name)}${profile.localName ? `<span class="scientist-local-name">${escapeHtml(profile.localName)}</span>` : ""}</h1>${profile.role ? `<span class="scientist-role">${escapeHtml(profile.role)}</span>` : ""}<div class="scientist-institution" title="榜单记录的机构">${institutionLogo(scientistInstitution(person))}<span>${escapeHtml(scientistInstitution(person).name)}</span></div><div class="scientist-links">${scientistProfileLinks(person)}</div></div>${scientistFollowButton(person)}</header><div class="scientist-profile-layout"><div class="scientist-profile-main"><section class="scientist-section"><h2>研究简介</h2><p>${escapeHtml(profile.bio || `${person.fieldLabel} · ${person.subfield}`)}</p><div class="scientist-fields"><span>${escapeHtml(person.fieldLabel)}</span><span>${escapeHtml(person.subfield)}</span></div>${profile.bioSource ? `<p class="scientist-photo-credit"><a href="${escapeHtml(safeHttpUrl(profile.bioSource))}" target="_blank" rel="noopener noreferrer">简介来源 ↗</a></p>` : ""}</section>${experience}${education}<section class="scientist-section"><div class="scientist-works-head"><h2>已关联成果${works?.total ? ` <small class="researcher-count">${scientistNumber(works.total)}</small>` : ""}</h2>${profile.orcid ? `<div class="researcher-list-switch" aria-label="研究成果排序"><button data-scientist-works-sort="recent" aria-pressed="${scientistWorksSort === "recent"}">最新发表</button><button data-scientist-works-sort="cited" aria-pressed="${scientistWorksSort === "cited"}">引用最多</button></div>` : ""}</div><div class="scientist-works">${worksList}</div>${works?.error && works.papers.length ? `<p class="scientist-photo-credit" role="alert">${escapeHtml(works.error)} <button class="entity-action" data-scientist-works-retry>重试</button></p>` : ""}${works?.hasMore ? `<button class="entity-action" data-scientist-works-more${works.loading ? " disabled" : ""}>${works.loading ? "正在加载…" : "加载更多成果"}</button>` : ""}</section></div><aside class="scientist-profile-side"><section class="scientist-metrics"><h2>学术影响力</h2><dl>${metricRows.map(([label,value]) => `<div><dt>${label}</dt><dd>${scientistNumber(value)}</dd></div>`).join("")}</dl>${scientistSourceNote()}</section>${coauthors ? `<section class="scientist-metrics"><h2>近期共同作者</h2><ul class="scientist-coauthors">${coauthors}</ul></section>` : ""}${profile.photoSource ? `<p class="scientist-photo-credit">头像来源：<a href="${escapeHtml(safeHttpUrl(profile.photoSource))}" target="_blank" rel="noopener noreferrer">原始资料 ↗</a>${profile.photoCredit ? `<br>© ${escapeHtml(profile.photoCredit)}` : ""}</p>` : ""}</aside></div></article>`;
     }
     function renderOrcidProfile(profile) {
       const listSection = (title, items) => items.length ? `<section class="orcid-profile-section"><h3>${escapeHtml(title)}</h3><ul class="orcid-profile-list">${items.map(item => `<li>${item}</li>`).join("")}</ul></section>` : "";
@@ -1741,6 +1776,10 @@
     }
     function normalizeJournalRecord(item, source) {
       const openAlex = source === "openalex";
+      if (source === "journal-scout") {
+        const issn = [...new Set([item.issn, item.eissn].map(normalizeIssn).filter(value => /^\d{7}[\dX]$/.test(value)))].map(value => `${value.slice(0, 4)}-${value.slice(4)}`);
+        return { id: issn[0] ? `issn:${normalizeIssn(issn[0])}` : `scout:${item.id}`, scoutId: item.id, sourceId: "", name: item.title, publisher: "", field: classifyField([item.title, ...(item.tags || [])]), issn, count: null, latest: "", metrics: item };
+      }
       const issn = openAlex ? item.issn || (item.issn_l ? [item.issn_l] : []) : item.ISSN || [];
       const name = (openAlex ? item.display_name : item.title) || "期刊名称未标注";
       const publisher = (openAlex ? item.host_organization_name : item.publisher) || "";
@@ -1750,8 +1789,12 @@
     function journalIdentifiers(journal) {
       return [journal.id, journal.sourceId, ...(journal.issn || []).map(issn => `issn:${normalizeIssn(issn)}`)].filter(Boolean);
     }
+    function followedJournalId(journal) {
+      const identifiers = journalIdentifiers(journal);
+      return identifiers.find(id => followedJournals.has(id)) || [...followedJournalRecords].find(([id, record]) => followedJournals.has(id) && journalIdentifiers(record).some(value => identifiers.includes(value)))?.[0];
+    }
     function journalFromId(id) {
-      const journal = [activeJournal, ...journals, ...defaultJournals, ...followedJournalRecords.values(), history.state?.journalRecord].find(item => item && journalIdentifiers(item).includes(id));
+      const journal = [activeJournal, ...followedJournalRecords.values(), ...journals, ...defaultJournals, history.state?.journalRecord].find(item => item && journalIdentifiers(item).includes(id));
       if (journal) return journal;
       const key = id.match(/^issn:(\d{7}[\dX])$/i)?.[1];
       const issn = key ? `${key.slice(0, 4)}-${key.slice(4)}` : "";
@@ -1763,10 +1806,11 @@
     }
     function rememberFollowedJournals(candidates = journals) {
       let changed = false;
-      for (const journal of candidates) for (const id of journalIdentifiers(journal)) {
-        if (!followedJournals.has(id)) continue;
+      for (const journal of candidates) {
+        const id = followedJournalId(journal);
+        if (!id) continue;
         const previous = followedJournalRecords.get(id);
-        followedJournalRecords.set(id, { ...journal, id, count: previous?.count ?? journal.count }); changed = true;
+        followedJournalRecords.set(id, { ...previous, ...journal, id, sourceId: journal.sourceId || previous?.sourceId || "", issn: [...new Set([...(previous?.issn || []), ...(journal.issn || [])])], count: previous?.count ?? journal.count }); changed = true;
       }
       if (changed) saveFollowedJournals();
     }
@@ -1778,13 +1822,13 @@
         const { data } = await fetchOpenAlex("/sources", new URLSearchParams({ filter, per_page: "1", select: "id,display_name,host_organization_name,issn,issn_l,works_count" }), signal);
         if (!data.results?.[0]) throw new Error("没有找到该期刊的记录。");
         const resolved = normalizeJournalRecord(data.results[0], "openalex");
-        return { ...resolved, id: journal.id, field: journal.field || resolved.field, issn: [...new Set([...(journal.issn || []), ...resolved.issn])] };
+        return { ...journal, ...resolved, id: journal.id, field: journal.field || resolved.field, issn: [...new Set([...(journal.issn || []), ...resolved.issn])] };
       }
       if (!journal.issn?.[0]) return journal;
       const { data } = await fetchCrossref(`${crossrefBase}/journals/${encodeURIComponent(journal.issn[0])}`, signal);
       if (!data.message?.title) throw new Error("没有找到该期刊的记录。");
       const resolved = normalizeJournalRecord(data.message, "crossref");
-      return { ...resolved, id: journal.id, field: journal.field || resolved.field, issn: [...new Set([...(journal.issn || []), ...resolved.issn])] };
+      return { ...journal, ...resolved, id: journal.id, field: journal.field || resolved.field, issn: [...new Set([...(journal.issn || []), ...resolved.issn])] };
     }
     async function restoreFollowedJournals() {
       if (restoringFollowedJournals) return;
@@ -1888,6 +1932,7 @@
       }
     }
     async function openJournal(id, { pushHistory = true } = {}) {
+      clearTimeout(searchTimer); closeJournalSuggestions();
       const journal = { ...journalFromId(id), id };
       const resume = activeJournal?.id === id && loadedJournalKey === journalUpdateKey(journal);
       if (pushHistory) {
@@ -1912,7 +1957,7 @@
       activeJournal = null; loadedJournalKey = "";
       state.view = "journals"; state.loading = false; state.error = "";
       state.journalIssn = ""; state.journalSourceId = ""; state.journalRecentDays = 0;
-      state.journalMode = previous.mode === "followed" ? "followed" : "journals";
+      state.journalMode = ["followed", "search"].includes(previous.mode) ? previous.mode : "journals";
       state.query = previous.query || ""; searchInput.value = state.query;
       document.title = "期刊更新 · ScanSci Reader";
       await loadActiveData();
@@ -1941,30 +1986,25 @@
       apiController?.abort();
       apiController = new AbortController();
       const signal = apiController.signal;
-      state.loading = true; state.error = "";
-      setDataStatus("loading", "正在检索期刊目录…"); render();
+      state.loading = true; state.error = ""; journals = [];
+      setDataStatus("loading", "正在查询期刊…"); render();
       try {
-        let result;
-        if (state.source === "openalex") {
-          const params = new URLSearchParams({ filter: "type:journal", per_page: "20", select: "id,display_name,host_organization_name,issn,issn_l,works_count" });
-          if (query) params.set("search", query);
-          result = await fetchOpenAlex("/sources", params, signal);
-          if (signal.aborted) return;
-          journals = (result.data.results || []).map(item => normalizeJournalRecord(item, "openalex")).filter(journal => journal.count > 0);
-        } else {
-          const params = new URLSearchParams({ rows: "20" });
-          if (query) params.set("query", query);
-          result = await fetchCrossref(`${crossrefBase}/journals?${params}`, signal);
-          if (signal.aborted) return;
-          journals = (result.data.message?.items || []).map(item => normalizeJournalRecord(item, "crossref")).filter(journal => journal.count > 0).sort((a, b) => b.count - a.count);
-        }
+        // 常用综合刊简称按 ISSN 定位，避免与其他期刊的首字母缩写混淆。
+        const journalQuery = new Map([["nc", "2041-1723"], ["sa", "2375-2548"], ["pnas", "0027-8424"], ["nsr", "2095-5138"]]).get(query.toLowerCase()) || query;
+        const params = new URLSearchParams({ q: journalQuery, limit: "20" });
+        const result = await fetchCrossref(`/api/reader/journals/search?${params}`, AbortSignal.any([signal, AbortSignal.timeout(10000)]));
+        if (signal.aborted || state.view !== "journals" || state.query !== query) return;
+        if (!result.data.ok) throw new Error("journal_search_unavailable");
+        journals = (result.data.items || []).map(item => normalizeJournalRecord(item, "journal-scout"));
+        loadedJournalSearchQuery = query;
         rememberFollowedJournals();
         state.loading = false; state.cached = result.cached;
         setDataStatus("", `期刊目录已更新 · ${journals.length} 条${result.cached ? " · 缓存" : ""}`);
         render();
       } catch (error) {
-        if (signal.aborted || error.name === "AbortError") return;
-        state.loading = false; state.error = "期刊目录暂时不可用，请稍后重试。";
+        if (signal.aborted || error.name === "AbortError" || state.view !== "journals" || state.query !== query) return;
+        loadedJournalSearchQuery = query;
+        state.loading = false; state.error = "期刊查询暂时不可用，请稍后重试。";
         setDataStatus("error", "期刊目录暂时不可用 · 点击重试"); render();
       }
     }
@@ -1974,9 +2014,9 @@
       if (state.view === "journal") return loadJournalPapers();
       if (state.view === "journals") {
         void restoreFollowedJournals();
-        if (state.journalMode === "journals") {
-          if (state.query) return loadJournalDirectory(state.query);
-          journals = [...defaultJournals]; state.error = ""; rememberFollowedJournals();
+        if (state.query) return loadJournalDirectory(state.query);
+        if (state.journalMode !== "followed") {
+          journals = state.journalMode === "search" ? [] : [...defaultJournals]; state.error = ""; rememberFollowedJournals();
         }
         render();
         return Promise.resolve();
@@ -1997,6 +2037,41 @@
       code: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg>'
     };
     function escapeHtml(value) { return String(value).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]); }
+    function closeJournalSuggestions() {
+      journalSearchOpen = false; journalSearchIndex = -1;
+      journalSearchMenu.hidden = true;
+      if (state.view === "journals") searchInput.setAttribute("aria-expanded", "false");
+      else searchInput.removeAttribute("aria-expanded");
+      searchInput.removeAttribute("aria-activedescendant");
+    }
+    function matchingFollowedJournals() {
+      const query = state.query.toLowerCase();
+      const matches = loadedJournalSearchQuery === state.query ? journals : [];
+      return [...followedJournals].map(id => ({ ...journalFromId(id), id })).filter(journal => !query
+        || [journal.name, journal.field, journal.publisher, ...(journal.issn || [])].join(" ").toLowerCase().includes(query)
+        || matches.some(item => journalIdentifiers(item).some(id => journalIdentifiers(journal).includes(id))));
+    }
+    function journalSuggestionItems() {
+      if (loadedJournalSearchQuery !== state.query || state.loading || state.error) return [];
+      return (state.journalMode === "followed" ? matchingFollowedJournals() : journals).slice(0, 8);
+    }
+    function renderJournalSuggestions() {
+      if (!journalSearchOpen || state.view !== "journals" || !state.query) { closeJournalSuggestions(); return; }
+      const items = journalSuggestionItems();
+      if (journalSearchIndex >= items.length) journalSearchIndex = -1;
+      journalSearchOptions.innerHTML = items.map((journal, index) => `<button class="journal-search-option" id="journal-search-option-${index}" type="button" role="option" tabindex="-1" aria-selected="${index === journalSearchIndex}" data-journal-option="${index}"><span class="journal-search-icon" aria-hidden="true">${icons.journal}</span><span class="journal-search-copy"><span class="journal-search-name">${escapeHtml(journal.name)}</span><span class="journal-search-meta">${escapeHtml([journal.issn?.join(" / "), journal.metrics?.jcr_quartile ? `JCR ${journal.metrics.jcr_quartile}` : ""].filter(Boolean).join(" · "))}</span></span></button>`).join("");
+      const status = document.getElementById("journal-search-status");
+      status.hidden = Boolean(items.length);
+      status.textContent = state.error || (state.loading || loadedJournalSearchQuery !== state.query ? "正在联想期刊…" : state.journalMode === "followed" ? "已订阅期刊中没有匹配项。" : "未找到匹配期刊，试试全名或 ISSN。");
+      journalSearchMenu.hidden = false;
+      searchInput.setAttribute("aria-expanded", "true");
+      if (journalSearchIndex >= 0) searchInput.setAttribute("aria-activedescendant", `journal-search-option-${journalSearchIndex}`);
+      else searchInput.removeAttribute("aria-activedescendant");
+    }
+    function selectJournalSuggestion(index) {
+      const journal = journalSuggestionItems()[index];
+      if (journal) void openJournal(journal.id);
+    }
     let readerLanguage = "original";
     const paperTranslationCache = (() => {
       try {
@@ -2328,12 +2403,15 @@
       refreshInterestRecommendations();
     }
     function setJournalMode(mode) {
-      if (!["journals", "followed"].includes(mode)) return;
+      if (!["journals", "followed", "search"].includes(mode)) return;
       if (state.journalMode === mode) return;
+      clearTimeout(searchTimer);
       if (state.loading && state.view === "journals") { apiController?.abort(); state.loading = false; }
       state.journalMode = mode;
+      if (mode !== "search") { state.query = ""; searchInput.value = ""; }
       state.error = "";
       void loadActiveData();
+      if (mode === "search") searchInput.focus();
     }
     function setInterestRecommendationsEnabled(enabled) {
       interestRecommendationEnabled = enabled;
@@ -2578,7 +2656,7 @@
       return `<article class="paper-card" data-paper="${escapeHtml(paper.id)}" tabindex="0" aria-label="打开论文详情：${escapeHtml(paper.title)}">
         <div class="paper-content">
           <div class="paper-title"><button data-open="${escapeHtml(paper.id)}" data-paper-text="${escapeHtml(paper.title)}" data-paper-text-role="title">${escapeHtml(paper.title)}</button></div>
-          <div class="authors"><span class="institution" aria-label="期刊"><span class="institution-mark" aria-hidden="true">${icons.journal}</span><span class="journal-name">${escapeHtml(paper.journal)}</span></span><span class="author-list" aria-label="作者">${paper.authors.slice(0, 3).map((author, i) => `<span class="author">${scientistAvatar(paper.authorEntities?.[i] || {}, author, "author-avatar")}<span>${escapeHtml(author)}</span></span>`).join("")}</span></div>
+          <div class="authors"><span class="institution" aria-label="期刊"><span class="institution-mark" aria-hidden="true">${icons.journal}</span><span class="journal-name">${escapeHtml(paper.journal)}</span>${journalScoutButton(paper, true)}</span><span class="author-list" aria-label="作者">${paper.authors.slice(0, 3).map((author, i) => `<span class="author">${scientistAvatar(paper.authorEntities?.[i] || {}, author, "author-avatar")}<span>${escapeHtml(author)}</span></span>`).join("")}</span></div>
           <div class="paper-affiliations" data-paper-institutions="${escapeHtml(paper.id)}" aria-label="通讯作者所属机构" hidden></div>
           <p class="abstract" data-paper-text="${escapeHtml(paper.abstract)}" data-paper-text-role="abstract">${escapeHtml(paper.abstract)}</p>
           ${interestMatch ? `<div class="interest-match">与你的兴趣相符：${interestMatch.matches.map(escapeHtml).join(" · ")}</div>` : ""}
@@ -2617,9 +2695,32 @@
       return `<section aria-label="研究兴趣推荐论文"><div class="interest-results-head"><h3 class="interest-setting-label">推荐论文</h3><button class="sample-note" type="button" data-interest-refresh${state.loading ? " disabled" : ""}>刷新</button></div>${content}</section>`;
     }
     function journalFollowButton(journal) {
-      const followedId = journalIdentifiers(journal).find(id => followedJournals.has(id));
+      const followedId = followedJournalId(journal);
       const name = escapeHtml(journal.name);
       return `<button class="entity-action ${followedId ? "is-following" : "is-follow"}" type="button" aria-pressed="${Boolean(followedId)}" aria-label="${followedId ? "取消订阅" : "订阅更新"}：${name}" data-follow="${escapeHtml(followedId || journal.id)}">${followedId ? "✓ 已订阅" : "订阅更新"}</button>`;
+    }
+    function journalScoutUrl(journal) {
+      if (Number.isSafeInteger(journal.scoutId) && journal.scoutId > 0) return `https://journal.scansci.com/journal.html?id=${journal.scoutId}`;
+      const params = new URLSearchParams({ q: journal.issn?.[0] || journal.name || journal.journal || "" });
+      return `/api/reader/journals/lookup?${params}`;
+    }
+    function journalScoutButton(journal, compact = false) {
+      const label = `Journal Scout 查询：${journal.name || journal.journal}（新标签页）`;
+      return `<a class="journal-scout-button ${compact ? "journal-scout-link" : "entity-action is-follow"}" href="${escapeHtml(journalScoutUrl(journal))}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><img class="journal-scout-mark" src="./assets/brand/journal-scout.png" width="22" height="22" alt="" aria-hidden="true">${compact ? "" : "<span>Journal Scout 查询 ↗</span>"}</a>`;
+    }
+    function renderJournalMetrics(journal) {
+      const metrics = journal.metrics || {}, partitions = getJournalPartitions(journal);
+      const jcr = metrics.jcr_quartile ? [...new Set(metrics.jcr_quartile.match(/Q[1-4]/g) || [])] : jcrQuartileLabels(partitions.jcrMask);
+      const cas = metrics.cas_2025 || (partitions.casZone ? `${partitions.casZone}区` : "");
+      const xinrui = metrics.xuankan_2026 || (partitions.xinruiZone ? `${partitions.xinruiZone}区` : "");
+      const badges = [
+        ...(Number.isFinite(metrics.if_2023) ? [`<span class="partition-badge">IF ${metrics.if_2023}${metrics.if_year ? `（${escapeHtml(metrics.if_year)}）` : ""}</span>`] : []),
+        ...jcr.map(value => `<span class="partition-badge">JCR ${value}</span>`),
+        ...(cas ? [`<span class="partition-badge" title="中科院分区（2025）">中科院 ${escapeHtml(cas)}</span>`] : []),
+        ...(xinrui ? [`<span class="partition-badge" title="新锐分区（2026）">新锐 ${escapeHtml(xinrui)}</span>`] : []),
+        ...(metrics.warning_latest || metrics.xuankan_warning ? ['<span class="partition-badge">期刊预警</span>'] : [])
+      ].join("");
+      return badges ? `<div class="journal-metrics" aria-label="期刊指标">${badges}</div>` : "";
     }
     function renderJournalUpdateStat(journal) {
       const key = journalUpdateKey(journal), cached = journalUpdateCounts.get(key);
@@ -2631,24 +2732,25 @@
       const name = escapeHtml(journal.name);
       const summary = journal.latest ? `最近发表 ${displayDate(journal.latest)}` : [Number.isFinite(journal.count) ? `${journal.count.toLocaleString()} 条收录记录` : "", journal.publisher].filter(Boolean).join(" · ");
       const metadata = [journal.field, (journal.issn || []).join(" / ")].filter(Boolean);
-      return `<article class="journal-card"><div class="journal-card-layout"><div class="journal-card-main"><h2>${name}</h2>${summary ? `<p>${escapeHtml(summary)}</p>` : ""}${metadata.length ? `<div class="entity-meta">${metadata.map(item => `<span>${escapeHtml(item)}</span>`).join('<span>·</span>')}</div>` : ""}<div class="journal-actions"><button class="entity-action" type="button" data-journal-works="${escapeHtml(journal.id)}">查看更新</button>${journalFollowButton(journal)}</div></div>${renderJournalUpdateStat(journal)}</div></article>`;
+      return `<article class="journal-card"><div class="journal-card-layout"><div class="journal-card-main"><h2>${name}</h2>${summary ? `<p>${escapeHtml(summary)}</p>` : ""}${metadata.length ? `<div class="entity-meta">${metadata.map(item => `<span>${escapeHtml(item)}</span>`).join('<span>·</span>')}</div>` : ""}${renderJournalMetrics(journal)}<div class="journal-actions"><button class="entity-action" type="button" data-journal-works="${escapeHtml(journal.id)}">查看更新</button>${journalFollowButton(journal)}${journalScoutButton(journal)}</div></div>${renderJournalUpdateStat(journal)}</div></article>`;
     }
     function renderJournalUpdatesHeader() {
       if (!activeJournal) return "";
       const metadata = [activeJournal.field, (activeJournal.issn || []).join(" / ")].filter(Boolean);
       const period = journalUpdatePeriod();
-      return `<header class="journal-updates-header"><button class="journal-back" type="button" data-journal-back>${icons.back}<span>返回${journalDirectoryReturn.mode === "followed" ? "已订阅期刊" : "期刊目录"}</span></button><div class="journal-updates-head"><div class="journal-updates-main"><h1 id="journal-updates-title" tabindex="-1">${escapeHtml(activeJournal.name)}</h1><p>${displayDate(period.from)}—${displayDate(period.to)}</p>${metadata.length ? `<div class="entity-meta">${metadata.map(item => `<span>${escapeHtml(item)}</span>`).join('<span>·</span>')}</div>` : ""}${journalFollowButton(activeJournal)}</div>${renderJournalUpdateStat(activeJournal)}</div></header>`;
+      return `<header class="journal-updates-header"><button class="journal-back" type="button" data-journal-back>${icons.back}<span>返回${journalDirectoryReturn.mode === "followed" ? "已订阅期刊" : journalDirectoryReturn.mode === "search" ? "查期刊" : "期刊目录"}</span></button><div class="journal-updates-head"><div class="journal-updates-main"><h1 id="journal-updates-title" tabindex="-1">${escapeHtml(activeJournal.name)}</h1><p>${displayDate(period.from)}—${displayDate(period.to)}</p>${metadata.length ? `<div class="entity-meta">${metadata.map(item => `<span>${escapeHtml(item)}</span>`).join('<span>·</span>')}</div>` : ""}${renderJournalMetrics(activeJournal)}<div class="journal-actions">${journalFollowButton(activeJournal)}${journalScoutButton(activeJournal)}</div></div>${renderJournalUpdateStat(activeJournal)}</div></header>`;
     }
     function renderJournalHub() {
       const subscribed = state.journalMode === "followed";
-      const tabs = `<div class="journal-mode-tabs" role="tablist" aria-label="期刊更新内容"><button class="journal-mode-tab${!subscribed ? " active" : ""}" id="journal-directory-tab" type="button" role="tab" aria-selected="${!subscribed}" aria-controls="journal-list" data-journal-mode="journals">期刊目录</button><button class="journal-mode-tab${subscribed ? " active" : ""}" id="journal-followed-tab" type="button" role="tab" aria-selected="${subscribed}" aria-controls="journal-list" data-journal-mode="followed">已订阅（${followedJournals.size}）</button></div>`;
-      const collection = subscribed ? [...followedJournals].map(id => ({ ...journalFromId(id), id })) : state.query ? journals : rankDefaultJournals(journals);
-      const items = collection.filter(journal => !state.query || [journal.name, journal.field, journal.publisher, ...(journal.issn || [])].join(" ").toLowerCase().includes(state.query.toLowerCase()));
-      const empty = subscribed ? followedJournals.size ? "已订阅期刊中没有匹配项。" : '还没有订阅期刊。<br><button class="entity-action" type="button" data-journal-mode="journals">浏览期刊目录</button>' : "没有找到匹配的期刊。";
+      const searching = state.journalMode === "search";
+      const tabs = `<div class="journal-mode-tabs" role="tablist" aria-label="期刊更新内容">${[["journals", "期刊目录"], ["followed", `已订阅（${followedJournals.size}）`], ["search", "查期刊"]].map(([mode, label]) => `<button class="journal-mode-tab${state.journalMode === mode ? " active" : ""}" id="journal-${mode}-tab" type="button" role="tab" aria-selected="${state.journalMode === mode}" aria-controls="journal-list" data-journal-mode="${mode}">${label}</button>`).join("")}</div>`;
+      const collection = subscribed ? [...followedJournals].map(id => ({ ...journalFromId(id), id })) : searching ? journals : rankDefaultJournals(journals);
+      const items = subscribed ? matchingFollowedJournals() : collection;
+      const empty = subscribed ? followedJournals.size ? "已订阅期刊中没有匹配项。" : '还没有订阅期刊。<br><button class="entity-action" type="button" data-journal-mode="journals">浏览期刊目录</button>' : searching && !state.query ? "输入期刊名称、缩写或 ISSN，查询分区并订阅更新。" : "没有找到匹配的期刊。";
       const cards = items.length ? `<section class="journal-grid">${items.map(renderJournalCard).join("")}</section>`
-        : !subscribed && state.loading ? '<div class="empty">正在检索期刊目录…</div>'
-          : !subscribed && state.error ? `<div class="empty">${escapeHtml(state.error)}<br><button class="entity-action" data-retry>重试</button></div>` : `<div class="empty">${empty}</div>`;
-      return `<div class="journal-hub"><div class="journal-hub-head"><div class="journal-hub-title"><h2>期刊更新</h2></div>${tabs}</div><div id="journal-list" role="tabpanel" aria-labelledby="${subscribed ? "journal-followed-tab" : "journal-directory-tab"}">${cards}</div></div>`;
+        : state.loading ? '<div class="empty">正在查询期刊…</div>'
+          : state.error ? `<div class="empty">${escapeHtml(state.error)}<br><button class="entity-action" data-retry>重试</button></div>` : `<div class="empty">${empty}</div>`;
+      return `<div class="journal-hub"><div class="journal-hub-head"><div class="journal-hub-title"><h2>期刊更新</h2></div>${tabs}</div><div id="journal-list" role="tabpanel" aria-labelledby="journal-${state.journalMode}-tab">${cards}</div></div>`;
     }
     function updatePaperList(list, loadMore) {
       const cards = new Map([...results.querySelectorAll(":scope > .paper-card")].map(card => [card.dataset.paper, card]));
@@ -2670,6 +2772,21 @@
       else if (footer) footer.remove();
       else if (nextFooter) results.append(nextFooter);
     }
+    function replaceResultContent(html) {
+      const avatars = new Map();
+      for (const image of results.querySelectorAll("[data-scientist-photo]")) {
+        const src = image.getAttribute("src");
+        if (!avatars.has(src)) avatars.set(src, []);
+        avatars.get(src).push(image);
+      }
+      const template = document.createElement("template");
+      template.innerHTML = html;
+      for (const image of template.content.querySelectorAll("[data-scientist-photo]")) {
+        const existing = avatars.get(image.getAttribute("src"))?.shift();
+        if (existing) { existing.alt = image.alt; existing.fetchPriority = image.fetchPriority; image.replaceWith(existing); }
+      }
+      results.replaceChildren(template.content);
+    }
     function render({ preservePapers = false } = {}) {
       const focusedInterestTab = document.activeElement?.matches("[data-interest-view]") ? document.activeElement.id : "";
       const allPapers = [...new Map([...papers, ...savedRecords.values()].map(paper => [paper.id, paper])).values()];
@@ -2684,13 +2801,13 @@
         results.className = "interest-settings-root";
         const viewingSaved = state.view === "saved";
         const content = viewingSaved ? list.length ? list.map(renderPaper).join("") : '<div class="empty">还没有收藏论文。</div>' : renderInterestSettings();
-        results.innerHTML = `<div class="interest-settings-page">${renderInterestHeader()}<div id="interest-panel" class="${viewingSaved ? "papers" : "interest-tab-panel"}" role="tabpanel" aria-labelledby="${viewingSaved ? "interest-saved-tab" : "interest-recommendations-tab"}">${content}</div></div>`;
+        replaceResultContent(`<div class="interest-settings-page">${renderInterestHeader()}<div id="interest-panel" class="${viewingSaved ? "papers" : "interest-tab-panel"}" role="tabpanel" aria-labelledby="${viewingSaved ? "interest-saved-tab" : "interest-recommendations-tab"}">${content}</div></div>`);
       } else if (state.view === "researchers") {
         results.className = "people-grid";
-        results.innerHTML = researcherRouteId() ? renderScientistProfile() : renderResearcherHub();
+        replaceResultContent(researcherRouteId() ? renderScientistProfile() : renderResearcherHub());
       } else if (state.view === "journals") {
         results.className = "journal-hub-root";
-        results.innerHTML = renderJournalHub();
+        replaceResultContent(renderJournalHub());
       } else {
         results.className = "papers";
         const pageTitle = state.view === "journal" ? renderJournalUpdatesHeader() : state.query ? '<h2 class="section-page-title">搜索结果</h2>' : "";
@@ -2706,7 +2823,7 @@
           const metric = results.querySelector(".journal-updates-header .journal-update-stat");
           if (metric) metric.innerHTML = journalUpdateMarkup(journalUpdateCounts.get(journalUpdateKey(activeJournal)));
         }
-        else results.innerHTML = pageTitle + (list.length ? list.map(renderPaper).join("") : state.loading ? Array.from({ length: 3 }, () => '<div class="paper-skeleton" aria-hidden="true"><span class="skeleton-line skeleton-title"></span><span class="skeleton-line skeleton-author"></span><span class="skeleton-line"></span><span class="skeleton-line skeleton-short"></span><span class="skeleton-line skeleton-actions"></span></div>').join("") : state.error ? `<div class="empty">${escapeHtml(state.error)}<br><button class="entity-action" data-retry>重试连接</button></div>` : `<div class="empty">${emptyText}</div>`) + loadMore;
+        else replaceResultContent(pageTitle + (list.length ? list.map(renderPaper).join("") : state.loading ? Array.from({ length: 3 }, () => '<div class="paper-skeleton" aria-hidden="true"><span class="skeleton-line skeleton-title"></span><span class="skeleton-line skeleton-author"></span><span class="skeleton-line"></span><span class="skeleton-line skeleton-short"></span><span class="skeleton-line skeleton-actions"></span></div>').join("") : state.error ? `<div class="empty">${escapeHtml(state.error)}<br><button class="entity-action" data-retry>重试连接</button></div>` : `<div class="empty">${emptyText}</div>`) + loadMore);
       }
       results.dataset.renderView = state.view;
       results.setAttribute("aria-busy", String(state.view === "researchers" && scientistDirectory.mode === "top" ? scientistDirectory.loading || scientistProfileLoading : state.loading));
@@ -2728,6 +2845,7 @@
       observeJournalUpdates();
       observePaperInstitutions();
       observePaperMedia();
+      renderJournalSuggestions();
     }
     function paperFromId(id) { return papers.find(item => item.id === id) || interestRecommendations.find(item => item.id === id) || savedRecords.get(id) || interestSeedRecords.get(id) || scientistPaperRecords.get(id) || (readerPaperRecord?.id === id ? readerPaperRecord : null); }
     function paperRouteId() {
@@ -2739,11 +2857,20 @@
     function syncPageChrome(readerVisible = Boolean(activePaperId)) {
       const searchLabel = state.view === "papers" ? "搜索所有学科的论文、研究者或期刊"
         : state.view === "researchers" && !researcherRouteId() ? "搜索研究者姓名或机构"
-          : state.view === "journals" ? "搜索期刊名称、ISSN 或出版机构" : "";
+          : state.view === "journals" ? state.journalMode === "followed" ? "搜索已订阅期刊" : "搜索期刊名称、缩写或 ISSN" : "";
       const searchForm = document.getElementById("search-form");
       searchForm.hidden = !searchLabel;
       searchInput.placeholder = searchLabel || "搜索";
       searchInput.setAttribute("aria-label", searchLabel || "搜索");
+      if (state.view === "journals") {
+        searchInput.setAttribute("role", "combobox");
+        searchInput.setAttribute("aria-autocomplete", "list");
+        searchInput.setAttribute("aria-controls", "journal-search-options");
+        searchInput.setAttribute("aria-expanded", String(journalSearchOpen));
+      } else {
+        closeJournalSuggestions();
+        ["role", "aria-autocomplete", "aria-controls", "aria-expanded"].forEach(name => searchInput.removeAttribute(name));
+      }
       const paperListView = state.view === "papers" || state.view === "saved";
       document.querySelector(".toolbar").hidden = !paperListView || readerVisible;
       document.querySelector(".filter-wrap").hidden = state.view !== "papers";
@@ -2775,6 +2902,7 @@
       paperDetail.dataset.paperId = paper.id;
       document.getElementById("detail-journal-mark").innerHTML = icons.journal;
       document.getElementById("detail-journal").textContent = paper.journal || "来源期刊未标注";
+      document.getElementById("detail-journal-scout").innerHTML = paper.journal ? journalScoutButton(paper, true) : "";
       document.getElementById("detail-date").textContent = paper.date || "日期未标注";
       document.getElementById("detail-source").textContent = "研究记录";
       setPaperText(document.getElementById("detail-title"), paper.title, "title");
@@ -2823,6 +2951,7 @@
       setPaperText(document.getElementById("detail-title"), message, "title");
       document.getElementById("detail-journal-mark").innerHTML = icons.journal;
       document.getElementById("detail-journal").textContent = "ScanSci Reader";
+      document.getElementById("detail-journal-scout").replaceChildren();
       document.getElementById("detail-date").textContent = "";
       document.getElementById("detail-source").textContent = "";
       document.getElementById("detail-authors").replaceChildren();
@@ -2948,10 +3077,11 @@
       document.getElementById("theme-select").value = preference;
       if (save) { try { localStorage.setItem("allfield-theme", preference); } catch { showToast("已切换主题，浏览器暂时无法保存设置"); } }
     }
-    function positionThemeMenu() {
-      const anchor = themeButton.getBoundingClientRect(), panel = themeMenu.getBoundingClientRect();
-      themeMenu.style.left = `${Math.max(12, Math.min(anchor.right + 10, innerWidth - panel.width - 12))}px`;
-      themeMenu.style.top = `${Math.max(12, Math.min(anchor.bottom - panel.height, innerHeight - panel.height - 12))}px`;
+    function positionSideMenu(button, menu) {
+      const anchor = button.getBoundingClientRect(), panel = menu.getBoundingClientRect();
+      const mobile = innerWidth <= 680;
+      menu.style.left = `${Math.max(12, Math.min(mobile ? anchor.right - panel.width : anchor.right + 10, innerWidth - panel.width - 12))}px`;
+      menu.style.top = `${Math.max(12, Math.min(mobile ? anchor.top - panel.height - 8 : anchor.bottom - panel.height, innerHeight - panel.height - 12))}px`;
     }
     function citationFor(paper, style = defaultCitationStyle) {
       const year = paper.dateIso?.slice(0, 4) || "n.d.";
@@ -3140,6 +3270,7 @@
       if (label) { button.setAttribute("aria-label", label); button.title = label; }
     });
     document.addEventListener("pointerdown", event => {
+      if (!event.target.closest("#search-form")) closeJournalSuggestions();
       if (!event.target.closest(".filter-wrap")) setFilterOpen(false);
       if (!event.target.closest("[data-institution]") && !institutionPopover.contains(event.target)) hideInstitutionPopover();
     });
@@ -3262,9 +3393,6 @@
         return;
       }
       if (event.target.closest("#journal-button")) { switchView("journals"); return; }
-      if (event.target.closest(".brand") && document.getElementById("app").classList.contains("collapsed")) {
-        event.preventDefault(); document.getElementById("collapse-button").click(); return;
-      }
       if (event.target.closest("#collapse-button")) {
         const app = document.getElementById("app");
         app.classList.toggle("collapsed");
@@ -3272,9 +3400,6 @@
         const collapsed = app.classList.contains("collapsed");
         const label = collapsed ? "展开侧栏" : "折叠侧栏";
         button.setAttribute("aria-label", label); button.title = label;
-        const brand = document.querySelector(".brand");
-        brand.setAttribute("aria-label", collapsed ? "展开侧栏" : "ScanSci Reader 首页");
-        if (collapsed) brand.focus();
         return;
       }
       const paperCard = event.target.closest(".paper-card[data-paper]");
@@ -3285,7 +3410,12 @@
     document.getElementById("cas-filter").addEventListener("change", event => { state.casZone = event.target.value; state.view = "papers"; loadPapers(); });
     document.getElementById("xinrui-filter").addEventListener("change", event => { state.xinruiZone = event.target.value; state.view = "papers"; loadPapers(); });
     document.getElementById("classification-filter").addEventListener("change", event => { state.classificationFilter = event.target.value; state.view = "papers"; loadPapers(); });
-    document.getElementById("search-form").addEventListener("submit", event => { event.preventDefault(); clearTimeout(searchTimer); state.query = searchInput.value.trim(); loadActiveData(); });
+    document.getElementById("search-form").addEventListener("submit", event => {
+      event.preventDefault(); clearTimeout(searchTimer); closeJournalSuggestions();
+      state.query = searchInput.value.trim();
+      if (state.view === "journals" && state.query && state.journalMode !== "followed") state.journalMode = "search";
+      loadActiveData();
+    });
     document.addEventListener("change", event => { if (event.target.id === "scientist-field") { scientistDirectory.field = event.target.value; void loadScientistDirectory(); } });
     document.addEventListener("error", event => { if (event.target.matches?.("[data-scientist-photo]")) event.target.remove(); }, true);
     document.addEventListener("submit", event => {
@@ -3295,28 +3425,38 @@
       addManualInterestTerms(input.value);
       input.value = "";
     });
-    document.getElementById("account-logout").addEventListener("click", signOutScanSci);
+    document.getElementById("account-logout").addEventListener("click", async () => {
+      accountMenu.hidePopover();
+      await signOutScanSci();
+      if (!scansciAccountUser) (innerWidth <= 680 ? document.getElementById("mobile-account-button") : document.getElementById("account-login")).focus({ preventScroll: true });
+    });
+    accountButton.addEventListener("click", () => { accountMenuAnchor = accountButton; });
     document.getElementById("mobile-account-button").addEventListener("click", () => {
-      if (scansciAccountUser) signOutScanSci();
+      if (scansciAccountUser) accountMenuAnchor = document.getElementById("mobile-account-button");
       else location.href = document.getElementById("account-login").href;
+    });
+    accountMenu.addEventListener("toggle", event => {
+      const open = event.newState === "open";
+      for (const button of [accountButton, document.getElementById("mobile-account-button")]) button.setAttribute("aria-expanded", String(open && button === accountMenuAnchor));
+      if (open) { positionSideMenu(accountMenuAnchor, accountMenu); document.getElementById("account-logout").focus({ preventScroll: true }); }
     });
     document.addEventListener("visibilitychange", () => { if (!document.hidden) loadScanSciAccount(); });
     themeMenu.addEventListener("toggle", event => {
       const open = event.newState === "open";
       themeButton.setAttribute("aria-expanded", String(open));
-      if (open) { positionThemeMenu(); themeMenu.querySelector('[aria-checked="true"]').focus({ preventScroll: true }); }
+      if (open) { positionSideMenu(themeButton, themeMenu); themeMenu.querySelector('[aria-checked="true"]').focus({ preventScroll: true }); }
     });
-    themeMenu.addEventListener("keydown", event => {
+    for (const menu of [themeMenu, accountMenu]) menu.addEventListener("keydown", event => {
       if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
-      const options = [...themeMenu.querySelectorAll("button")], index = options.indexOf(document.activeElement);
+      const options = [...menu.querySelectorAll("button")], index = options.indexOf(document.activeElement);
       const next = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
       options[next].focus();
     });
     document.getElementById("theme-select").addEventListener("change", event => setReaderTheme(event.target.value));
     systemTheme.addEventListener("change", () => { if (document.documentElement.dataset.themePreference === "system") setReaderTheme("system", { save: false }); });
     window.addEventListener("storage", event => { if (event.key === "allfield-theme" || event.key === null) setReaderTheme(event.key === null ? "system" : event.newValue, { save: false }); });
-    window.addEventListener("resize", () => { if (themeMenu.matches(":popover-open")) themeMenu.hidePopover(); });
+    window.addEventListener("resize", () => { themeMenu.hidePopover(); accountMenu.hidePopover(); });
     setReaderTheme(document.documentElement.dataset.themePreference, { save: false });
     document.getElementById("citation-style-select").addEventListener("change", () => { void updateCitationPreview(); });
     document.getElementById("copy-citation-preview").addEventListener("click", async () => {
@@ -3431,10 +3571,44 @@
         syncSourceSettings();
       }
     });
-    searchInput.addEventListener("input", () => {
+    function scheduleSearch(event) {
       state.query = searchInput.value.trim(); clearTimeout(searchTimer);
-      apiController?.abort(); state.loading = false;
-      searchTimer = setTimeout(loadActiveData, 450);
+      apiController?.abort(); state.loading = false; state.error = "";
+      if (state.view === "journals") {
+        journalSearchIndex = -1;
+        loadedJournalSearchQuery = "";
+        journalSearchOpen = Boolean(state.query) && !event?.isComposing;
+        if (state.query && state.journalMode !== "followed") state.journalMode = "search";
+        renderJournalSuggestions();
+      }
+      if (!event?.isComposing) searchTimer = setTimeout(loadActiveData, state.view === "journals" ? 180 : 450);
+    }
+    searchInput.addEventListener("input", scheduleSearch);
+    searchInput.addEventListener("compositionstart", () => { clearTimeout(searchTimer); apiController?.abort(); closeJournalSuggestions(); });
+    searchInput.addEventListener("compositionend", scheduleSearch);
+    searchInput.addEventListener("focus", () => {
+      if (state.view === "journals" && state.query) { journalSearchOpen = true; renderJournalSuggestions(); }
+    });
+    document.getElementById("search-form").addEventListener("focusout", event => {
+      if (!event.currentTarget.contains(event.relatedTarget)) closeJournalSuggestions();
+    });
+    journalSearchOptions.addEventListener("pointerdown", event => { if (event.pointerType !== "touch") event.preventDefault(); });
+    journalSearchOptions.addEventListener("click", event => {
+      const option = event.target.closest("[data-journal-option]");
+      if (option) selectJournalSuggestion(Number(option.dataset.journalOption));
+    });
+    searchInput.addEventListener("keydown", event => {
+      if (event.isComposing || state.view !== "journals") return;
+      if (event.key === "Escape" && journalSearchOpen) { event.preventDefault(); event.stopPropagation(); closeJournalSuggestions(); return; }
+      if (["ArrowDown", "ArrowUp"].includes(event.key) && state.query) {
+        event.preventDefault(); journalSearchOpen = true;
+        const items = journalSuggestionItems();
+        journalSearchIndex = items.length ? (journalSearchIndex + (event.key === "ArrowDown" ? 1 : journalSearchIndex < 0 ? 0 : -1) + items.length) % items.length : -1;
+        renderJournalSuggestions();
+        journalSearchOptions.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+      } else if (event.key === "Enter" && journalSearchOpen && journalSuggestionItems().length) {
+        event.preventDefault(); event.stopPropagation(); selectJournalSuggestion(Math.max(0, journalSearchIndex));
+      }
     });
     document.getElementById("reader-note").addEventListener("input", event => {
       if (!activePaperId) return;
@@ -3460,6 +3634,7 @@
       }
       const editing = event.target.closest?.("input, textarea, select, [contenteditable='true']");
       if (event.key === "Escape") {
+        if (accountMenu.matches(":popover-open")) { event.preventDefault(); accountMenu.hidePopover(); accountMenuAnchor.focus({ preventScroll: true }); return; }
         if (editing?.tagName === "SELECT" && CSS.supports("appearance", "base-select") && editing.matches(":open")) return;
         if (themeMenu.matches(":popover-open")) { event.preventDefault(); themeMenu.hidePopover(); themeButton.focus({ preventScroll: true }); return; }
         if (institutionPopover.matches(":popover-open")) { event.preventDefault(); hideInstitutionPopover(); return; }

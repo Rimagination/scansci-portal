@@ -1,0 +1,16 @@
+name = "scansci-easymd-api"
+main = "worker.mjs"
+compatibility_date = "2026-10-10"
+workers_dev = false
+
+[[routes]]
+pattern = "www.scansci.com/easymd/api/*"
+zone_name = "scansci.com"
+
+[[routes]]
+pattern = "www.scansci.com/easymd/mcp"
+zone_name = "scansci.com"
+
+[[routes]]
+pattern = "www.scansci.com/easymd/uploads/*"
+zone_name = "scansci.com"

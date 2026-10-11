@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EasyMD | ScanSci</title>
+  <meta name="description" content="ScanSci 是面向科研发现的轻工具目录与工作台入口，汇集文献图谱、科研数据检索、期刊查询、引文核查、每日论文卡片、科研 Agent 拓展与学术测评工具。" />
+  <meta name="keywords" content="ScanSci,科研轻工具,文献图谱,期刊查询,科研数据检索,引文核查,每日论文卡片,EasySlides,Agent 拓展,Skill,Plugin,MCP,CLI" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://www.scansci.com/easymd/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ScanSci" />
+  <meta property="og:title" content="ScanSci | 面向科研发现的工具门户" />
+  <meta property="og:description" content="一站访问科研轻工具、学术演示工作台、文献图谱、每日论文卡片与科研 Agent 拓展。" />
+  <meta property="og:url" content="https://www.scansci.com/easymd/" />
+  <meta property="og:image" content="https://www.scansci.com/assets/covers/dataraven-cover.webp" />
+  <meta property="og:image:type" content="image/webp" />
+  <meta property="og:image:alt" content="ScanSci 科研工具门户" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="ScanSci | 面向科研发现的工具门户" />
+  <meta name="twitter:description" content="汇集科研轻工具、学术演示、文献图谱、论文推荐与科研 Agent 拓展的学术工具入口。" />
+  <link rel="dns-prefetch" href="//dataset.scansci.com" />
+  <link rel="dns-prefetch" href="//journal.scansci.com" />
+  <link rel="dns-prefetch" href="//citation.scansci.com" />
+  <link rel="dns-prefetch" href="//paperdeck.scansci.com" />
+  <link rel="dns-prefetch" href="//skills.scansci.com" />
+  <link rel="dns-prefetch" href="//acti.scansci.com" />
+  <link rel="preconnect" href="https://dataset.scansci.com" crossorigin />
+  <link rel="preconnect" href="https://journal.scansci.com" crossorigin />
+  <link rel="preconnect" href="https://citation.scansci.com" crossorigin />
+  <link rel="preconnect" href="https://paperdeck.scansci.com" crossorigin />
+  <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
+  <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
+  <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
+  <link rel="stylesheet" href="/styles.css?v=20261011-portal-tools" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "ScanSci 学术工具门户",
+    "description": "面向科研发现的轻工具目录与工作台入口，汇集文献图谱、科研数据检索、期刊查询、引文核查、每日论文卡片、科研 Agent 拓展与学术测评工具。",
+    "url": "https://www.scansci.com/",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://rimagination.github.io/easyslides/",
+        "name": "EasySlides",
+        "description": "本地 PPTX 生成工具链，把论文、报告、网页与 Markdown 转换为结构清晰、可继续编辑的学术演示文稿。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://paperatlas.scansci.com",
+        "name": "Paper Atlas",
+        "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "url": "https://dataset.scansci.com",
+        "name": "Data Raven",
+        "description": "科研数据与开放数据检索引擎，聚焦数据集发现、筛选和来源判断。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "url": "https://journal.scansci.com",
+        "name": "Journal Scout",
+        "description": "期刊信息查询工具，集中展示 JCR、分区、影响因子、CiteScore 等期刊指标。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://citation.scansci.com",
+        "name": "Citation Lab",
+        "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://paperdeck.scansci.com",
+        "name": "PaperDeck",
+        "description": "每日论文卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 7,
+        "url": "https://skills.scansci.com",
+        "name": "Agent 拓展",
+        "description": "Rimagination 制作与维护的科研 Agent 拓展，涵盖 Skill、Plugin、MCP 与 CLI。"
+      },
+      {
+        "@type": "ListItem",
+        "position": 8,
+        "url": "https://acti.scansci.com",
+        "name": "ACTI",
+        "description": "学术人格类型测试，从努力度、思维型、社交型与时间型四个维度生成科研状态画像。"
+      }
+    ]
+  }
+  </script>
+  <style>
+    /* Critical fallback styles to avoid broken layout before stylesheet cache refresh */
+    :root { --sidebar-width: 252px; }
+    .portal-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 10px;
+      border-right: 1px solid #cdd7e5;
+      background: #f8fafc;
+    }
+    .sidebar-top { display: grid; gap: 8px; }
+    .sidebar-nav { min-height: 0; flex: 1; overflow-y: auto; }
+    .auth-dock { margin-top: auto; }
+    .portal-main {
+      margin-left: var(--sidebar-width);
+      padding: 38px 24px 24px;
+    }
+    .brand-logo {
+      display: block;
+      width: min(100%, 190px);
+      max-width: 100%;
+      height: auto;
+    }
+    @media (max-width: 760px) {
+      .portal-sidebar {
+        position: static;
+        width: auto;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid #cdd7e5;
+        overflow: visible;
+        padding: 16px;
+      }
+      .sidebar-nav { overflow: visible; }
+      .portal-main {
+        margin-left: 0;
+        padding: 20px 16px 16px;
+      }
+    }
+  </style>
+</head>
+<body class="is-easymd">
+  <div class="portal-shell">
+    <aside class="portal-sidebar" id="portalSidebar" aria-label="ScanSci 导航">
+      <div class="sidebar-top">
+        <div class="brand-block">
+          <a class="brand-home" href="/#online-tools" aria-label="ScanSci 首页">
+            <img class="brand-logo" src="/assets/brand/scansci-logo.svg?v=20260522a" alt="搜索科学 ScanSci" />
+            <img class="brand-icon" src="/assets/brand/scansci-app-icon-64.png?v=20260522a" alt="" width="36" height="36" />
+          </a>
+          <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="折叠侧边栏" title="折叠侧边栏" aria-controls="portalNavigation" aria-expanded="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left-close sidebar-icon sidebar-toggle-close" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="m16 15-3-3 3-3"></path></svg><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-panel-left-open sidebar-icon sidebar-toggle-open" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="m14 9 3 3-3 3"></path></svg>
+          </button>
+        </div>
+
+        <nav id="portalNavigation" class="sidebar-nav sidebar-nav-group" aria-label="工具导航">
+          <a class="sidebar-nav-item is-active" href="/#online-tools" data-view="online" aria-label="在线轻工具" title="在线轻工具" aria-current="page">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-grid sidebar-icon" aria-hidden="true" focusable="false"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg><strong>在线轻工具</strong><span>Quick Tools</span>
+          </a>
+          <a class="sidebar-nav-item" href="/easymd/" data-view="easymd" aria-label="EasyMD" title="EasyMD">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-blocks sidebar-icon" aria-hidden="true" focusable="false"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"></path><rect x="14" y="2" width="8" height="8" rx="1"></rect></svg><strong>EasyMD</strong><span>Markdown 编辑器</span>
+          </a>
+          <a class="sidebar-nav-item" href="/logos/" aria-label="Logo 库" title="Logo 库">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image sidebar-icon" aria-hidden="true" focusable="false"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg><strong>Logo 库</strong><span>机构标识</span>
+          </a>
+          <a class="sidebar-nav-item" href="/#open-source" data-view="open-source" aria-label="开源工具" title="开源工具">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code sidebar-icon" aria-hidden="true" focusable="false"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg><strong>开源工具</strong><span>Open Source</span>
+          </a>
+          <button class="sidebar-nav-item" type="button" data-nav-action="recent" aria-label="最近使用" title="最近使用">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock sidebar-icon" aria-hidden="true" focusable="false"><path d="M12 6v6l4 2"></path><circle cx="12" cy="12" r="10"></circle></svg><strong>最近使用</strong><span>Recent</span>
+          </button>
+          <button class="sidebar-nav-item" type="button" data-nav-action="favorites" aria-label="收藏" title="收藏">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bookmark sidebar-icon" aria-hidden="true" focusable="false"><path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"></path></svg><strong>收藏</strong><span>Favorites</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-nav" hidden>
+        <div class="sidebar-nav-group">
+          <p class="sidebar-nav-heading">Workspaces</p>
+          <a class="sidebar-nav-item" href="https://rimagination.github.io/easyslides/">
+            <strong>学术演示</strong>
+            <span>EasySlides</span>
+          </a>
+          <a class="sidebar-nav-item" href="https://paperdeck.scansci.com">
+            <strong>每日论文卡片</strong>
+            <span>PaperDeck</span>
+          </a>
+          <a class="sidebar-nav-item" href="https://paperatlas.scansci.com">
+            <strong>文献图谱</strong>
+            <span>Paper Atlas</span>
+          </a>
+        </div>
+      </div>
+
+      <section id="authDock" class="auth-dock" aria-label="账户状态" hidden>
+        <div id="guestAuthCard" class="guest-auth-card" hidden>
+          <div class="guest-auth-card__body">
+            <p class="guest-auth-card__eyebrow">未登录</p>
+            <h3 class="guest-auth-card__title">登录 ScanSci</h3>
+            <p class="guest-auth-card__desc">登录后保存常用工具、继续最近使用，并同步你的科研工具偏好。</p>
+          </div>
+          <button id="guestLoginBtn" class="guest-auth-card__button" type="button" aria-label="登录 ScanSci" title="登录 ScanSci"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round sidebar-icon" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg><span>立即登录</span></button>
+        </div>
+        <div id="userMiniCard" class="user-mini-card" hidden>
+          <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
+          <span id="userName" class="user-mini-card__name"></span>
+          <div class="user-mini-card__actions">
+            <button id="githubLinkBtn" class="user-mini-card__icon" type="button" hidden title="关联 GitHub" aria-label="关联 GitHub">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link sidebar-icon" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            </button>
+            <button id="logoutBtn" class="user-mini-card__icon" type="button" title="退出登录" aria-label="退出登录">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out sidebar-icon" aria-hidden="true" focusable="false"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <main class="portal-main">
+      <header class="main-head">
+        <p class="stats-inline" aria-label="平台概况">
+          今日访客 <strong id="stat24h">—</strong> 人&thinsp;·&thinsp;
+          月活用户 <strong id="stat30d">—</strong> 人&thinsp;·&thinsp;
+          本月累计服务 <strong id="statReq">—</strong> 次
+        </p>
+        <p id="toolCount">加载中...</p>
+      </header>
+
+      <section class="miniprogram-notice" aria-label="ScanSci 小程序上线">
+        <span class="miniprogram-notice__mark" aria-hidden="true"></span>
+        <p class="miniprogram-notice__text">
+          <strong>ScanSci 小程序上线</strong>
+          <span>微信里也能查期刊、测学术人格、核验参考文献。</span>
+        </p>
+        <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
+      </section>
+
+      <section id="easymdView" class="portal-view easymd-view" data-portal-view="easymd" aria-label="EasyMD 编辑器">
+        <header class="easymd-head">
+          <h1>EasyMD</h1>
+          <span class="easymd-subtitle">编辑 · 排版 · 预览</span>
+        </header>
+        <div id="easymdRoot" class="scansci-easymd" aria-busy="true"><p class="easymd-loading" role="status">正在打开编辑器…</p></div>
+        <noscript>启用 JavaScript 后可以使用编辑器。</noscript>
+      </section>
+
+      <section id="onlineToolsView" class="portal-view" data-portal-view="online" hidden>
+        <section id="toolGrid" class="tool-grid" aria-live="polite"></section>
+        <p id="emptyState" class="empty-state" hidden>未找到匹配轻工具，请调整关键词或分类。</p>
+        <p id="errorState" class="error-state" hidden>轻工具列表加载失败，请稍后重试。</p>
+      </section>
+
+      <section id="openSourceView" class="portal-view open-source-section" aria-labelledby="openSourceTitle" data-portal-view="open-source" hidden>
+        <div class="open-source-section__head">
+          <h2 id="openSourceTitle">开源工具</h2>
+          <a class="open-source-section__all" href="https://github.com/Rimagination?tab=repositories" target="_blank" rel="noopener">全部仓库</a>
+        </div>
+        <div class="open-source-grid">
+          <a class="open-source-card" href="https://github.com/Rimagination/easyslides" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/easyslides</span>
+            <strong>EasySlides</strong>
+            <span>学术演示与科研汇报工具链</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/scansci-pdf" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/scansci-pdf</span>
+            <strong>ScanSci PDF</strong>
+            <span>论文 PDF 获取与多渠道回退</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/easymd" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/easymd</span>
+            <strong>EasyMD</strong>
+            <span>微信公众号与知乎 Markdown 排版</span>
+          </a>
+          <a class="open-source-card" href="https://github.com/Rimagination/gongwen-draft" target="_blank" rel="noopener">
+            <span class="open-source-card__repo">Rimagination/gongwen-draft</span>
+            <strong>Gongwen Draft</strong>
+            <span>中文公文与政务材料写作 Skill</span>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="miniProgramPopup" class="miniprogram-popup" hidden>
+    <div class="miniprogram-popup__backdrop" data-miniprogram-close="true"></div>
+    <section class="miniprogram-popup__card" role="dialog" aria-modal="true" aria-labelledby="miniProgramPopupTitle">
+      <button id="closeMiniProgramPopupBtn" class="miniprogram-popup__close" type="button" aria-label="关闭小程序提示">×</button>
+      <p class="miniprogram-popup__eyebrow">小程序上线</p>
+      <h2 id="miniProgramPopupTitle">ScanSci 微信小程序</h2>
+      <p class="miniprogram-popup__desc">扫码进入，随手查期刊、测学术人格、核验参考文献。</p>
+      <img
+        class="miniprogram-popup__code"
+        src="/assets/brand/scansci-miniprogram-code.jpg?v=20260708"
+        alt="ScanSci 微信小程序码"
+        width="430"
+        height="430"
+        decoding="async"
+      />
+    </section>
+  </div>
+
+  <div id="authModal" class="auth-modal" hidden>
+    <div class="auth-modal__backdrop" data-auth-close="true"></div>
+    <section class="auth-modal__panel" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <button id="closeAuthModalBtn" class="auth-modal__close" type="button" aria-label="关闭登录窗口">×</button>
+      <h3 id="authModalTitle" class="auth-modal__title">登录 / 注册</h3>
+      <p class="auth-modal__subtitle">使用 GitHub 或邮箱验证码登录，保存常用工具、最近使用和科研偏好。</p>
+
+      <div id="authGuest" class="auth-state">
+        <button id="loginBtn" class="auth-btn auth-btn--primary" type="button">GitHub 登录/注册</button>
+        <p class="auth-divider"><span>或邮箱验证码</span></p>
+        <input id="emailInput" class="auth-input" type="email" placeholder="输入邮箱地址" autocomplete="email" />
+        <div class="auth-code-row">
+          <input id="emailCodeInput" class="auth-input" type="text" inputmode="numeric" maxlength="6" placeholder="输入6位验证码" />
+          <button id="sendCodeBtn" class="auth-btn auth-btn--ghost" type="button">发送验证码</button>
+        </div>
+        <button id="emailLoginBtn" class="auth-btn auth-btn--secondary" type="button">邮箱登录/注册</button>
+        <p id="authHint" class="auth-hint" hidden></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="/anon-prompt.js?v=20260616b"></script>
+  <script src="/app.js?v=20261011-portal-tools"></script>
+  <noscript>
+    <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
+      <h2>ScanSci 轻工具目录</h2>
+      <p>ScanSci 是面向科研发现的轻工具目录与工作台入口。启用 JavaScript 后可使用搜索、筛选、收藏和登录同步功能。</p>
+      <ul>
+        <li><a href="https://paperatlas.scansci.com">Paper Atlas</a>：研究图谱工具，适合查看论文引用网络、相似研究和主题脉络。</li>
+        <li><a href="https://dataset.scansci.com">Data Raven</a>：科研数据检索，适合寻找可复用数据集和开放数据来源。</li>
+        <li><a href="https://journal.scansci.com">Journal Scout</a>：期刊信息查询工具，集中展示 JCR、分区、影响因子、CiteScore 等期刊指标。</li>
+        <li><a href="https://citation.scansci.com">Citation Lab</a>：引文完整性核查，适合检查参考文献是否支撑正文论断。</li>
+        <li><a href="https://paperdeck.scansci.com">PaperDeck</a>：每日论文卡片，适合轻量发现值得阅读的论文。</li>
+        <li><a href="https://skills.scansci.com">Agent 拓展</a>：科研 Agent 拓展目录，涵盖 Skill、Plugin、MCP 与 CLI。</li>
+        <li><a href="https://acti.scansci.com">ACTI</a>：学术人格类型测试，适合了解科研状态和协作偏好。</li>
+      </ul>
+    </section>
+  </noscript>
+</body>
+</html>

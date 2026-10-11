@@ -22,6 +22,9 @@ const els = {
   count: document.getElementById("toolCount"),
   onlineToolsView: document.getElementById("onlineToolsView"),
   openSourceView: document.getElementById("openSourceView"),
+  easymdView: document.getElementById("easymdView"),
+  easymdRoot: document.getElementById("easymdRoot"),
+  sidebarToggle: document.getElementById("sidebarToggle"),
   authDock: document.getElementById("authDock"),
   authModal: document.getElementById("authModal"),
   closeAuthModalBtn: document.getElementById("closeAuthModalBtn"),
@@ -81,12 +84,61 @@ function isMiniProgramPopupOpen() {
   return !!els.miniProgramPopup && !els.miniProgramPopup.hidden;
 }
 
-function viewFromHash() {
+function viewFromLocation() {
+  if (/^\/easymd(?:\/|$)/.test(window.location.pathname) || window.location.hash === "#easymd") return "easymd";
   return window.location.hash === "#open-source" ? "open-source" : "online";
 }
 
-function hashForView(view) {
-  return view === "open-source" ? "#open-source" : "#online-tools";
+function urlForView(view) {
+  if (view === "easymd") return "/easymd/";
+  const query = window.location.pathname === "/" ? window.location.search : "";
+  return `/${query}${view === "open-source" ? "#open-source" : "#online-tools"}`;
+}
+
+function setSidebarCollapsed(collapsed) {
+  document.documentElement.classList.toggle("is-sidebar-collapsed", collapsed);
+  if (els.sidebarToggle) {
+    const label = collapsed ? "展开侧边栏" : "折叠侧边栏";
+    els.sidebarToggle.setAttribute("aria-expanded", String(!collapsed));
+    els.sidebarToggle.setAttribute("aria-label", label);
+    els.sidebarToggle.title = label;
+  }
+  try {
+    window.localStorage.setItem("scansci:sidebarCollapsed", String(collapsed));
+  } catch {
+    // The navigation still works when browser storage is unavailable.
+  }
+}
+
+async function loadEasyMD() {
+  if (!els.easymdRoot || state.easymdLoading) return;
+  state.easymdLoading = true;
+  try {
+    const editor = await import("/easymd/bootstrap.js?v=20261011-native");
+    await editor.mountEasyMD(els.easymdRoot);
+    els.easymdRoot.setAttribute("aria-busy", "false");
+  } catch (error) {
+    state.easymdLoading = false;
+    els.easymdRoot.setAttribute("aria-busy", "false");
+    els.easymdRoot.replaceChildren();
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.textContent = "重新打开编辑器";
+    retry.className = "easymd-retry";
+    retry.addEventListener("click", () => void loadEasyMD());
+    els.easymdRoot.append(retry);
+    console.error("Could not open EasyMD:", error);
+  }
+}
+
+function restoreSidebar() {
+  let collapsed = false;
+  try {
+    collapsed = window.localStorage.getItem("scansci:sidebarCollapsed") === "true";
+  } catch {
+    // Keep the expanded default when browser storage is unavailable.
+  }
+  setSidebarCollapsed(collapsed);
 }
 
 function updateNavViewState(view) {
@@ -99,12 +151,16 @@ function updateNavViewState(view) {
 }
 
 function setPortalView(view, options = {}) {
-  const nextView = view === "open-source" ? "open-source" : "online";
+  const nextView = ["online", "open-source", "easymd"].includes(view) ? view : "online";
   const { updateHash = true } = options;
   state.currentView = nextView;
 
   if (els.onlineToolsView) els.onlineToolsView.hidden = nextView !== "online";
   if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
+  if (els.easymdView) els.easymdView.hidden = nextView !== "easymd";
+  document.body.classList.toggle("is-easymd", nextView === "easymd");
+  document.title = nextView === "easymd" ? "EasyMD | ScanSci" : "ScanSci | 学术工具门户";
+  if (nextView === "easymd") void loadEasyMD();
   updateNavViewState(nextView);
 
   if (els.count && nextView === "open-source") {
@@ -116,8 +172,10 @@ function setPortalView(view, options = {}) {
     renderGrid();
   }
 
-  if (updateHash && window.location.hash !== hashForView(nextView)) {
-    window.history.pushState(null, "", hashForView(nextView));
+  const targetUrl = urlForView(nextView);
+  if (updateHash && `${window.location.pathname}${window.location.search}${window.location.hash}` !== targetUrl) {
+    window.history.pushState(null, "", targetUrl);
+    window.scrollTo(0, 0);
   }
 }
 
@@ -275,7 +333,7 @@ function cardTemplate(app) {
       <a class="tool-card__link" href="${escapeHtml(appUrl)}" target="_self" rel="noopener" data-action="open">
         <div class="tool-card__figure">
           ${statusBadge}
-          <img src="${escapeHtml(app.cover || "./assets/covers/default.svg")}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
+          <img src="${escapeHtml((app.cover || "/assets/covers/default.svg").replace(/^\.\//, "/"))}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
           <div class="tool-card__overlay">
             <span class="tool-card__cta">立即使用</span>
           </div>
@@ -367,7 +425,7 @@ function renderAuth() {
   }
 
   if (els.userAvatar) {
-    els.userAvatar.src = state.me.avatar_url || "./assets/brand/dataraven-crow-only.svg";
+    els.userAvatar.src = state.me.avatar_url || "/assets/brand/dataraven-crow-only.svg";
     els.userAvatar.width = 34;
     els.userAvatar.height = 34;
     els.userAvatar.style.width = "34px";
@@ -395,7 +453,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("./data/apps.json?v=20261010-agent-extensions", { cache: "no-store" });
+    const res = await fetch("/data/apps.json?v=20261011-portal-tools", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];
@@ -662,6 +720,9 @@ function onOpenToolClick(event) {
 }
 
 function bindEvents() {
+  els.sidebarToggle?.addEventListener("click", () => {
+    setSidebarCollapsed(!document.documentElement.classList.contains("is-sidebar-collapsed"));
+  });
   if (els.search) {
     els.search.addEventListener("input", () => {
       state.query = els.search.value || "";
@@ -671,17 +732,18 @@ function bindEvents() {
 
   els.navViewItems.forEach((item) => {
     item.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
       setPortalView(item.dataset.view || "online");
     });
   });
 
   window.addEventListener("hashchange", () => {
-    setPortalView(viewFromHash(), { updateHash: false });
+    setPortalView(viewFromLocation(), { updateHash: false });
   });
 
   window.addEventListener("popstate", () => {
-    setPortalView(viewFromHash(), { updateHash: false });
+    setPortalView(viewFromLocation(), { updateHash: false });
   });
 
   if (els.closeAuthModalBtn) {
@@ -810,8 +872,9 @@ async function loadStats() {
 // ── Bootstrap ─────────────────────────────────────────────────
 
 async function bootstrap() {
+  restoreSidebar();
   bindEvents();
-  setPortalView(viewFromHash(), { updateHash: false });
+  setPortalView(viewFromLocation(), { updateHash: false });
   await loadApps();
   await loadMe();
   void loadStats();

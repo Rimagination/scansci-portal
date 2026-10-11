@@ -312,10 +312,10 @@ body.is-miniprogram-popup-open {
   background: #f1f6fc;
 }
 
-.user-mini-card__icon svg {
+.user-mini-card__icon svg.sidebar-icon {
   width: 16px;
   height: 16px;
-  fill: currentcolor;
+  fill: none;
 }
 
 .auth-modal {
@@ -937,7 +937,7 @@ body.is-miniprogram-popup-open {
 }
 
 .tool-card__fav.is-active svg {
-  fill: currentcolor;
+  fill: none;
   stroke: currentcolor;
 }
 
@@ -1187,3 +1187,83 @@ body.is-miniprogram-popup-open {
     transform: none;
   }
 }
+
+/* Shared tool navigation and the EasyMD workspace. */
+.portal-sidebar { z-index: 10; height: 100dvh; }
+.sidebar-top { flex: 1; min-height: 0; grid-template-rows: auto minmax(0, 1fr); gap: 18px; }
+.sidebar-top .sidebar-nav { align-content: start; margin-bottom: 0; }
+.brand-block { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand-home { display: block; min-width: 0; }
+.brand-block .brand-logo { width: 166px; max-width: 100%; }
+.brand-icon { display: none; border-radius: 9px; }
+.sidebar-toggle { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; padding: 6px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; }
+.sidebar-toggle:hover { background: #e5eeea; color: #174d40; }
+.sidebar-toggle svg, .sidebar-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.sidebar-nav-item { align-items: center; justify-content: flex-start; min-height: 44px; gap: 10px; padding-left: 10px; }
+.sidebar-nav-item strong { flex: 1; }
+.sidebar-nav-item span { margin-left: auto; font-weight: 400; }
+.guest-auth-card__button { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.sidebar-toggle:focus-visible, .sidebar-nav-item:focus-visible, .brand-home:focus-visible, .easymd-head a:focus-visible, .guest-auth-card__button:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+html.is-sidebar-collapsed { --sidebar-width: 72px; }
+.is-sidebar-collapsed .brand-block { flex-direction: column; gap: 10px; }
+.is-sidebar-collapsed .brand-logo { display: none; }
+.is-sidebar-collapsed .brand-icon { display: block; }
+.sidebar-toggle .sidebar-toggle-open { display: none; }
+.is-sidebar-collapsed .sidebar-toggle-close { display: none; }
+.is-sidebar-collapsed .sidebar-toggle .sidebar-toggle-open { display: block; }
+.is-sidebar-collapsed .sidebar-nav-item { justify-content: center; padding: 10px; }
+.is-sidebar-collapsed .sidebar-nav-item strong, .is-sidebar-collapsed .sidebar-nav-item span, .is-sidebar-collapsed .guest-auth-card__body, .is-sidebar-collapsed .guest-auth-card__button span, .is-sidebar-collapsed .user-mini-card__name { display: none; }
+.is-sidebar-collapsed .guest-auth-card { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.is-sidebar-collapsed .guest-auth-card__button { min-height: 44px; padding: 10px; box-shadow: none; }
+.is-sidebar-collapsed .user-mini-card { grid-template-columns: 1fr; justify-items: center; padding: 8px 0; }
+.is-sidebar-collapsed .user-mini-card__actions { flex-direction: column; }
+.is-easymd .portal-main { display: flex; flex-direction: column; height: 100dvh; min-height: 0; padding: 12px; overflow: hidden; }
+.is-easymd .main-head, .is-easymd .miniprogram-notice { display: none; }
+.easymd-view { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+.easymd-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 38px; padding: 0 6px 10px; }
+.easymd-head h1 { margin: 0; font: 700 15px var(--font-head); color: #174d40; }
+.easymd-head a { color: var(--muted); font-size: 12px; text-decoration: none; }
+.easymd-head a:hover { color: var(--brand); }
+@media (prefers-reduced-motion: no-preference) {
+  .portal-sidebar { transition: width 180ms ease; }
+  .portal-main { transition: margin-left 180ms ease; }
+}
+@media (max-width: 760px) {
+  .portal-sidebar { height: auto; padding: 10px 12px; }
+  .sidebar-top { gap: 8px; grid-template-rows: auto auto; }
+  .brand-block { padding: 0; }
+  .brand-block .brand-logo { width: 146px; }
+  .sidebar-top .sidebar-nav { display: flex; gap: 4px; overflow-x: auto; overflow-y: hidden; padding: 0; }
+  .sidebar-nav-item { flex: 0 0 44px; width: 44px; justify-content: center; padding: 10px; }
+  .sidebar-nav-item strong, .sidebar-nav-item span { display: none; }
+  .auth-dock { margin-top: 4px; padding-top: 6px; }
+  .guest-auth-card { border: 0; background: transparent; padding: 0; box-shadow: none; }
+  .guest-auth-card__body { display: none; }
+  .guest-auth-card__button { width: auto; margin-left: auto; min-height: 36px; padding: 6px 10px; box-shadow: none; }
+  .is-sidebar-collapsed .brand-block { flex-direction: row; gap: 10px; }
+  .is-sidebar-collapsed .sidebar-top .sidebar-nav { display: none; }
+  .is-sidebar-collapsed .auth-dock { display: none; }
+  .is-easymd .portal-shell { display: flex; flex-direction: column; height: 100dvh; }
+  .is-easymd .portal-sidebar { flex: 0 0 auto; }
+  .is-easymd .portal-main { flex: 1; height: auto; min-height: 0; padding: 8px; }
+  .easymd-head { min-height: 30px; padding-bottom: 8px; }
+  .is-sidebar-collapsed .user-mini-card { grid-template-columns: 34px auto; }
+}
+
+/* EasyMD renders in this page and shares ScanSci's UI tokens. */
+.is-easymd .portal-main { padding: 16px 20px 20px; background: #fff; overflow: visible; }
+.easymd-head { min-height: 38px; padding: 0 0 14px; border-bottom: 1px solid #e1e8e5; margin-bottom: 0; }
+.easymd-subtitle { font-size: 12px; color: var(--muted); }
+#easymdRoot { flex: 1; min-height: 0; position: relative; --background: #fff; --foreground: #192b28; --primary: #1b5141; --primary-foreground: #fff; --secondary: #f2f6f3; --secondary-foreground: #234c3f; --muted: #f3f6f4; --muted-foreground: #76827c; --accent: #e8f0eb; --accent-foreground: #1b5141; --border: #e0e8e2; --input: #e0e8e2; --ring: #1b5141; --card: #fff; --card-foreground: #192b28; --popover: #fff; --popover-foreground: #192b28; --editor: #fff; --radius: 0.625rem; --workspace-padding: 0; --preview-gutter: 1rem; font-family: var(--font-ui); }
+#easymdRoot > .relative { height: 100%; min-height: 0; }
+#easymdRoot .easymd-shell { height: 100%; max-width: none; padding: 0; }
+#easymdRoot .easymd-workspace { border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; }
+#easymdRoot [data-slot='resizable-panel']:not(:first-child) { min-width: 0 !important; }
+#easymdRoot .pointer-events-none.absolute { display: none; }
+#easymdRoot [data-slot='dropdown-menu-content'], #easymdRoot [data-slot='popover-content'], #easymdRoot [data-slot='dialog-content'] { border-radius: 12px; }
+#easymdRoot [data-slot='button'] { border-radius: 8px; }
+.easymd-loading { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--muted-foreground); font-size: 13px; }
+.easymd-retry { border: 1px solid #d4dfd8; border-radius: 10px; padding: 10px 16px; margin: 24px; background: #eff5f1; color: #1b5141; cursor: pointer; }
+html.dark .is-easymd .portal-main { background: #16221d; }
+html.dark #easymdRoot { --background: #16221d; --foreground: #e6eee8; --primary: #8cbd9f; --primary-foreground: #14281c; --secondary: #21352a; --secondary-foreground: #c8dece; --muted: #213027; --muted-foreground: #a4b3a9; --accent: #2a3e31; --accent-foreground: #c5e2cf; --border: #344a3c; --input: #344a3c; --ring: #8cbd9f; --card: #192820; --card-foreground: #e6eee8; --popover: #213027; --popover-foreground: #e6eee8; --editor: #16221d; }
+@media (max-width: 760px) { .is-easymd .portal-main { padding: 8px; } .easymd-head { min-height: 30px; padding-bottom: 8px; } }

@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="/styles.css?v=20261012-subtle-notices" />
+  <link rel="stylesheet" href="/styles.css?v=20261012-compact-header" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -221,12 +221,24 @@
     <main class="portal-main">
       <header class="main-head">
         <h1 id="catalogTitle" hidden>素材库</h1>
-        <p class="stats-inline" aria-label="Cloudflare 访问统计">
-          <span title="Cloudflare 每小时独立 IP 数相加，同一 IP 跨小时会重复计入。">近24小时访问 <strong id="stat24h">—</strong> 人次</span>&thinsp;·&thinsp;
-          <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。">近30天访问 <strong id="stat30d">—</strong> 人次</span>&thinsp;·&thinsp;
-          <span title="Cloudflare 统计的网络请求次数，包含页面、资源和自动访问请求。">近30天请求 <strong id="statReq">—</strong> 次</span>&thinsp;·&thinsp;
-          <a class="stats-source" href="https://developers.cloudflare.com/analytics/faq/about-analytics/" target="_blank" rel="noopener noreferrer" aria-label="Cloudflare 数据来源与统计说明">Cloudflare</a>
-        </p>
+        <div class="main-head-meta">
+          <p class="stats-inline" aria-label="Cloudflare 访问统计">
+            <span title="Cloudflare 每小时独立 IP 数相加，同一 IP 跨小时会重复计入。">近24小时 <strong id="stat24h">—</strong> 人次</span>&thinsp;·&thinsp;
+            <span>近30天 <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。"><strong id="stat30d">—</strong> 人次</span>、<span title="近30天的网络请求次数，包含页面、资源和自动访问请求。"><strong id="statReq">—</strong> 次请求</span></span>&thinsp;·&thinsp;
+            <button id="openStatsInfoBtn" class="stats-info-toggle" type="button" popovertarget="statsInfoPopover" title="查看访问统计说明" aria-label="查看访问统计说明">?</button>
+          </p>
+          <details class="miniprogram-notice" aria-label="网站通知">
+            <summary class="miniprogram-notice__summary">
+              <svg class="miniprogram-notice__mark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 11 18-5v12L3 14z"/><path d="M7 15v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4"/></svg>
+              <span>ScanSci 小程序上线</span>
+              <span class="miniprogram-notice__chevron" aria-hidden="true">⌄</span>
+            </summary>
+            <div class="miniprogram-notice__body">
+              <p class="miniprogram-notice__text">微信里也能查期刊、测学术人格、核验参考文献。</p>
+              <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
+            </div>
+          </details>
+        </div>
         <div class="main-head-actions">
           <p id="toolCount">加载中...</p>
           <button id="openDeveloperAboutBtn" class="developer-about-entry" type="button" popovertarget="developerAboutPopover">
@@ -237,15 +249,6 @@
       </header>
 
       <p id="cardOrderStatus" class="card-order-status" role="status" aria-live="polite" hidden></p>
-
-      <section class="miniprogram-notice" aria-label="网站通知">
-        <svg class="miniprogram-notice__mark" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 11 18-5v12L3 14z"/><path d="M7 15v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4"/></svg>
-        <p class="miniprogram-notice__text">
-          <strong>ScanSci 小程序上线</strong>
-          <span>微信里也能查期刊、测学术人格、核验参考文献。</span>
-        </p>
-        <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
-      </section>
 
       <section id="easymdView" class="portal-view easymd-view" data-portal-view="easymd" aria-label="EasyMD 编辑器">
         <header class="easymd-head">
@@ -298,6 +301,20 @@
       </section>
     </main>
   </div>
+
+  <section id="statsInfoPopover" class="stats-info-popover" popover="auto" role="dialog" aria-labelledby="statsInfoTitle">
+    <button class="stats-info__close" type="button" popovertarget="statsInfoPopover" popovertargetaction="hide" aria-label="关闭数据说明" autofocus>×</button>
+    <h2 id="statsInfoTitle">数据说明</h2>
+    <dl>
+      <dt>近24小时访问</dt>
+      <dd>每小时独立 IP 数相加，同一 IP 跨小时会重复计入。</dd>
+      <dt>近30天访问</dt>
+      <dd>每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。</dd>
+      <dt>请求次数</dt>
+      <dd>近30天的网络请求，包含页面、图片等资源，也包含自动访问。</dd>
+    </dl>
+    <a class="stats-source" href="https://developers.cloudflare.com/analytics/faq/about-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare 数据来源 ↗</a>
+  </section>
 
   <section id="developerAboutPopover" class="developer-about-popover" popover="auto" role="dialog" aria-labelledby="developerAboutTitle" aria-describedby="developerAboutBio">
     <button class="developer-about-popover__close" type="button" popovertarget="developerAboutPopover" popovertargetaction="hide" aria-label="关闭开发者介绍" autofocus>×</button>

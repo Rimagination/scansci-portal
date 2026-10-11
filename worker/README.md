@@ -17,6 +17,7 @@ Cloudflare Worker + D1，实现：
 - `POST /api/auth/email/verify-code`
 - `POST /api/auth/logout`
 - `GET /api/me`
+- `POST /api/me/card-order`（保存当前账号的栏目卡片顺序；`GET /api/me` 返回 `card_orders`）
 - `GET /api/journals/:issn/submission-stats`
 - `POST /api/journals/:issn/ratings`
 - `POST /api/actions`

@@ -6,6 +6,8 @@ const state = {
   viewMode: "all",
   me: null,
   favorites: new Set(),
+  cardOrders: {},
+  accountVersion: 0,
   authModalSource: "",
 };
 
@@ -21,6 +23,7 @@ const els = {
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
   catalogTitle: document.getElementById("catalogTitle"),
+  orderStatus: document.getElementById("cardOrderStatus"),
   stats: document.querySelector(".stats-inline"),
   miniProgramNotice: document.querySelector(".miniprogram-notice"),
   onlineToolsView: document.getElementById("onlineToolsView"),
@@ -37,6 +40,8 @@ const els = {
   logoutBtn: document.getElementById("logoutBtn"),
   githubLinkBtn: document.getElementById("githubLinkBtn"),
   userMiniCard: document.getElementById("userMiniCard"),
+  userAccountBtn: document.getElementById("userAccountBtn"),
+  userAccountMenu: document.getElementById("userAccountMenu"),
   userAvatar: document.getElementById("userAvatar"),
   userName: document.getElementById("userName"),
   emailInput: document.getElementById("emailInput"),
@@ -159,7 +164,9 @@ function setPortalView(view, options = {}) {
   const nextView = ["online", "materials", "open-source", "easymd"].includes(view) ? view : "online";
   const { updateHash = true } = options;
   if (state.currentView !== nextView) state.activeFilter = "all";
+  finishCardDrag(false);
   state.currentView = nextView;
+  renderCardOrderStatus();
 
   if (els.onlineToolsView) {
     els.onlineToolsView.hidden = !["online", "materials"].includes(nextView);
@@ -338,7 +345,7 @@ function getSectionApps() {
 
 function getVisibleApps() {
   const q = normalize(state.query);
-  return getSectionApps().filter((app) => (state.currentView === "materials" || matchesFilter(app, state.activeFilter)) && matchesQuery(app, q));
+  return orderedCards(getSectionApps(), state.currentView).filter((app) => (state.currentView === "materials" || matchesFilter(app, state.activeFilter)) && matchesQuery(app, q));
 }
 
 function isFavorite(appId) {
@@ -355,6 +362,269 @@ function compactDescription(app) {
   const firstSentence = description.match(/^[^。.!?！？]+[。.!?！？]?/)?.[0] || description;
   return firstSentence.length > 58 ? `${firstSentence.slice(0, 56)}…` : firstSentence;
 }
+
+const cardOrderQueues = new Map();
+const cardOrderFeedback = new Map();
+let activeCardDrag = null;
+let suppressCardClickUntil = 0;
+
+function restoreCardOrders(payload = null) {
+  state.accountVersion += 1;
+  state.cardOrders = {};
+  if (state.me) {
+    for (const section of ["online", "materials", "open-source"]) {
+      const ids = payload?.card_orders?.[section];
+      if (Array.isArray(ids)) state.cardOrders[section] = [...new Set(ids.filter(id => typeof id === "string"))];
+    }
+  }
+  cardOrderFeedback.clear();
+  finishCardDrag(false);
+  applyOpenSourceOrder();
+  renderCardOrderStatus();
+}
+
+function orderedCards(cards, section) {
+  const rank = new Map((state.cardOrders[section] || []).map((id, index) => [id, index]));
+  return [...cards].sort((a, b) => (rank.get(a.id) ?? Infinity) - (rank.get(b.id) ?? Infinity));
+}
+
+function cardOrderHandle(id, name) {
+  const label = state.me ? `拖动调整 ${name} 顺序；也可使用方向键` : `登录后调整 ${name} 顺序`;
+  return `<button class="card-order-handle" type="button" data-card-move="${escapeHtml(id)}" aria-label="${escapeHtml(label)}" title="${escapeHtml(label)}"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grip-vertical" aria-hidden="true"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg></button>`;
+}
+
+function initCardOrdering() {
+  const grid = els.openSourceView?.querySelector(".open-source-grid");
+  grid?.querySelectorAll("a.open-source-card").forEach((link, index) => {
+    const card = document.createElement("article");
+    card.className = "open-source-card";
+    card.dataset.defaultOrder = String(index);
+    card.dataset.appId = `open-source-${new URL(link.href).pathname.split("/").at(-1).toLowerCase().replace(/[^a-z0-9_-]/g, "-")}`;
+    link.replaceWith(card);
+    link.className = "open-source-card__link";
+    card.append(link);
+    card.insertAdjacentHTML("beforeend", cardOrderHandle(card.dataset.appId, link.querySelector("strong").textContent));
+  });
+  for (const collection of [els.grid, grid]) {
+    collection?.addEventListener("pointerdown", beginCardDrag);
+    collection?.addEventListener("keydown", onCardOrderKey);
+    collection?.addEventListener("dragstart", event => {
+      if (activeCardDrag?.card.contains(event.target)) event.preventDefault();
+    });
+    collection?.addEventListener("click", event => {
+      if (event.target.closest(".card-order-handle")) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!state.me) openAuthModal();
+      }
+    });
+  }
+  document.addEventListener("click", event => {
+    if (performance.now() < suppressCardClickUntil && event.target.closest(".tool-card, .open-source-card")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      suppressCardClickUntil = 0;
+    }
+  }, true);
+}
+
+function applyOpenSourceOrder() {
+  const grid = els.openSourceView?.querySelector(".open-source-grid");
+  if (!grid) return;
+  const cards = [...grid.children].sort((a, b) => Number(a.dataset.defaultOrder) - Number(b.dataset.defaultOrder)).map(element => ({ id: element.dataset.appId, element }));
+  for (const { element } of cards) {
+    const name = element.querySelector("strong").textContent;
+    const handle = element.querySelector(".card-order-handle");
+    const label = state.me ? `拖动调整 ${name} 顺序；也可使用方向键` : `登录后调整 ${name} 顺序`;
+    handle.title = label;
+    handle.setAttribute("aria-label", label);
+  }
+  for (const { element } of orderedCards(cards, "open-source")) grid.append(element);
+}
+
+function renderCardOrderStatus() {
+  if (!els.orderStatus) return;
+  const feedback = cardOrderFeedback.get(state.currentView);
+  els.orderStatus.hidden = !feedback;
+  els.orderStatus.replaceChildren();
+  if (!feedback) return;
+  els.orderStatus.append(document.createTextNode(feedback.message));
+  if (feedback.retry) {
+    const retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "card-order-retry";
+    retry.textContent = "重新保存";
+    retry.addEventListener("click", () => saveCardOrder(state.currentView));
+    els.orderStatus.append(retry);
+  }
+}
+
+function saveCardOrder(section) {
+  const userId = state.me?.id;
+  const version = state.accountVersion;
+  const order = state.cardOrders[section];
+  if (!userId || !order) return;
+  cardOrderFeedback.set(section, { message: "正在保存卡片顺序…" });
+  renderCardOrderStatus();
+  const task = (cardOrderQueues.get(section) || Promise.resolve()).catch(() => {}).then(async () => {
+    if (state.accountVersion !== version || state.cardOrders[section] !== order) return;
+    try {
+      const response = await apiFetch("/me/card-order", { method: "POST", body: JSON.stringify({ section, app_ids: order, expected_user_id: userId }) });
+      if (state.accountVersion !== version) return;
+      if (response.status === 401) {
+        state.me = null;
+        state.favorites = new Set();
+        restoreCardOrders();
+        renderAuth();
+        renderGrid();
+        setAuthHint("登录已过期，请重新登录。", "error");
+        openAuthModal();
+        return;
+      }
+      if (response.status === 409) {
+        await loadMe();
+        return;
+      }
+      const payload = await safeJson(response);
+      if (!response.ok || !payload?.ok || payload.user_id !== userId) throw Error("card_order_save_failed");
+      if (state.cardOrders[section] === order) cardOrderFeedback.set(section, { message: "卡片顺序已保存到账号" });
+    } catch {
+      if (state.accountVersion === version && state.cardOrders[section] === order) {
+        cardOrderFeedback.set(section, { message: "卡片顺序暂未保存，请重试。", retry: true });
+      }
+    }
+    renderCardOrderStatus();
+  });
+  cardOrderQueues.set(section, task);
+}
+
+function moveCard(section, sourceId, targetId, after) {
+  const all = section === "open-source"
+    ? [...els.openSourceView.querySelector(".open-source-grid").children].map(el => ({ id: el.dataset.appId }))
+    : state.apps.filter(app => (app.section === "materials") === (section === "materials"));
+  const ids = orderedCards(all, section).map(app => app.id);
+  if (!ids.includes(sourceId) || !ids.includes(targetId) || sourceId === targetId) return;
+  const original = ids.join(",");
+  ids.splice(ids.indexOf(sourceId), 1);
+  ids.splice(ids.indexOf(targetId) + Number(after), 0, sourceId);
+  if (ids.join(",") === original) return;
+  state.cardOrders[section] = ids;
+  if (section === "open-source") applyOpenSourceOrder();
+  else renderGrid();
+  saveCardOrder(section);
+}
+
+function onCardOrderKey(event) {
+  const handle = event.target.closest(".card-order-handle");
+  if (!handle || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+  event.preventDefault();
+  finishCardDrag(false);
+  if (!state.me) { openAuthModal(); return; }
+  const grid = event.currentTarget;
+  const ids = [...grid.children].map(el => el.dataset.appId);
+  const index = ids.indexOf(handle.dataset.cardMove);
+  const columns = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+  const delta = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns }[event.key];
+  const destination = event.key === "Home" ? 0 : event.key === "End" ? ids.length - 1 : Math.max(0, Math.min(ids.length - 1, index + delta));
+  moveCard(state.currentView, ids[index], ids[destination], destination > index);
+  grid.querySelector(`[data-card-move="${handle.dataset.cardMove}"]`)?.focus({ preventScroll: true });
+}
+
+function dragDestination(drag) {
+  const bounds = drag.grid.getBoundingClientRect();
+  if (drag.x < bounds.left || drag.x > bounds.right || drag.y < bounds.top || drag.y > bounds.bottom) return null;
+  let nearest = null;
+  let distance = Infinity;
+  for (const card of drag.grid.children) {
+    const rect = card.getBoundingClientRect();
+    const value = Math.hypot(Math.max(rect.left - drag.x, 0, drag.x - rect.right), Math.max(rect.top - drag.y, 0, drag.y - rect.bottom));
+    if (value < distance) { nearest = card; distance = value; }
+  }
+  if (!nearest || nearest === drag.card) return null;
+  const rect = nearest.getBoundingClientRect();
+  const after = drag.columns === 1 ? drag.y > rect.top + rect.height / 2 : drag.x > rect.left + rect.width / 2;
+  return { card: nearest, after };
+}
+
+function drawCardDrag() {
+  const drag = activeCardDrag;
+  if (!drag?.preview) return;
+  drag.preview.style.transform = `translate3d(${drag.left + drag.x - drag.startX}px, ${drag.top + drag.y - drag.startY}px, 0)`;
+  const speed = drag.y < 64 ? -Math.ceil((64 - drag.y) / 5) : drag.y > innerHeight - 64 ? Math.ceil((drag.y - innerHeight + 64) / 5) : 0;
+  if (speed) window.scrollBy(0, speed);
+  drag.target?.card.classList.remove("is-card-drop-target");
+  drag.target = dragDestination(drag);
+  drag.target?.card.classList.add("is-card-drop-target");
+  drag.frame = requestAnimationFrame(drawCardDrag);
+}
+
+function beginCardDrag(event) {
+  const handle = event.target.closest(".card-order-handle");
+  const card = event.target.closest(".tool-card, .open-source-card");
+  if (!card || event.button !== 0 || !event.isPrimary || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  if (!handle && (event.pointerType !== "mouse" || event.target.closest("button, input, select, textarea"))) return;
+  if (!state.me) { if (handle) { event.preventDefault(); openAuthModal(); } return; }
+  if (handle) event.preventDefault();
+  finishCardDrag(false);
+  const rect = card.getBoundingClientRect();
+  handle?.focus({ preventScroll: true });
+  activeCardDrag = { handle, captureTarget: handle || card, card, grid: event.currentTarget, section: state.currentView, pointer: event.pointerId, startX: event.clientX, startY: event.clientY, x: event.clientX, y: event.clientY, left: rect.left, top: rect.top, width: rect.width, height: rect.height, columns: getComputedStyle(event.currentTarget).gridTemplateColumns.split(" ").length };
+  handle?.setPointerCapture(event.pointerId);
+  window.addEventListener("pointermove", moveCardDrag);
+  window.addEventListener("pointerup", endCardDrag);
+  window.addEventListener("pointercancel", cancelCardDrag);
+  window.addEventListener("blur", cancelCardDrag);
+}
+
+function moveCardDrag(event) {
+  const drag = activeCardDrag;
+  if (!drag || event.pointerId !== drag.pointer) return;
+  drag.x = event.clientX;
+  drag.y = event.clientY;
+  if (!drag.preview && Math.hypot(drag.x - drag.startX, drag.y - drag.startY) >= 6) {
+    drag.captureTarget.setPointerCapture(drag.pointer);
+    drag.preview = drag.card.cloneNode(true);
+    drag.preview.removeAttribute("data-app-id");
+    drag.preview.setAttribute("aria-hidden", "true");
+    drag.preview.inert = true;
+    drag.preview.classList.add("card-drag-preview");
+    drag.preview.style.width = `${drag.width}px`;
+    drag.preview.style.height = `${drag.height}px`;
+    document.body.append(drag.preview);
+    drag.card.classList.add("is-card-dragging");
+    document.body.classList.add("is-card-ordering");
+    drawCardDrag();
+  }
+}
+
+function endCardDrag(event) {
+  if (event.pointerId !== activeCardDrag?.pointer) return;
+  activeCardDrag.x = event.clientX;
+  activeCardDrag.y = event.clientY;
+  finishCardDrag(true);
+}
+
+function cancelCardDrag() { finishCardDrag(false); }
+
+function finishCardDrag(commit) {
+  const drag = activeCardDrag;
+  if (!drag) return;
+  activeCardDrag = null;
+  const target = drag.preview ? dragDestination(drag) : null;
+  cancelAnimationFrame(drag.frame);
+  drag.preview?.remove();
+  drag.target?.card.classList.remove("is-card-drop-target");
+  drag.card.classList.remove("is-card-dragging");
+  document.body.classList.remove("is-card-ordering");
+  if (drag.captureTarget.hasPointerCapture(drag.pointer)) drag.captureTarget.releasePointerCapture(drag.pointer);
+  window.removeEventListener("pointermove", moveCardDrag);
+  window.removeEventListener("pointerup", endCardDrag);
+  window.removeEventListener("pointercancel", cancelCardDrag);
+  window.removeEventListener("blur", cancelCardDrag);
+  if (drag.preview) suppressCardClickUntil = performance.now() + 350;
+  if (commit && target) moveCard(drag.section, drag.card.dataset.appId, target.card.dataset.appId, target.after);
+}
+
 
 function cardTemplate(app) {
   const appId = String(app.id || "");
@@ -401,6 +671,7 @@ function cardTemplate(app) {
         </div>
         <p class="tool-card__desc">${escapeHtml(compactDescription(app))}</p>
       </div>
+      ${cardOrderHandle(appId, englishTitle)}
     </article>
   `;
 }
@@ -460,6 +731,7 @@ function renderAuth() {
   }
 
   if (!loggedIn) {
+    els.userAccountMenu?.hidePopover();
     setAuthHint("");
     return;
   }
@@ -549,6 +821,7 @@ async function loadMe() {
     if (res.status === 401) {
       state.me = null;
       state.favorites = new Set();
+      restoreCardOrders();
       state.viewMode = "all";
       renderAuth();
       renderGrid();
@@ -558,11 +831,13 @@ async function loadMe() {
     const payload = await res.json();
     state.me = payload?.user || null;
     state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
+    restoreCardOrders(payload);
     finishAuthenticatedPromptFlow();
   } catch (err) {
     console.warn("Auth API unavailable, running as guest:", err);
     state.me = null;
     state.favorites = new Set();
+    restoreCardOrders();
     state.viewMode = "all";
   }
   renderAuth();
@@ -589,6 +864,7 @@ async function logout() {
   }
   state.me = null;
   state.favorites = new Set();
+  restoreCardOrders();
   renderAuth();
   renderGrid();
 }
@@ -652,6 +928,7 @@ async function loginByEmailCode() {
 
     state.me = payload?.user || null;
     state.favorites = new Set((payload?.favorites || []).map((x) => String(x)));
+    restoreCardOrders(payload);
     if (els.emailCodeInput) els.emailCodeInput.value = "";
     setAuthHint("");
     renderAuth();
@@ -694,6 +971,7 @@ async function onFavoriteClick(event) {
     if (res.status === 401) {
       state.me = null;
       state.favorites = new Set();
+      restoreCardOrders();
       renderAuth();
       renderGrid();
       setAuthHint("登录已过期，请重新登录。", "error");
@@ -760,6 +1038,18 @@ function onOpenToolClick(event) {
 }
 
 function bindEvents() {
+  initCardOrdering();
+  els.userAccountMenu?.addEventListener("toggle", event => {
+    const open = event.newState === "open";
+    els.userAccountBtn.setAttribute("aria-expanded", String(open));
+    if (!open) return;
+    const rect = els.userAccountBtn.getBoundingClientRect();
+    const menu = els.userAccountMenu;
+    menu.style.left = Math.max(12, Math.min(rect.left, innerWidth - menu.offsetWidth - 12)) + "px";
+    menu.style.top = Math.max(12, Math.min(rect.top > innerHeight / 2 ? rect.top - menu.offsetHeight - 8 : rect.bottom + 8, innerHeight - menu.offsetHeight - 12)) + "px";
+    menu.querySelector("button:not([hidden])")?.focus({ preventScroll: true });
+  });
+  window.addEventListener("resize", () => els.userAccountMenu?.hidePopover());
   els.sidebarToggle?.addEventListener("click", () => {
     setSidebarCollapsed(!document.documentElement.classList.contains("is-sidebar-collapsed"));
   });
@@ -841,6 +1131,7 @@ function bindEvents() {
 
   if (els.logoutBtn) {
     els.logoutBtn.addEventListener("click", () => {
+      els.userAccountMenu?.hidePopover();
       void logout();
     });
   }

@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="/styles.css?v=20261011-materials-1" />
+  <link rel="stylesheet" href="/styles.css?v=20261011-card-order-3" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -212,15 +212,13 @@
           <button id="guestLoginBtn" class="guest-auth-card__button" type="button" aria-label="登录 ScanSci" title="登录 ScanSci"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round sidebar-icon" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="5"></circle><path d="M20 21a8 8 0 0 0-16 0"></path></svg><span>立即登录</span></button>
         </div>
         <div id="userMiniCard" class="user-mini-card" hidden>
-          <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
-          <span id="userName" class="user-mini-card__name"></span>
-          <div class="user-mini-card__actions">
-            <button id="githubLinkBtn" class="user-mini-card__icon" type="button" hidden title="关联 GitHub" aria-label="关联 GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link sidebar-icon" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            </button>
-            <button id="logoutBtn" class="user-mini-card__icon" type="button" title="退出登录" aria-label="退出登录">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out sidebar-icon" aria-hidden="true" focusable="false"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg>
-            </button>
+          <button id="userAccountBtn" class="user-account-button" type="button" popovertarget="userAccountMenu" aria-label="账号菜单" aria-expanded="false" title="账号菜单">
+            <img id="userAvatar" class="user-mini-card__avatar" alt="用户头像" />
+            <span id="userName" class="user-mini-card__name"></span>
+          </button>
+          <div id="userAccountMenu" class="user-account-menu" popover="auto" role="group" aria-label="账户选项">
+            <button id="githubLinkBtn" class="user-account-menu__item" type="button" hidden><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link sidebar-icon" aria-hidden="true" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg><span>关联 GitHub</span></button>
+            <button id="logoutBtn" class="user-account-menu__item" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out sidebar-icon" aria-hidden="true" focusable="false"><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path></svg><span>退出登录</span></button>
           </div>
         </div>
       </section>
@@ -236,6 +234,8 @@
         </p>
         <p id="toolCount">加载中...</p>
       </header>
+
+      <p id="cardOrderStatus" class="card-order-status" role="status" aria-live="polite" hidden></p>
 
       <section class="miniprogram-notice" aria-label="ScanSci 小程序上线">
         <span class="miniprogram-notice__mark" aria-hidden="true"></span>
@@ -335,7 +335,7 @@
   </div>
 
   <script src="/anon-prompt.js?v=20260616b"></script>
-  <script src="/app.js?v=20261011-materials-1"></script>
+  <script src="/app.js?v=20261011-card-order-3"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

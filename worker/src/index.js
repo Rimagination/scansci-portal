@@ -2,6 +2,8 @@
 import { handleOpenAlexKeyStatus, handleOpenAlexKeyWrite, handleOpenAlexProxy } from "./reader-openalex.js";
 import { getOrcidProfile } from "./orcid-profile.js";
 
+import { getUserCardOrders, handleCardOrderWrite } from "./portal-card-order.js";
+
 const PKCE_COOKIE = "__Host-scansci_pkce";
 const LEGACY_PKCE_COOKIE = "__Host-scansci_pkce";
 const SESSION_COOKIE = "__Secure-scansci_session";
@@ -97,6 +99,12 @@ async function handleRequest(request, env) {
       return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
     }
     return handleLogout(request, env);
+  }
+
+  if (url.pathname === "/api/me/card-order") {
+    if (request.method !== "POST") return jsonResponse(request, env, { ok: false, error: "method_not_allowed" }, 405);
+    if (request.headers.get("Origin") !== getPublicOrigin(request, env)) return jsonResponse(request, env, { ok: false, error: "forbidden" }, 403);
+    return handleCardOrderWrite(request, env, { requireAuth, jsonResponse });
   }
 
   if (url.pathname === "/api/me" && request.method === "GET") {
@@ -608,9 +616,10 @@ async function handleEmailVerifyCode(request, env) {
   await appendSessionCookie(headers, env, user);
   const favorites = await getUserFavorites(env, user.id);
   const fullUser = await getUserById(env, user.id);
+  const cardOrders = await getUserCardOrders(env, user.id);
 
   return new Response(
-    JSON.stringify({ ok: true, user: fullUser, favorites }),
+    JSON.stringify({ ok: true, user: fullUser, favorites, card_orders: cardOrders }),
     {
       status: 200,
       headers,
@@ -678,7 +687,8 @@ async function handleMe(request, env) {
   }
 
   const favorites = await getUserFavorites(env, auth.userId);
-  const response = jsonResponse(request, env, { ok: true, user, favorites });
+  const cardOrders = await getUserCardOrders(env, auth.userId);
+  const response = jsonResponse(request, env, { ok: true, user, favorites, card_orders: cardOrders });
   const cookies = parseCookies(request.headers.get("Cookie") || "");
   if (!cookies[SESSION_COOKIE] && cookies[LEGACY_SESSION_COOKIE]) {
     await appendSessionCookie(response.headers, env, user);

@@ -4,6 +4,18 @@
 
 主站侧栏用 Lucide PanelLeftClose / PanelLeftOpen，记住浏览器中的折叠偏好；EasyMD 组件工具用 Lucide Shapes 设计图标，放在标题 EasyMD 前面，提供独立的打开/收起状态。桌面收起时直接释放组件栏宽度，手机从同一标题按钮打开组件菜单。工具栏通用操作使用 Lucide，微信导出和知乎导出复用原站品牌图标（绿色微信、蓝色知乎），发送到公众号使用绿色 Send。桌面支持左右编辑与预览，手机使用编辑/预览切换。首次进入显示原有手机外框，包含黑色边框、摄像头和圆角屏幕；预览模式继续使用原编辑器的偏好与窄窗口适配。主站的装饰背景隐藏规则仅作用于布局直接子元素。
 
+## 卡片排序与账号菜单
+
+登录后，在线轻工具、素材库和开源工具都可调整卡片顺序，各栏目分别保存到账号。桌面按住卡片图片、标题或空白处拖动；右下角的小型 Lucide GripVertical 按钮支持鼠标、触摸及方向键，Home / End 移到首尾。普通点击继续打开工具，收藏按钮保留原操作。手机正文区域继续正常滚动，拖动按钮靠近屏幕边缘时自动滚动。
+
+放开后自动保存，失败时提供「重新保存」。刷新或其他设备登录后从 `GET /api/me` 恢复 `card_orders`；新增卡片追加在现有顺序后，筛选时保留完整栏目顺序。前端按栏目排队写入，账号切换会丢弃旧请求的回写。
+
+头像和用户名组成账号菜单按钮。退出与 GitHub 关联放入原生 Popover，点击空白或 Escape 可收起；退出恢复默认卡片顺序。
+
+服务使用 `POST /api/me/card-order`，JSON 包含 `section`、`app_ids`、`expected_user_id`。写入限当前认证账号和主站 Origin，最多 200 个唯一 ID / 32 KB；新表见 `worker/sql/0013_user_card_orders.sql`。部署先执行此新增迁移，再发布 Worker 和网页。
+
+`tests/portal-card-order.check.js` 使用真实 Worker 与本地 SQLite 测试账号，覆盖整卡拖动、手机原生触摸与自动滚动、键盘、账号隔离、刷新及新设备恢复、连续排序、失败重试与头像菜单。运行 `node tests/portal-card-order-fixture.mjs` 后用 Playwright CLI `run-code` 执行；本地测试服务仅监听 loopback，不写入线上用户记录。
+
 ## 构建与路由
 
 源组件来自 `D:/easymd`。独立客户端入口 `src/scansci-entry.tsx` 复用原编辑器、文件、排版、复制、预览与导出；使用内存路由显示工具文档，主站继续管理浏览器前进、后退和栏目地址。HTML 预览使用原有隔离的 `srcdoc` iframe。

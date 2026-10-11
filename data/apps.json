@@ -2,6 +2,7 @@
   "apps": [
     {
       "id": "scansci-symbols",
+      "section": "materials",
       "name": "科研素材库",
       "description": "按对象分类浏览、搜索和下载科研 SVG 矢量素材，支持按部件编辑。",
       "cover": "./assets/covers/scansci-symbols-nature.webp",
@@ -36,6 +37,7 @@
     },
     {
       "id": "scansci-logos",
+      "section": "materials",
       "name": "Logo 库",
       "description": "搜索、筛选和下载高校与企业标识，支持通过 API 调用。",
       "cover": "./assets/covers/scansci-logos-handdrawn-white.webp",

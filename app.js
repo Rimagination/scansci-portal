@@ -20,6 +20,9 @@ const els = {
   empty: document.getElementById("emptyState"),
   error: document.getElementById("errorState"),
   count: document.getElementById("toolCount"),
+  catalogTitle: document.getElementById("catalogTitle"),
+  stats: document.querySelector(".stats-inline"),
+  miniProgramNotice: document.querySelector(".miniprogram-notice"),
   onlineToolsView: document.getElementById("onlineToolsView"),
   openSourceView: document.getElementById("openSourceView"),
   easymdView: document.getElementById("easymdView"),
@@ -86,13 +89,15 @@ function isMiniProgramPopupOpen() {
 
 function viewFromLocation() {
   if (/^\/easymd(?:\/|$)/.test(window.location.pathname) || window.location.hash === "#easymd") return "easymd";
+  if (window.location.hash === "#materials") return "materials";
   return window.location.hash === "#open-source" ? "open-source" : "online";
 }
 
 function urlForView(view) {
   if (view === "easymd") return "/easymd/";
   const query = window.location.pathname === "/" ? window.location.search : "";
-  return `/${query}${view === "open-source" ? "#open-source" : "#online-tools"}`;
+  const hash = view === "materials" ? "#materials" : view === "open-source" ? "#open-source" : "#online-tools";
+  return `/${query}${hash}`;
 }
 
 function setSidebarCollapsed(collapsed) {
@@ -151,15 +156,24 @@ function updateNavViewState(view) {
 }
 
 function setPortalView(view, options = {}) {
-  const nextView = ["online", "open-source", "easymd"].includes(view) ? view : "online";
+  const nextView = ["online", "materials", "open-source", "easymd"].includes(view) ? view : "online";
   const { updateHash = true } = options;
+  if (state.currentView !== nextView) state.activeFilter = "all";
   state.currentView = nextView;
 
-  if (els.onlineToolsView) els.onlineToolsView.hidden = nextView !== "online";
+  if (els.onlineToolsView) {
+    els.onlineToolsView.hidden = !["online", "materials"].includes(nextView);
+    els.onlineToolsView.dataset.portalView = nextView;
+    els.onlineToolsView.setAttribute("aria-label", nextView === "materials" ? "素材库" : "在线轻工具");
+  }
+  if (els.catalogTitle) els.catalogTitle.hidden = nextView !== "materials";
+  if (els.stats) els.stats.hidden = nextView === "materials";
+  if (els.miniProgramNotice) els.miniProgramNotice.hidden = nextView === "materials";
+  if (els.filters) els.filters.hidden = nextView !== "online";
   if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
   if (els.easymdView) els.easymdView.hidden = nextView !== "easymd";
   document.body.classList.toggle("is-easymd", nextView === "easymd");
-  document.title = nextView === "easymd" ? "EasyMD | ScanSci" : "ScanSci | 学术工具门户";
+  document.title = nextView === "easymd" ? "EasyMD | ScanSci" : nextView === "materials" ? "素材库 | ScanSci" : "ScanSci | 学术工具门户";
   if (nextView === "easymd") void loadEasyMD();
   updateNavViewState(nextView);
 
@@ -168,7 +182,8 @@ function setPortalView(view, options = {}) {
     els.count.textContent = `${count} 个开源工具`;
   }
 
-  if (nextView === "online") {
+  if (["online", "materials"].includes(nextView)) {
+    renderFilters();
     renderGrid();
   }
 
@@ -316,9 +331,14 @@ function matchesFilter(app, filterKey) {
   return filter.terms.some((term) => haystack.includes(normalize(term)));
 }
 
+function getSectionApps() {
+  const materials = state.currentView === "materials";
+  return state.apps.filter((app) => (app.section === "materials") === materials);
+}
+
 function getVisibleApps() {
   const q = normalize(state.query);
-  return state.apps.filter((app) => matchesFilter(app, state.activeFilter) && matchesQuery(app, q));
+  return getSectionApps().filter((app) => (state.currentView === "materials" || matchesFilter(app, state.activeFilter)) && matchesQuery(app, q));
 }
 
 function isFavorite(appId) {
@@ -408,10 +428,11 @@ function renderGrid() {
   const visible = getVisibleApps();
   els.grid.innerHTML = visible.map((app) => cardTemplate(app)).join("");
   els.empty.hidden = visible.length !== 0;
-  if (state.currentView === "online") {
-    els.count.textContent = `共 ${visible.length} / ${state.apps.length} 个在线轻工具`;
+  if (["online", "materials"].includes(state.currentView)) {
+    const label = state.currentView === "materials" ? "素材库" : "在线轻工具";
+    els.count.textContent = `共 ${visible.length} / ${getSectionApps().length} 个${label}`;
   }
-  els.empty.textContent = "未找到匹配轻工具，请调整关键词或分类。";
+  els.empty.textContent = state.currentView === "materials" ? "未找到匹配素材库，请调整关键词。" : "未找到匹配轻工具，请调整关键词或分类。";
 
   els.grid.querySelectorAll('[data-action="favorite"]').forEach((btn) => {
     btn.addEventListener("click", onFavoriteClick);
@@ -472,7 +493,7 @@ function renderAuth() {
 
 async function loadApps() {
   try {
-    const res = await fetch("/data/apps.json?v=20261011-reader-entry-1", { cache: "no-store" });
+    const res = await fetch("/data/apps.json?v=20261011-materials-1", { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const payload = await res.json();
     state.apps = Array.isArray(payload?.apps) ? payload.apps : [];

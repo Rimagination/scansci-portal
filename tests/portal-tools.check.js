@@ -14,7 +14,11 @@ async (page) => {
       await check.locator('.tool-card').first().waitFor();
       assert(await check.locator('#easymdRoot .cm-content').count() === 0, 'Home eagerly loaded the editor');
       assert(await check.locator('.sidebar-nav-item[aria-label="Logo 库"]').count() === 0, 'Logo remains in the sidebar');
+      assert(await check.locator('article[data-app-id="scansci-logos"]').count() === 0, 'Logo remains in online tools');
+      await check.getByRole('link', { name: '素材库', exact: true }).click();
       assert(await check.locator('article[data-app-id="scansci-logos"] .tool-card__status').innerText() === 'NEW', 'Logo card is missing its NEW badge');
+      assert(await check.locator('.tool-card').count() === 2, 'The material library must contain both libraries');
+      await check.getByRole('link', { name: '在线轻工具', exact: true }).click();
       await check.getByRole('link', { name: 'EasyMD', exact: true }).click();
       assert(new URL(check.url()).pathname === '/easymd/', 'EasyMD did not use its own path');
       assert(await check.locator('.main-head').isHidden() && await check.locator('.miniprogram-notice').isHidden(), 'Home controls remain in the editor');

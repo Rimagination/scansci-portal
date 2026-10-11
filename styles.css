@@ -444,7 +444,7 @@ body.is-miniprogram-popup-open {
 
 .portal-main {
   margin-left: var(--sidebar-width);
-  padding: 20px 24px 24px;
+  padding: 30px 24px 24px;
 }
 
 .main-head {
@@ -493,7 +493,7 @@ body.is-miniprogram-popup-open {
 .miniprogram-notice__summary::-webkit-details-marker { display: none; }
 .miniprogram-notice__summary:hover { color: var(--ink); }
 .miniprogram-notice__summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
-.miniprogram-notice__chevron { font-size: 14px; line-height: 1; }
+.miniprogram-notice__chevron { display: block; flex: 0 0 12px; width: 12px; height: 12px; }
 .miniprogram-notice[open] .miniprogram-notice__chevron { transform: rotate(180deg); }
 
 .miniprogram-notice__body {

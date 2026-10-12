@@ -32,7 +32,7 @@
   <link rel="preconnect" href="https://skills.scansci.com" crossorigin />
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/png" href="/assets/brand/scansci-app-icon-64.png?v=20260522a" />
-  <link rel="stylesheet" href="/styles.css?v=20261012-compact-header-v2" />
+  <link rel="stylesheet" href="/styles.css?v=20261012-notice-card" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -227,17 +227,19 @@
             <span>近30天 <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。"><strong id="stat30d">—</strong> 人次</span>、<span title="近30天的网络请求次数，包含页面、资源和自动访问请求。"><strong id="statReq">—</strong> 次请求</span></span>&thinsp;·&thinsp;
             <button id="openStatsInfoBtn" class="stats-info-toggle" type="button" popovertarget="statsInfoPopover" title="查看访问统计说明" aria-label="查看访问统计说明">?</button>
           </p>
-          <details class="miniprogram-notice" aria-label="网站通知">
-            <summary class="miniprogram-notice__summary">
+          <div class="miniprogram-notice" aria-label="网站通知">
+            <button id="openMiniProgramNoticeBtn" class="miniprogram-notice__trigger" type="button" popovertarget="miniProgramNoticePopover" aria-expanded="false">
               <svg class="miniprogram-notice__mark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m3 11 18-5v12L3 14z"/><path d="M7 15v5a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4"/></svg>
               <span>ScanSci 小程序上线</span>
-              <svg class="miniprogram-notice__chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>
-            </summary>
-            <div class="miniprogram-notice__body">
+            </button>
+            <section id="miniProgramNoticePopover" class="miniprogram-notice__card" popover="auto" role="group" aria-label="ScanSci 小程序介绍">
               <p class="miniprogram-notice__text">微信里也能查期刊、测学术人格、核验参考文献。</p>
-              <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button">查看小程序码</button>
-            </div>
-          </details>
+              <button id="openMiniProgramPopupBtn" class="miniprogram-notice__button" type="button" aria-label="查看 ScanSci 小程序码大图" title="查看小程序码大图">
+                <img class="miniprogram-notice__code" src="/assets/brand/scansci-miniprogram-code.jpg?v=20260708" alt="ScanSci 微信小程序码" width="430" height="430" decoding="async" />
+                <span>微信扫码体验</span>
+              </button>
+            </section>
+          </div>
         </div>
         <div class="main-head-actions">
           <p id="toolCount" hidden>加载中...</p>
@@ -386,7 +388,7 @@
   </div>
 
   <script src="/anon-prompt.js?v=20260616b"></script>
-  <script src="/app.js?v=20261011-card-copy"></script>
+  <script src="/app.js?v=20261012-notice-card"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

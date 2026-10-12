@@ -26,6 +26,8 @@ const els = {
   orderStatus: document.getElementById("cardOrderStatus"),
   stats: document.querySelector(".stats-inline"),
   miniProgramNotice: document.querySelector(".miniprogram-notice"),
+  openMiniProgramNoticeBtn: document.getElementById("openMiniProgramNoticeBtn"),
+  miniProgramNoticePopover: document.getElementById("miniProgramNoticePopover"),
   onlineToolsView: document.getElementById("onlineToolsView"),
   openSourceView: document.getElementById("openSourceView"),
   easymdView: document.getElementById("easymdView"),
@@ -182,6 +184,7 @@ function setPortalView(view, options = {}) {
   if (els.catalogTitle) els.catalogTitle.hidden = nextView !== "materials";
   if (els.stats) els.stats.hidden = nextView === "materials";
   if (els.miniProgramNotice) els.miniProgramNotice.hidden = nextView === "materials";
+  if (nextView !== "online") els.miniProgramNoticePopover?.hidePopover();
   if (els.filters) els.filters.hidden = nextView !== "online" || state.viewMode === "favorites";
   if (els.openSourceView) els.openSourceView.hidden = nextView !== "open-source";
   if (els.easymdView) els.easymdView.hidden = nextView !== "easymd";
@@ -260,6 +263,7 @@ function closeAuthModal() {
 
 function openMiniProgramPopup() {
   if (!els.miniProgramPopup) return;
+  els.miniProgramNoticePopover?.hidePopover();
   els.miniProgramPopup.hidden = false;
   document.body.classList.add("is-miniprogram-popup-open");
   window.setTimeout(() => {
@@ -271,6 +275,7 @@ function closeMiniProgramPopup() {
   if (!els.miniProgramPopup) return;
   els.miniProgramPopup.hidden = true;
   document.body.classList.remove("is-miniprogram-popup-open");
+  els.openMiniProgramNoticeBtn?.focus({ preventScroll: true });
 }
 
 function setAuthHint(message, type = "info") {
@@ -1052,6 +1057,49 @@ function onOpenToolClick(event) {
 
 function bindEvents() {
   initCardOrdering();
+  if (els.openMiniProgramNoticeBtn && els.miniProgramNoticePopover) {
+    const trigger = els.openMiniProgramNoticeBtn;
+    const card = els.miniProgramNoticePopover;
+    let pinned = false;
+    let closeTimer;
+    const position = () => {
+      const rect = trigger.getBoundingClientRect();
+      card.style.left = Math.max(12, Math.min(rect.left, innerWidth - card.offsetWidth - 12)) + "px";
+      card.style.top = Math.max(12, Math.min(rect.bottom + 8 + card.offsetHeight > innerHeight ? rect.top - card.offsetHeight - 8 : rect.bottom + 8, innerHeight - card.offsetHeight - 12)) + "px";
+    };
+    const show = () => {
+      clearTimeout(closeTimer);
+      card.showPopover();
+      position();
+    };
+    card.addEventListener("beforetoggle", event => {
+      trigger.setAttribute("aria-expanded", String(event.newState === "open"));
+      if (event.newState === "closed") {
+        pinned = false;
+        clearTimeout(closeTimer);
+      }
+    });
+    trigger.addEventListener("click", event => {
+      event.preventDefault();
+      if (pinned && card.matches(":popover-open")) card.hidePopover();
+      else {
+        pinned = true;
+        show();
+      }
+    });
+    for (const element of [trigger, card]) {
+      element.addEventListener("pointerenter", event => {
+        if (event.pointerType === "mouse") show();
+      });
+      element.addEventListener("pointerleave", event => {
+        if (event.pointerType === "mouse" && !pinned) closeTimer = setTimeout(() => card.hidePopover(), 180);
+      });
+    }
+    window.addEventListener("scroll", () => card.hidePopover());
+    window.addEventListener("resize", () => {
+      if (card.matches(":popover-open")) position();
+    });
+  }
   els.userAccountMenu?.addEventListener("toggle", event => {
     const open = event.newState === "open";
     els.userAccountBtn.setAttribute("aria-expanded", String(open));

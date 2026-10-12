@@ -128,25 +128,6 @@
       ]
     },
     {
-      "id": "paper-deck",
-      "name": "PaperDeck",
-      "description": "每日论文卡片，基于兴趣画像精准匹配，支持抽卡、收藏与画像持久化。",
-      "summary": "按兴趣推荐每日论文，支持抽卡与收藏。",
-      "cover": "./assets/covers/paper-deck-cover.svg",
-      "cover_title": "PaperDeck",
-      "cover_subtitle": "每日论文卡片 · 画像驱动",
-      "url": "https://paperdeck.scansci.com",
-      "category": "每日论文卡片",
-      "tags": [
-        "paper",
-        "recommendation",
-        "daily",
-        "profile",
-        "semantic-scholar",
-        "文献发现"
-      ]
-    },
-    {
       "id": "sci-skills",
       "status": "NEW",
       "name": "Agent 拓展",

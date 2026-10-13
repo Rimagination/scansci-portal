@@ -61,7 +61,7 @@
       "name": "Paper Atlas",
       "description": "研究图谱工具，可视化论文引用关系、主题簇与相似论文网络。",
       "summary": "展示论文引用关系、主题簇与相似论文。",
-      "cover": "./assets/covers/paper-atlas-cover.svg",
+      "cover": "./assets/covers/paper-atlas-handdrawn-minimal.webp",
       "cover_title": "Paper Atlas",
       "cover_subtitle": "研究图谱",
       "url": "https://paperatlas.scansci.com",

@@ -1,4 +1,4 @@
-import { mountEasyMD as mount } from "/easymd/native/assets/scansci-DgSEnKmn.js";
+import { mountEasyMD as mount } from "/easymd/native/assets/scansci-Dx6dZdf0.js";
 const styles = ["/easymd/native/assets/scansci-entry-CElRicYE.css"];
 export async function mountEasyMD(element) {
   await Promise.all(styles.map(href => new Promise((resolve, reject) => {

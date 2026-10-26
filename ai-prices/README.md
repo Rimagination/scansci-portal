@@ -7,10 +7,10 @@
 运行 `node ai-prices/update-data.mjs`，再运行 `node ai-prices/verify-data.mjs`。GitHub Actions 的 `AI price snapshot` 工作流每天自动执行，也支持手动运行。导入失败时脚本不会覆盖现有快照。
 
 - iOS 套餐地区价格：[BiWu.Ai 公开报价接口](https://biwu.ai/api/official-prices/offers?planId=chatgpt__plus-monthly&page=1&pageSize=100)，每条记录带 Apple 官方页面链接。该接口由其网站使用，未见稳定性承诺；导入脚本检查分页总数，失败时保留旧快照。
-- 官网套餐价格及 Google Play 应用级内购区间：[PlanPrice 开放数据](https://plan-price.com/data/)及美国价格页面，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 署名。
+- 官网套餐价格：[PlanPrice 开放数据](https://plan-price.com/data/)及美国价格页面，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 署名。
 - 美元汇率：[open.er-api.com](https://open.er-api.com/v6/latest/USD)。
 
-Google Play 公开区间没有指定套餐，页面将它单列展示，不参与所选套餐的最低价计算。当前 Grok 官网及 Grok、Gemini 的 Google Play 套餐价格缺少可核对的结构化来源，因此仅显示已核对渠道。
+当前 Grok 官网缺少可核对的结构化套餐价格，因此页面仅显示已核对渠道。
 
 ## 官方应用图标
 

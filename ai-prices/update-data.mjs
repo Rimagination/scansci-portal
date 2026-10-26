@@ -112,9 +112,8 @@ async function main() {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(latest || "")) throw new Error("No PlanPrice release");
   const base = `https://plan-price.com/data/releases/${latest}/`;
   const observations = await getJson(`${base}observations.json`);
-  const ranges = await getJson(`${base}ranges.json`);
   for (const item of observations) {
-    if (!products.some((p) => p.id === item.product_id) || (item.channel !== "web" && item.period !== "year")) continue;
+    if (!products.some((p) => p.id === item.product_id) || !(item.channel === "web" || (item.channel === "ios" && item.period === "year"))) continue;
     const amount = Number(item.amount);
     const usdRate = rates.rates[item.currency];
     if (!Number.isFinite(amount) || !Number.isFinite(usdRate) || !usdRate) continue;
@@ -126,16 +125,11 @@ async function main() {
     if (!response.ok) throw new Error(`${response.status} PlanPrice ${product}`);
     imported.push(...parsePlanPriceUSGrid(await response.text(), product, rates.rates.CNY));
   }
-  const playRanges = ranges.filter((item) => products.some((p) => p.id === item.product_id)).map((item) => ({
-    product: item.product_id, market: item.market_id, currency: item.currency,
-    min: item.min_amount, max: item.max_amount, source: item.source_url,
-    observedAt: item.observed_at,
-  }));
   const unique = new Set(imported.map((item) => `${item.product}/${item.plan}/${item.period}/${item.market}/${item.channel}`));
   if (unique.size !== imported.length || imported.length < 200) throw new Error("Duplicate or incomplete price data");
-  const output = { generatedAt, iosSource: "BiWu.Ai public offers API; each row links to the corresponding Apple listing", webSource: `PlanPrice CC BY 4.0, release ${latest} and live US grid`, rateSource: `open.er-api.com, ${rates.time_last_update_utc}`, usdCny: rates.rates.CNY, products, plans: [...plans, ...annualPlans].map(([product, id, name, period]) => ({ product, id, name, period })), prices: imported, playRanges };
+  const output = { generatedAt, iosSource: "BiWu.Ai public offers API; each row links to the corresponding Apple listing", webSource: `PlanPrice CC BY 4.0, release ${latest} and live US grid`, rateSource: `open.er-api.com, ${rates.time_last_update_utc}`, usdCny: rates.rates.CNY, products, plans: [...plans, ...annualPlans].map(([product, id, name, period]) => ({ product, id, name, period })), prices: imported };
   await writeFile(new URL("data.json", root), `${JSON.stringify(output, null, 2)}\n`);
-  console.log(`Updated ${imported.length} plan prices and ${playRanges.length} Google Play app ranges (${generatedAt})`);
+  console.log(`Updated ${imported.length} plan prices (${generatedAt})`);
   if (existing.generatedAt) console.log(`Previous snapshot: ${existing.generatedAt}`);
 }
 

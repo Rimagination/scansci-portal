@@ -25,8 +25,8 @@ const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "
 const t = (key) => copy[state.lang][key] || key;
 const langCode = () => state.lang === "zh" ? "zh-CN" : "en-US";
 const date = (value) => value ? new Intl.DateTimeFormat(langCode(), { year: "numeric", month: "short", day: "numeric" }).format(new Date(value)) : "—";
-const flag = (code) => /^[A-Z]{2}$/.test(code) ? `<img class="country-flag" src="https://flagcdn.com/24x18/${code.toLowerCase()}.png" width="24" height="18" alt="${code}" loading="lazy">` : "🌐";
-const country = (code, fallback) => { try { return new Intl.DisplayNames([langCode()], { type: "region" }).of(code) || fallback || code; } catch { return fallback || code; } };
+const flag = (code) => /^[A-Z]{2}$/.test(code) ? `<img class="country-flag" src="https://flagcdn.com/24x18/${code === "TW" ? "cn" : code.toLowerCase()}.png" width="24" height="18" alt="${code === "TW" ? "CN" : code}" loading="lazy">` : "🌐";
+const country = (code, fallback) => { if (code === "TW") return state.lang === "zh" ? "中国台湾" : "Taiwan, China"; try { return new Intl.DisplayNames([langCode()], { type: "region" }).of(code) || fallback || code; } catch { return fallback || code; } };
 const safeUrl = (value) => { try { const url = new URL(value); return url.protocol === "https:" ? url.href : ""; } catch { return ""; } };
 const amount = (row) => state.currency === "CNY" ? row.cny : row.cny / state.data.usdCny;
 const money = (value) => new Intl.NumberFormat(langCode(), { style: "currency", currency: state.currency, maximumFractionDigits: 2 }).format(value);

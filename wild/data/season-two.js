@@ -55,4 +55,12 @@ window.WILD_RESEARCHERS = [
       { src: 'assets/season-two/06-1.webp', thumb: 'assets/season-two/thumbs/06-1.webp', width: 1279, height: 1706 },
     ],
   },
+  {
+    number: 72, displayNumber: 7, name: '魏雨杉', organization: '北京大学',
+    time: '2026年10月18日', location: '北京大学塞罕坝野外生态站',
+    story: '照片拍摄于2026年10月18日，北京大学塞罕坝野外生态站的降水控制实验样地旁边。控制实验样地的樟子松林极高，我在出发前出主意，建议使用采松塔的特长伸缩杆代替高度不够的高枝剪，事实证明效果很好，这个伸缩杆能轻松取到15米甚至更高的叶子。我在把伸缩杆缩短到5米左右高度，在样地之间转移时，由我师弟拍摄。自己的想法能够付诸实践，并真正起到作用，还是很开心的。',
+    photos: [
+      { src: 'assets/season-two/07-1.webp', thumb: 'assets/season-two/thumbs/07-1.webp', width: 1350, height: 1800 },
+    ],
+  },
 ];

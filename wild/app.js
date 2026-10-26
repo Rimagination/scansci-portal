@@ -1,4 +1,6 @@
 const grid = document.querySelector('#gallery-grid');
+const featuredSection = document.querySelector('#featured-section');
+const featuredGrid = document.querySelector('#featured-grid');
 const search = document.querySelector('#gallery-search');
 const count = document.querySelector('#result-count');
 const empty = document.querySelector('#empty-state');
@@ -6,6 +8,7 @@ const photoDialog = document.querySelector('#photo-dialog');
 const dialogImage = document.querySelector('#dialog-image');
 const dialogThumbs = document.querySelector('#dialog-thumbs');
 const dialogCounter = document.querySelector('#dialog-counter');
+const dialogFeatured = document.querySelector('#dialog-featured');
 const dialogPhotoNote = document.querySelector('#dialog-photo-note');
 const dialogStage = document.querySelector('.dialog-stage');
 const galleryPrev = document.querySelector('#dialog-prev');
@@ -99,6 +102,7 @@ function setDialogPhoto(entry, index) {
   dialogImage.alt = `${entry.name}的野外科研投稿照片，第 ${activeIndex + 1} 张`;
   dialogCounter.textContent = `${activeIndex + 1} / ${total}`;
   dialogCounter.hidden = total < 2;
+  dialogFeatured.hidden = !(entry.featured && activeIndex === 0);
   galleryPrev.hidden = total < 2;
   galleryNext.hidden = total < 2;
   dialogPhotoNote.textContent = total > 1 ? `本组共 ${total} 张照片，可用方向键或左右按钮切换。` : '本组收录 1 张照片。';
@@ -123,7 +127,7 @@ function stepDialog(delta) {
 function openPhoto(entry) {
   activeEntry = entry;
   document.querySelector('#dialog-number').textContent = `NO. ${String(entry.number).padStart(2, '0')} / 65`;
-  document.querySelector('#dialog-batch').textContent = `第一届 · 2025 · ${entry.photos.length} 张照片`;
+  document.querySelector('#dialog-batch').textContent = `第一届 · 2025 · ${entry.featured ? '精选 · ' : ''}${entry.photos.length} 张照片`;
   document.querySelector('#dialog-title').textContent = entry.name;
   document.querySelector('#dialog-organization').textContent = entry.organization;
   populateEngagement(document.querySelector('#dialog-engagement'), entry);
@@ -140,7 +144,7 @@ function openPhoto(entry) {
 function cardFor(entry) {
   const cover = entry.photos[0];
   const card = document.createElement('article');
-  card.className = 'photo-card';
+  card.className = `photo-card${entry.featured ? ' is-featured' : ''}`;
   const open = document.createElement('button');
   open.type = 'button';
   open.className = 'photo-open';
@@ -156,6 +160,7 @@ function cardFor(entry) {
   media.append(image);
   addText(media, 'photo-card-no', String(entry.number).padStart(2, '0'));
   addText(media, 'photo-card-arrow', '↗');
+  if (entry.featured) addText(media, 'featured-badge', '精选');
   if (entry.photos.length > 1) addText(media, 'photo-count', `${entry.photos.length} 张`);
   const body = document.createElement('span');
   body.className = 'photo-card-body';
@@ -175,7 +180,12 @@ function render() {
   const query = search.value.trim().toLocaleLowerCase();
   const visible = entries.filter(entry => !query ||
     [entry.name, entry.organization, entry.location, entry.story].join(' ').toLocaleLowerCase().includes(query));
-  grid.replaceChildren(...visible.map(cardFor));
+  const featured = visible.filter(entry => entry.featured)
+    .sort((a, b) => (a.featuredPosition ?? 99) - (b.featuredPosition ?? 99));
+  const archive = visible.filter(entry => !entry.featured).sort((a, b) => a.number - b.number);
+  featuredGrid.replaceChildren(...featured.map(cardFor));
+  featuredSection.hidden = featured.length === 0;
+  grid.replaceChildren(...archive.map(cardFor));
   const photoTotal = visible.reduce((sum, entry) => sum + entry.photos.length, 0);
   count.textContent = `正在展示 ${visible.length} / ${entries.length} 组作品 · ${photoTotal} 张照片`;
   empty.hidden = visible.length !== 0;
@@ -332,7 +342,7 @@ document.querySelector('#auth-close').addEventListener('click', () => authDialog
 authDialog.addEventListener('click', event => { if (event.target === authDialog) authDialog.close(); });
 
 if (Array.isArray(window.WILD_RESEARCHERS)) {
-  entries = window.WILD_RESEARCHERS;
+  entries = window.WILD_RESEARCHERS.slice();
   render();
   likesLoad = loadLikes();
 } else {

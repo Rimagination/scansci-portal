@@ -337,18 +337,20 @@ window.WILD_RESEARCHERS = [
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
     "photos": [
       {
-        "src": "assets/photos/13-1.webp",
-        "thumb": "assets/photos/thumbs/13-1.webp",
-        "width": 1280,
-        "height": 960
-      },
-      {
         "src": "assets/photos/13-2.webp",
         "thumb": "assets/photos/thumbs/13-2.webp",
         "width": 1280,
         "height": 854
+      },
+      {
+        "src": "assets/photos/13-1.webp",
+        "thumb": "assets/photos/thumbs/13-1.webp",
+        "width": 1280,
+        "height": 960
       }
     ],
+    "featured": true,
+    "featuredPosition": 1,
     "historicalVotes": 26,
     "time": "2022年夏季",
     "location": "美国加利福尼亚州克拉马斯河流域（Klamath River Basin）",
@@ -627,6 +629,12 @@ window.WILD_RESEARCHERS = [
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
     "photos": [
       {
+        "src": "assets/photos/23-3.webp",
+        "thumb": "assets/photos/thumbs/23-3.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
         "src": "assets/photos/23-1.webp",
         "thumb": "assets/photos/thumbs/23-1.webp",
         "width": 960,
@@ -637,14 +645,10 @@ window.WILD_RESEARCHERS = [
         "thumb": "assets/photos/thumbs/23-2.webp",
         "width": 1280,
         "height": 959
-      },
-      {
-        "src": "assets/photos/23-3.webp",
-        "thumb": "assets/photos/thumbs/23-3.webp",
-        "width": 960,
-        "height": 1280
       }
     ],
+    "featured": true,
+    "featuredPosition": 2,
     "historicalVotes": 62,
     "time": "",
     "location": "",
@@ -775,14 +779,14 @@ window.WILD_RESEARCHERS = [
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
     "photos": [
       {
-        "src": "assets/photos/28-1.webp",
-        "thumb": "assets/photos/thumbs/28-1.webp",
+        "src": "assets/photos/28-2.webp",
+        "thumb": "assets/photos/thumbs/28-2.webp",
         "width": 960,
         "height": 1280
       },
       {
-        "src": "assets/photos/28-2.webp",
-        "thumb": "assets/photos/thumbs/28-2.webp",
+        "src": "assets/photos/28-1.webp",
+        "thumb": "assets/photos/thumbs/28-1.webp",
         "width": 960,
         "height": 1280
       },
@@ -793,6 +797,8 @@ window.WILD_RESEARCHERS = [
         "height": 1280
       }
     ],
+    "featured": true,
+    "featuredPosition": 3,
     "historicalVotes": 38,
     "time": "2025年7月18日",
     "location": "日本能登半岛轮岛市河井町",
@@ -1135,6 +1141,8 @@ window.WILD_RESEARCHERS = [
         "height": 1280
       }
     ],
+    "featured": true,
+    "featuredPosition": 6,
     "historicalVotes": 62,
     "time": "2020年07月",
     "location": "陕西省长武县",
@@ -1169,6 +1177,12 @@ window.WILD_RESEARCHERS = [
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
     "photos": [
       {
+        "src": "assets/photos/42-3.webp",
+        "thumb": "assets/photos/thumbs/42-3.webp",
+        "width": 1280,
+        "height": 712
+      },
+      {
         "src": "assets/photos/42-1.webp",
         "thumb": "assets/photos/thumbs/42-1.webp",
         "width": 1280,
@@ -1179,14 +1193,10 @@ window.WILD_RESEARCHERS = [
         "thumb": "assets/photos/thumbs/42-2.webp",
         "width": 1280,
         "height": 863
-      },
-      {
-        "src": "assets/photos/42-3.webp",
-        "thumb": "assets/photos/thumbs/42-3.webp",
-        "width": 1280,
-        "height": 712
       }
     ],
+    "featured": true,
+    "featuredPosition": 5,
     "historicalVotes": 34,
     "time": "2020年05月",
     "location": "青海省玉树藏族自治州杂多县日阿东拉垭口 | 海拔5002米",
@@ -1755,16 +1765,16 @@ window.WILD_RESEARCHERS = [
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
     "photos": [
       {
-        "src": "assets/photos/62-1.webp",
-        "thumb": "assets/photos/thumbs/62-1.webp",
-        "width": 1280,
-        "height": 722
-      },
-      {
         "src": "assets/photos/62-2.webp",
         "thumb": "assets/photos/thumbs/62-2.webp",
         "width": 1280,
         "height": 720
+      },
+      {
+        "src": "assets/photos/62-1.webp",
+        "thumb": "assets/photos/thumbs/62-1.webp",
+        "width": 1280,
+        "height": 722
       },
       {
         "src": "assets/photos/62-3.webp",
@@ -1773,6 +1783,8 @@ window.WILD_RESEARCHERS = [
         "height": 720
       }
     ],
+    "featured": true,
+    "featuredPosition": 4,
     "historicalVotes": 27,
     "time": "2024年12月",
     "location": "黑龙江南瓮河国家级自然保护区",

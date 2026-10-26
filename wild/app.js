@@ -14,6 +14,7 @@ let likes = new Map();
 let liked = new Set();
 let userId = null;
 let likesOnline = false;
+let likesLoad;
 let pendingLike = null;
 let noticeTimer;
 const busy = new Set();
@@ -142,8 +143,14 @@ async function loadLikes() {
 }
 
 async function toggleLike(entry) {
+  if (!likesOnline && location.protocol !== 'file:') {
+    await likesLoad;
+    if (!likesOnline) await loadLikes();
+  }
   if (!likesOnline) {
-    showNotice('本地预览仅展示界面；登录点赞在 ScanSci 网站启用。');
+    showNotice(location.protocol === 'file:'
+      ? '本地预览仅展示界面；登录点赞在 ScanSci 网站启用。'
+      : '点赞服务暂时不可用，请稍后重试。');
     return;
   }
   if (!userId) {
@@ -250,7 +257,7 @@ authDialog.addEventListener('click', event => { if (event.target === authDialog)
 if (Array.isArray(window.WILD_RESEARCHERS)) {
   entries = window.WILD_RESEARCHERS;
   render();
-  void loadLikes();
+  likesLoad = loadLikes();
 } else {
   count.textContent = '影像档案加载失败，请刷新页面重试。';
 }

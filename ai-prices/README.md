@@ -6,7 +6,7 @@ PriceAI 用于发现缺失套餐和地区；价格记录取自下列上游。“
 
 ## 更新数据
 
-运行 `node ai-prices/update-data.mjs`，再运行 `node ai-prices/verify-data.mjs`。GitHub Actions 的 `AI price snapshot` 工作流每天自动执行，也支持手动运行。导入失败时脚本不会覆盖现有快照。
+运行 `node ai-prices/update-data.mjs`，再运行 `node ai-prices/verify-data.mjs`。GitHub Actions 的 `AI price snapshot` 工作流每天北京时间 10:23 计划触发，也支持手动运行；实际启动时间可能延后。页面顶部显示最近一次成功生成价格快照的时间（北京时间，精确到分钟），各来源的采集时间可在来源链接提示中查看。导入失败时脚本不会覆盖现有快照。
 
 - iOS 套餐地区价格：[BiWu.Ai 公开报价接口](https://biwu.ai/api/official-prices/offers?planId=chatgpt__plus-monthly&page=1&pageSize=100)，每条记录带 Apple 官方页面链接。该接口由其网站使用，未见稳定性承诺；导入脚本检查分页总数，失败时保留旧快照。
 - ChatGPT 官网地区价：[OpenAI 公开定价配置](https://chatgpt.com/backend-api/checkout_pricing_config/configs/PH)。采用 `amount` 和其 `tax` 标记；忽略 `psp_override` 的税前金额。部分地区直接请求返回 403，`openai-config-snapshot.json` 保留最近一次成功读取的配置；脚本逐地区尝试刷新，超过 30 天的记录不再导入。地区行链接到可访问的[官方套餐页](https://chatgpt.com/pricing/)，具体地区价需在结账页核对。

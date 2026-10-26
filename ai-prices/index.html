@@ -7,8 +7,8 @@
   <meta name="description" content="ScanSci AI 比价：查看 ChatGPT、Claude、Grok、Gemini 与 Meta AI 的订阅价格、地区和官方来源。">
   <title>AI 比价 | ScanSci</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=20261026-official">
-  <script src="./app.js?v=20261026-official" type="module"></script>
+  <link rel="stylesheet" href="./styles.css?v=20261026-updated">
+  <script src="./app.js?v=20261026-updated" type="module"></script>
 </head>
 <body>
   <a class="nav-brand" href="/"><img src="/assets/brand/scansci-app-icon-64.png?v=20260522a" width="27" height="27" alt=""><span>ScanSci</span></a>
@@ -19,6 +19,7 @@
   </header>
 
   <main id="main">
+    <div class="snapshot-status" id="snapshotStatus" aria-live="polite"></div>
     <section class="search-panel" id="searchPanel" hidden>
       <label for="appSearch" data-i18n="searchLabel">搜索 AI 应用或套餐</label>
       <div class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="appSearch" type="search" autocomplete="off" placeholder="ChatGPT、Claude、Grok…"><button id="closeSearch" type="button" aria-label="关闭">×</button></div>

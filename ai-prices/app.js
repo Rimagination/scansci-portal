@@ -4,7 +4,7 @@ const copy = {
     category: "AI 助手", plans: "个套餐", noResults: "没有找到匹配的 AI 应用。", metaCardPlans: "基础免费 · 2 档付费方案", metaFree: "Meta AI 基础版", free: "免费", metaFreeDesc: "Meta 确认基础功能免费；App Store 标注可免费获取，提供应用内购买。", metaCoreDesc: "增加 Meta AI 图像和视频生成额度，并包含多款 Meta 应用权益。", metaPremiumDesc: "包含 Core 权益，提供更高的 Meta AI 创作额度。", metaAnnouncement: "Meta 官方价格说明", metaPriceVaries: "基础版免费和 Meta One 的美元月费起售价均来自 Meta 官方公告。Meta One 为跨应用订阅；实际价格、权益与可用性因地区、应用和账号而异，暂不计入地区排行榜。",
     plansComparison: "套餐比价", regionComparison: "地区比价", allChannels: "全部渠道",
     appStore: "App Store", web: "官网",
-    globalPrice: "全球价格", country: "国家或地区", channel: "渠道", localPrice: "当地价格", converted: "折算价格", source: "来源",
+    globalPrice: "全球价格", country: "国家或地区", channel: "渠道", localPrice: "当地价格", converted: "折算价格", source: "来源", snapshotUpdated: "快照更新时间", dailyCheck: "每日自动检查", timeZone: "北京时间",
     lowest: "最低标价", among: "在当前参与排序的地区与渠道中", distribution: "价格分布",
     dataNotes: "价格与数据说明", imported: "数据导入时间", iosNote: "App Store 标价来自 BiWu.Ai；每条记录链接到 Apple 应用页，税费与最终金额以结账页为准。", planNote: "官网标价来自 OpenAI、Google 的官方定价文件及 PlanPrice 开放数据；OpenAI 地区行链接到官方套餐页，具体地区价以结账页为准。", taxNote: "标价排序包含 App Store 标价与已标明含税的官网价；税前或税费待确认的官网价只展示，不参与排序。App Store 税费以结账页为准。", taxExclusive: "税前", taxUnknown: "税费待确认", iosTax: "税费以结账为准", noComparable: "暂无参与排序的报价", fxNote: "美元换算使用开放汇率数据，最终支付额以结账页为准。", missing: "暂无可核对的价格", noPlanData: "这个套餐当前没有可核对的渠道价格。", updated: "采集于", periodMonth: "月付", periodYear: "年付", openSource: "查看官方页面", compareRegion: "各地区渠道价格", noRegion: "该地区暂无具体套餐价格", copied: "链接已复制", sourceSnapshot: "上游数据快照", refresh: "页面显示的是已导入的价格快照，请在付款前打开官方页面核对。", sort: "切换排序", sourceTime: "采集时间"
   },
@@ -13,7 +13,7 @@ const copy = {
     category: "AI Assistant", plans: "plans", noResults: "No matching AI apps found.", metaCardPlans: "Free basics · 2 paid tiers", metaFree: "Meta AI (free)", free: "Free", metaFreeDesc: "Meta confirms the basic experience is free; the App Store lists a free download with in-app purchases.", metaCoreDesc: "Higher Meta AI image and video generation limits, plus benefits across Meta apps.", metaPremiumDesc: "Includes Core benefits with the highest Meta AI creation limits.", metaAnnouncement: "Meta's official pricing announcement", metaPriceVaries: "Meta's official announcement confirms the free experience and the starting monthly USD prices for Meta One. Meta One bundles benefits across Meta apps. Price, benefits, and availability vary by region, app, and account, so these prices are excluded from regional rankings.",
     plansComparison: "Plans Comparison", regionComparison: "Region Comparison", allChannels: "All channels",
     appStore: "App Store", web: "Web",
-    globalPrice: "Global Price", country: "Country or region", channel: "Channel", localPrice: "Local price", converted: "Converted", source: "Source",
+    globalPrice: "Global Price", country: "Country or region", channel: "Channel", localPrice: "Local price", converted: "Converted", source: "Source", snapshotUpdated: "Snapshot updated", dailyCheck: "Checked daily", timeZone: "UTC+8",
     lowest: "Lowest listed price", among: "Among ranked regions and channels", distribution: "Price distribution",
     dataNotes: "Price and data notes", imported: "Imported", iosNote: "App Store list prices come from BiWu.Ai. Each row links to an Apple app page; taxes and the final charge depend on checkout.", planNote: "Web list prices come from official OpenAI and Google pricing files and PlanPrice open data. OpenAI region links open its plan page; confirm the regional price at checkout.", taxNote: "Listed-price ranking includes App Store prices and tax-inclusive web prices. Pre-tax or tax-unconfirmed web prices are shown without a rank. App Store taxes depend on checkout.", taxExclusive: "Pre-tax", taxUnknown: "Tax unconfirmed", iosTax: "Tax at checkout", noComparable: "No ranked price available", fxNote: "USD conversions use public exchange rates. The final charge is shown at checkout.", missing: "No verified price available", noPlanData: "No verified channel price is available for this plan.", updated: "Collected", periodMonth: "Monthly", periodYear: "Annual", openSource: "Official page", compareRegion: "Channel prices by region", noRegion: "No plan price recorded for this region", copied: "Link copied", sourceSnapshot: "Upstream snapshot", refresh: "These are imported price snapshots. Verify the official page before paying.", sort: "Toggle sort", sourceTime: "Observed"
   }
@@ -24,7 +24,8 @@ const $ = (id) => document.getElementById(id);
 const escape = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 const t = (key) => copy[state.lang][key] || key;
 const langCode = () => state.lang === "zh" ? "zh-CN" : "en-US";
-const date = (value) => value ? new Intl.DateTimeFormat(langCode(), { year: "numeric", month: "short", day: "numeric" }).format(new Date(value)) : "—";
+const zone = () => state.lang === "zh" ? `（${t("timeZone")}）` : ` (${t("timeZone")})`;
+const dateTime = (value) => value && Number.isFinite(Date.parse(value)) ? new Intl.DateTimeFormat(langCode(), { timeZone: "Asia/Shanghai", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(value)) : "—";
 const flag = (code) => /^[A-Z]{2}$/.test(code) ? `<img class="country-flag" src="https://flagcdn.com/24x18/${code === "TW" ? "cn" : code.toLowerCase()}.png" width="24" height="18" alt="${code === "TW" ? "CN" : code}" loading="lazy">` : "🌐";
 const country = (code, fallback) => { if (code === "TW") return state.lang === "zh" ? "中国台湾" : "Taiwan, China"; try { return new Intl.DisplayNames([langCode()], { type: "region" }).of(code) || fallback || code; } catch { return fallback || code; } };
 const safeUrl = (value) => { try { const url = new URL(value); return url.protocol === "https:" ? url.href : ""; } catch { return ""; } };
@@ -32,7 +33,7 @@ const amount = (row) => state.currency === "CNY" ? row.cny : row.cny / state.dat
 const money = (value) => new Intl.NumberFormat(langCode(), { style: "currency", currency: state.currency, maximumFractionDigits: 2 }).format(value);
 const period = (value) => value === "year" ? t("periodYear") : t("periodMonth");
 const channel = (value) => value === "ios" ? t("appStore") : t("web");
-const sourceLink = (row, label) => { const url = safeUrl(row.source); return url ? `<a class="source-link${label ? " country-source" : ""}" href="${escape(url)}" target="_blank" rel="noopener noreferrer" title="${escape(row.observedAt ? `${t("openSource")} · ${t("sourceTime")}: ${date(row.observedAt)}` : t("openSource"))}">${escape(label || t("openSource"))} ↗</a>` : "—"; };
+const sourceLink = (row, label) => { const url = safeUrl(row.source); return url ? `<a class="source-link${label ? " country-source" : ""}" href="${escape(url)}" target="_blank" rel="noopener noreferrer" title="${escape(row.observedAt ? `${t("openSource")} · ${t("sourceTime")}: ${dateTime(row.observedAt)} (${t("timeZone")})` : t("openSource"))}">${escape(label || t("openSource"))} ↗</a>` : "—"; };
 
 function route() {
   const params = new URLSearchParams(location.search);
@@ -119,7 +120,7 @@ function renderDetail(product, selectedPlan, tab) {
 
 function renderNote() {
   const d = state.data;
-  $("dataNote").innerHTML = `<strong>${t("dataNotes")}</strong> · ${t("imported")}: ${date(d.generatedAt)}<br>${t("iosNote")} <a href="https://biwu.ai/en/about" target="_blank" rel="noopener noreferrer">BiWu.Ai ↗</a><br>${t("planNote")} <a href="https://chatgpt.com/pricing/" target="_blank" rel="noopener noreferrer">OpenAI ↗</a> · <a href="https://one.google.com/about/plans" target="_blank" rel="noopener noreferrer">Google One ↗</a> · <a href="https://plan-price.com/data/" target="_blank" rel="noopener noreferrer">PlanPrice ↗</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0 ↗</a>)<br>${t("taxNote")}<br>${t("fxNote")}`;
+  $("dataNote").innerHTML = `<strong>${t("dataNotes")}</strong> · ${t("imported")}: ${dateTime(d.generatedAt)}${zone()}<br>${t("iosNote")} <a href="https://biwu.ai/en/about" target="_blank" rel="noopener noreferrer">BiWu.Ai ↗</a><br>${t("planNote")} <a href="https://chatgpt.com/pricing/" target="_blank" rel="noopener noreferrer">OpenAI ↗</a> · <a href="https://one.google.com/about/plans" target="_blank" rel="noopener noreferrer">Google One ↗</a> · <a href="https://plan-price.com/data/" target="_blank" rel="noopener noreferrer">PlanPrice ↗</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0 ↗</a>)<br>${t("taxNote")}<br>${t("fxNote")}`;
 }
 function render() {
   document.documentElement.lang = langCode();
@@ -127,6 +128,7 @@ function render() {
   document.querySelectorAll("[data-i18n]").forEach((node) => { node.textContent = t(node.dataset.i18n); });
   $("languageButton").textContent = state.lang === "zh" ? "EN" : "中";
   if (!state.data) return;
+  $("snapshotStatus").innerHTML = `<span class="status-dot" aria-hidden="true"></span><span>${t("snapshotUpdated")}${state.lang === "zh" ? "：" : ": "}<time datetime="${escape(state.data.generatedAt)}">${escape(dateTime(state.data.generatedAt))}</time>${zone()}</span><span class="status-separator" aria-hidden="true">·</span><span>${t("dailyCheck")}</span>`;
   const current = route();
   const product = state.data.products.find((item) => item.id === current.app);
   $("backToList").hidden = !product;

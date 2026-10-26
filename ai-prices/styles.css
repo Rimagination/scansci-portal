@@ -12,3 +12,4 @@ main{max-width:1740px;margin:0 auto;padding:0 30px 35px}.search-panel{max-width:
 .meta-footnote .source-link{font-size:inherit}
 .tax-note{display:block;margin-top:3px;color:#765b66;font-size:11px;font-weight:500}.panel-meta+.panel-meta{margin-top:4px}
 .mobile-tax{display:none}@media(max-width:720px){.mobile-tax{display:block}.mobile-tax .tax-note{font-size:10px}}
+.snapshot-status{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:-8px auto 23px;color:#65748b;font-size:12px;line-height:1.5}.snapshot-status:empty{display:none}.snapshot-status time{font-weight:700;color:#26354c}.status-dot{width:7px;height:7px;border-radius:50%;background:#22a875}.status-separator{color:#a4afbe}@media(max-width:720px){.snapshot-status{margin:0 auto 17px;font-size:11px}}

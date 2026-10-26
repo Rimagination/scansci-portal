@@ -134,6 +134,7 @@ img{display:block;max-width:100%}
 .dialog-photo-note{font-size:10px;color:var(--muted);margin:0 0 20px;letter-spacing:.02em}
 .dialog-story{white-space:pre-line;font-size:13px;line-height:1.9;color:#3f4d43}
 .source-link{display:inline-block;border-bottom:1px solid var(--ink);font-size:12px;padding-bottom:5px;margin-top:25px}
+.source-link[hidden]{display:none}
 .dialog-close{position:absolute;z-index:3;top:11px;right:11px;border:0;background:#fff;width:35px;height:35px;font-size:26px;line-height:1;color:var(--ink)}
 .auth-dialog{border:0;padding:35px;width:min(420px,calc(100vw - 30px));max-width:none;background:#fff;color:var(--ink);box-shadow:0 20px 80px rgba(0,0,0,.22)}
 .auth-dialog::backdrop{background:rgba(20,25,20,.5)}

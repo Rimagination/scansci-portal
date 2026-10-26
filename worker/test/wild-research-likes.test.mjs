@@ -9,6 +9,7 @@ function fixture() {
   const f = createSymbolsFixture();
   f.sqlite.exec(readFileSync(new URL('../sql/0013_user_card_orders.sql', import.meta.url), 'utf8'));
   f.sqlite.exec(readFileSync(new URL('../sql/0020_wild_research_likes.sql', import.meta.url), 'utf8'));
+  f.sqlite.exec(readFileSync(new URL('../sql/0021_wild_research_likes_season_two.sql', import.meta.url), 'utf8'));
   f.env.AUTH = { fetch: request => authWorker.fetch(request, f.env) };
   const request = (method, { user = 1, origin = 'https://www.scansci.com', body, type = 'application/json' } = {}) => {
     const headers = {};
@@ -49,12 +50,26 @@ test('only authenticated same-origin users can change a like, with bounded valid
     for (const origin of [null, 'https://evil.example', 'https://reader.scansci.com']) {
       assert.equal((await f.request('POST', { origin, body: valid })).status, 403);
     }
-    for (const body of [{ entry: 0, liked: true }, { entry: 66, liked: true }, { entry: '1', liked: true }, { entry: 1, liked: 1 }, { ...valid, votes: 999 }, null]) {
+    for (const body of [{ entry: 0, liked: true }, { entry: 72, liked: true }, { entry: '1', liked: true }, { entry: 1, liked: 1 }, { ...valid, votes: 999 }, null]) {
       assert.equal((await f.request('POST', { body })).status, 400);
     }
     assert.equal((await f.request('POST', { body: valid, type: 'text/plain' })).status, 415);
     assert.equal((await f.request('POST', { body: { ...valid, expected_user_id: 2 } })).status, 409);
     assert.equal((await f.request('PUT')).status, 405);
     assert.deepEqual((await (await f.request('GET', { user: null })).json()).counts, {});
+  } finally { f.sqlite.close(); }
+});
+
+test('second edition likes use separate storage and preserve first edition counts', async () => {
+  const f = fixture();
+  try {
+    assert.equal((await f.request('POST', { body: { entry: 1, liked: true } })).status, 200);
+    assert.equal((await f.request('POST', { body: { entry: 66, liked: true } })).status, 200);
+    assert.equal((await f.request('POST', { user: 2, body: { entry: 71, liked: true } })).status, 200);
+    const data = await (await f.request('GET', { user: 1 })).json();
+    assert.deepEqual(data.counts, { 1: 1, 66: 1, 71: 1 });
+    assert.deepEqual(data.liked, [1, 66]);
+    assert.equal((await f.request('POST', { body: { entry: 66, liked: false } })).status, 200);
+    assert.deepEqual((await (await f.request('GET')).json()).counts, { 1: 1, 71: 1 });
   } finally { f.sqlite.close(); }
 });

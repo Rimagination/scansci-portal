@@ -195,7 +195,8 @@ wrangler dev
 
 ```bash
 npx wrangler d1 execute scansci_auth --remote --file=sql/0020_wild_research_likes.sql --config wrangler.toml
+npx wrangler d1 execute scansci_auth --remote --file=sql/0021_wild_research_likes_season_two.sql --config wrangler.toml
 npx wrangler deploy --config wrangler.wild-research.toml
 ```
 
-本项目的较早迁移在生产库已执行过，但未全部登记到 Wrangler 迁移表；此处只执行本次 SQL 文件。
+本项目的较早迁移在生产库已执行过，但未全部登记到 Wrangler 迁移表；部署时按顺序执行上面的两个 SQL 文件。第二届数据表必须先于新版 Worker 建立。

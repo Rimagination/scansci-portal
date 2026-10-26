@@ -16,6 +16,7 @@ const galleryNext = document.querySelector('#dialog-next');
 const authDialog = document.querySelector('#auth-dialog');
 const authMessage = document.querySelector('#auth-message');
 const notice = document.querySelector('#like-notice');
+const season = window.WILD_SEASON || { label: '第一届', year: '2025' };
 const numberFormat = new Intl.NumberFormat('zh-CN');
 const heartIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>';
 const ballotIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h16l-1.3 10H5.3L4 10Z"/><path d="m8 10 4-7 4 7M9 15h6"/></svg>';
@@ -65,7 +66,7 @@ function populateEngagement(container, entry) {
   vote.innerHTML = ballotIcon;
   addText(vote, 'vote-total', numberFormat.format(entry.historicalVotes));
   addText(vote, 'engagement-label', '票');
-  container.replaceChildren(like, vote);
+  container.replaceChildren(like, ...(Number.isInteger(entry.historicalVotes) ? [vote] : []));
 }
 
 function syncLike(entryNumber) {
@@ -126,15 +127,17 @@ function stepDialog(delta) {
 
 function openPhoto(entry) {
   activeEntry = entry;
-  document.querySelector('#dialog-number').textContent = `NO. ${String(entry.number).padStart(2, '0')} / 65`;
-  document.querySelector('#dialog-batch').textContent = `第一届 · 2025 · ${entry.featured ? '精选 · ' : ''}${entry.photos.length} 张照片`;
+  document.querySelector('#dialog-number').textContent = `NO. ${String(entry.displayNumber ?? entry.number).padStart(2, '0')} / ${entries.length}`;
+  document.querySelector('#dialog-batch').textContent = `${season.label} · ${season.year} · ${entry.featured ? '精选 · ' : ''}${entry.photos.length} 张照片`;
   document.querySelector('#dialog-title').textContent = entry.name;
   document.querySelector('#dialog-organization').textContent = entry.organization;
   populateEngagement(document.querySelector('#dialog-engagement'), entry);
   document.querySelector('#dialog-time').textContent = entry.time || '详见原文';
   document.querySelector('#dialog-location').textContent = entry.location || '详见原文';
   document.querySelector('#dialog-story').textContent = entry.story;
-  document.querySelector('#dialog-source').href = entry.sourceUrl;
+  const sourceLink = document.querySelector('#dialog-source');
+  sourceLink.hidden = !entry.sourceUrl;
+  if (entry.sourceUrl) sourceLink.href = entry.sourceUrl;
   renderThumbs(entry);
   setDialogPhoto(entry, 0);
   photoDialog.showModal();
@@ -148,7 +151,7 @@ function cardFor(entry) {
   const open = document.createElement('button');
   open.type = 'button';
   open.className = 'photo-open';
-  open.setAttribute('aria-label', `查看 ${String(entry.number).padStart(2, '0')} 号作品：${entry.name}，共 ${entry.photos.length} 张照片`);
+  open.setAttribute('aria-label', `查看 ${String(entry.displayNumber ?? entry.number).padStart(2, '0')} 号作品：${entry.name}，共 ${entry.photos.length} 张照片`);
   const media = document.createElement('span');
   media.className = 'photo-card-media';
   const image = document.createElement('img');
@@ -158,7 +161,7 @@ function cardFor(entry) {
   image.height = cover.height;
   image.loading = 'lazy';
   media.append(image);
-  addText(media, 'photo-card-no', String(entry.number).padStart(2, '0'));
+  addText(media, 'photo-card-no', String(entry.displayNumber ?? entry.number).padStart(2, '0'));
   addText(media, 'photo-card-arrow', '↗');
   if (entry.featured) addText(media, 'featured-badge', '精选');
   if (entry.photos.length > 1) addText(media, 'photo-count', `${entry.photos.length} 张`);
@@ -166,7 +169,7 @@ function cardFor(entry) {
   body.className = 'photo-card-body';
   addText(body, 'photo-card-name', entry.name);
   addText(body, 'photo-card-org', entry.organization);
-  addText(body, 'photo-card-location', entry.location || '第一届作品');
+  addText(body, 'photo-card-location', entry.location || `${season.label}作品`);
   open.append(media, body);
   open.addEventListener('click', () => openPhoto(entry));
   const engagement = document.createElement('div');

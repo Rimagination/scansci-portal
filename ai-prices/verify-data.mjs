@@ -4,7 +4,11 @@ import { readFile, stat } from "node:fs/promises";
 const data = JSON.parse(await readFile(new URL("./data.json", import.meta.url), "utf8"));
 const apps = JSON.parse(await readFile(new URL("../data/apps.json", import.meta.url), "utf8"));
 assert.equal(apps.apps.find((app) => app.id === "ai-price")?.url, "/ai-prices/");
-assert.deepEqual(data.products.map((product) => product.id), ["chatgpt", "claude", "grok", "gemini"]);
+assert.deepEqual(data.products.map((product) => product.id), ["chatgpt", "claude", "grok", "gemini", "meta-ai"]);
+const meta = data.products.find((product) => product.id === "meta-ai");
+assert.equal(meta.appStore, "https://apps.apple.com/us/app/meta-ai/id1558240027");
+assert.deepEqual(meta.metaOne.plans.map((plan) => plan.monthlyUsd), [7.99, 19.99]);
+assert(new URL(meta.metaOne.source).hostname === "about.fb.com");
 assert(data.prices.length >= 500);
 assert(Number.isFinite(data.usdCny) && data.usdCny > 0);
 

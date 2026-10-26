@@ -1,7 +1,7 @@
 const copy = {
   zh: {
     searchLabel: "搜索 AI 应用或套餐", backToScansci: "返回 ScanSci", backToApps: "返回应用列表",
-    category: "AI 助手", plans: "个套餐", noResults: "没有找到匹配的 AI 应用。",
+    category: "AI 助手", plans: "个套餐", noResults: "没有找到匹配的 AI 应用。", metaCardPlans: "基础免费 · 2 档付费方案", metaFree: "Meta AI 基础版", free: "免费", metaFreeDesc: "Meta 确认基础功能免费；App Store 标注可免费获取，提供应用内购买。", metaCoreDesc: "增加 Meta AI 图像和视频生成额度，并包含多款 Meta 应用权益。", metaPremiumDesc: "包含 Core 权益，提供更高的 Meta AI 创作额度。", metaAnnouncement: "Meta 官方价格说明", metaPriceVaries: "基础版免费和 Meta One 的美元月费起售价均来自 Meta 官方公告。Meta One 为跨应用订阅；实际价格、权益与可用性因地区、应用和账号而异，暂不计入地区排行榜。",
     plansComparison: "套餐比价", regionComparison: "地区比价", allChannels: "全部渠道",
     appStore: "App Store", web: "官网",
     globalPrice: "全球价格", country: "国家或地区", channel: "渠道", localPrice: "当地价格", converted: "折算价格", source: "来源",
@@ -10,7 +10,7 @@ const copy = {
   },
   en: {
     searchLabel: "Search AI apps or plans", backToScansci: "Back to ScanSci", backToApps: "Back to apps",
-    category: "AI Assistant", plans: "plans", noResults: "No matching AI apps found.",
+    category: "AI Assistant", plans: "plans", noResults: "No matching AI apps found.", metaCardPlans: "Free basics · 2 paid tiers", metaFree: "Meta AI (free)", free: "Free", metaFreeDesc: "Meta confirms the basic experience is free; the App Store lists a free download with in-app purchases.", metaCoreDesc: "Higher Meta AI image and video generation limits, plus benefits across Meta apps.", metaPremiumDesc: "Includes Core benefits with the highest Meta AI creation limits.", metaAnnouncement: "Meta's official pricing announcement", metaPriceVaries: "Meta's official announcement confirms the free experience and the starting monthly USD prices for Meta One. Meta One bundles benefits across Meta apps. Price, benefits, and availability vary by region, app, and account, so these prices are excluded from regional rankings.",
     plansComparison: "Plans Comparison", regionComparison: "Region Comparison", allChannels: "All channels",
     appStore: "App Store", web: "Web",
     globalPrice: "Global Price", country: "Country or region", channel: "Channel", localPrice: "Local price", converted: "Converted", source: "Source",
@@ -52,11 +52,11 @@ function mark(product, large = false) { return `<span class="app-mark${large ? "
 
 function renderList() {
   const normalized = state.query.trim().toLocaleLowerCase();
-  const products = state.data.products.filter((item) => !normalized || [item.name, item.provider, item.description.zh, item.description.en, ...state.data.plans.filter((p) => p.product === item.id).map((p) => p.name)].join(" ").toLocaleLowerCase().includes(normalized));
+  const products = state.data.products.filter((item) => !normalized || [item.name, item.provider, item.description.zh, item.description.en, ...state.data.plans.filter((p) => p.product === item.id).map((p) => p.name), ...(item.metaOne?.plans.map((p) => `Meta One ${p.name}`) || [])].join(" ").toLocaleLowerCase().includes(normalized));
   $("appGrid").innerHTML = products.map((product) => {
     const plans = state.data.plans.filter((item) => item.product === product.id);
     const hasWeb = state.data.prices.some((item) => item.product === product.id && item.channel === "web");
-    return `<a class="app-card" href="?app=${encodeURIComponent(product.id)}" data-app="${escape(product.id)}"><div class="app-head">${mark(product)}<div class="app-headings"><h2>${escape(product.name)}</h2><p>${escape(product.provider)}</p></div><span class="app-arrow" aria-hidden="true">›</span></div><p class="app-desc">${escape(product.description[state.lang])}</p><div class="app-platforms"><span class="platform-chip">${t("appStore")}</span>${hasWeb ? `<span class="platform-chip">${t("web")}</span>` : ""}</div><div class="app-foot"><span class="category-chip">${t("category")}</span><span class="plan-count">${plans.length} ${t("plans")}</span></div></a>`;
+    return `<a class="app-card" href="?app=${encodeURIComponent(product.id)}" data-app="${escape(product.id)}"><div class="app-head">${mark(product)}<div class="app-headings"><h2>${escape(product.name)}</h2><p>${escape(product.provider)}</p></div><span class="app-arrow" aria-hidden="true">›</span></div><p class="app-desc">${escape(product.description[state.lang])}</p><div class="app-platforms"><span class="platform-chip">${t("appStore")}</span>${hasWeb ? `<span class="platform-chip">${t("web")}</span>` : ""}</div><div class="app-foot"><span class="category-chip">${t("category")}</span><span class="plan-count">${product.metaOne ? t("metaCardPlans") : `${plans.length} ${t("plans")}`}</span></div></a>`;
   }).join("");
   $("listEmpty").hidden = products.length > 0;
   $("listEmpty").textContent = t("noResults");
@@ -89,7 +89,13 @@ function regionView(rows, product) {
   }).join("")}</div>`;
 }
 
+function renderMetaDetail(product) {
+  const offer = product.metaOne;
+  $("detailView").innerHTML = `<section class="detail-hero">${mark(product, true)}<div class="hero-copy"><div class="hero-topline"><h1>${escape(product.name)}</h1></div><div class="hero-sub"><span>${escape(product.provider)}</span><span>·</span><span class="category-chip">${t("category")}</span></div><p>${escape(product.description[state.lang])}</p></div></section><div class="meta-grid"><article class="panel meta-card"><h2>${t("metaFree")}</h2><strong class="meta-value">${t("free")}</strong><p>${t("metaFreeDesc")}</p>${sourceLink({ source: product.appStore }, t("appStore"))}</article>${offer.plans.map((tier) => `<article class="panel meta-card"><h2>Meta One ${escape(tier.name)}</h2><strong class="meta-value">${state.lang === "zh" ? `US$${tier.monthlyUsd.toFixed(2)} / 月起` : `From US$${tier.monthlyUsd.toFixed(2)} / month`}</strong><p>${t(`meta${tier.name}Desc`)}</p></article>`).join("")}</div><p class="meta-footnote">${t("metaPriceVaries")} ${sourceLink({ source: offer.source }, t("metaAnnouncement"))}</p>`;
+}
+
 function renderDetail(product, selectedPlan, tab) {
+  if (product.metaOne) { renderMetaDetail(product); return; }
   const plans = state.data.plans.filter((item) => item.product === product.id);
   const preferred = { chatgpt: "chatgpt-plus", claude: "claude-pro", grok: "supergrok", gemini: "google-ai-pro" };
   const plan = plans.find((item) => item.id === selectedPlan) || plans.find((item) => item.id === preferred[product.id]) || plans[0];
@@ -124,6 +130,7 @@ function render() {
   $("backToList").title = t("backToApps");
   $("listView").hidden = Boolean(product);
   $("detailView").hidden = !product;
+  $("dataNote").hidden = Boolean(product?.metaOne);
   if (product) renderDetail(product, current.plan, current.tab);
   else renderList();
   renderNote();

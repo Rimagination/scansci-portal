@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T13:53:42.209Z",
+  "generatedAt": "2026-10-26T14:12:21.095Z",
   "iosSource": "BiWu.Ai public offers API; each row links to the corresponding Apple listing",
   "webSource": "PlanPrice CC BY 4.0, release 2026-10-20 and live US grid",
   "rateSource": "open.er-api.com, Mon, 26 Oct 2026 00:02:31 +0000",
@@ -43,6 +43,30 @@
       "description": {
         "zh": "Google 的 AI 助手，提供搜索、写作和多模态工具。",
         "en": "Google's AI assistant for search, writing, and multimodal tools."
+      }
+    },
+    {
+      "id": "meta-ai",
+      "name": "Meta AI",
+      "provider": "Meta",
+      "logo": "./assets/meta-ai.jpg",
+      "appStore": "https://apps.apple.com/us/app/meta-ai/id1558240027",
+      "metaOne": {
+        "source": "https://about.fb.com/news/2026/09/introducing-meta-one-subscription-service-more-features-ai/",
+        "plans": [
+          {
+            "name": "Core",
+            "monthlyUsd": 7.99
+          },
+          {
+            "name": "Premium",
+            "monthlyUsd": 19.99
+          }
+        ]
+      },
+      "description": {
+        "zh": "Meta 的 AI 助手，支持聊天、搜索、创作及图像和视频生成。",
+        "en": "Meta's AI assistant for chat, search, creation, and image and video generation."
       }
     }
   ],

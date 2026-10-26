@@ -27,6 +27,7 @@ const products = [
   { id: "claude", name: "Claude", provider: "Anthropic", logo: "./assets/claude.jpg", description: { zh: "Anthropic 的 AI 助手，适合写作、分析、编程与长文处理。", en: "Anthropic's AI assistant for writing, analysis, coding, and long documents." } },
   { id: "grok", name: "Grok", provider: "xAI", logo: "./assets/grok.jpg", description: { zh: "xAI 的 AI 助手，提供聊天、搜索和创作功能。", en: "xAI's assistant for chat, search, and creation." } },
   { id: "gemini", name: "Gemini", provider: "Google", logo: "./assets/gemini.jpg", description: { zh: "Google 的 AI 助手，提供搜索、写作和多模态工具。", en: "Google's AI assistant for search, writing, and multimodal tools." } },
+  { id: "meta-ai", name: "Meta AI", provider: "Meta", logo: "./assets/meta-ai.jpg", appStore: "https://apps.apple.com/us/app/meta-ai/id1558240027", metaOne: { source: "https://about.fb.com/news/2026/09/introducing-meta-one-subscription-service-more-features-ai/", plans: [{ name: "Core", monthlyUsd: 7.99 }, { name: "Premium", monthlyUsd: 19.99 }] }, description: { zh: "Meta 的 AI 助手，支持聊天、搜索、创作及图像和视频生成。", en: "Meta's AI assistant for chat, search, creation, and image and video generation." } },
 ];
 
 const liveWebPlans = {
@@ -113,7 +114,7 @@ async function main() {
   const base = `https://plan-price.com/data/releases/${latest}/`;
   const observations = await getJson(`${base}observations.json`);
   for (const item of observations) {
-    if (!products.some((p) => p.id === item.product_id) || !(item.channel === "web" || (item.channel === "ios" && item.period === "year"))) continue;
+    if (!plans.some(([product]) => product === item.product_id) || !(item.channel === "web" || (item.channel === "ios" && item.period === "year"))) continue;
     const amount = Number(item.amount);
     const usdRate = rates.rates[item.currency];
     if (!Number.isFinite(amount) || !Number.isFinite(usdRate) || !usdRate) continue;

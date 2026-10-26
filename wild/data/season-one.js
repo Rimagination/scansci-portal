@@ -5,9 +5,20 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院空天信息创新研究院",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/01.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/01-1.webp",
+        "thumb": "assets/photos/thumbs/01-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/01-2.webp",
+        "thumb": "assets/photos/thumbs/01-2.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 81,
     "time": "2019年盛夏",
     "location": "河北易县清西陵",
@@ -20,9 +31,14 @@ window.WILD_RESEARCHERS = [
     "organization": "贵州工业职业技术学院",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/02.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/02-1.webp",
+        "thumb": "assets/photos/thumbs/02-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 33,
     "time": "2022年3月",
     "location": "贵州省乌蒙山区的威宁县",
@@ -35,9 +51,20 @@ window.WILD_RESEARCHERS = [
     "organization": "中南半岛昆虫学会",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/03.jpg",
-    "width": 1078,
-    "height": 1078,
+    "photos": [
+      {
+        "src": "assets/photos/03-1.webp",
+        "thumb": "assets/photos/thumbs/03-1.webp",
+        "width": 1078,
+        "height": 1078
+      },
+      {
+        "src": "assets/photos/03-2.webp",
+        "thumb": "assets/photos/thumbs/03-2.webp",
+        "width": 810,
+        "height": 810
+      }
+    ],
     "historicalVotes": 21,
     "time": "2025年7月20日",
     "location": "广东省江门鹤山市古劳镇",
@@ -50,9 +77,26 @@ window.WILD_RESEARCHERS = [
     "organization": "塔里木大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/04.jpg",
-    "width": 1080,
-    "height": 721,
+    "photos": [
+      {
+        "src": "assets/photos/04-1.webp",
+        "thumb": "assets/photos/thumbs/04-1.webp",
+        "width": 1280,
+        "height": 854
+      },
+      {
+        "src": "assets/photos/04-2.webp",
+        "thumb": "assets/photos/thumbs/04-2.webp",
+        "width": 1280,
+        "height": 854
+      },
+      {
+        "src": "assets/photos/04-3.webp",
+        "thumb": "assets/photos/thumbs/04-3.webp",
+        "width": 1280,
+        "height": 854
+      }
+    ],
     "historicalVotes": 66,
     "time": "2025年7月28日",
     "location": "新疆塔里木国家级胡杨自然保护区",
@@ -65,9 +109,26 @@ window.WILD_RESEARCHERS = [
     "organization": "内蒙古农业大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/05.jpg",
-    "width": 750,
-    "height": 563,
+    "photos": [
+      {
+        "src": "assets/photos/05-1.webp",
+        "thumb": "assets/photos/thumbs/05-1.webp",
+        "width": 750,
+        "height": 563
+      },
+      {
+        "src": "assets/photos/05-2.webp",
+        "thumb": "assets/photos/thumbs/05-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/05-3.webp",
+        "thumb": "assets/photos/thumbs/05-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 26,
     "time": "2020年06月06日",
     "location": "内蒙古自治区鄂尔多斯市乌审旗察汗淖尔",
@@ -80,9 +141,14 @@ window.WILD_RESEARCHERS = [
     "organization": "浙江省海洋水产养殖研究所",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/06.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/06-1.webp",
+        "thumb": "assets/photos/thumbs/06-1.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 21,
     "time": "2025年7月25日",
     "location": "温州市瑞安市丁山三期碳通量观测塔",
@@ -95,9 +161,26 @@ window.WILD_RESEARCHERS = [
     "organization": "厦门大学生命科学学院",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/07.jpg",
-    "width": 1080,
-    "height": 1920,
+    "photos": [
+      {
+        "src": "assets/photos/07-1.webp",
+        "thumb": "assets/photos/thumbs/07-1.webp",
+        "width": 720,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/07-2.webp",
+        "thumb": "assets/photos/thumbs/07-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/07-3.webp",
+        "thumb": "assets/photos/thumbs/07-3.webp",
+        "width": 1280,
+        "height": 720
+      }
+    ],
     "historicalVotes": 22,
     "time": "2024年8月",
     "location": "天宝岩国家级自然保护区",
@@ -110,9 +193,20 @@ window.WILD_RESEARCHERS = [
     "organization": "中南林业科技大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/08.jpg",
-    "width": 1080,
-    "height": 1620,
+    "photos": [
+      {
+        "src": "assets/photos/08-1.webp",
+        "thumb": "assets/photos/thumbs/08-1.webp",
+        "width": 853,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/08-2.webp",
+        "thumb": "assets/photos/thumbs/08-2.webp",
+        "width": 853,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 68,
     "time": "2022年7月30日",
     "location": "湖南都庞岭自然保护区—道县韭菜岭",
@@ -125,9 +219,26 @@ window.WILD_RESEARCHERS = [
     "organization": "四川师范大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/09.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/09-1.webp",
+        "thumb": "assets/photos/thumbs/09-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/09-2.webp",
+        "thumb": "assets/photos/thumbs/09-2.webp",
+        "width": 1280,
+        "height": 959
+      },
+      {
+        "src": "assets/photos/09-3.webp",
+        "thumb": "assets/photos/thumbs/09-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 62,
     "time": "",
     "location": "",
@@ -140,9 +251,14 @@ window.WILD_RESEARCHERS = [
     "organization": "广西大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/10.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/10-1.webp",
+        "thumb": "assets/photos/thumbs/10-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 23,
     "time": "2023年11月21日",
     "location": "广西十万大山",
@@ -155,9 +271,26 @@ window.WILD_RESEARCHERS = [
     "organization": "南京林业大学竹类研究所",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/11.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/11-1.webp",
+        "thumb": "assets/photos/thumbs/11-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/11-2.webp",
+        "thumb": "assets/photos/thumbs/11-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/11-3.webp",
+        "thumb": "assets/photos/thumbs/11-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 55,
     "time": "2024年12月8日",
     "location": "贵州桐梓箐坝山金佛山方竹林",
@@ -170,9 +303,26 @@ window.WILD_RESEARCHERS = [
     "organization": "南京林业大学竹类研究所",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/12.jpg",
-    "width": 1080,
-    "height": 1444,
+    "photos": [
+      {
+        "src": "assets/photos/12-1.webp",
+        "thumb": "assets/photos/thumbs/12-1.webp",
+        "width": 957,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/12-2.webp",
+        "thumb": "assets/photos/thumbs/12-2.webp",
+        "width": 1280,
+        "height": 961
+      },
+      {
+        "src": "assets/photos/12-3.webp",
+        "thumb": "assets/photos/thumbs/12-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 42,
     "time": "2024年10月21日",
     "location": "四川宜宾市龙头镇江河村",
@@ -185,9 +335,20 @@ window.WILD_RESEARCHERS = [
     "organization": "加州大学伯克利分校环境科学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/13.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/13-1.webp",
+        "thumb": "assets/photos/thumbs/13-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/13-2.webp",
+        "thumb": "assets/photos/thumbs/13-2.webp",
+        "width": 1280,
+        "height": 854
+      }
+    ],
     "historicalVotes": 26,
     "time": "2022年夏季",
     "location": "美国加利福尼亚州克拉马斯河流域（Klamath River Basin）",
@@ -200,9 +361,26 @@ window.WILD_RESEARCHERS = [
     "organization": "福建中医药大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/14.jpg",
-    "width": 1080,
-    "height": 703,
+    "photos": [
+      {
+        "src": "assets/photos/14-1.webp",
+        "thumb": "assets/photos/thumbs/14-1.webp",
+        "width": 1280,
+        "height": 833
+      },
+      {
+        "src": "assets/photos/14-2.webp",
+        "thumb": "assets/photos/thumbs/14-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/14-3.webp",
+        "thumb": "assets/photos/thumbs/14-3.webp",
+        "width": 1280,
+        "height": 853
+      }
+    ],
     "historicalVotes": 25,
     "time": "2025年7月15日",
     "location": "福建嵛山岛",
@@ -215,9 +393,26 @@ window.WILD_RESEARCHERS = [
     "organization": "云南大学",
     "article": 2,
     "sourceUrl": "https://mp.weixin.qq.com/s/3s_67-kPGYQWhj5pt5lsKw",
-    "photo": "assets/photos/15.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/15-1.webp",
+        "thumb": "assets/photos/thumbs/15-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/15-2.webp",
+        "thumb": "assets/photos/thumbs/15-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/15-3.webp",
+        "thumb": "assets/photos/thumbs/15-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 36,
     "time": "",
     "location": "",
@@ -230,9 +425,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/16.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/16-1.webp",
+        "thumb": "assets/photos/thumbs/16-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/16-2.webp",
+        "thumb": "assets/photos/thumbs/16-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/16-3.webp",
+        "thumb": "assets/photos/thumbs/16-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 27,
     "time": "2024.06.28",
     "location": "湖北 · 神农架林区",
@@ -245,9 +457,26 @@ window.WILD_RESEARCHERS = [
     "organization": "吉林农业大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/17.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/17-1.webp",
+        "thumb": "assets/photos/thumbs/17-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/17-2.webp",
+        "thumb": "assets/photos/thumbs/17-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/17-3.webp",
+        "thumb": "assets/photos/thumbs/17-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 37,
     "time": "2025年7月22日",
     "location": "吉林省延边朝鲜族自治州老白山原始生态区",
@@ -260,9 +489,14 @@ window.WILD_RESEARCHERS = [
     "organization": "东北林业大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/18.jpg",
-    "width": 1080,
-    "height": 1924,
+    "photos": [
+      {
+        "src": "assets/photos/18-1.webp",
+        "thumb": "assets/photos/thumbs/18-1.webp",
+        "width": 719,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 14,
     "time": "25年07月",
     "location": "吉林省长白山",
@@ -275,9 +509,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国地质调查局乌鲁木齐自然资源综合调查局",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/19.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/19-1.webp",
+        "thumb": "assets/photos/thumbs/19-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/19-2.webp",
+        "thumb": "assets/photos/thumbs/19-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/19-3.webp",
+        "thumb": "assets/photos/thumbs/19-3.webp",
+        "width": 961,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 27,
     "time": "2025年7月",
     "location": "新疆维吾尔自治区巴音郭楞蒙古自治州且末县-南阿尔金山",
@@ -290,9 +541,14 @@ window.WILD_RESEARCHERS = [
     "organization": "中国农业科学院果树研究所",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/20.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/20-1.webp",
+        "thumb": "assets/photos/thumbs/20-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 18,
     "time": "2025年8月27日",
     "location": "西藏昌都市八宿县72拐下方",
@@ -305,9 +561,26 @@ window.WILD_RESEARCHERS = [
     "organization": "沈阳师范大学古生物学院",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/21.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/21-1.webp",
+        "thumb": "assets/photos/thumbs/21-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/21-2.webp",
+        "thumb": "assets/photos/thumbs/21-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/21-3.webp",
+        "thumb": "assets/photos/thumbs/21-3.webp",
+        "width": 894,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 26,
     "time": "",
     "location": "",
@@ -320,9 +593,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国大熊猫保护研究中心",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/22.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/22-1.webp",
+        "thumb": "assets/photos/thumbs/22-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/22-2.webp",
+        "thumb": "assets/photos/thumbs/22-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/22-3.webp",
+        "thumb": "assets/photos/thumbs/22-3.webp",
+        "width": 1044,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 48,
     "time": "2023年3月",
     "location": "西藏墨脱",
@@ -335,9 +625,26 @@ window.WILD_RESEARCHERS = [
     "organization": "山水自然保护中心",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/23.jpg",
-    "width": 1080,
-    "height": 1441,
+    "photos": [
+      {
+        "src": "assets/photos/23-1.webp",
+        "thumb": "assets/photos/thumbs/23-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/23-2.webp",
+        "thumb": "assets/photos/thumbs/23-2.webp",
+        "width": 1280,
+        "height": 959
+      },
+      {
+        "src": "assets/photos/23-3.webp",
+        "thumb": "assets/photos/thumbs/23-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 62,
     "time": "",
     "location": "",
@@ -350,9 +657,14 @@ window.WILD_RESEARCHERS = [
     "organization": "黔南民族师范学院",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/24.png",
-    "width": 567,
-    "height": 865,
+    "photos": [
+      {
+        "src": "assets/photos/24-1.webp",
+        "thumb": "assets/photos/thumbs/24-1.webp",
+        "width": 567,
+        "height": 865
+      }
+    ],
     "historicalVotes": 56,
     "time": "2025年8月22日",
     "location": "广西乐业县苏家天坑",
@@ -365,9 +677,26 @@ window.WILD_RESEARCHERS = [
     "organization": "海南大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/25.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/25-1.webp",
+        "thumb": "assets/photos/thumbs/25-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/25-2.webp",
+        "thumb": "assets/photos/thumbs/25-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/25-3.webp",
+        "thumb": "assets/photos/thumbs/25-3.webp",
+        "width": 1280,
+        "height": 720
+      }
+    ],
     "historicalVotes": 23,
     "time": "23年9月",
     "location": "海南昌江",
@@ -380,9 +709,26 @@ window.WILD_RESEARCHERS = [
     "organization": "四川省林业科学研究院",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/26.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/26-1.webp",
+        "thumb": "assets/photos/thumbs/26-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/26-2.webp",
+        "thumb": "assets/photos/thumbs/26-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/26-3.webp",
+        "thumb": "assets/photos/thumbs/26-3.webp",
+        "width": 720,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 48,
     "time": "2023年8月",
     "location": "四川省阿坝藏族自治州理县",
@@ -395,9 +741,26 @@ window.WILD_RESEARCHERS = [
     "organization": "昆明学院",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/27.jpg",
-    "width": 1080,
-    "height": 1620,
+    "photos": [
+      {
+        "src": "assets/photos/27-1.webp",
+        "thumb": "assets/photos/thumbs/27-1.webp",
+        "width": 853,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/27-2.webp",
+        "thumb": "assets/photos/thumbs/27-2.webp",
+        "width": 1280,
+        "height": 980
+      },
+      {
+        "src": "assets/photos/27-3.webp",
+        "thumb": "assets/photos/thumbs/27-3.webp",
+        "width": 853,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 49,
     "time": "2024年08月09日",
     "location": "云南怒江独龙江乡",
@@ -410,9 +773,26 @@ window.WILD_RESEARCHERS = [
     "organization": "京都大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/28.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/28-1.webp",
+        "thumb": "assets/photos/thumbs/28-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/28-2.webp",
+        "thumb": "assets/photos/thumbs/28-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/28-3.webp",
+        "thumb": "assets/photos/thumbs/28-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 38,
     "time": "2025年7月18日",
     "location": "日本能登半岛轮岛市河井町",
@@ -425,9 +805,20 @@ window.WILD_RESEARCHERS = [
     "organization": "海南大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/29.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/29-1.webp",
+        "thumb": "assets/photos/thumbs/29-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/29-2.webp",
+        "thumb": "assets/photos/thumbs/29-2.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 57,
     "time": "2025年07月12日",
     "location": "海南热带雨林国家公园鹦哥岭分局",
@@ -440,9 +831,26 @@ window.WILD_RESEARCHERS = [
     "organization": "东北林业大学",
     "article": 3,
     "sourceUrl": "https://mp.weixin.qq.com/s/5p0VvmdxWzawQ_H5BMUcHg",
-    "photo": "assets/photos/30.jpg",
-    "width": 1080,
-    "height": 608,
+    "photos": [
+      {
+        "src": "assets/photos/30-1.webp",
+        "thumb": "assets/photos/thumbs/30-1.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "src": "assets/photos/30-2.webp",
+        "thumb": "assets/photos/thumbs/30-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/30-3.webp",
+        "thumb": "assets/photos/thumbs/30-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 197,
     "time": "2024年1月5日至10日",
     "location": "小兴安岭南部朗乡国家级自然保护区",
@@ -455,9 +863,14 @@ window.WILD_RESEARCHERS = [
     "organization": "河南商丘农田生态系统国家野外科学观测研究站",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/31.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/31-1.webp",
+        "thumb": "assets/photos/thumbs/31-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 75,
     "time": "2018年8月",
     "location": "河南商丘站",
@@ -470,9 +883,26 @@ window.WILD_RESEARCHERS = [
     "organization": "黑龙江茅兰沟国家级自然保护区管理局",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/32.jpg",
-    "width": 1080,
-    "height": 677,
+    "photos": [
+      {
+        "src": "assets/photos/32-1.webp",
+        "thumb": "assets/photos/thumbs/32-1.webp",
+        "width": 1280,
+        "height": 802
+      },
+      {
+        "src": "assets/photos/32-2.webp",
+        "thumb": "assets/photos/thumbs/32-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/32-3.webp",
+        "thumb": "assets/photos/thumbs/32-3.webp",
+        "width": 1280,
+        "height": 853
+      }
+    ],
     "historicalVotes": 79,
     "time": "2014年11月",
     "location": "黑龙江省伊春市嘉荫县",
@@ -485,9 +915,26 @@ window.WILD_RESEARCHERS = [
     "organization": "贵州大学生命科学学院",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/33.jpg",
-    "width": 1080,
-    "height": 1441,
+    "photos": [
+      {
+        "src": "assets/photos/33-1.webp",
+        "thumb": "assets/photos/thumbs/33-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/33-2.webp",
+        "thumb": "assets/photos/thumbs/33-2.webp",
+        "width": 961,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/33-3.webp",
+        "thumb": "assets/photos/thumbs/33-3.webp",
+        "width": 1280,
+        "height": 959
+      }
+    ],
     "historicalVotes": 70,
     "time": "2024年10月5日",
     "location": "贵州省遵义市正安县桴焉镇九道水国家森林公园",
@@ -500,9 +947,26 @@ window.WILD_RESEARCHERS = [
     "organization": "厦门大学环境与生态学院",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/34.jpg",
-    "width": 1080,
-    "height": 608,
+    "photos": [
+      {
+        "src": "assets/photos/34-1.webp",
+        "thumb": "assets/photos/thumbs/34-1.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "src": "assets/photos/34-2.webp",
+        "thumb": "assets/photos/thumbs/34-2.webp",
+        "width": 1280,
+        "height": 959
+      },
+      {
+        "src": "assets/photos/34-3.webp",
+        "thumb": "assets/photos/thumbs/34-3.webp",
+        "width": 1280,
+        "height": 720
+      }
+    ],
     "historicalVotes": 34,
     "time": "2024年8月1日",
     "location": "福建省漳州市东山县苏峰山",
@@ -515,9 +979,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院华南植物园",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/35.jpg",
-    "width": 949,
-    "height": 1258,
+    "photos": [
+      {
+        "src": "assets/photos/35-1.webp",
+        "thumb": "assets/photos/thumbs/35-1.webp",
+        "width": 949,
+        "height": 1258
+      },
+      {
+        "src": "assets/photos/35-2.webp",
+        "thumb": "assets/photos/thumbs/35-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/35-3.webp",
+        "thumb": "assets/photos/thumbs/35-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 150,
     "time": "2024-2025年",
     "location": "广东省",
@@ -530,9 +1011,26 @@ window.WILD_RESEARCHERS = [
     "organization": "乐山师院学院生命科学学院",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/36.jpg",
-    "width": 1080,
-    "height": 608,
+    "photos": [
+      {
+        "src": "assets/photos/36-1.webp",
+        "thumb": "assets/photos/thumbs/36-1.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "src": "assets/photos/36-2.webp",
+        "thumb": "assets/photos/thumbs/36-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/36-3.webp",
+        "thumb": "assets/photos/thumbs/36-3.webp",
+        "width": 720,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 94,
     "time": "2024年05月",
     "location": "西藏墨脱县",
@@ -545,9 +1043,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院华南植物园",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/37.jpg",
-    "width": 1080,
-    "height": 721,
+    "photos": [
+      {
+        "src": "assets/photos/37-1.webp",
+        "thumb": "assets/photos/thumbs/37-1.webp",
+        "width": 1280,
+        "height": 854
+      },
+      {
+        "src": "assets/photos/37-2.webp",
+        "thumb": "assets/photos/thumbs/37-2.webp",
+        "width": 1280,
+        "height": 854
+      },
+      {
+        "src": "assets/photos/37-3.webp",
+        "thumb": "assets/photos/thumbs/37-3.webp",
+        "width": 1280,
+        "height": 854
+      }
+    ],
     "historicalVotes": 94,
     "time": "2023年09月",
     "location": "广东省",
@@ -560,9 +1075,14 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院新疆生态与地理研究所",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/38.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/38-1.webp",
+        "thumb": "assets/photos/thumbs/38-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 83,
     "time": "2023年09月28日",
     "location": "新疆塔克拉玛干沙漠东部",
@@ -575,9 +1095,20 @@ window.WILD_RESEARCHERS = [
     "organization": "甘肃农业大学",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/39.jpg",
-    "width": 1040,
-    "height": 779,
+    "photos": [
+      {
+        "src": "assets/photos/39-1.webp",
+        "thumb": "assets/photos/thumbs/39-1.webp",
+        "width": 1040,
+        "height": 779
+      },
+      {
+        "src": "assets/photos/39-2.webp",
+        "thumb": "assets/photos/thumbs/39-2.webp",
+        "width": 454,
+        "height": 340
+      }
+    ],
     "historicalVotes": 29,
     "time": "2024年11月15日",
     "location": "甘肃省武威市凉州区绿洲农作制试验基地",
@@ -590,9 +1121,20 @@ window.WILD_RESEARCHERS = [
     "organization": "陕西师范大学",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/40.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/40-1.webp",
+        "thumb": "assets/photos/thumbs/40-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/40-2.webp",
+        "thumb": "assets/photos/thumbs/40-2.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 62,
     "time": "2020年07月",
     "location": "陕西省长武县",
@@ -605,9 +1147,14 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院西双版纳热带植物园",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/41.jpg",
-    "width": 1080,
-    "height": 809,
+    "photos": [
+      {
+        "src": "assets/photos/41-1.webp",
+        "thumb": "assets/photos/thumbs/41-1.webp",
+        "width": 1280,
+        "height": 959
+      }
+    ],
     "historicalVotes": 45,
     "time": "2024年8月23日",
     "location": "缅甸马圭省Shwe Set Taw reserve",
@@ -620,9 +1167,26 @@ window.WILD_RESEARCHERS = [
     "organization": "陕西省动物研究所",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/42.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/42-1.webp",
+        "thumb": "assets/photos/thumbs/42-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/42-2.webp",
+        "thumb": "assets/photos/thumbs/42-2.webp",
+        "width": 1280,
+        "height": 863
+      },
+      {
+        "src": "assets/photos/42-3.webp",
+        "thumb": "assets/photos/thumbs/42-3.webp",
+        "width": 1280,
+        "height": 712
+      }
+    ],
     "historicalVotes": 34,
     "time": "2020年05月",
     "location": "青海省玉树藏族自治州杂多县日阿东拉垭口 | 海拔5002米",
@@ -635,9 +1199,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中山大学",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/43.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/43-1.webp",
+        "thumb": "assets/photos/thumbs/43-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/43-2.webp",
+        "thumb": "assets/photos/thumbs/43-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/43-3.webp",
+        "thumb": "assets/photos/thumbs/43-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 29,
     "time": "2025年8月",
     "location": "广东廉江红树林",
@@ -650,9 +1231,14 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院西双版纳热带植物园",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/44.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/44-1.webp",
+        "thumb": "assets/photos/thumbs/44-1.webp",
+        "width": 1280,
+        "height": 853
+      }
+    ],
     "historicalVotes": 62,
     "time": "2021年9月19日",
     "location": "云南高黎贡山摆罗塘",
@@ -665,9 +1251,26 @@ window.WILD_RESEARCHERS = [
     "organization": "山东农业大学",
     "article": 4,
     "sourceUrl": "https://mp.weixin.qq.com/s/4IFiZPbDgMN9jB8G7kmPRw",
-    "photo": "assets/photos/45.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/45-1.webp",
+        "thumb": "assets/photos/thumbs/45-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/45-2.webp",
+        "thumb": "assets/photos/thumbs/45-2.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "src": "assets/photos/45-3.webp",
+        "thumb": "assets/photos/thumbs/45-3.webp",
+        "width": 1280,
+        "height": 853
+      }
+    ],
     "historicalVotes": 31,
     "time": "2024年08月",
     "location": "山东泰山彩石溪",
@@ -680,9 +1283,26 @@ window.WILD_RESEARCHERS = [
     "organization": "华东师范大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/46.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/46-1.webp",
+        "thumb": "assets/photos/thumbs/46-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/46-2.webp",
+        "thumb": "assets/photos/thumbs/46-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/46-3.webp",
+        "thumb": "assets/photos/thumbs/46-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 38,
     "time": "2023年5月21日",
     "location": "青海省门源县西北高原生物研究所",
@@ -695,9 +1315,26 @@ window.WILD_RESEARCHERS = [
     "organization": "湖南农业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/47.jpg",
-    "width": 1080,
-    "height": 799,
+    "photos": [
+      {
+        "src": "assets/photos/47-1.webp",
+        "thumb": "assets/photos/thumbs/47-1.webp",
+        "width": 1179,
+        "height": 872
+      },
+      {
+        "src": "assets/photos/47-2.webp",
+        "thumb": "assets/photos/thumbs/47-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/47-3.webp",
+        "thumb": "assets/photos/thumbs/47-3.webp",
+        "width": 720,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 29,
     "time": "",
     "location": "",
@@ -710,9 +1347,14 @@ window.WILD_RESEARCHERS = [
     "organization": "东北林业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/48.jpg",
-    "width": 1080,
-    "height": 484,
+    "photos": [
+      {
+        "src": "assets/photos/48-1.webp",
+        "thumb": "assets/photos/thumbs/48-1.webp",
+        "width": 1280,
+        "height": 574
+      }
+    ],
     "historicalVotes": 33,
     "time": "2025年8月",
     "location": "黑龙江省加格达奇区",
@@ -725,9 +1367,14 @@ window.WILD_RESEARCHERS = [
     "organization": "山西大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/49.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/49-1.webp",
+        "thumb": "assets/photos/thumbs/49-1.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 28,
     "time": "",
     "location": "",
@@ -740,9 +1387,26 @@ window.WILD_RESEARCHERS = [
     "organization": "北京林业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/50.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/50-1.webp",
+        "thumb": "assets/photos/thumbs/50-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/50-2.webp",
+        "thumb": "assets/photos/thumbs/50-2.webp",
+        "width": 1280,
+        "height": 959
+      },
+      {
+        "src": "assets/photos/50-3.webp",
+        "thumb": "assets/photos/thumbs/50-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 77,
     "time": "",
     "location": "",
@@ -755,9 +1419,26 @@ window.WILD_RESEARCHERS = [
     "organization": "北京林业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/51.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/51-1.webp",
+        "thumb": "assets/photos/thumbs/51-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/51-2.webp",
+        "thumb": "assets/photos/thumbs/51-2.webp",
+        "width": 901,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/51-3.webp",
+        "thumb": "assets/photos/thumbs/51-3.webp",
+        "width": 725,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 36,
     "time": "",
     "location": "",
@@ -770,9 +1451,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国林业科学研究院",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/52.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/52-1.webp",
+        "thumb": "assets/photos/thumbs/52-1.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/52-2.webp",
+        "thumb": "assets/photos/thumbs/52-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/52-3.webp",
+        "thumb": "assets/photos/thumbs/52-3.webp",
+        "width": 1280,
+        "height": 959
+      }
+    ],
     "historicalVotes": 59,
     "time": "2024年国庆",
     "location": "江苏盐城丹顶鹤自然保护区",
@@ -785,9 +1483,20 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院地球化学研究所",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/53.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/53-1.webp",
+        "thumb": "assets/photos/thumbs/53-1.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/53-2.webp",
+        "thumb": "assets/photos/thumbs/53-2.webp",
+        "width": 1280,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 27,
     "time": "2025年8月",
     "location": "青海境内某矿区",
@@ -800,9 +1509,26 @@ window.WILD_RESEARCHERS = [
     "organization": "海南大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/54.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/54-1.webp",
+        "thumb": "assets/photos/thumbs/54-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/54-2.webp",
+        "thumb": "assets/photos/thumbs/54-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/54-3.webp",
+        "thumb": "assets/photos/thumbs/54-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 47,
     "time": "2025年06月28日",
     "location": "海南昌江霸王岭",
@@ -815,9 +1541,26 @@ window.WILD_RESEARCHERS = [
     "organization": "昆明理工大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/55.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/55-1.webp",
+        "thumb": "assets/photos/thumbs/55-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/55-2.webp",
+        "thumb": "assets/photos/thumbs/55-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/55-3.webp",
+        "thumb": "assets/photos/thumbs/55-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 28,
     "time": "2024年10月",
     "location": "云南省昆明市",
@@ -830,9 +1573,14 @@ window.WILD_RESEARCHERS = [
     "organization": "云南省热带作物科学研究所",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/56.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/56-1.webp",
+        "thumb": "assets/photos/thumbs/56-1.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 28,
     "time": "2024年10月",
     "location": "西双版纳州农业农村部景洪橡胶树种质资源圃（云南省热带作物科学研究所）",
@@ -845,9 +1593,26 @@ window.WILD_RESEARCHERS = [
     "organization": "黑龙江省林业科学院伊春分院",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/57.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/57-1.webp",
+        "thumb": "assets/photos/thumbs/57-1.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/57-2.webp",
+        "thumb": "assets/photos/thumbs/57-2.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/57-3.webp",
+        "thumb": "assets/photos/thumbs/57-3.webp",
+        "width": 1280,
+        "height": 853
+      }
+    ],
     "historicalVotes": 19,
     "time": "2024年07月",
     "location": "黑龙江小兴安岭",
@@ -860,9 +1625,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院动物研究所",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/58.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/58-1.webp",
+        "thumb": "assets/photos/thumbs/58-1.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/58-2.webp",
+        "thumb": "assets/photos/thumbs/58-2.webp",
+        "width": 591,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/58-3.webp",
+        "thumb": "assets/photos/thumbs/58-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 19,
     "time": "2024年5月29日",
     "location": "内蒙古自治区巴彦淖尔市乌拉特前旗",
@@ -875,9 +1657,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院昆明植物研究所",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/59.jpg",
-    "width": 1080,
-    "height": 810,
+    "photos": [
+      {
+        "src": "assets/photos/59-1.webp",
+        "thumb": "assets/photos/thumbs/59-1.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/59-2.webp",
+        "thumb": "assets/photos/thumbs/59-2.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/59-3.webp",
+        "thumb": "assets/photos/thumbs/59-3.webp",
+        "width": 1280,
+        "height": 960
+      }
+    ],
     "historicalVotes": 16,
     "time": "2025年7-8月",
     "location": "西藏",
@@ -890,9 +1689,26 @@ window.WILD_RESEARCHERS = [
     "organization": "中国科学院烟台海岸带研究所",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/60.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/60-1.webp",
+        "thumb": "assets/photos/thumbs/60-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/60-2.webp",
+        "thumb": "assets/photos/thumbs/60-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/60-3.webp",
+        "thumb": "assets/photos/thumbs/60-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 54,
     "time": "2025年8月27日",
     "location": "黄河三角洲滨海湿地",
@@ -905,9 +1721,26 @@ window.WILD_RESEARCHERS = [
     "organization": "东北林业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/61.jpg",
-    "width": 1080,
-    "height": 1441,
+    "photos": [
+      {
+        "src": "assets/photos/61-1.webp",
+        "thumb": "assets/photos/thumbs/61-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/61-2.webp",
+        "thumb": "assets/photos/thumbs/61-2.webp",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "assets/photos/61-3.webp",
+        "thumb": "assets/photos/thumbs/61-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 205,
     "time": "2025年8月",
     "location": "新疆伊犁巩留县",
@@ -920,9 +1753,26 @@ window.WILD_RESEARCHERS = [
     "organization": "东北林业大学",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/62.jpg",
-    "width": 1080,
-    "height": 609,
+    "photos": [
+      {
+        "src": "assets/photos/62-1.webp",
+        "thumb": "assets/photos/thumbs/62-1.webp",
+        "width": 1280,
+        "height": 722
+      },
+      {
+        "src": "assets/photos/62-2.webp",
+        "thumb": "assets/photos/thumbs/62-2.webp",
+        "width": 1280,
+        "height": 720
+      },
+      {
+        "src": "assets/photos/62-3.webp",
+        "thumb": "assets/photos/thumbs/62-3.webp",
+        "width": 1280,
+        "height": 720
+      }
+    ],
     "historicalVotes": 27,
     "time": "2024年12月",
     "location": "黑龙江南瓮河国家级自然保护区",
@@ -935,9 +1785,26 @@ window.WILD_RESEARCHERS = [
     "organization": "南宁植物园",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/63.jpg",
-    "width": 1080,
-    "height": 720,
+    "photos": [
+      {
+        "src": "assets/photos/63-1.webp",
+        "thumb": "assets/photos/thumbs/63-1.webp",
+        "width": 1280,
+        "height": 853
+      },
+      {
+        "src": "assets/photos/63-2.webp",
+        "thumb": "assets/photos/thumbs/63-2.webp",
+        "width": 853,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/63-3.webp",
+        "thumb": "assets/photos/thumbs/63-3.webp",
+        "width": 960,
+        "height": 1280
+      }
+    ],
     "historicalVotes": 34,
     "time": "2025年04月",
     "location": "广西大明山自然保护区",
@@ -950,9 +1817,20 @@ window.WILD_RESEARCHERS = [
     "organization": "广西中医药研究院",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/64.jpg",
-    "width": 1080,
-    "height": 1440,
+    "photos": [
+      {
+        "src": "assets/photos/64-1.webp",
+        "thumb": "assets/photos/thumbs/64-1.webp",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "assets/photos/64-2.webp",
+        "thumb": "assets/photos/thumbs/64-2.webp",
+        "width": 495,
+        "height": 495
+      }
+    ],
     "historicalVotes": 80,
     "time": "2024年08月",
     "location": "广西马山县一岩洞",
@@ -965,9 +1843,26 @@ window.WILD_RESEARCHERS = [
     "organization": "江西省林业科学院",
     "article": 5,
     "sourceUrl": "https://mp.weixin.qq.com/s/MrK6qOnhiSNnMEImPZ8vGA",
-    "photo": "assets/photos/65.jpg",
-    "width": 619,
-    "height": 1100,
+    "photos": [
+      {
+        "src": "assets/photos/65-1.webp",
+        "thumb": "assets/photos/thumbs/65-1.webp",
+        "width": 619,
+        "height": 1100
+      },
+      {
+        "src": "assets/photos/65-2.webp",
+        "thumb": "assets/photos/thumbs/65-2.webp",
+        "width": 683,
+        "height": 911
+      },
+      {
+        "src": "assets/photos/65-3.webp",
+        "thumb": "assets/photos/thumbs/65-3.webp",
+        "width": 1268,
+        "height": 714
+      }
+    ],
     "historicalVotes": 91,
     "time": "2025年06月16日",
     "location": "江西官山国家级自然保护区",

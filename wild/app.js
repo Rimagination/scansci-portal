@@ -3,6 +3,13 @@ const search = document.querySelector('#gallery-search');
 const count = document.querySelector('#result-count');
 const empty = document.querySelector('#empty-state');
 const photoDialog = document.querySelector('#photo-dialog');
+const dialogImage = document.querySelector('#dialog-image');
+const dialogThumbs = document.querySelector('#dialog-thumbs');
+const dialogCounter = document.querySelector('#dialog-counter');
+const dialogPhotoNote = document.querySelector('#dialog-photo-note');
+const dialogStage = document.querySelector('.dialog-stage');
+const galleryPrev = document.querySelector('#dialog-prev');
+const galleryNext = document.querySelector('#dialog-next');
 const authDialog = document.querySelector('#auth-dialog');
 const authMessage = document.querySelector('#auth-message');
 const notice = document.querySelector('#like-notice');
@@ -18,6 +25,9 @@ let likesLoad;
 let pendingLike = null;
 let noticeTimer;
 const busy = new Set();
+let activeEntry = null;
+let activeIndex = 0;
+let touchStartX = null;
 
 function addText(parent, className, content) {
   const span = document.createElement('span');
@@ -63,11 +73,57 @@ function syncLike(entryNumber) {
   });
 }
 
+function renderThumbs(entry) {
+  dialogThumbs.replaceChildren(...entry.photos.map((photo, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'dialog-thumb';
+    button.dataset.photoIndex = index;
+    button.setAttribute('aria-label', `查看第 ${index + 1} 张照片`);
+    const image = document.createElement('img');
+    image.src = photo.thumb;
+    image.alt = '';
+    image.loading = 'lazy';
+    button.append(image);
+    button.addEventListener('click', () => setDialogPhoto(entry, index));
+    return button;
+  }));
+  dialogThumbs.hidden = entry.photos.length < 2;
+}
+
+function setDialogPhoto(entry, index) {
+  const total = entry.photos.length;
+  activeIndex = (index + total) % total;
+  const photo = entry.photos[activeIndex];
+  dialogImage.src = photo.src;
+  dialogImage.alt = `${entry.name}的野外科研投稿照片，第 ${activeIndex + 1} 张`;
+  dialogCounter.textContent = `${activeIndex + 1} / ${total}`;
+  dialogCounter.hidden = total < 2;
+  galleryPrev.hidden = total < 2;
+  galleryNext.hidden = total < 2;
+  dialogPhotoNote.textContent = total > 1 ? `本组共 ${total} 张照片，可用方向键或左右按钮切换。` : '本组收录 1 张照片。';
+  dialogThumbs.querySelectorAll('[data-photo-index]').forEach(button => {
+    const active = Number(button.dataset.photoIndex) === activeIndex;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-current', active ? 'true' : 'false');
+    if (active) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  });
+  [activeIndex - 1, activeIndex + 1].forEach(neighbor => {
+    if (total < 2) return;
+    const image = new Image();
+    image.src = entry.photos[(neighbor + total) % total].src;
+  });
+}
+
+function stepDialog(delta) {
+  if (!activeEntry || activeEntry.photos.length < 2) return;
+  setDialogPhoto(activeEntry, activeIndex + delta);
+}
+
 function openPhoto(entry) {
-  document.querySelector('#dialog-image').src = entry.photo;
-  document.querySelector('#dialog-image').alt = `${entry.name}的野外科研投稿照片`;
+  activeEntry = entry;
   document.querySelector('#dialog-number').textContent = `NO. ${String(entry.number).padStart(2, '0')} / 65`;
-  document.querySelector('#dialog-batch').textContent = '第一届 · 2025';
+  document.querySelector('#dialog-batch').textContent = `第一届 · 2025 · ${entry.photos.length} 张照片`;
   document.querySelector('#dialog-title').textContent = entry.name;
   document.querySelector('#dialog-organization').textContent = entry.organization;
   populateEngagement(document.querySelector('#dialog-engagement'), entry);
@@ -75,28 +131,32 @@ function openPhoto(entry) {
   document.querySelector('#dialog-location').textContent = entry.location || '详见原文';
   document.querySelector('#dialog-story').textContent = entry.story;
   document.querySelector('#dialog-source').href = entry.sourceUrl;
+  renderThumbs(entry);
+  setDialogPhoto(entry, 0);
   photoDialog.showModal();
   document.querySelector('#dialog-close').focus();
 }
 
 function cardFor(entry) {
+  const cover = entry.photos[0];
   const card = document.createElement('article');
   card.className = 'photo-card';
   const open = document.createElement('button');
   open.type = 'button';
   open.className = 'photo-open';
-  open.setAttribute('aria-label', `查看 ${String(entry.number).padStart(2, '0')} 号作品：${entry.name}`);
+  open.setAttribute('aria-label', `查看 ${String(entry.number).padStart(2, '0')} 号作品：${entry.name}，共 ${entry.photos.length} 张照片`);
   const media = document.createElement('span');
   media.className = 'photo-card-media';
   const image = document.createElement('img');
-  image.src = entry.photo;
+  image.src = cover.thumb;
   image.alt = `${entry.name}的野外科研投稿照片`;
-  image.width = entry.width;
-  image.height = entry.height;
+  image.width = cover.width;
+  image.height = cover.height;
   image.loading = 'lazy';
   media.append(image);
   addText(media, 'photo-card-no', String(entry.number).padStart(2, '0'));
   addText(media, 'photo-card-arrow', '↗');
+  if (entry.photos.length > 1) addText(media, 'photo-count', `${entry.photos.length} 张`);
   const body = document.createElement('span');
   body.className = 'photo-card-body';
   addText(body, 'photo-card-name', entry.name);
@@ -116,7 +176,8 @@ function render() {
   const visible = entries.filter(entry => !query ||
     [entry.name, entry.organization, entry.location, entry.story].join(' ').toLocaleLowerCase().includes(query));
   grid.replaceChildren(...visible.map(cardFor));
-  count.textContent = `正在展示 ${visible.length} / ${entries.length} 份作品`;
+  const photoTotal = visible.reduce((sum, entry) => sum + entry.photos.length, 0);
+  count.textContent = `正在展示 ${visible.length} / ${entries.length} 组作品 · ${photoTotal} 张照片`;
   empty.hidden = visible.length !== 0;
 }
 
@@ -250,6 +311,22 @@ document.querySelector('#email-login-form').addEventListener('submit', async eve
 
 search.addEventListener('input', render);
 document.querySelector('#dialog-close').addEventListener('click', () => photoDialog.close());
+galleryPrev.addEventListener('click', () => stepDialog(-1));
+galleryNext.addEventListener('click', () => stepDialog(1));
+document.addEventListener('keydown', event => {
+  if (!photoDialog.open) return;
+  if (event.key === 'ArrowLeft') { event.preventDefault(); stepDialog(-1); }
+  if (event.key === 'ArrowRight') { event.preventDefault(); stepDialog(1); }
+});
+dialogStage.addEventListener('touchstart', event => {
+  if (event.touches.length === 1) touchStartX = event.touches[0].clientX;
+}, { passive: true });
+dialogStage.addEventListener('touchend', event => {
+  if (touchStartX === null) return;
+  const distance = event.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(distance) > 45) stepDialog(distance < 0 ? 1 : -1);
+  touchStartX = null;
+}, { passive: true });
 photoDialog.addEventListener('click', event => { if (event.target === photoDialog) photoDialog.close(); });
 document.querySelector('#auth-close').addEventListener('click', () => authDialog.close());
 authDialog.addEventListener('click', event => { if (event.target === authDialog) authDialog.close(); });

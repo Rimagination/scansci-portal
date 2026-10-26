@@ -76,8 +76,8 @@ img{display:block;max-width:100%}
 .award-list p{font-size:12px;line-height:1.85;color:#566359}
 .award-note{font-size:11px;color:var(--muted);padding-bottom:17px}
 .award-note a{text-decoration:underline}
-.sources-section{padding-bottom:90px}
-.sources-section h2{font:600 32px var(--serif);margin:34px 0 8px}
+.sources-section{padding:45px 0 90px}
+.sources-section h1{font:600 32px var(--serif);margin:34px 0 8px}
 .sources-section>p{color:var(--muted);margin:0 0 30px;font-size:12px}
 .sources-section>.source-note{margin:17px 0 0;font-size:11px;line-height:1.7}
 .source-list{border-top:1px solid var(--line)}

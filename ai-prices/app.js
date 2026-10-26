@@ -144,7 +144,8 @@ $("languageButton").addEventListener("click", () => { state.lang = state.lang ==
 window.addEventListener("popstate", render);
 
 try {
-  const response = await fetch("./data.json", { cache: "no-store" });
+  // ponytail: hourly cache key may delay a fresh daily snapshot by up to one hour; use a release manifest if finer freshness is needed.
+  const response = await fetch(`./data.json?h=${Math.floor(Date.now() / 3_600_000)}`, { cache: "no-store" });
   if (!response.ok) throw new Error(`Price data: ${response.status}`);
   state.data = await response.json();
   if (!Array.isArray(state.data.products) || !Array.isArray(state.data.prices)) throw new Error("Invalid price data");

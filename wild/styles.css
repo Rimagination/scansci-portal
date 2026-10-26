@@ -14,7 +14,9 @@ img{display:block;max-width:100%}
 
 .site-header{height:64px;padding:0 30px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fff}
 .brand{display:inline-flex;align-items:center;gap:11px;white-space:nowrap}
+.brand-origin{display:inline-flex;align-items:center;gap:8px}
 .brand img{width:30px;height:30px;flex:none}
+.brand-byline{font-size:11px;color:var(--muted);letter-spacing:.03em}
 .brand strong{font:600 20px var(--serif);letter-spacing:.04em}
 .site-header nav{display:flex;align-items:center;gap:30px;white-space:nowrap}
 .site-header nav a{font-size:12px;color:#536157;transition:color .2s}

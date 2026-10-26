@@ -1,0 +1,20 @@
+name = "scansci-wild-research"
+main = "src/wild-research-worker.js"
+compatibility_date = "2026-02-26"
+workers_dev = false
+
+[vars]
+PUBLIC_ORIGIN = "https://www.scansci.com"
+
+[[routes]]
+pattern = "www.scansci.com/api/wild-research/*"
+zone_name = "scansci.com"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "scansci_auth"
+database_id = "4ea255cf-6c0e-4bd5-bafb-16e6bfda7689"
+
+[[services]]
+binding = "AUTH"
+service = "scansci-api"

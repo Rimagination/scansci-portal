@@ -188,3 +188,14 @@ wrangler dev
 - Session 仅存 HttpOnly Cookie（不放 localStorage）
 - POST 接口校验 Origin（同源）
 - 验证码限频与尝试次数限制
+
+## 最野科研人点赞
+
+图库位于 `https://www.scansci.com/wild/`。点赞接口由 `wrangler.wild-research.toml` 定义的独立 Worker 服务，通过服务绑定向现有 `scansci-api` 验证登录，数据存入同一 D1。部署顺序：
+
+```bash
+npx wrangler d1 execute scansci_auth --remote --file=sql/0020_wild_research_likes.sql --config wrangler.toml
+npx wrangler deploy --config wrangler.wild-research.toml
+```
+
+本项目的较早迁移在生产库已执行过，但未全部登记到 Wrangler 迁移表；此处只执行本次 SQL 文件。

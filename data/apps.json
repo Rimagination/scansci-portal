@@ -1,6 +1,27 @@
 {
   "apps": [
     {
+      "id": "ai-price",
+      "status": "NEW",
+      "name": "AI 比价",
+      "description": "比较 ChatGPT、Claude、Grok、Gemini 等 AI 订阅套餐的地区价格，查看官方来源与采集时间。",
+      "summary": "查询 AI 订阅全球价格、套餐与官方来源。",
+      "cover": "./assets/covers/ai-price.svg",
+      "cover_title": "AI 比价",
+      "cover_subtitle": "ChatGPT · Claude · Grok",
+      "url": "/ai-prices/",
+      "category": "AI 订阅比价",
+      "tags": [
+        "AI",
+        "ChatGPT",
+        "Claude",
+        "Grok",
+        "Gemini",
+        "比价",
+        "订阅"
+      ]
+    },
+    {
       "id": "scansci-symbols",
       "section": "materials",
       "name": "科研素材库",

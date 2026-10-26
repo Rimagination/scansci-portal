@@ -63,4 +63,24 @@ window.WILD_RESEARCHERS = [
       { src: 'assets/season-two/07-1.webp', thumb: 'assets/season-two/thumbs/07-1.webp', width: 1350, height: 1800 },
     ],
   },
+  {
+    number: 73, displayNumber: 8, name: '张晨阳', organization: '山西大学',
+    time: '2026年8月', location: '内蒙古呼和浩特、陕西延安',
+    story: '照片 1 · 内蒙古呼和浩特。顶着炎炎日光，蹲在树下，小心清理土壤、分离根段。工具负责开路，双手负责“精修”，细小的分支还得尽量保留完整，方便后续观察和测量。这活对力气有要求，对耐心的要求更高。照片里两个人研究得十分认真，主角却是泥土里的一小段根——个头不大，排面不小。\n\n照片 2 · 陕西延安。采样期间遇上一场大雨，山林笼在雨雾里，泥水沿着路边往下流，车辆停在弯道附近。撑着伞拍张照片，画面还自带“伞沿边框”。课本里的降雨、径流和泥沙搬运，这回有了现场画面。这个夏天，采样清单里有叶、根和土，行程记忆里还多了一场存在感十足的雨。\n\n照片 3 · 陕西延安。林下采样，大家的姿势各不相同：跪着、趴着、侧卧着，怎么方便观察和分离根系就怎么来。工具和样品袋放在手边，眼睛紧盯着土里的细根。第一次出野外才发现，“脚踏实地”还不够，有时得全身配合。姿势可以灵活，样品必须认真。',
+    photos: [
+      { src: 'assets/season-two/08-1.webp', thumb: 'assets/season-two/thumbs/08-1.webp', width: 1350, height: 1800 },
+      { src: 'assets/season-two/08-2.webp', thumb: 'assets/season-two/thumbs/08-2.webp', width: 1350, height: 1800 },
+      { src: 'assets/season-two/08-3.webp', thumb: 'assets/season-two/thumbs/08-3.webp', width: 1012, height: 1800 },
+    ],
+  },
+  {
+    number: 74, displayNumber: 9, name: '齐鑫', organization: '太原师范学院',
+    time: '2021年5月25日', location: '山西吕梁庞泉沟',
+    story: '2021年5月25日，跟着老师赴吕梁庞泉沟开展植物地理实习。我们从山脚启程，在泥土间寻觅草木踪迹；一路攀至山顶，恰逢蒲公英盛放。山野是课堂，泥土是课本，俯身辨识、沿路观察，在鲜活的自然万物里触摸植物地理的奥秘，于山野跋涉间，做奔赴旷野、向自然求真知的最野科研人。',
+    photos: [
+      { src: 'assets/season-two/09-1.webp', thumb: 'assets/season-two/thumbs/09-1.webp', width: 1012, height: 1800 },
+      { src: 'assets/season-two/09-2.webp', thumb: 'assets/season-two/thumbs/09-2.webp', width: 1800, height: 1013 },
+      { src: 'assets/season-two/09-3.webp', thumb: 'assets/season-two/thumbs/09-3.webp', width: 1080, height: 1440 },
+    ],
+  },
 ];

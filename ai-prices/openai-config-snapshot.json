@@ -1,0 +1,1230 @@
+{
+  "observedAt": "2026-10-26T15:07:31.767Z",
+  "markets": [
+    {
+      "code": "AE",
+      "currency": "AED",
+      "go": {
+        "amount": 30,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 80,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 385,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 800,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 1920,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "AT",
+      "currency": "EUR",
+      "go": {
+        "amount": 7.99,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "BE",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "CL",
+      "currency": "CLP",
+      "go": {
+        "amount": 7990,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 19990,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 102990,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 199990,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 509990,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "CO",
+      "currency": "COP",
+      "go": {
+        "amount": 20900,
+        "tax": "exclusive"
+      },
+      "plus": {
+        "amount": 99900,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 364900,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 999900,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 1819900,
+        "tax": "exclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "CY",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "CZ",
+      "currency": "CZK",
+      "go": {
+        "amount": 200,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 499,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 2490,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 4990,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 12390,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "DE",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "DK",
+      "currency": "DKK",
+      "go": {
+        "amount": 64,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 179,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 789,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 1799,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 3899,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "EE",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "EG",
+      "currency": "EGP",
+      "go": {
+        "amount": 220,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 999.99,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 5400,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 9999.99,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 27000,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "ES",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "FR",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "GB",
+      "currency": "GBP",
+      "go": {
+        "amount": 7,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 20,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 89,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 200,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 445,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "GR",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 509.99,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "HR",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "ID",
+      "currency": "IDR",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 75000,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 349000,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 1889000,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 3499000,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 9399000,
+        "tax": "inclusive"
+      }
+    },
+    {
+      "code": "IE",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "IL",
+      "currency": "ILS",
+      "go": {
+        "amount": 25,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 70,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 310,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 700,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 1550,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "IN",
+      "currency": "INR",
+      "go": {
+        "amount": 399,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 1999,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 10699,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 19900,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 52900,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "IS",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 515,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "IT",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "JP",
+      "currency": "JPY",
+      "go": {
+        "amount": 1400,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 3000,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 16800,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 30000,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 84000,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "KR",
+      "currency": "KRW",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 13000,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 29000,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 159000,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 299000,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 790000,
+        "tax": "inclusive"
+      }
+    },
+    {
+      "code": "KZ",
+      "currency": "KZT",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 3390,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 9990,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 54990,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 99990,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 274990,
+        "tax": "inclusive"
+      }
+    },
+    {
+      "code": "LT",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "MF",
+      "currency": "EUR",
+      "go": {
+        "amount": 7,
+        "tax": "exclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 85,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 425,
+        "tax": "exclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "MT",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "MX",
+      "currency": "MXN",
+      "go": {
+        "amount": 110,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 343.97,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 1700,
+        "tax": "exclusive"
+      },
+      "pro": {
+        "amount": 3447.41,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 8500,
+        "tax": "exclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "MY",
+      "currency": "MYR",
+      "go": {
+        "amount": 24,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 99.9,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 420,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 999.9,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 2100,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "NG",
+      "currency": "NGN",
+      "go": {
+        "amount": 7000,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 31500,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 144900,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 299900,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 699900,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "NL",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "NO",
+      "currency": "NOK",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 99,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 249,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 1190,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 2490,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 5899,
+        "tax": "inclusive"
+      }
+    },
+    {
+      "code": "NZ",
+      "currency": "NZD",
+      "go": {
+        "amount": 14,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 40,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 190,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 400,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 950,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "PE",
+      "currency": "PEN",
+      "go": {
+        "amount": 19.9,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 79.9,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 395,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 799.9,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 1969.9,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "PH",
+      "currency": "PHP",
+      "go": {
+        "amount": 300,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 1100,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 6490,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 9990,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 32490,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "PT",
+      "currency": "EUR",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 7.99,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      }
+    },
+    {
+      "code": "RS",
+      "currency": "EUR",
+      "observedAt": "2026-10-26T15:07:31.767Z",
+      "go": {
+        "amount": 5,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 19.17,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 85,
+        "tax": "exclusive"
+      },
+      "pro": {
+        "amount": 190.83,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 425,
+        "tax": "exclusive"
+      }
+    },
+    {
+      "code": "SE",
+      "currency": "SEK",
+      "go": {
+        "amount": 85,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 249,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 1120,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 2495,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 5599,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "SG",
+      "currency": "SGD",
+      "go": {
+        "amount": 11,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 30,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 138,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 300,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 690,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "SI",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "SK",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 103,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 510,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "TH",
+      "currency": "THB",
+      "go": {
+        "amount": 259,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 699,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 3350,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 6999,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 16490,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "TR",
+      "currency": "USD",
+      "go": {
+        "amount": 6,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 20,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 120,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 200,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 600,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "TW",
+      "currency": "TWD",
+      "go": {
+        "amount": 270,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 690,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 3300,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 6990,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 16500,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "UA",
+      "currency": "USD",
+      "go": {
+        "amount": 7,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 20,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 100,
+        "tax": "exclusive"
+      },
+      "pro": {
+        "amount": 200,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 499.17,
+        "tax": "exclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "VN",
+      "currency": "VND",
+      "go": {
+        "amount": 132000,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 522500,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 2849000,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 5225000,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 14199000,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "YT",
+      "currency": "EUR",
+      "go": {
+        "amount": 8,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 23,
+        "tax": "exclusive"
+      },
+      "prolite": {
+        "amount": 100,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 229,
+        "tax": "exclusive"
+      },
+      "promax": {
+        "amount": 500,
+        "tax": "exclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    },
+    {
+      "code": "ZA",
+      "currency": "ZAR",
+      "go": {
+        "amount": 149,
+        "tax": "inclusive"
+      },
+      "plus": {
+        "amount": 399,
+        "tax": "inclusive"
+      },
+      "prolite": {
+        "amount": 1839,
+        "tax": "inclusive"
+      },
+      "pro": {
+        "amount": 3999.99,
+        "tax": "inclusive"
+      },
+      "promax": {
+        "amount": 9199,
+        "tax": "inclusive"
+      },
+      "observedAt": "2026-10-26T14:55:10.2162976Z"
+    }
+  ]
+}

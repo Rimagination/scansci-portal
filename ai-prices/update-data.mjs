@@ -6,16 +6,21 @@ const root = new URL("./", import.meta.url);
 const plans = [
   ["chatgpt", "chatgpt-go", "ChatGPT Go", "month"],
   ["chatgpt", "chatgpt-plus", "ChatGPT Plus", "month"],
-  ["chatgpt", "chatgpt-pro-20x", "ChatGPT Pro", "month"],
+  ["chatgpt", "chatgpt-pro-20x", "ChatGPT Pro 200", "month"],
   ["claude", "claude-pro", "Claude Pro", "month"],
   ["claude", "claude-max-5x", "Claude Max 5x", "month"],
   ["claude", "claude-max-20x", "Claude Max 20x", "month"],
   ["grok", "supergrok-lite", "SuperGrok Lite", "month"],
   ["grok", "supergrok", "SuperGrok", "month"],
   ["grok", "supergrok-heavy", "SuperGrok Heavy", "month"],
-  ["gemini", "google-ai-plus", "Google AI Plus", "month"],
+  ["gemini", "google-ai-plus", "Google AI Plus (400 GB)", "month"],
   ["gemini", "google-ai-pro", "Google AI Pro", "month"],
-  ["gemini", "google-ai-ultra", "Google AI Ultra", "month"],
+  ["gemini", "google-ai-ultra", "Google AI Ultra 20x", "month"],
+];
+const officialWebPlans = [
+  ["chatgpt", "chatgpt-pro-5x", "ChatGPT Pro 100", "month"],
+  ["chatgpt", "chatgpt-pro-50x", "ChatGPT Pro 500", "month"],
+  ["gemini", "google-ai-ultra-5x", "Google AI Ultra 5x", "month"],
 ];
 const annualPlans = [
   ["chatgpt", "chatgpt-plus-year", "ChatGPT Plus", "year"],
@@ -34,6 +39,17 @@ const liveWebPlans = {
   chatgpt: { "chatgpt-go": "chatgpt-go", "chatgpt-plus": "chatgpt-plus", "chatgpt-pro-200": "chatgpt-pro-20x" },
   gemini: { "gemini-plus": "google-ai-plus", "gemini-pro": "google-ai-pro", "gemini-ultra-20x": "google-ai-ultra" },
 };
+const googleMarkets = "AE AG AL AM AO AS AT AU AW AZ BA BD BE BF BG BH BJ BM BO BR BS BW BY BZ CA CH CI CL CM CO CR CV CY CZ DE DK DO DZ EC EE EG ES FI FJ FM FO FR GA GB GE GH GI GL GP GR GT GU GW HK HN HR HT HU ID IE IL IN IQ IS IT JM JO JP KE KG KH KR KW KY KZ LA LB LI LK LT LU LV MA MC MD MH MK ML MM MO MP MQ MT MU MV MX MY MZ NA NE NG NI NL NO NP NZ OM PA PE PF PG PH PK PL PR PT PW PY QA RE RO RS RU RW SA SC SE SG SI SK SL SM SN SV TG TH TJ TM TN TO TR TT TW TZ UA UG US UY VE VG VI VN YE YT ZA ZM ZW".split(" ");
+const googlePlans = {
+  PRICE_GEN_AI_PLUS_MONTHLY: "google-ai-plus",
+  PRICE_GEN_AI_PRO_MONTHLY: "google-ai-pro",
+  PRICE_GEN_AI_ULTRA_100_MONTHLY: "google-ai-ultra-5x",
+  PRICE_GEN_AI_ULTRA_200_MONTHLY: "google-ai-ultra",
+};
+const googleFeedVersion = "2026_07_28";
+const googleFeedObservedAt = "2026-07-28T00:28:00Z";
+const openaiPlans = { go: "chatgpt-go", plus: "chatgpt-plus", prolite: "chatgpt-pro-5x", pro: "chatgpt-pro-20x", promax: "chatgpt-pro-50x" };
+const openaiMarkets = "AE AR AT AU BE BG BO BR CA CL CO CY CZ DE DK EE EG ES FI FR GB GF GP GR HK HR HU ID IE IL IN IS IT JP KR KZ LT LU LV MF MQ MT MX MY NG NL NO NZ PE PH PK PL PT QA RE RO RS SE SG SI SK TH TR TW UA US VN YT ZA".split(" ");
 
 export function parsePlanPriceUSGrid(html, product, rate) {
   const table = html.match(/<table class="data-table channel-grid">([\s\S]*?)<\/table>/)?.[1];
@@ -82,6 +98,75 @@ export function parseBiwuOffers(page, product, plan, period, upstream) {
   });
 }
 
+const localAmount = (amount, currency) => `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(amount)} ${currency}`;
+const toCny = (amount, currency, rates) => amount / rates.rates[currency] * rates.rates.CNY;
+
+export function parseOpenAIConfigs(snapshot, rates, now) {
+  const rows = [];
+  for (const market of snapshot.markets || []) {
+    const observedAt = market.observedAt || snapshot.observedAt;
+    if (!/^[A-Z]{2}$/.test(market.code) || !/^[A-Z]{3}$/.test(market.currency || "") || !Number.isFinite(Date.parse(observedAt)) || Date.parse(now) - Date.parse(observedAt) > 30 * 86_400_000 || !rates.rates[market.currency]) continue;
+    for (const [field, plan] of Object.entries(openaiPlans)) {
+      const price = market[field];
+      if (!Number.isFinite(price?.amount) || price.amount <= 0 || !["inclusive", "exclusive"].includes(price.tax)) continue;
+      rows.push({ product: "chatgpt", plan, period: "month", market: market.code, country: market.code, channel: "web", local: localAmount(price.amount, market.currency), currency: market.currency, cny: toCny(price.amount, market.currency, rates), source: "https://chatgpt.com/pricing/", upstream: `https://chatgpt.com/backend-api/checkout_pricing_config/configs/${market.code}`, observedAt, taxIncluded: price.tax === "inclusive" });
+    }
+  }
+  return rows;
+}
+
+export async function refreshOpenAIConfigs(snapshot, now) {
+  const url = (code) => `https://chatgpt.com/backend-api/checkout_pricing_config/configs/${code}`;
+  const headers = { "User-Agent": "ScanSci-AI-Price/1.0 (public price comparison)" };
+  const current = new Map((snapshot.markets || []).map((market) => [market.code, { ...market, observedAt: market.observedAt || snapshot.observedAt }]));
+  let refreshed = 0;
+  async function update(code) {
+    try {
+      const result = await fetch(url(code), { headers });
+      if (!result.ok) return;
+      const data = await result.json();
+      if (data.country_code !== code || !/^[A-Z]{3}$/.test(data.currency_config?.symbol_code || "")) return;
+      const config = data.currency_config;
+      current.set(code, { code, currency: config.symbol_code, observedAt: now, ...Object.fromEntries(Object.keys(openaiPlans).map((key) => [key, config[key]?.month && { amount: config[key].month.amount, tax: config[key].month.tax }])) });
+      refreshed++;
+    } catch { /* Keep the last verified snapshot for this market. */ }
+  }
+  let next = 0;
+  await Promise.all(Array.from({ length: 4 }, async () => { while (next < openaiMarkets.length) await update(openaiMarkets[next++]); }));
+  return refreshed ? { observedAt: now, markets: [...current.values()].sort((a, b) => a.code.localeCompare(b.code)) } : snapshot;
+}
+
+export function parseGoogleFeed(feed, code, rates, observedAt) {
+  if (feed.COUNTRY_CODE !== code || !/^[A-Z]{3}$/.test(feed.CURRENCY_CODE || "") || !rates.rates[feed.CURRENCY_CODE]) return [];
+  return Object.entries(googlePlans).flatMap(([field, plan]) => {
+    const amount = feed[field];
+    if (!Number.isFinite(amount) || amount <= 0) return [];
+    return [{ product: "gemini", plan, period: "month", market: code, country: code, channel: "web", local: localAmount(amount, feed.CURRENCY_CODE), currency: feed.CURRENCY_CODE, cny: toCny(amount, feed.CURRENCY_CODE, rates), source: `https://one.google.com/intl/ALL_${code.toLowerCase()}/about/feeds/pricing_${googleFeedVersion}.json`, upstream: "Google One public pricing feed", observedAt, taxIncluded: null }];
+  });
+}
+
+async function getGoogleRows(rates, now) {
+  if (Date.parse(now) - Date.parse(googleFeedObservedAt) > 180 * 86_400_000) {
+    console.warn(`Google pricing feed ${googleFeedVersion} is over 180 days old; skipping its prices until the feed version is reviewed.`);
+    return [];
+  }
+  const rows = [];
+  let next = 0;
+  await Promise.all(Array.from({ length: 6 }, async () => {
+    while (next < googleMarkets.length) {
+      const code = googleMarkets[next++];
+      const url = `https://one.google.com/intl/ALL_${code.toLowerCase()}/about/feeds/pricing_${googleFeedVersion}.json`;
+      const response = await fetch(url, { headers: { "User-Agent": "ScanSci-AI-Price/1.0 (public price comparison)" } });
+      if (response.status === 404) continue;
+      if (!response.ok) throw new Error(`Google feed ${response.status}: ${code}`);
+      const observedAt = response.headers.get("last-modified");
+      rows.push(...parseGoogleFeed(await response.json(), code, rates, observedAt && Number.isFinite(Date.parse(observedAt)) ? new Date(observedAt).toISOString() : googleFeedObservedAt));
+    }
+  }));
+  if (rows.length < 300) throw new Error(`Incomplete Google feed: ${rows.length} rows`);
+  return rows;
+}
+
 async function main() {
   const generatedAt = new Date().toISOString();
   const existing = JSON.parse(await readFile(new URL("data.json", root), "utf8").catch(() => "{}"));
@@ -126,11 +211,22 @@ async function main() {
     if (!response.ok) throw new Error(`${response.status} PlanPrice ${product}`);
     imported.push(...parsePlanPriceUSGrid(await response.text(), product, rates.rates.CNY));
   }
-  const unique = new Set(imported.map((item) => `${item.product}/${item.plan}/${item.period}/${item.market}/${item.channel}`));
-  if (unique.size !== imported.length || imported.length < 200) throw new Error("Duplicate or incomplete price data");
-  const output = { generatedAt, iosSource: "BiWu.Ai public offers API; each row links to the corresponding Apple listing", webSource: `PlanPrice CC BY 4.0, release ${latest} and live US grid`, rateSource: `open.er-api.com, ${rates.time_last_update_utc}`, usdCny: rates.rates.CNY, products, plans: [...plans, ...annualPlans].map(([product, id, name, period]) => ({ product, id, name, period })), prices: imported };
+  const snapshot = JSON.parse(await readFile(new URL("openai-config-snapshot.json", root), "utf8"));
+  const openai = await refreshOpenAIConfigs(snapshot, generatedAt);
+  imported.push(...parseOpenAIConfigs(openai, rates, generatedAt));
+  imported.push(...await getGoogleRows(rates, generatedAt));
+  const unique = new Map();
+  for (const item of imported) {
+    const key = `${item.product}/${item.plan}/${item.period}/${item.market}/${item.channel}`;
+    const previous = unique.get(key);
+    if (!previous || Date.parse(item.observedAt) >= Date.parse(previous.observedAt)) unique.set(key, item);
+  }
+  if (unique.size < 500) throw new Error(`Incomplete price data: ${unique.size}`);
+  const activeOfficialWebPlans = officialWebPlans.filter(([, id]) => [...unique.values()].some((row) => row.plan === id));
+  const output = { generatedAt, iosSource: "BiWu.Ai public offers API; each row links to the corresponding Apple listing", webSource: `OpenAI and Google official feeds; PlanPrice CC BY 4.0, release ${latest}`, rateSource: `open.er-api.com, ${rates.time_last_update_utc}`, usdCny: rates.rates.CNY, products, plans: [...plans, ...activeOfficialWebPlans, ...annualPlans].map(([product, id, name, period]) => ({ product, id, name, period })), prices: [...unique.values()] };
   await writeFile(new URL("data.json", root), `${JSON.stringify(output, null, 2)}\n`);
-  console.log(`Updated ${imported.length} plan prices (${generatedAt})`);
+  if (openai !== snapshot) await writeFile(new URL("openai-config-snapshot.json", root), `${JSON.stringify(openai, null, 2)}\n`);
+  console.log(`Updated ${unique.size} plan prices (${generatedAt})`);
   if (existing.generatedAt) console.log(`Previous snapshot: ${existing.generatedAt}`);
 }
 

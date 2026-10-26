@@ -5,8 +5,8 @@ const copy = {
     plansComparison: "套餐比价", regionComparison: "地区比价", allChannels: "全部渠道",
     appStore: "App Store", web: "官网",
     globalPrice: "全球价格", country: "国家或地区", channel: "渠道", localPrice: "当地价格", converted: "折算价格", source: "来源",
-    lowest: "最低参考价", among: "在当前有记录的地区与渠道中", distribution: "价格分布",
-    dataNotes: "价格与数据说明", imported: "数据导入时间", iosNote: "App Store 价格来自 BiWu.Ai 的公开报价接口；每条记录链接到对应的 Apple 页面。", planNote: "官网价格来自 PlanPrice 开放数据，按 CC BY 4.0 署名。", fxNote: "美元换算使用开放汇率数据，结算价格可能因税费和支付方式变化。", missing: "暂无可核对的价格", noPlanData: "这个套餐当前没有可核对的渠道价格。", updated: "采集于", periodMonth: "月付", periodYear: "年付", openSource: "查看官方来源", compareRegion: "各地区渠道价格", noRegion: "该地区暂无具体套餐价格", copied: "链接已复制", sourceSnapshot: "上游数据快照", refresh: "页面显示的是已导入的价格快照，请在付款前打开官方来源核对。", sort: "切换排序", sourceTime: "采集时间"
+    lowest: "最低标价", among: "在当前参与排序的地区与渠道中", distribution: "价格分布",
+    dataNotes: "价格与数据说明", imported: "数据导入时间", iosNote: "App Store 标价来自 BiWu.Ai；每条记录链接到 Apple 应用页，税费与最终金额以结账页为准。", planNote: "官网标价来自 OpenAI、Google 的官方定价文件及 PlanPrice 开放数据；OpenAI 地区行链接到官方套餐页，具体地区价以结账页为准。", taxNote: "标价排序包含 App Store 标价与已标明含税的官网价；税前或税费待确认的官网价只展示，不参与排序。App Store 税费以结账页为准。", taxExclusive: "税前", taxUnknown: "税费待确认", iosTax: "税费以结账为准", noComparable: "暂无参与排序的报价", fxNote: "美元换算使用开放汇率数据，最终支付额以结账页为准。", missing: "暂无可核对的价格", noPlanData: "这个套餐当前没有可核对的渠道价格。", updated: "采集于", periodMonth: "月付", periodYear: "年付", openSource: "查看官方页面", compareRegion: "各地区渠道价格", noRegion: "该地区暂无具体套餐价格", copied: "链接已复制", sourceSnapshot: "上游数据快照", refresh: "页面显示的是已导入的价格快照，请在付款前打开官方页面核对。", sort: "切换排序", sourceTime: "采集时间"
   },
   en: {
     searchLabel: "Search AI apps or plans", backToScansci: "Back to ScanSci", backToApps: "Back to apps",
@@ -14,8 +14,8 @@ const copy = {
     plansComparison: "Plans Comparison", regionComparison: "Region Comparison", allChannels: "All channels",
     appStore: "App Store", web: "Web",
     globalPrice: "Global Price", country: "Country or region", channel: "Channel", localPrice: "Local price", converted: "Converted", source: "Source",
-    lowest: "Lowest reference price", among: "Among regions and channels with available records", distribution: "Price distribution",
-    dataNotes: "Price and data notes", imported: "Imported", iosNote: "App Store prices come from BiWu.Ai's public offers API. Each row links to the corresponding Apple listing.", planNote: "Web prices come from PlanPrice open data, credited under CC BY 4.0.", fxNote: "USD conversions use public exchange rates. Tax and payment fees may change the final charge.", missing: "No verified price available", noPlanData: "No verified channel price is available for this plan.", updated: "Collected", periodMonth: "Monthly", periodYear: "Annual", openSource: "Official source", compareRegion: "Channel prices by region", noRegion: "No plan price recorded for this region", copied: "Link copied", sourceSnapshot: "Upstream snapshot", refresh: "These are imported price snapshots. Verify the official source before paying.", sort: "Toggle sort", sourceTime: "Observed"
+    lowest: "Lowest listed price", among: "Among ranked regions and channels", distribution: "Price distribution",
+    dataNotes: "Price and data notes", imported: "Imported", iosNote: "App Store list prices come from BiWu.Ai. Each row links to an Apple app page; taxes and the final charge depend on checkout.", planNote: "Web list prices come from official OpenAI and Google pricing files and PlanPrice open data. OpenAI region links open its plan page; confirm the regional price at checkout.", taxNote: "Listed-price ranking includes App Store prices and tax-inclusive web prices. Pre-tax or tax-unconfirmed web prices are shown without a rank. App Store taxes depend on checkout.", taxExclusive: "Pre-tax", taxUnknown: "Tax unconfirmed", iosTax: "Tax at checkout", noComparable: "No ranked price available", fxNote: "USD conversions use public exchange rates. The final charge is shown at checkout.", missing: "No verified price available", noPlanData: "No verified channel price is available for this plan.", updated: "Collected", periodMonth: "Monthly", periodYear: "Annual", openSource: "Official page", compareRegion: "Channel prices by region", noRegion: "No plan price recorded for this region", copied: "Link copied", sourceSnapshot: "Upstream snapshot", refresh: "These are imported price snapshots. Verify the official page before paying.", sort: "Toggle sort", sourceTime: "Observed"
   }
 };
 
@@ -66,26 +66,30 @@ function renderList() {
 function relevantRows(product, plan) {
   return state.data.prices.filter((row) => row.product === product.id && row.plan === plan.id && row.period === plan.period);
 }
+const comparable = (row) => row.channel === "ios" || row.taxIncluded === true;
+const compareRows = (a, b) => Number(comparable(b)) - Number(comparable(a)) || (a.cny - b.cny) * (state.descending ? -1 : 1);
+const taxLabel = (row) => row.channel === "ios" ? `<small class="tax-note">${t("iosTax")}</small>` : row.taxIncluded !== true ? `<small class="tax-note">${t(row.taxIncluded === false ? "taxExclusive" : "taxUnknown")}</small>` : "";
 function tableFor(rows, title) {
   if (!rows.length) return `<section class="panel"><p class="range-note">${t("noPlanData")}</p></section>`;
-  const ordered = [...rows].sort((a, b) => (a.cny - b.cny) * (state.descending ? -1 : 1));
-  return `<section class="panel"><div class="panel-pad"><h2>${escape(title)} · ${t("globalPrice")}</h2><p class="panel-meta">${rows.length} ${state.lang === "zh" ? "条有来源的报价" : "sourced prices"}</p></div><table class="price-table"><thead><tr><th>#</th><th>${t("country")}</th><th>${t("channel")}</th><th>${t("localPrice")}</th><th>${t("converted")}</th></tr></thead><tbody>${ordered.map((row, index) => `<tr class="${!state.descending && index === 0 ? "best-row" : ""}"><td class="rank">${index + 1}</td><td>${flag(row.market)}${sourceLink(row, country(row.market, row.country))}<span class="mobile-channel">${row.channel === "ios" ? "iOS" : t("web")}</span></td><td>${channel(row.channel)}</td><td class="local-price">${escape(row.local)}</td><td class="equivalent">${money(amount(row))}</td></tr>`).join("")}</tbody></table></section>`;
+  const ordered = [...rows].sort(compareRows);
+  return `<section class="panel"><div class="panel-pad"><h2>${escape(title)} · ${t("globalPrice")}</h2><p class="panel-meta">${rows.length} ${state.lang === "zh" ? "条有来源的报价" : "sourced prices"}</p><p class="panel-meta">${t("taxNote")}</p></div><table class="price-table"><thead><tr><th>#</th><th>${t("country")}</th><th>${t("channel")}</th><th>${t("localPrice")}</th><th>${t("converted")}</th></tr></thead><tbody>${ordered.map((row, index) => `<tr class="${!state.descending && index === 0 && comparable(row) ? "best-row" : ""}"><td class="rank">${comparable(row) ? index + 1 : "—"}</td><td>${flag(row.market)}${sourceLink(row, country(row.market, row.country))}<span class="mobile-channel">${row.channel === "ios" ? "iOS" : t("web")}</span></td><td>${channel(row.channel)}</td><td class="local-price">${escape(row.local)}${taxLabel(row)}</td><td class="equivalent">${money(amount(row))}<span class="mobile-tax">${taxLabel(row)}</span></td></tr>`).join("")}</tbody></table></section>`;
 }
 function sidePanels(rows) {
-  if (!rows.length) return `<div class="side-stack"><section class="panel panel-pad"><p>${t("missing")}</p></section></div>`;
-  const ordered = [...rows].sort((a, b) => a.cny - b.cny);
+  const ordered = rows.filter(comparable).sort((a, b) => a.cny - b.cny);
+  if (!ordered.length) return `<div class="side-stack"><section class="panel panel-pad"><p>${t("noComparable")}</p></section></div>`;
   const low = ordered[0];
   const highest = Math.max(...ordered.slice(0, 14).map((row) => row.cny));
-  return `<aside class="side-stack"><section class="panel panel-pad"><div class="lowest-label">${t("lowest")}</div><div class="lowest-value">${money(amount(low))}</div><div class="lowest-place">${flag(low.market)} ${escape(country(low.market, low.country))} · ${channel(low.channel)}</div><p class="lowest-foot">${t("among")} · ${rows.length} ${state.lang === "zh" ? "条记录" : "records"}</p></section><section class="panel panel-pad"><h3>${t("distribution")}</h3><div class="mini-chart">${ordered.slice(0, 14).map((row) => `<div class="bar-row" title="${escape(country(row.market, row.country))}: ${money(amount(row))}"><span>${escape(row.market)}</span><b style="width:${Math.max(8, Math.round(row.cny / highest * 100))}%"></b></div>`).join("")}</div></section><section class="panel panel-pad info-panel"><h3>${t("dataNotes")}</h3><p>${t("refresh")}</p></section></aside>`;
+  return `<aside class="side-stack"><section class="panel panel-pad"><div class="lowest-label">${t("lowest")}</div><div class="lowest-value">${money(amount(low))}</div><div class="lowest-place">${flag(low.market)} ${escape(country(low.market, low.country))} · ${channel(low.channel)}</div><p class="lowest-foot">${t("among")} · ${ordered.length} ${state.lang === "zh" ? "条记录" : "records"}</p></section><section class="panel panel-pad"><h3>${t("distribution")}</h3><div class="mini-chart">${ordered.slice(0, 14).map((row) => `<div class="bar-row" title="${escape(country(row.market, row.country))}: ${money(amount(row))}"><span>${escape(row.market)}</span><b style="width:${Math.max(8, Math.round(row.cny / highest * 100))}%"></b></div>`).join("")}</div></section><section class="panel panel-pad info-panel"><h3>${t("dataNotes")}</h3><p>${t("refresh")}</p></section></aside>`;
 }
 function regionView(rows, product) {
   const grouped = new Map();
   for (const row of rows) grouped.set(row.market, [...(grouped.get(row.market) || []), row]);
-  const markets = [...grouped.keys()].sort((a, b) => Math.min(...grouped.get(a).map((row) => row.cny)) - Math.min(...grouped.get(b).map((row) => row.cny)));
+  const marketOrder = (market) => { const rows = grouped.get(market); const ranked = rows.filter(comparable); return [ranked.length ? 0 : 1, Math.min(...(ranked.length ? ranked : rows).map((row) => row.cny))]; };
+  const markets = [...grouped.keys()].sort((a, b) => { const x = marketOrder(a), y = marketOrder(b); return x[0] - y[0] || x[1] - y[1]; });
   if (!markets.length) return `<section class="panel"><p class="range-note">${t("noPlanData")}</p></section>`;
   return `<div class="region-comparison">${markets.map((market) => {
     const group = grouped.get(market);
-    return `<article class="region-card"><h3>${flag(market)} ${escape(country(market, group[0].country))}</h3>${group.sort((a, b) => a.cny - b.cny).map((row) => `<div class="region-line"><span>${channel(row.channel)}<br>${sourceLink(row)}</span><b>${money(amount(row))}<small>${escape(row.local)}</small></b></div>`).join("")}</article>`;
+    return `<article class="region-card"><h3>${flag(market)} ${escape(country(market, group[0].country))}</h3>${group.sort(compareRows).map((row) => `<div class="region-line"><span>${channel(row.channel)}<br>${sourceLink(row)}</span><b>${money(amount(row))}<small>${escape(row.local)}${taxLabel(row)}</small></b></div>`).join("")}</article>`;
   }).join("")}</div>`;
 }
 
@@ -115,7 +119,7 @@ function renderDetail(product, selectedPlan, tab) {
 
 function renderNote() {
   const d = state.data;
-  $("dataNote").innerHTML = `<strong>${t("dataNotes")}</strong> · ${t("imported")}: ${date(d.generatedAt)}<br>${t("iosNote")} <a href="https://biwu.ai/en/about" target="_blank" rel="noopener noreferrer">BiWu.Ai ↗</a><br>${t("planNote")} <a href="https://plan-price.com/data/" target="_blank" rel="noopener noreferrer">${escape(d.webSource)} ↗</a><br>${t("fxNote")}`;
+  $("dataNote").innerHTML = `<strong>${t("dataNotes")}</strong> · ${t("imported")}: ${date(d.generatedAt)}<br>${t("iosNote")} <a href="https://biwu.ai/en/about" target="_blank" rel="noopener noreferrer">BiWu.Ai ↗</a><br>${t("planNote")} <a href="https://chatgpt.com/pricing/" target="_blank" rel="noopener noreferrer">OpenAI ↗</a> · <a href="https://one.google.com/about/plans" target="_blank" rel="noopener noreferrer">Google One ↗</a> · <a href="https://plan-price.com/data/" target="_blank" rel="noopener noreferrer">PlanPrice ↗</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0 ↗</a>)<br>${t("taxNote")}<br>${t("fxNote")}`;
 }
 function render() {
   document.documentElement.lang = langCode();

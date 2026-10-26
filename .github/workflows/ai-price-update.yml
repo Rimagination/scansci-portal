@@ -24,7 +24,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ai-prices/data.json
+          git add ai-prices/data.json ai-prices/openai-config-snapshot.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh AI price snapshot"
             git push

@@ -83,4 +83,13 @@ window.WILD_RESEARCHERS = [
       { src: 'assets/season-two/09-3.webp', thumb: 'assets/season-two/thumbs/09-3.webp', width: 1080, height: 1440 },
     ],
   },
+  {
+    number: 75, displayNumber: 10, name: '李运华', organization: '海南师范大学',
+    time: '2025年8月', location: '海南热带雨林国家公园',
+    story: '2025年8月份一个早上，我们在海南热带雨林国家公园进行野外龟鳖类调查的时候，我惊喜地发现这对正在抱对的海南臭蛙。可惜当时没有携带专业相机，为了不打扰它们，也为了能近距离拍摄到这神奇的现象，我当场趴下，调整好角度按下手机快门。同行的伙伴说他们看到了三只蛙，其中有一只是我。',
+    photos: [
+      { src: 'assets/season-two/10-1.webp', thumb: 'assets/season-two/thumbs/10-1.webp', width: 1800, height: 1350 },
+      { src: 'assets/season-two/10-2.webp', thumb: 'assets/season-two/thumbs/10-2.webp', width: 1800, height: 1350 },
+    ],
+  },
 ];

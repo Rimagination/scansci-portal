@@ -219,5 +219,119 @@ window.WILD_RESEARCHERS = [
         "height": 1350
       }
     ]
+  },
+  {
+    "number": 82,
+    "displayNumber": 17,
+    "name": "田杰",
+    "organization": "东北林业大学",
+    "time": "2026年8月",
+    "location": "加格达奇",
+    "story": "图一与图二：我和师弟在挖水位井，由于水位较低而且碎石与植物根系很多，铲子和搞头难以发挥作用，于是就只能跪在地上或者趴在地上用手指头去一点点往出扣，和大地亲密接触×1。\n图三与图四：八月的大兴安岭也是非常燥热，没有遮掩的湿地加上半人高的植物罩着，身上衣服包裹严密防止草爬子和蚊虫叮咬，仿佛置身于蒸笼，工作完已经累瘫在马路上，成“野人”了，与大地亲密接触×2。（该路段车辆较少且已放置雪糕筒警示，也有人在“站岗”）",
+    "submissionKey": "278496d2b1c91051602c640a2d6cb1a1eef0933bf887879b0f8652ee1d2c3aed",
+    "photos": [
+      {
+        "src": "assets/season-two/17-1.webp",
+        "thumb": "assets/season-two/thumbs/17-1.webp",
+        "width": 1012,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/17-2.webp",
+        "thumb": "assets/season-two/thumbs/17-2.webp",
+        "width": 948,
+        "height": 1652
+      },
+      {
+        "src": "assets/season-two/17-3.webp",
+        "thumb": "assets/season-two/thumbs/17-3.webp",
+        "width": 1800,
+        "height": 1012
+      },
+      {
+        "src": "assets/season-two/17-4.webp",
+        "thumb": "assets/season-two/thumbs/17-4.webp",
+        "width": 1012,
+        "height": 1800
+      }
+    ]
+  },
+  {
+    "number": 83,
+    "displayNumber": 18,
+    "name": "向豪杰",
+    "organization": "北京林业大学",
+    "time": "未提供",
+    "location": "墨脱、张家口、新疆额尔齐斯河",
+    "story": "第一二张是在墨脱拍的，第一张是为了拍独花报春爬到了一处快滑坡的悬崖上，第二张旁边是一棵八十米高的不丹松，我坐在另一棵已经倒了的大树上。后面几张依次是张家口爬满裤腿的蜱虫（没来得及拍爬满的样子），墨脱的蚂蝗，新疆额尔齐斯河旁边的蚊子",
+    "submissionKey": "1d947aadafaf9e3fb21952546677728bcae3c1eb6d67a64df1d462186af606ee",
+    "photos": [
+      {
+        "src": "assets/season-two/18-1.webp",
+        "thumb": "assets/season-two/thumbs/18-1.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/18-2.webp",
+        "thumb": "assets/season-two/thumbs/18-2.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/18-3.webp",
+        "thumb": "assets/season-two/thumbs/18-3.webp",
+        "width": 1264,
+        "height": 1669
+      },
+      {
+        "src": "assets/season-two/18-4.webp",
+        "thumb": "assets/season-two/thumbs/18-4.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/18-5.webp",
+        "thumb": "assets/season-two/thumbs/18-5.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/18-6.webp",
+        "thumb": "assets/season-two/thumbs/18-6.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  {
+    "number": 84,
+    "displayNumber": 19,
+    "name": "TS",
+    "organization": "广西大学",
+    "time": "2026年8月",
+    "location": "广西崇左",
+    "story": "《创造科研人》\n\n2026年8月的一个的午后，小红和小绿终于迎来了装红外相机工作的最后几个样点。只见小绿使出浑身解数，奋力爬上一块巨石安装相机，而小红则在下方默契伸手递上电池。就在两人指尖即将交汇的那一瞬间，脑海中突然闪过世界名画——米开朗基罗的《创造亚当》。于是，一幅属于野外科研人的“文艺复兴名场面”就此诞生。\n\n《亚热带禁区·神秘果实》\n\n那是一个平平无奇的下午，小红像往常一样，穿着雨靴，开展平平无奇的野外科研工作。\n\n直到她拨开层层藤蔓，发现了一棵挂满神秘黑色果实的树。\n\n难道……这就是传说中失传已久的“黑暗圣果”？\n\n小红颤抖着伸出右手。\n\n就在指尖即将触碰果实的那一刻，她的脑海中突然响起一道冰冷的机械音：\n\n【叮！检测到天选科研人！】\n\n【恭喜宿主激活“荒野科研逆袭系统”！】\n\n【当前任务：完成毕业论文。】\n\n【任务奖励：顺利毕业。】\n\n【失败惩罚：再来一年。】\n\n《开局陷泥潭，三个女人逆天改命》\n\n三个女人满怀期待地进山搞科研，谁料半路惨遭命运背刺——豪车深陷泥潭，动弹不得。昔日手握科研数据的天之骄女，如今竟沦落为荒野推车工！\n\n“今天这车，推也得推，不推也得推！”\n\n一声令下，三人挽起衣袖，脚踩泥泞，硬生生将自己练成了人力四驱。\n\n那一刻，她们终于明白：研究生的核心竞争力不是脑力，而是马力！",
+    "submissionKey": "a35bbb1b3687c9531365e48118753b91ea32c0ce991d2a71118d3ffef5f8fae6",
+    "photos": [
+      {
+        "src": "assets/season-two/19-1.webp",
+        "thumb": "assets/season-two/thumbs/19-1.webp",
+        "width": 1280,
+        "height": 1707
+      },
+      {
+        "src": "assets/season-two/19-2.webp",
+        "thumb": "assets/season-two/thumbs/19-2.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/19-3.webp",
+        "thumb": "assets/season-two/thumbs/19-3.webp",
+        "width": 1707,
+        "height": 1280
+      }
+    ]
   }
 ];

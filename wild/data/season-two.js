@@ -100,4 +100,124 @@ window.WILD_RESEARCHERS = [
       { src: 'assets/season-two/11-1.webp', thumb: 'assets/season-two/thumbs/11-1.webp', width: 1800, height: 1200 },
     ],
   },
+  {
+    "number": 77,
+    "displayNumber": 12,
+    "name": "吴彦祖",
+    "organization": "南昌大学",
+    "time": "2019年",
+    "location": "江西鄱阳湖国家级自然保护区",
+    "story": "图片拍摄于2019年江西鄱阳湖国家级自然保护区，拍摄时正值丰水期，鄱阳湖水位上涨，呈现“水天一色”的景观，道路也随之被淹没，车辆无法进出。由于野外调查所需设备繁多，使用船只搬运，水深处可划船，水浅处便拖行。",
+    "submissionKey": "eeac7be89e12de36d44546742978dc546e8fbc59503a081ed2ac9bd706c63d25",
+    "photos": [
+      {
+        "src": "assets/season-two/12-1.webp",
+        "thumb": "assets/season-two/thumbs/12-1.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/12-2.webp",
+        "thumb": "assets/season-two/thumbs/12-2.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/12-3.webp",
+        "thumb": "assets/season-two/thumbs/12-3.webp",
+        "width": 1706,
+        "height": 1279
+      }
+    ]
+  },
+  {
+    "number": 78,
+    "displayNumber": 13,
+    "name": "牛东玲",
+    "organization": "宁夏大学",
+    "time": "2023年",
+    "location": "宁夏六盘山国家级自然保护区",
+    "story": "2023年在宁夏六盘山国家级自然保护区开展地衣野外调查，调查队遭遇了湍急的河流，河水浑浊冰凉，水流冲击着脚踝下的乱石。队员们手持长棍探路，互相搀扶，在激流中深一脚浅一脚地艰难跋涉。每一次跨河，都是对未知的勇毅前行。水流再急，也挡不住他们追寻地衣足迹的脚步。",
+    "submissionKey": "b2c5e6605627bada2e901c2b95b52cb549187391ccd8093e5f1e180cdd192448",
+    "photos": [
+      {
+        "src": "assets/season-two/13-1.webp",
+        "thumb": "assets/season-two/thumbs/13-1.webp",
+        "width": 1800,
+        "height": 1200
+      }
+    ]
+  },
+  {
+    "number": 79,
+    "displayNumber": 14,
+    "name": "王牛",
+    "organization": "中国科学院新疆生态与地理研究所",
+    "time": "2024年8月8日",
+    "location": "青海花石峡镇",
+    "story": "照片时间2024年8月8日（硕士），青海花石峡镇某滑坡断面，海拔四千三左右，青藏高原8月的雨夹雪，丢了冲锋衣外壳的我只能是披着雨衣干，真冷啊，真缺氧",
+    "submissionKey": "65974c52e39a02371640e1ee92cec091160a41401e36f101274cc14b3787ce6a",
+    "photos": [
+      {
+        "src": "assets/season-two/14-1.webp",
+        "thumb": "assets/season-two/thumbs/14-1.webp",
+        "width": 1276,
+        "height": 1702
+      }
+    ]
+  },
+  {
+    "number": 80,
+    "displayNumber": 15,
+    "name": "信佳明",
+    "organization": "西南林业大学",
+    "time": "2025年7月30日、2026年10月10日、2026年4月9日",
+    "location": "云南盈江、普洱和高黎贡山",
+    "story": "1.爬树照（安装录音机来收集长臂猿鸣叫））\n2025/7/30——德宏州盈江县\n盈江正临雨季，湿热无比。当天山中下着小雨，乔木表面非常滑，但为了找到合适的录音机安装地点与方向只能爬树，其实此前已经在山上走了十多公里，身上满是汗水与雨水，极度疲劳。爬树的时候尝试了两次，第三次才爬到了合适的位置并安装，最搞笑与瘆人的是树上好多山蚂蝗在爬，将蚂蝗从身上扯下后，树上这种高处的视角让我觉得还蛮舒服的，遂比耶。\n\n2.蜥蜴照（两爬动物本底调查）\n2026/10/10——普洱思茅区\n万掌山当地独特的微气候为两栖爬行动物提供了复杂的微生境，半夜出发走到凌晨，沿着小溪很幸运遇到了许多可爱的小动物（三晚就遇到12条兰纳竹叶青，老激动了），都很美。图中为红唇棘蜥与开心的我。\n\n3.住宿照（布置长臂猿监测样线）\n2026/4/9——高黎贡山国家级自然保护区核心区腾冲段\n高黎贡白眉长臂猿监测难度大，与护林员们背着食物与行李上山。在原始森林中于此处住了整整一个星期，没有信号没有电没有洗澡水，只有每日的任务与发呆。舒适吗？不谈虫子爬脸与深夜野兽吼叫，内心是平和的。艰苦吗？很艰苦，没有形象，浑身伤口，但当谈到有可能的保护成效大家都会置心一笑。我两三个月才去一次，他们已经艰苦很多年了。",
+    "submissionKey": "9a26af346ddfe609f77a185b724422e05139337dbff5b7acd10911f52ee74ab7",
+    "photos": [
+      {
+        "src": "assets/season-two/15-1.webp",
+        "thumb": "assets/season-two/thumbs/15-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/15-2.webp",
+        "thumb": "assets/season-two/thumbs/15-2.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/15-3.webp",
+        "thumb": "assets/season-two/thumbs/15-3.webp",
+        "width": 1707,
+        "height": 1280
+      }
+    ]
+  },
+  {
+    "number": 81,
+    "displayNumber": 16,
+    "name": "李鑫蕾",
+    "organization": "中国科学院武汉植物园",
+    "time": "2026年7月15日、8月7日",
+    "location": "湖南八大公山国家自然保护区",
+    "story": "时间：2026年7月15日\n地点：湖南八大公山国家自然保护区\n早上八点半，正在前往复查25ha大样地的路上，进样地这1小时的崎岖山路，是体力的考验，也是大自然的馈赠。汗水打湿衣裳，看阳光穿透树林，洒落在小路上，治愈的风景看了一遍又一遍。光影指引着前进的路，也照亮了我们丈量自然的脚步。\n\n时间：2026年8月7日\n地点：湖南八大公山国家自然保护区\n突如其来的暴雨打破沉浸式工作的我们，山涧溪流暴涨，淹没了去路。但是我们没有退宿，雨衣是我们的战袍。拄着树枝当拐杖，在湍急的溪水中互相搀扶、摸索过河。继续前进！",
+    "submissionKey": "051627b68de389984ca21bc56c57b86cc26170386fc032e657ff55218b43e7c7",
+    "photos": [
+      {
+        "src": "assets/season-two/16-1.webp",
+        "thumb": "assets/season-two/thumbs/16-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/16-2.webp",
+        "thumb": "assets/season-two/thumbs/16-2.webp",
+        "width": 1800,
+        "height": 1350
+      }
+    ]
+  }
 ];

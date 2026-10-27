@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Research Model Rank</title>
+  <desc id="desc">A minimal model leaderboard with a price-performance frontier</desc>
+  <rect width="960" height="640" fill="#edf5f0"/>
+  <circle cx="822" cy="110" r="135" fill="#dceee4"/>
+  <circle cx="120" cy="570" r="145" fill="#e2f0e7"/>
+  <rect x="130" y="84" width="700" height="465" rx="28" fill="#fff" stroke="#dce9e1" stroke-width="3"/>
+  <text x="175" y="142" fill="#23473a" font-family="Arial,sans-serif" font-size="27" font-weight="700">MODEL RANK</text>
+  <text x="176" y="174" fill="#789589" font-family="Arial,sans-serif" font-size="17">RESEARCH MODEL INDEX</text>
+  <path d="M175 204h610M175 274h610M175 344h610M175 414h610M175 484h610" stroke="#e9f0eb" stroke-width="2"/>
+  <path d="M455 235v266M570 235v266M685 235v266M785 235v266" stroke="#eef3ef" stroke-width="2"/>
+  <g font-family="Arial,sans-serif" font-weight="700" fill="#608c78">
+    <text x="180" y="251" font-size="20">01</text><text x="180" y="321" font-size="20">02</text><text x="180" y="391" font-size="20">03</text>
+  </g>
+  <g fill="#d8e7de"><rect x="226" y="233" width="118" height="11" rx="5"/><rect x="226" y="257" width="74" height="7" rx="3"/><rect x="226" y="303" width="142" height="11" rx="5"/><rect x="226" y="327" width="88" height="7" rx="3"/><rect x="226" y="373" width="104" height="11" rx="5"/><rect x="226" y="397" width="78" height="7" rx="3"/></g>
+  <path d="M466 435h89v-42h76v-47h66v-61h78" fill="none" stroke="#397f71" stroke-width="5" stroke-linejoin="round"/>
+  <g fill="#fff" stroke="#397f71" stroke-width="4"><circle cx="466" cy="435" r="10"/><circle cx="555" cy="393" r="10"/><circle cx="631" cy="346" r="10"/><circle cx="697" cy="285" r="10"/></g>
+  <text x="480" y="594" text-anchor="middle" fill="#557c69" font-family="Arial,sans-serif" font-size="22" font-weight="700">AI MODELS · RESEARCH BENCHMARKS</text>
+</svg>

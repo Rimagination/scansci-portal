@@ -1,6 +1,27 @@
 {
   "apps": [
     {
+      "id": "model-rank",
+      "status": "NEW",
+      "name": "科研模型榜",
+      "description": "汇总公开基准，比较 AI 模型在文献、写作、数据分析等场景的表现。",
+      "summary": "比较 AI 模型的科研能力和综合表现。",
+      "cover": "./assets/covers/model-rank.svg",
+      "cover_title": "科研模型榜",
+      "cover_subtitle": "AI 模型 · 科研能力",
+      "url": "/model-rank/",
+      "category": "AI 模型测评",
+      "tags": [
+        "AI",
+        "model",
+        "leaderboard",
+        "模型",
+        "排行榜",
+        "测评",
+        "科研"
+      ]
+    },
+    {
       "id": "ai-price",
       "status": "NEW",
       "name": "AI 比价",

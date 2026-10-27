@@ -153,23 +153,6 @@
       ]
     },
     {
-      "id": "citation-integrity-lab",
-      "name": "Citation Lab",
-      "description": "引文完整性核查工具，支持参考文献有效性分析与证据追踪。",
-      "summary": "核查参考文献有效性，追踪引文证据。",
-      "cover": "./assets/covers/citation-integrity-lab-cover.webp",
-      "cover_title": "Citation Lab",
-      "cover_subtitle": "参考文献一致性与证据核查",
-      "url": "https://citation.scansci.com",
-      "category": "引文核查",
-      "tags": [
-        "citation",
-        "integrity",
-        "validation",
-        "参考文献"
-      ]
-    },
-    {
       "id": "sci-skills",
       "status": "NEW",
       "name": "Agent 拓展",

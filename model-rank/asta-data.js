@@ -2,8 +2,8 @@ window.ASTA_DATA = {
   "source": "https://huggingface.co/datasets/allenai/asta-bench-results",
   "suite": "1.0.0",
   "split": "test",
-  "capturedAt": "2026-10-27T05:04:10+00:00",
-  "fileCount": 85,
+  "capturedAt": "2026-10-27T22:56:34+00:00",
+  "fileCount": 87,
   "groups": {
     "literature": [
       {
@@ -34,6 +34,16 @@ window.ASTA_DATA = {
         "metric": "score_paper_finder/adjusted_f1_micro_avg",
         "source": "https://huggingface.co/datasets/allenai/asta-bench-results/resolve/main/1.0.0/test/andborth_RoboPhD_2026-08-02_16-31-00.json",
         "submittedAt": "2026-08-02T16:31:00.957519Z",
+        "modelArgs": "{}"
+      },
+      {
+        "model": "none/none",
+        "agent": "RoboPhD",
+        "score": 39.93,
+        "scoreRaw": 0.39933706360875687,
+        "metric": "score_paper_finder/adjusted_f1_micro_avg",
+        "source": "https://huggingface.co/datasets/allenai/asta-bench-results/resolve/main/1.0.0/test/andborth_RoboPhD_2026-10-26_03-14-25.json",
+        "submittedAt": "2026-10-26T03:14:25.610137Z",
         "modelArgs": "{}"
       },
       {

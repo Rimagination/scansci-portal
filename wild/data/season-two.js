@@ -92,4 +92,12 @@ window.WILD_RESEARCHERS = [
       { src: 'assets/season-two/10-2.webp', thumb: 'assets/season-two/thumbs/10-2.webp', width: 1800, height: 1350 },
     ],
   },
+  {
+    number: 76, displayNumber: 11, name: '丁家乐', organization: '新疆大学',
+    time: '2026年10月22日', location: '新疆塔城地区',
+    story: '十月的塔城已经迎来初雪。为了寻找并记录新疆的濒危鸟类，我和团队顶着刺骨的寒风踏上了这片陡峭的山坡。照片里，是我在布满暗沟与裂缝的雪原上艰难跋涉的背影。看似平缓的雪面下，每一步都可能踩空，只能小心翼翼地探路。虽然野外环境恶劣、冷风刺骨，但只要能追踪到那些珍稀动物的踪迹，为物种保护提供哪怕一点真实的数据，所有的奔波与艰辛就都有了意义。',
+    photos: [
+      { src: 'assets/season-two/11-1.webp', thumb: 'assets/season-two/thumbs/11-1.webp', width: 1800, height: 1200 },
+    ],
+  },
 ];

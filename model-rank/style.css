@@ -16,6 +16,12 @@
 .brand-section{font-size:15px;font-weight:600;color:var(--muted);margin-left:5px}.layout{display:block}.layout main{padding:26px 3.6% 36px;min-width:0}#nav{display:flex;width:max-content;max-width:100%;overflow-x:auto;gap:2px;padding:3px;margin:0 0 24px;background:#f0f3f0;border:1px solid var(--line);border-radius:999px;scrollbar-width:none}#nav::-webkit-scrollbar{display:none}#nav .nav-btn{flex:none;width:auto;white-space:nowrap;margin:0;padding:9px 18px;border-radius:999px;font-size:13px;color:#718079}#nav .nav-btn:hover{color:var(--green)}#nav .nav-btn.active{background:var(--paper);color:var(--ink);box-shadow:0 1px 4px #203a2a20}#nav .nav-btn:focus-visible{outline:2px solid var(--green);outline-offset:-2px}@media(max-width:720px){.layout main{padding:18px 16px 28px}#nav{margin-bottom:18px}#nav .nav-btn{padding:9px 14px;font-size:12px}.brand-section{font-size:13px}}
 .chart-model .chart-label-name,.chart-model .chart-label-value{paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
 .chart-model .chart-label-name{font-size:11px}
+/* Keep benchmark families scrollable and expose their individual measures. */
+.benchmark-select{flex:1 1 0;overflow-x:auto;scrollbar-width:thin}
+.variant-label{display:flex;align-items:center;gap:6px;flex:none;color:#71877a;font-size:11px}
+.variant-label select{max-width:190px;border:1px solid #dfe7e1;border-radius:6px;padding:7px 9px;background:#fff;color:var(--ink);font:inherit}
+.variant-label select:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+@media(max-width:720px){.benchmark-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto}.benchmark-select{grid-column:1;grid-row:1}.benchmark-info{grid-column:2;grid-row:1}.variant-label{grid-column:1 / -1;grid-row:2}.variant-label select{max-width:100%}}
 /* Keep mixed Chinese and Latin table labels in one font and size. */
 .table-wrap table{font-family:'Noto Sans SC','Microsoft YaHei UI',sans-serif}
 .table-wrap th{font-size:12px}

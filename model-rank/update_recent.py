@@ -50,9 +50,9 @@ def paperbench():
     page = table_page(url)
     result = []
     for row in rows_for(page, ['Agent', 'Full rate', 'Partial score', 'Modeling', 'Execution', 'Validation', 'Avg turns']):
-        if len(row) < 3: raise ValueError('Incomplete PaperBench Science row')
+        if len(row) < 6: raise ValueError('Incomplete PaperBench Science row')
         value = score(row[2])
-        result.append({'model': row[0], 'agent': 'PaperBench Science', 'score': value, 'scoreRaw': value, 'fullRate': score(row[1]), 'source': url})
+        result.append({'model': row[0], 'agent': 'PaperBench Science', 'score': value, 'scoreRaw': value, 'fullRate': score(row[1]), 'modeling': score(row[3]), 'execution': score(row[4]), 'validation': score(row[5]), 'source': url})
     return {'paperbench-science': pack(url, page.times[0], '原文发布', result)}
 
 def scifigure():
@@ -80,12 +80,23 @@ def writing():
     data = json.loads(fetch(url))
     rows = []
     for row in data['rows']:
-        if row.get('lifecycle_key') not in ('current', 'previous') or row.get('duel_score_100') is None: continue
+        if row.get('duel_score_100') is None: continue
         value = score(str(row['duel_score_100']))
+        rank = row['rank']
+        if isinstance(rank, bool) or not isinstance(rank, int) or rank < 1:
+            raise ValueError('Invalid English writing source rank')
         model = row['base_name']
         setting = row.get('reasoning_level') or row.get('reasoning_mode') or '未列出'
-        rows.append({'model': model, 'agent': '英文写作 · ' + setting, 'provider': row.get('publisher_name') or '', 'score': value, 'scoreRaw': value, 'source': source})
-    return {'english-writing': pack(source, data['stats']['updated_at'], '原榜更新', rows)}
+        agent = '英文写作 · ' + setting + (' · 本地运行' if row.get('lm_studio_icon') else '')
+        rows.append({'rank': rank, 'model': model, 'agent': agent, 'provider': row.get('publisher_name') or '', 'score': value, 'scoreRaw': value, 'source': source})
+    result = pack(source, data['stats']['updated_at'], '原榜更新', rows)
+    previous_score = previous_rank = None
+    for i, row in enumerate(result['rows']):
+        expected = previous_rank if row['scoreRaw'] == previous_score else i + 1
+        if row['rank'] != expected:
+            raise ValueError('English writing score and source rank disagree')
+        previous_score, previous_rank = row['scoreRaw'], row['rank']
+    return {'english-writing': result}
 
 def scicon():
     source = 'https://sciconbench.cs.princeton.edu/'

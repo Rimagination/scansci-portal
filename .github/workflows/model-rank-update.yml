@@ -26,6 +26,8 @@ jobs:
       - name: Refresh independent sources
         id: refresh
         continue-on-error: true
+        env:
+          ARTIFICIAL_ANALYSIS_API_KEY: ${{ secrets.ARTIFICIAL_ANALYSIS_API_KEY }}
         run: python -B model-rank/update_all.py
       - name: Publish successful snapshots and source status
         env:
@@ -33,7 +35,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add model-rank/data.js model-rank/asta-data.js model-rank/chart-data.js model-rank/inspire-data.js model-rank/recent-data.js model-rank/overall-data.js model-rank/update-status.js
+          git add model-rank/data.js model-rank/asta-data.js model-rank/chart-data.js model-rank/inspire-data.js model-rank/recent-data.js model-rank/overall-data.js model-rank/literature-extra-data.js model-rank/visual-extra-data.js model-rank/extended-data.js model-rank/update-status.js
           if ! git diff --cached --quiet; then
             git commit -m 'data: refresh research model leaderboard'
             git pull --rebase origin main

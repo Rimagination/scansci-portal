@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-SOURCES = {'science': 'update_data.py', 'asta': 'update_asta.py', 'chart': 'update_chart.py', 'inspire': 'update_inspire.py', 'recent': 'update_recent.py', 'overall': 'update_overall.py'}
+SOURCES = {'science': 'update_data.py', 'asta': 'update_asta.py', 'chart': 'update_chart.py', 'inspire': 'update_inspire.py', 'recent': 'update_recent.py', 'overall': 'update_overall.py', 'literature': 'update_literature_extra.py', 'visual': 'update_visual_extra.py', 'extended': 'update_extended.py'}
 
 def main():
     requested = sys.argv[1:] or list(SOURCES)

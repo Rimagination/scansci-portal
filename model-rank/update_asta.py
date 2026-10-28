@@ -1,6 +1,7 @@
 import json, math, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+from http.client import IncompleteRead
 from pathlib import Path
 from urllib.parse import quote
 from urllib.request import Request, urlopen
@@ -20,7 +21,7 @@ def load(url):
         try:
             with urlopen(Request(url, headers={'User-Agent': 'ScanSci-ResearchIndex/1.0'}), timeout=60) as f:
                 return json.load(f)
-        except (OSError, TimeoutError):
+        except (OSError, TimeoutError, IncompleteRead):
             if attempt == 2:
                 raise
             time.sleep(1 + attempt * 2)

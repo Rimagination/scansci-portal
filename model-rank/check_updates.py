@@ -1,8 +1,20 @@
 """Run with: python -B check_updates.py"""
 import io, json, tempfile
+from http.client import IncompleteRead
 from pathlib import Path
 from types import SimpleNamespace
-import update_all, update_chart
+import update_all, update_asta, update_chart
+
+attempts = []
+class PartialRead(io.BytesIO):
+    def read(self, *_args):
+        raise IncompleteRead(b'partial', 10)
+def flaky_open(_request, **_kwargs):
+    attempts.append(1)
+    return PartialRead() if len(attempts) == 1 else io.BytesIO(b'{"ok": true}')
+update_asta.urlopen = flaky_open
+update_asta.time.sleep = lambda _seconds: None
+assert update_asta.load('https://example.com/data') == {'ok': True} and len(attempts) == 2
 
 sample = [{'Model': f'm{i}', 'Overall': 80-i, 'Exec_Rate': 90} for i in range(5)]
 rows = update_chart.parse(sample, update_chart.SOURCES['direct'])

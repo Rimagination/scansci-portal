@@ -16,9 +16,9 @@ def fetch(url):
         return response.read().decode('utf8')
 
 def price(text):
-    if text in ('待核验', '—', '-'): return None
-    if not re.fullmatch(r'¥\d+(?:\.\d+)?', text): raise ValueError('Invalid AIHOT price')
-    return float(text[1:])
+    if not re.fullmatch(r'¥\d+(?:\.\d+)?', text): return None
+    value = float(text[1:])
+    return value if math.isfinite(value) else None
 
 def aihot():
     url = 'https://aihot.news/leaderboard'
@@ -45,9 +45,10 @@ def aihot():
         value = float(cells[7]['strongs'][0])
         if not math.isfinite(value) or not 0 <= int(coverage.group(2)) <= 100:
             raise ValueError('Invalid AIHOT score or coverage')
-        cache, input_price, output = (price(cell['text']) for cell in cells[4:7])
+        raw_prices = [cell['text'] for cell in cells[4:7]]
+        cache, input_price, output = map(price, raw_prices)
         cost = (cache * 7 + input_price * 2 + output) / 10 if None not in (cache, input_price, output) else None
-        rows.append({'rank': int(cells[0]['text']), 'model': model, 'agent': 'AIHOT 综合', 'provider': org, 'score': value, 'scoreRaw': value, 'releaseDate': cells[2]['text'], 'benchmarkCount': int(coverage.group(1)), 'coveragePercent': int(coverage.group(2)), 'cachePrice': cache, 'inputPrice': input_price, 'outputPrice': output, 'cost': cost, 'source': urljoin(url, link)})
+        rows.append({'rank': int(cells[0]['text']), 'model': model, 'agent': 'AIHOT 综合', 'provider': org, 'score': value, 'scoreRaw': value, 'releaseDate': cells[2]['text'], 'benchmarkCount': int(coverage.group(1)), 'coveragePercent': int(coverage.group(2)), 'cachePrice': cache, 'inputPrice': input_price, 'outputPrice': output, 'cachePriceRaw': raw_prices[0], 'inputPriceRaw': raw_prices[1], 'outputPriceRaw': raw_prices[2], 'cost': cost, 'source': urljoin(url, link)})
     if len(rows) < 10 or len({r['rank'] for r in rows}) != len(rows) or rows != sorted(rows, key=lambda r:r['rank']):
         raise ValueError('AIHOT overall ranking incomplete or inconsistent')
     return {'source': url, 'updatedAt': updated, 'dateLabel': '原榜更新', 'rows': rows}
@@ -61,13 +62,19 @@ def arena():
         import pyarrow.parquet as parquet
     except ImportError:
         parquet = None
+    records = None
     if parquet:
         url = 'https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset/resolve/main/text_style_control/latest-00000-of-00001.parquet'
-        with urlopen(Request(url, headers=HEADERS), timeout=60) as response:
-            blob = response.read(20_000_001)
-        if len(blob) > 20_000_000: raise ValueError('Arena snapshot unexpectedly large')
-        records = parquet.read_table(BytesIO(blob), filters=[('category', '=', 'overall')]).to_pylist()
-    else:
+        for attempt in range(2):
+            try:
+                with urlopen(Request(url, headers=HEADERS), timeout=60) as response:
+                    blob = response.read(20_000_001)
+                if len(blob) > 20_000_000: raise ValueError('Arena snapshot unexpectedly large')
+                records = parquet.read_table(BytesIO(blob), filters=[('category', '=', 'overall')]).to_pylist()
+                break
+            except (OSError, ValueError):
+                pass
+    if records is None:
         first = arena_page(0)
         total = first['num_rows_total']
         if not isinstance(total, int) or not 10 <= total <= 5000: raise ValueError('Unexpected Arena row count')

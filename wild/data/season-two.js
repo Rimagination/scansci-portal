@@ -399,5 +399,23 @@ window.WILD_RESEARCHERS = [
         "height": 1110
       }
     ]
+  },
+  {
+    "number": 87,
+    "displayNumber": 22,
+    "name": "陈小娜",
+    "organization": "东北师范大学",
+    "time": "2026年8月",
+    "location": "未提供",
+    "story": "我们化身现代“徐霞客”小队，在山林间跋涉，途中邂逅泥炭藓，这份惊喜是科研人独有的浪漫（A-B）。大家一头扎进湿软的泥炭沼泽，蹲在林间草丛里细心采集样品（C）。采样结束，麻袋一扛，就地化身泥炭地“拾荒者”，鼓鼓囊囊的袋子里装满珍贵的科研材料（D）。我们踩着松软草甸负重返程，步步小心。路途虽辛苦，但收获样品、邂逅这片秘境的快乐，实打实拉满！",
+    "submissionKey": "31d22992edf8595f0759bad895714039e4cb361e4a2601b412ac8da2c224111e",
+    "photos": [
+      {
+        "src": "assets/season-two/22-1.webp",
+        "thumb": "assets/season-two/thumbs/22-1.webp",
+        "width": 1800,
+        "height": 1506
+      }
+    ]
   }
 ];

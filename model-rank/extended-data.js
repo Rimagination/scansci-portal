@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-10-28T16:52:52+00:00",
+  "capturedAt": "2026-10-28T23:12:53+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-10-27T07:09:52.404081+00:00",
+      "updatedAt": "2026-10-28T22:02:17.111167+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -239,6 +239,14 @@ window.EXTENDED_DATA = {
           "score": 39.58,
           "scoreRaw": 39.583333333333336,
           "passed": 19,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Claude Code · Fable 5.1 (Subscription, max effort)",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 37.5,
+          "scoreRaw": 37.5,
+          "passed": 18,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -341,11 +349,19 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-10-28T16:52:52+00:00",
+      "updatedAt": "2026-10-28T23:12:53+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",
       "rows": [
+        {
+          "model": "Gemini 4 Carbon (High)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 59.4,
+          "scoreRaw": 59.4,
+          "source": "https://artificialanalysis.ai/models/gemini-4-carbon"
+        },
         {
           "model": "Claude Opus 5.5 (Max, Default Fallback)",
           "provider": "Anthropic",

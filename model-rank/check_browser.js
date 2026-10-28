@@ -60,6 +60,5 @@ async page => {
   const dimensions = await page.evaluate(() => ({ viewport: window.innerWidth, content: document.documentElement.scrollWidth }));
   check(dimensions.content <= dimensions.viewport, `Mobile page overflows: ${JSON.stringify(dimensions)}`);
   check(errors.length === 0, `Browser errors: ${errors.join('; ')}`);
-  await page.screenshot({ path: 'output/playwright/model-rank-mobile.png', fullPage: true });
   return { categories: categories.length, families, variants, errors, dimensions };
 }

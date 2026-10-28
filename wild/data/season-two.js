@@ -333,5 +333,71 @@ window.WILD_RESEARCHERS = [
         "height": 1280
       }
     ]
+  },
+  {
+    "number": 85,
+    "displayNumber": 20,
+    "name": "彭于晏",
+    "organization": "赣南师范大学",
+    "time": "2026年3月",
+    "location": "江西省景德镇石灰岩山地",
+    "story": "当时正在进行样线踏查，我们的向导也没找到他熟悉的路，只能靠着两步路上仅有的一条驴友的穿越路线赶路，但其实驴友的路根本就没路！碰到了个超大的落差，在向导的指导下，我们也是一路“滑”下来了。山顶的石头异常锋利，被风化得像刀片一样，这下真的是在上刀山了。",
+    "submissionKey": "22f0bc3813c6a31374e7974eb7f6ff25803823b6c179e20dbef50833f6093767",
+    "photos": [
+      {
+        "src": "assets/season-two/20-1.webp",
+        "thumb": "assets/season-two/thumbs/20-1.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/20-2.webp",
+        "thumb": "assets/season-two/thumbs/20-2.webp",
+        "width": 1352,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/20-3.webp",
+        "thumb": "assets/season-two/thumbs/20-3.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/20-4.webp",
+        "thumb": "assets/season-two/thumbs/20-4.webp",
+        "width": 1279,
+        "height": 1706
+      }
+    ]
+  },
+  {
+    "number": 86,
+    "displayNumber": 21,
+    "name": "蔡彦斌",
+    "organization": "华南农业大学生物科学",
+    "time": "2026年10月",
+    "location": "广东南昆山国家森林公园",
+    "story": "我当时和师兄们一起在南昆山周边寻找目标两爬动物。因为目标生物活跃时段大多在黑夜，我们一般需要顶着头灯在月黑风高的时候上山寻找。溪生两爬动物常在静水与湿草丛中栖息，为了不惊扰目标，且需要低角度拍摄，我们经常需要趴在地上进行拍摄。\n前两张图片是我在进行拍摄时，师兄给我拍的“工作照”，其中图二是当时我们找到一条正在休息的国家二级保护动物长鬣蜥幼体，它是国内最大的鬣蜥科动物，成体可以近一米长。可以接触到以前只能在书里、在视频里才能看到的奇异生物，是野外工作给我带来的最美好的礼物。",
+    "submissionKey": "7b0226d577637db0f5cb40fa432541bde7174e0ca61b890f9a88368e2258ea64",
+    "photos": [
+      {
+        "src": "assets/season-two/21-1.webp",
+        "thumb": "assets/season-two/thumbs/21-1.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/21-2.webp",
+        "thumb": "assets/season-two/thumbs/21-2.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/21-3.webp",
+        "thumb": "assets/season-two/thumbs/21-3.webp",
+        "width": 1800,
+        "height": 1110
+      }
+    ]
   }
 ];

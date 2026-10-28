@@ -6,6 +6,8 @@ async page => {
   const check = (condition, message) => { if (!condition) throw new Error(message); };
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('http://127.0.0.1:8765/model-rank/', { waitUntil: 'load' });
+  check(await page.locator('[data-benchmark]').first().getAttribute('data-benchmark') === 'aa-index', 'Artificial Analysis is not the first benchmark');
+  check(await page.locator('[data-benchmark="aa-index"]').getAttribute('aria-pressed') === 'true', 'Artificial Analysis is not selected on load');
   const categories = await page.locator('[data-category]').evaluateAll(nodes => nodes.map(node => node.dataset.category));
   let families = 0, variants = 0;
   for (const category of categories) {
@@ -45,6 +47,8 @@ async page => {
   await page.locator('[data-benchmark="english-writing"]').click();
   check((await page.locator('#rows tr').count()) >= 100, 'English writing results were truncated');
   await page.locator('[data-category="overall"]').click();
+  check(await page.locator('[data-benchmark="aa-index"]').getAttribute('aria-pressed') === 'true', 'Returning to overall did not select Artificial Analysis');
+  await page.locator('[data-benchmark="aihot"]').click();
   const missingPrice = page.locator('#rows tr').filter({ hasText: '价格缺失或待核验' }).first();
   if (await missingPrice.count()) {
     await page.locator('#search').fill(await missingPrice.locator('.model-name').innerText());

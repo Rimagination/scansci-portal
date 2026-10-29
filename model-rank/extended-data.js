@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-10-28T23:12:53+00:00",
+  "capturedAt": "2026-10-29T23:17:00+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-10-28T22:02:17.111167+00:00",
+      "updatedAt": "2026-10-29T16:53:36.181992+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -215,6 +215,14 @@ window.EXTENDED_DATA = {
           "score": 54.17,
           "scoreRaw": 54.166666666666664,
           "passed": 26,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Antigravity · Gemini 4 Carbon",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 52.08,
+          "scoreRaw": 52.083333333333336,
+          "passed": 25,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -349,7 +357,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-10-28T23:12:53+00:00",
+      "updatedAt": "2026-10-29T23:17:00+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",
@@ -771,12 +779,28 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gpt-6-luna"
         },
         {
+          "model": "GLM-5.3-Flash",
+          "provider": "Z AI",
+          "agent": "Artificial Analysis",
+          "score": 27.8,
+          "scoreRaw": 27.8,
+          "source": "https://artificialanalysis.ai/models/glm-5-3-flash"
+        },
+        {
           "model": "MiMo-V2.6-Flash",
           "provider": "Xiaomi",
           "agent": "Artificial Analysis",
           "score": 26.7,
           "scoreRaw": 26.7,
           "source": "https://artificialanalysis.ai/models/mimo-v2-6-flash"
+        },
+        {
+          "model": "Mistral Large 4 (High)",
+          "provider": "Mistral",
+          "agent": "Artificial Analysis",
+          "score": 26.0,
+          "scoreRaw": 26.0,
+          "source": "https://artificialanalysis.ai/models/mistral-large-4"
         },
         {
           "model": "Claude Sonnet 5.5 (Low, Default Fallback)",
@@ -792,7 +816,7 @@ window.EXTENDED_DATA = {
           "agent": "Artificial Analysis",
           "score": 25.3,
           "scoreRaw": 25.3,
-          "source": "https://artificialanalysis.ai/models/mistral-large-4"
+          "source": "https://artificialanalysis.ai/models/mistral-large-4-preview"
         },
         {
           "model": "Muse Spark Open (Xhigh)",
@@ -817,6 +841,14 @@ window.EXTENDED_DATA = {
           "score": 23.3,
           "scoreRaw": 23.3,
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-xhigh"
+        },
+        {
+          "model": "Mistral Large 4 (Medium)",
+          "provider": "Mistral",
+          "agent": "Artificial Analysis",
+          "score": 23.1,
+          "scoreRaw": 23.1,
+          "source": "https://artificialanalysis.ai/models/mistral-large-4-medium"
         },
         {
           "model": "DeepSeek V4 Pro 0813 (Max)",
@@ -899,6 +931,30 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/reflection-beam"
         },
         {
+          "model": "Qwen3.8 27B (Medium)",
+          "provider": "Alibaba",
+          "agent": "Artificial Analysis",
+          "score": 17.5,
+          "scoreRaw": 17.5,
+          "source": "https://artificialanalysis.ai/models/qwen3-8-27b-medium"
+        },
+        {
+          "model": "Kimi K3 (Low)",
+          "provider": "Kimi",
+          "agent": "Artificial Analysis",
+          "score": 17.4,
+          "scoreRaw": 17.4,
+          "source": "https://artificialanalysis.ai/models/kimi-k3-low"
+        },
+        {
+          "model": "Qwen3.8 27B (Low)",
+          "provider": "Alibaba",
+          "agent": "Artificial Analysis",
+          "score": 15.7,
+          "scoreRaw": 15.7,
+          "source": "https://artificialanalysis.ai/models/qwen3-8-27b-low"
+        },
+        {
           "model": "Nemotron 3.5 Super VL",
           "provider": "NVIDIA",
           "agent": "Artificial Analysis",
@@ -969,6 +1025,22 @@ window.EXTENDED_DATA = {
           "score": 6.2,
           "scoreRaw": 6.2,
           "source": "https://artificialanalysis.ai/models/command-a-plus"
+        },
+        {
+          "model": "Nemotron 3.5 Lightning",
+          "provider": "NVIDIA",
+          "agent": "Artificial Analysis",
+          "score": 5.5,
+          "scoreRaw": 5.5,
+          "source": "https://artificialanalysis.ai/models/nemotron-3-5-lightning"
+        },
+        {
+          "model": "Mistral Small 4 (Reasoning)",
+          "provider": "Mistral",
+          "agent": "Artificial Analysis",
+          "score": 4.3,
+          "scoreRaw": 4.3,
+          "source": "https://artificialanalysis.ai/models/mistral-small-4"
         },
         {
           "model": "NVIDIA Nemotron 3 Nano 4B",

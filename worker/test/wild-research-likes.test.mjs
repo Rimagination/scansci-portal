@@ -50,7 +50,7 @@ test('only authenticated same-origin users can change a like, with bounded valid
     for (const origin of [null, 'https://evil.example', 'https://reader.scansci.com']) {
       assert.equal((await f.request('POST', { origin, body: valid })).status, 403);
     }
-    for (const body of [{ entry: 0, liked: true }, { entry: 88, liked: true }, { entry: '1', liked: true }, { entry: 1, liked: 1 }, { ...valid, votes: 999 }, null]) {
+    for (const body of [{ entry: 0, liked: true }, { entry: 91, liked: true }, { entry: '1', liked: true }, { entry: 1, liked: 1 }, { ...valid, votes: 999 }, null]) {
       assert.equal((await f.request('POST', { body })).status, 400);
     }
     assert.equal((await f.request('POST', { body: valid, type: 'text/plain' })).status, 415);
@@ -66,11 +66,11 @@ test('second edition likes use separate storage and preserve first edition count
     assert.equal((await f.request('POST', { body: { entry: 1, liked: true } })).status, 200);
     assert.equal((await f.request('POST', { body: { entry: 66, liked: true } })).status, 200);
     assert.equal((await f.request('POST', { user: 2, body: { entry: 72, liked: true } })).status, 200);
-    assert.equal((await f.request('POST', { user: 2, body: { entry: 87, liked: true } })).status, 200);
+    assert.equal((await f.request('POST', { user: 2, body: { entry: 90, liked: true } })).status, 200);
     const data = await (await f.request('GET', { user: 1 })).json();
-    assert.deepEqual(data.counts, { 1: 1, 66: 1, 72: 1, 87: 1 });
+    assert.deepEqual(data.counts, { 1: 1, 66: 1, 72: 1, 90: 1 });
     assert.deepEqual(data.liked, [1, 66]);
     assert.equal((await f.request('POST', { body: { entry: 66, liked: false } })).status, 200);
-    assert.deepEqual((await (await f.request('GET')).json()).counts, { 1: 1, 72: 1, 87: 1 });
+    assert.deepEqual((await (await f.request('GET')).json()).counts, { 1: 1, 72: 1, 90: 1 });
   } finally { f.sqlite.close(); }
 });

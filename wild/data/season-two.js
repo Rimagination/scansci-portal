@@ -417,5 +417,107 @@ window.WILD_RESEARCHERS = [
         "height": 1506
       }
     ]
+  },
+  {
+    "number": 88,
+    "displayNumber": 23,
+    "name": "朱子丞",
+    "organization": "海南大学",
+    "time": "2023年夏秋",
+    "location": "海南热带雨林国家公园",
+    "story": "当时在做毕设，需要一个人跟着护林员去做样方、取样品和引种资源，经常性地收集到很多样品，于是会用一个大袋子装起来扛下山，这个袋子可能是一个巨大的自封袋，也可能是饲料袋，甚至是肥料袋，于是便有了我和尿素袋子的亲切合影（嗐，毕业答辩放工作照的时候应该选这张图的）。",
+    "submissionKey": "4fe6d7bca62bd6ab53dc0d95218c4f58e0300adf4db0fba25000916ede597e19",
+    "photos": [
+      {
+        "src": "assets/season-two/23-1.webp",
+        "thumb": "assets/season-two/thumbs/23-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/23-2.webp",
+        "thumb": "assets/season-two/thumbs/23-2.webp",
+        "width": 1276,
+        "height": 1702
+      },
+      {
+        "src": "assets/season-two/23-3.webp",
+        "thumb": "assets/season-two/thumbs/23-3.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  {
+    "number": 89,
+    "displayNumber": 24,
+    "name": "房艺欣",
+    "organization": "中科院青藏高原研究所",
+    "time": "未提供",
+    "location": "石渠高寒草甸、那曲草甸、藏西北荒漠样带",
+    "story": "图片描述（哈基米生成）\nFig1.盛夏的石渠高寒草甸野花点点，远处输电铁塔高耸入云。两名科考队员正俯身草丛调试光合仪，测定高寒植物生理参数；一位路过的藏族僧人轻轻驻足，安静而好奇地凝视着运转的精密仪器。在海拔四千余米的云端草场上，传统信仰的温厚注视与现代科学的严谨求索悄然同框，定格下高原科考途中人文与科学交汇的动人瞬间。\nFig2.高原天气瞬息万变，样地观测正酣时，铅云骤合，密集的冰雹准时准点连续三天砸向那曲草甸。面对突袭的狂风冰粒，队员们迅速撑开大伞压低固定，在草地上筑起临时避风港，守在伞下将精密仪器与实验物资牢牢护住。冰雹敲打伞面噼啪作响，狂风撕裂着伞骨，寒气逼人，大家却寸步不离。风雹中的这几把伞，撑起了高原台站科研人风雨无阻的日常与坚守。\nFig3.在藏西北荒漠样带开展野外观测途中，我们与这位高原“原住民”不期而遇。赭红嶙峋的山体下，一只高原狼伫立在苍黄草滩上，隔着旷野与镜头静静对视。车走狼走，车停狼停；没有惊扰，亦无退缩，唯有山风掠过草尖。在这片极境之地，人类的科学探索与荒野生灵短暂交汇——野外科考不仅是记录数据，更是怀揣敬畏，去读懂荒野的坚韧与生机。",
+    "submissionKey": "100097d83da28a06257dbe6b5ce95146b00e3c3cc81ff7ce9dac471a4f3a4108",
+    "photos": [
+      {
+        "src": "assets/season-two/24-1.webp",
+        "thumb": "assets/season-two/thumbs/24-1.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/24-2.webp",
+        "thumb": "assets/season-two/thumbs/24-2.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/24-3.webp",
+        "thumb": "assets/season-two/thumbs/24-3.webp",
+        "width": 1279,
+        "height": 1706
+      }
+    ]
+  },
+  {
+    "number": 90,
+    "displayNumber": 25,
+    "name": "潘延莲",
+    "organization": "中国科学院植物研究所",
+    "time": "2026年5—8月",
+    "location": "锡林浩特大草原、浑善达克沙地",
+    "story": "图一：等水的云下（2026年5月，锡林浩特大草原）\n草原上的天气总是风云莫测，半小时前还是大晴天，而现在云却压得很低，阴沉沉好似要压到地面，地平线只剩一线亮，马上就要下雨了。师兄们穿着防晒衣、宽檐遮阳帽，面罩裹到眼睛下，手上是蓝色乳胶手套，一人拎着淡蓝塑料桶，准备去给抽水机水箱加水。车斗上是需要装满水的水罐，黄色水管盘在后面，再远是围栏和一大片将绿未绿的草。风轻轻把我们衣角吹起来，两人都朝同一个方向看——水还没装满，但是雨可能要来了。草原上的样地离水源太远，取一次水、跑一趟车，都是观测之外的活。桶、管子、旧水罐，就是我们的装备清单。\n图二：草地取样（2026年8月，锡林浩特大草原）\n太阳正晒，草已长到膝上，帽子从一开始的灰绿色，在经过太阳暴晒下已经褪色成了褐红色。我们四人分工：师弟双手压住不锈钢土钻，一根根往下拧；中间的同门弯腰扶钻、踩实，把土一点点顶出来。右边蹲着的我拿着筛子，把取出的土块在筛网里来回晃，细土落下、石块留下，旁边塑料盆、塑料袋排成一列，等着装袋编号。取土、过筛、装袋，重复几十次，一份土样背后是一整天的蹲与弯腰。\n图三：样方边的偶遇（2026年6月，浑善达克沙地）\n浑善达克沙地的实验样地里，草稀疏地扎在沙里，远处沙丘顶上几棵老榆撑着蓝天。我正低头拿着记录板夹，板上一笔笔手绘着样方草图。就在抬头的那一下，沙地中央站着一只黄褐色的小兔子，竖着耳朵望向这边，一动不动，四目相对。人没敢动，笔也停在半空——荒野里这样的相遇不常有，停滞几十秒后它转身没入草丛。记录板上的图还没画完，这段意外小惊喜先记进了心里（坚决打赢浑善达克沙地攻坚战）。",
+    "submissionKey": "2bb90cde3939ad78dbcb559614f249dee45645f16689584c17a95bb7e809428a",
+    "photos": [
+      {
+        "src": "assets/season-two/25-1.webp",
+        "thumb": "assets/season-two/thumbs/25-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/25-2.webp",
+        "thumb": "assets/season-two/thumbs/25-2.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/25-3.webp",
+        "thumb": "assets/season-two/thumbs/25-3.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/25-4.webp",
+        "thumb": "assets/season-two/thumbs/25-4.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/25-5.webp",
+        "thumb": "assets/season-two/thumbs/25-5.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
   }
 ];

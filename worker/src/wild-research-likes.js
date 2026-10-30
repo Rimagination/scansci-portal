@@ -48,7 +48,7 @@ export async function handleWildResearchLikes(request, env, { requireAuth, jsonR
     return jsonResponse(request, env, { ok: false, error: tooLarge ? 'request_too_large' : 'invalid_json' }, tooLarge ? 413 : 400);
   }
   if (!body || typeof body !== 'object' || Array.isArray(body)
-      || !Number.isInteger(body.entry) || body.entry < 1 || body.entry > 90
+      || !Number.isInteger(body.entry) || body.entry < 1 || body.entry > 91
       || typeof body.liked !== 'boolean'
       || !Object.keys(body).every(key => ['entry', 'liked', 'expected_user_id'].includes(key))) {
     return jsonResponse(request, env, { ok: false, error: 'invalid_like' }, 400);

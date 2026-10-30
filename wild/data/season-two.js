@@ -519,5 +519,41 @@ window.WILD_RESEARCHERS = [
         "height": 1800
       }
     ]
+  },
+  {
+    "number": 91,
+    "displayNumber": 26,
+    "name": "陈玲",
+    "organization": "仲恺农业工程学院",
+    "time": "2026 年 5 月 13–23 日",
+    "location": "阳山县秤架（南岭国家公园）",
+    "story": "五月的南岭湿气满满，我们跟着中大的科考队伍，一头扎进阳山秤架的芭蕉密林里。泥泞山道蜿蜒，灌丛层层叠叠，一行人一路边走边“寻宝”：寻觅目标植物、记录生境、拍下植株样貌、收集标本。漫山杜鹃悄悄绽开粉花，野蕉在林下悄悄挂果，虫鸣在潮湿林间此起彼伏。我们在山野间和南岭的草木一一碰面，装进标本袋里的不只是研究材料，还有这片山林藏了许久的鲜活小秘密。",
+    "submissionKey": "302be852a696ba751939bc18b4ab79ad07224ea1e5e33a277b96c73e8da6113a",
+    "photos": [
+      {
+        "src": "assets/season-two/26-1.webp",
+        "thumb": "assets/season-two/thumbs/26-1.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/26-2.webp",
+        "thumb": "assets/season-two/thumbs/26-2.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/26-3.webp",
+        "thumb": "assets/season-two/thumbs/26-3.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/26-4.webp",
+        "thumb": "assets/season-two/thumbs/26-4.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
   }
 ];

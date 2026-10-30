@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-10-29T23:17:00+00:00",
+  "capturedAt": "2026-10-30T22:57:56+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -357,7 +357,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-10-29T23:17:00+00:00",
+      "updatedAt": "2026-10-30T22:57:56+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",
@@ -907,6 +907,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-low"
         },
         {
+          "model": "DeepSeek V4.1 Flash 1017 (Non-reasoning)",
+          "provider": "DeepSeek",
+          "agent": "Artificial Analysis",
+          "score": 18.5,
+          "scoreRaw": 18.5,
+          "source": "https://artificialanalysis.ai/models/deepseek-v4-1-flash-1017-non-reasoning"
+        },
+        {
           "model": "GPT-6 Luna (Medium)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -995,6 +1003,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gemini-3-5-flash-lite"
         },
         {
+          "model": "Qwen3.8 27B (Non-reasoning)",
+          "provider": "Alibaba",
+          "agent": "Artificial Analysis",
+          "score": 10.0,
+          "scoreRaw": 10.0,
+          "source": "https://artificialanalysis.ai/models/qwen3-8-27b-non-reasoning"
+        },
+        {
           "model": "GPT-6 Luna (Low)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -1033,6 +1049,14 @@ window.EXTENDED_DATA = {
           "score": 5.5,
           "scoreRaw": 5.5,
           "source": "https://artificialanalysis.ai/models/nemotron-3-5-lightning"
+        },
+        {
+          "model": "Granite 4.2 3B",
+          "provider": "IBM",
+          "agent": "Artificial Analysis",
+          "score": 4.7,
+          "scoreRaw": 4.7,
+          "source": "https://artificialanalysis.ai/models/granite-4-2-3b"
         },
         {
           "model": "Mistral Small 4 (Reasoning)",

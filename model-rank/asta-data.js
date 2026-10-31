@@ -2,7 +2,7 @@ window.ASTA_DATA = {
   "source": "https://huggingface.co/datasets/allenai/asta-bench-results",
   "suite": "1.0.0",
   "split": "test",
-  "capturedAt": "2026-10-30T22:57:34+00:00",
+  "capturedAt": "2026-10-31T22:27:50+00:00",
   "fileCount": 87,
   "groups": {
     "literature": [

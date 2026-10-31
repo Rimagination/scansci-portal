@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-10-30T22:57:56+00:00",
+  "capturedAt": "2026-10-31T22:27:58+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-10-29T16:53:36.181992+00:00",
+      "updatedAt": "2026-10-31T01:02:02.298150+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -220,9 +220,9 @@ window.EXTENDED_DATA = {
         {
           "model": "Antigravity · Gemini 4 Carbon",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 52.08,
-          "scoreRaw": 52.083333333333336,
-          "passed": 25,
+          "score": 54.17,
+          "scoreRaw": 54.166666666666664,
+          "passed": 26,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -357,7 +357,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-10-30T22:57:56+00:00",
+      "updatedAt": "2026-10-31T22:27:58+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",

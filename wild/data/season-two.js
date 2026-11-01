@@ -555,5 +555,65 @@ window.WILD_RESEARCHERS = [
         "height": 1800
       }
     ]
+  },
+  {
+    "number": 92,
+    "displayNumber": 27,
+    "name": "顾自一",
+    "organization": "河南中医药大学",
+    "time": "2023年5月15日",
+    "location": "安徽省安庆市岳西县鹞落坪",
+    "story": "这是本科期间专业老师带我们一行学生进行药用植物学实习，图为第三天勇闯多枝尖，山路崎岖，沿途泥泞，我们处在大自然最原始的景色，以及满山的药用植物当中。老师带着我们边爬山边介绍沿途的药用植物，当天认识了宁波溲疏、碎米荠、橐吾、山牛蒡、毛华菊、粗茎鳞毛蕨等植物（很多，此乃冰山之一角），当然途中还要小心蚂蝗的突袭。好在我们共同抵达了顶峰多枝尖，在山顶遇见了正处花期的三裂绣线菊。",
+    "submissionKey": "cb40173382b880072ca7433db2b9366c1efc3e74bbdf1d71a85df8f14c41b734",
+    "photos": [
+      {
+        "src": "assets/season-two/27-1.webp",
+        "thumb": "assets/season-two/thumbs/27-1.webp",
+        "width": 1279,
+        "height": 1706
+      },
+      {
+        "src": "assets/season-two/27-2.webp",
+        "thumb": "assets/season-two/thumbs/27-2.webp",
+        "width": 1706,
+        "height": 1279
+      },
+      {
+        "src": "assets/season-two/27-3.webp",
+        "thumb": "assets/season-two/thumbs/27-3.webp",
+        "width": 1706,
+        "height": 1279
+      }
+    ]
+  },
+  {
+    "number": 93,
+    "displayNumber": 28,
+    "name": "李昂松",
+    "organization": "湖北大学",
+    "time": "2026年9月中、10月下旬",
+    "location": "宁夏回族自治区灵武市、湖北省武汉市",
+    "story": "2026年9月中旬，宁夏灵武，福寿螺监测调查途中，车辆深陷泥泞无法动弹。我下车挽起裤腿，踩进半米多的泥浆里，一寸一寸把车往外推。泥浆溅满了我一身——这大概是对“野外”二字最直白的注解。10月下旬，转战湖北武汉，水塘边一座小桥的桥柱上，密密附着粉红色的福寿螺卵块，在灰色的混凝土上格外刺眼。我们认真采样、逐一记录。从西北的泥沼到江汉的水塘，入侵物种的监测没有平坦的路，但每一脚泥泞，都是数据背后真实的重量。",
+    "submissionKey": "ebf4f1a31bf9da3fa0458a698c27f07f9da4d3158d9b8fb873d9073fdb84f27b",
+    "photos": [
+      {
+        "src": "assets/season-two/28-1.webp",
+        "thumb": "assets/season-two/thumbs/28-1.webp",
+        "width": 1365,
+        "height": 768
+      },
+      {
+        "src": "assets/season-two/28-2.webp",
+        "thumb": "assets/season-two/thumbs/28-2.webp",
+        "width": 1325,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/28-3.webp",
+        "thumb": "assets/season-two/thumbs/28-3.webp",
+        "width": 1279,
+        "height": 1706
+      }
+    ]
   }
 ];

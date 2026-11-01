@@ -615,5 +615,29 @@ window.WILD_RESEARCHERS = [
         "height": 1706
       }
     ]
+  },
+  {
+    "number": 94,
+    "displayNumber": 29,
+    "name": "敖继哲",
+    "organization": "西南交通大学",
+    "time": "未提供",
+    "location": "马角坝",
+    "story": "大二时候的地质测绘实习，在马角坝，雨天在刺林包拉皮尺测剖面，至今记忆犹新。",
+    "submissionKey": "ff97735923a090c40e495bb4de303697672c46d680677191500c418320229a49",
+    "photos": [
+      {
+        "src": "assets/season-two/29-1.webp",
+        "thumb": "assets/season-two/thumbs/29-1.webp",
+        "width": 1800,
+        "height": 1013
+      },
+      {
+        "src": "assets/season-two/29-2.webp",
+        "thumb": "assets/season-two/thumbs/29-2.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
   }
 ];

@@ -1,5 +1,5 @@
 window.RECENT_DATA = {
-  "capturedAt": "2026-10-31T22:27:53+00:00",
+  "capturedAt": "2026-11-01T22:48:07+00:00",
   "groups": {
     "swescience": {
       "source": "https://swescience.github.io/",
@@ -456,7 +456,7 @@ window.RECENT_DATA = {
     },
     "english-writing": {
       "source": "https://aiwritingbenchmark.com/leaderboard/",
-      "updatedAt": "2026-10-31T21:14:16.113045Z",
+      "updatedAt": "2026-11-01T13:49:35.462350Z",
       "dateLabel": "原榜更新",
       "rows": [
         {
@@ -653,8 +653,8 @@ window.RECENT_DATA = {
           "model": "DeepSeek V4.1 Flash",
           "agent": "英文写作 · high",
           "provider": "DeepSeek",
-          "score": 77.3,
-          "scoreRaw": 77.3,
+          "score": 77.4,
+          "scoreRaw": 77.4,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -671,8 +671,8 @@ window.RECENT_DATA = {
           "model": "Step 5 Preview fp8",
           "agent": "英文写作 · high",
           "provider": "StepFun",
-          "score": 76.8,
-          "scoreRaw": 76.8,
+          "score": 77.1,
+          "scoreRaw": 77.1,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -689,8 +689,8 @@ window.RECENT_DATA = {
           "model": "Mercury 3",
           "agent": "英文写作 · high",
           "provider": "Inception",
-          "score": 76.1,
-          "scoreRaw": 76.1,
+          "score": 76.2,
+          "scoreRaw": 76.2,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -725,8 +725,8 @@ window.RECENT_DATA = {
           "model": "Nemotron 3.5 Super VL",
           "agent": "英文写作 · high",
           "provider": "NVIDIA",
-          "score": 73.7,
-          "scoreRaw": 73.7,
+          "score": 74.0,
+          "scoreRaw": 74.0,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -761,8 +761,8 @@ window.RECENT_DATA = {
           "model": "Claude Haiku 5.5",
           "agent": "英文写作 · adaptive high",
           "provider": "Anthropic",
-          "score": 70.3,
-          "scoreRaw": 70.3,
+          "score": 70.2,
+          "scoreRaw": 70.2,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -770,8 +770,8 @@ window.RECENT_DATA = {
           "model": "Ling 3.1 Flash",
           "agent": "英文写作 · high",
           "provider": "InclusionAI",
-          "score": 70.2,
-          "scoreRaw": 70.2,
+          "score": 70.1,
+          "scoreRaw": 70.1,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -824,8 +824,8 @@ window.RECENT_DATA = {
           "model": "Gemini 4 Argon",
           "agent": "英文写作 · high",
           "provider": "Google",
-          "score": 66.3,
-          "scoreRaw": 66.3,
+          "score": 66.7,
+          "scoreRaw": 66.7,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -839,20 +839,20 @@ window.RECENT_DATA = {
         },
         {
           "rank": 43,
-          "model": "Mistral Large 4",
-          "agent": "英文写作 · high",
-          "provider": "Mistral AI",
-          "score": 59.8,
-          "scoreRaw": 59.8,
-          "source": "https://aiwritingbenchmark.com/leaderboard/"
-        },
-        {
-          "rank": 43,
           "model": "Muse Glimmer 30B K-Quant 17GB",
           "agent": "英文写作 · high · 本地运行",
           "provider": "Meta",
-          "score": 59.8,
-          "scoreRaw": 59.8,
+          "score": 59.9,
+          "scoreRaw": 59.9,
+          "source": "https://aiwritingbenchmark.com/leaderboard/"
+        },
+        {
+          "rank": 44,
+          "model": "Mistral Large 4",
+          "agent": "英文写作 · high",
+          "provider": "Mistral AI",
+          "score": 59.6,
+          "scoreRaw": 59.6,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -932,8 +932,8 @@ window.RECENT_DATA = {
           "model": "Gemma 4 31B Q6_K",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "Google",
-          "score": 52.2,
-          "scoreRaw": 52.2,
+          "score": 52.1,
+          "scoreRaw": 52.1,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -950,8 +950,8 @@ window.RECENT_DATA = {
           "model": "Qwen3.8 Flash",
           "agent": "英文写作 · high",
           "provider": "Alibaba",
-          "score": 51.1,
-          "scoreRaw": 51.1,
+          "score": 51.0,
+          "scoreRaw": 51.0,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1018,30 +1018,30 @@ window.RECENT_DATA = {
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
-          "rank": 62,
+          "rank": 63,
           "model": "Qwen3.6 35B A3B Q8_0",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "Alibaba",
-          "score": 45.3,
-          "scoreRaw": 45.3,
+          "score": 45.2,
+          "scoreRaw": 45.2,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
           "rank": 64,
-          "model": "Nemotron 3 Ultra",
-          "agent": "英文写作 · high",
-          "provider": "NVIDIA",
-          "score": 43.0,
-          "scoreRaw": 43.0,
-          "source": "https://aiwritingbenchmark.com/leaderboard/"
-        },
-        {
-          "rank": 65,
           "model": "MiMo V2.5 Pro",
           "agent": "英文写作 · enabled",
           "provider": "Xiaomi",
           "score": 42.9,
           "scoreRaw": 42.9,
+          "source": "https://aiwritingbenchmark.com/leaderboard/"
+        },
+        {
+          "rank": 65,
+          "model": "Nemotron 3 Ultra",
+          "agent": "英文写作 · high",
+          "provider": "NVIDIA",
+          "score": 42.3,
+          "scoreRaw": 42.3,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1058,8 +1058,8 @@ window.RECENT_DATA = {
           "model": "Gemma 4 31B Q6_K",
           "agent": "英文写作 · disabled · 本地运行",
           "provider": "Google",
-          "score": 41.0,
-          "scoreRaw": 41.0,
+          "score": 40.9,
+          "scoreRaw": 40.9,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1112,8 +1112,8 @@ window.RECENT_DATA = {
           "model": "Gemma 4 12B Q8_0",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "Google",
-          "score": 39.1,
-          "scoreRaw": 39.1,
+          "score": 39.2,
+          "scoreRaw": 39.2,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1130,8 +1130,8 @@ window.RECENT_DATA = {
           "model": "Laguna S 2.1 UD Q4_K_M",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "Poolside",
-          "score": 38.1,
-          "scoreRaw": 38.1,
+          "score": 38.0,
+          "scoreRaw": 38.0,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1148,8 +1148,8 @@ window.RECENT_DATA = {
           "model": "Gemma 4 26B A4B QAT-Q4_0",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "Google",
-          "score": 36.6,
-          "scoreRaw": 36.6,
+          "score": 36.5,
+          "scoreRaw": 36.5,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1175,8 +1175,8 @@ window.RECENT_DATA = {
           "model": "MiniMax M3.1 Flash",
           "agent": "英文写作 · high",
           "provider": "MiniMax",
-          "score": 32.6,
-          "scoreRaw": 32.6,
+          "score": 32.5,
+          "scoreRaw": 32.5,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1283,8 +1283,8 @@ window.RECENT_DATA = {
           "model": "Mistral Medium 3.5 128B Q4_K_M",
           "agent": "英文写作 · disabled · 本地运行",
           "provider": "Mistral AI",
-          "score": 23.4,
-          "scoreRaw": 23.4,
+          "score": 23.5,
+          "scoreRaw": 23.5,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1391,8 +1391,8 @@ window.RECENT_DATA = {
           "model": "Nemotron 3 Nano Omni 30B A3B Q4_K_M",
           "agent": "英文写作 · on* · 本地运行",
           "provider": "NVIDIA",
-          "score": 14.0,
-          "scoreRaw": 14.0,
+          "score": 13.9,
+          "scoreRaw": 13.9,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
@@ -1427,12 +1427,12 @@ window.RECENT_DATA = {
           "model": "Gemma 4 E4B Q8_0",
           "agent": "英文写作 · disabled · 本地运行",
           "provider": "Google",
-          "score": 11.2,
-          "scoreRaw": 11.2,
+          "score": 11.1,
+          "scoreRaw": 11.1,
           "source": "https://aiwritingbenchmark.com/leaderboard/"
         },
         {
-          "rank": 109,
+          "rank": 108,
           "model": "Granite 4.2 30B Q4_K_M",
           "agent": "英文写作 · full · 本地运行",
           "provider": "IBM",

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-10-31T22:27:58+00:00",
+  "capturedAt": "2026-11-01T22:48:11+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -357,7 +357,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-10-31T22:27:58+00:00",
+      "updatedAt": "2026-11-01T22:48:11+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",

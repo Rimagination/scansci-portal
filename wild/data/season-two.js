@@ -639,5 +639,113 @@ window.WILD_RESEARCHERS = [
         "height": 1800
       }
     ]
+  },
+  {
+    "number": 95,
+    "displayNumber": 30,
+    "name": "王辉",
+    "organization": "中国科学院植物研究所",
+    "time": "未提供",
+    "location": "浑善达克",
+    "story": "六月的浑善达克，风从丘顶那几棵老榆间穿过来。沙坡被干草和枝条压成横竖成行的方格，格子里沙土刚耙松，留着一排排平行的浅沟，零散的白袋里是每块地的补播物种。三个研究人员拉开一条作业线：最前面红外套、白帽压得极低，几乎对折着把草种点进沟、覆上沙；中间白上衣、迷彩裤的队员在沙障根部培土压实；最远的使用开沟耙开沟。没人直腰，弯腰的弧度却几乎一样，各管一段，也彼此照应。抬头，沙脊上榆树已经冒绿——沙海里最实在的惊喜。\n沙地边，蓝色塑料盆里是和好的泥浆，稠得能挂住手。成捆枝条斜靠在旁，叶片还青。左边戴迷彩渔夫帽的师兄俯身按住枝捆，中间戴眼镜的是我们老师，他蹲在盆边，一手把枝条根部往泥浆里送，一手抹匀，手背、指缝全是泥，袖口也蹭上了。后方还有一双腿站着，等下一捆。蘸浆为的是保水护根、提成活率，听着简单，蹲上半天腰就直不起来。泥浆、枝条、磨旧的帽子，就是野外最普通的一个上午。\n十一月的风雪天，车陷在浑善达克的雪坡上。越野车半个车头扎进雪堆，轮胎下面全是翻起来的硬雪块，车辙在身后碾成两道深沟，车身被下面的雪顶了起来完全悬了空。司机师傅弯着腰在掏雪，铲子插进雪里，人几乎趴到地上，一点一点把轮子周围的雪清开。四周白得没有边界，只有几串脚印和远处的两棵孤树，天是灰蓝的，风还在刮。\n野外没有“顺利”这两个字。赶在样地封冻前把观测做完，靠的就是有人蹲下去、用手把路一点点掏出来。",
+    "submissionKey": "07201dc36488f8f256e989b90a9a20f379a11d2c87bc1f33f021e26f3d48d1d0",
+    "photos": [
+      {
+        "src": "assets/season-two/30-1.webp",
+        "thumb": "assets/season-two/thumbs/30-1.webp",
+        "width": 1800,
+        "height": 1200
+      },
+      {
+        "src": "assets/season-two/30-2.webp",
+        "thumb": "assets/season-two/thumbs/30-2.webp",
+        "width": 1800,
+        "height": 1200
+      },
+      {
+        "src": "assets/season-two/30-3.webp",
+        "thumb": "assets/season-two/thumbs/30-3.webp",
+        "width": 1800,
+        "height": 1013
+      }
+    ]
+  },
+  {
+    "number": 96,
+    "displayNumber": 31,
+    "name": "张金",
+    "organization": "兰州大学",
+    "time": "2025年9月",
+    "location": "兰州城市及周边自然荒山",
+    "story": "图1在调查过程中，树木太高了采集不到植物的叶片，那咱就爬它。图2、图3在去兰州荒山调查过程中遇到了开挖很深的沟，挡住了去山上的路，同门的小伙伴们不惧困难，翻山越岭爬到山顶。当时四周山体很高很陡峭，手里和身上都拿了很多调查的工具，站不住脚，匍匐向上爬，到达山顶后，我回头看到同门，拍下这一幕，哦呦，荒山拾荒者。",
+    "submissionKey": "bc9f5f4c2f8953e366f3c30321ab809e4e5e158178bc82b3e4a972569e5fd7ad",
+    "photos": [
+      {
+        "src": "assets/season-two/31-1.webp",
+        "thumb": "assets/season-two/thumbs/31-1.webp",
+        "width": 1015,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/31-2.webp",
+        "thumb": "assets/season-two/thumbs/31-2.webp",
+        "width": 1280,
+        "height": 1707
+      },
+      {
+        "src": "assets/season-two/31-3.webp",
+        "thumb": "assets/season-two/thumbs/31-3.webp",
+        "width": 1702,
+        "height": 1276
+      }
+    ]
+  },
+  {
+    "number": 97,
+    "displayNumber": 32,
+    "name": "未提供",
+    "organization": "未提供",
+    "time": "2026年10月28日",
+    "location": "洞穴",
+    "story": "时间：2026年10月28日\n地点：洞穴\n照片背后的故事：在不见天日的洞穴深处，两束头灯照亮了一顿简单的午餐。没有桌椅，没有热饭，只有满身的泥土、随身携带的干粮，以及暂时停下来的脚步。对于野外科研工作者而言，洞穴不仅是探索自然奥秘的地方，也是与黑暗、潮湿和疲惫相伴的工作现场。那些看似平常的数据和样品，背后往往是一次次深入地下的跋涉。照片里没有精密的仪器，也没有令人惊叹的科研成果，只有两个坐在泥地上认真吃东西的人。我们试图从洞穴中寻找时间留下的痕迹，而这张照片，也恰好记录了属于我们自己的时间。多年以后，或许已经记不清那天采集了多少样品，却依然会记得，在漆黑的洞穴里，头灯亮着，身边有人，一块面包也吃得格外香。\n2908993691\n2908993691@qq.com",
+    "submissionKey": "9add47d8243cfcc5e4e02414a086b27e64cc0fe828bec99a634636566ef0fdb6",
+    "photos": [
+      {
+        "src": "assets/season-two/32-1.webp",
+        "thumb": "assets/season-two/thumbs/32-1.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  {
+    "number": 98,
+    "displayNumber": 33,
+    "name": "周干",
+    "organization": "上饶师范学院资源与环境工程学院",
+    "time": "2025年11月16日",
+    "location": "江西省上饶市三清山",
+    "story": "时间：2025年11月16日\n地点：江西省上饶市三清山5A级景区照片\n背后的故事：为研究国家二级保护植物华东黄杉的树轮与气候响应，清晨我们摸黑上山踏勘样地；日出照亮山谷时，已背着生长锥钻进林中。面对那棵倒伏的华东黄杉，我屏息将生长锥旋入树干，取出一枚完整树芯——年轮里一圈圈写着它几十年的旱涝冷暖。下山途中云开，“巨蟒出山”峰林忽然显现：岩石记地质史，年轮记气候史。一场日出、一枚树芯、一座奇峰，便是“最野科研人”的山野日常。",
+    "submissionKey": "183512d06247f6ba4a724b7560fc077bdfc7368c55a1ab96fd60a4acc835d39d",
+    "photos": [
+      {
+        "src": "assets/season-two/33-1.webp",
+        "thumb": "assets/season-two/thumbs/33-1.webp",
+        "width": 480,
+        "height": 640
+      },
+      {
+        "src": "assets/season-two/33-2.webp",
+        "thumb": "assets/season-two/thumbs/33-2.webp",
+        "width": 639,
+        "height": 853
+      },
+      {
+        "src": "assets/season-two/33-3.webp",
+        "thumb": "assets/season-two/thumbs/33-3.webp",
+        "width": 640,
+        "height": 427
+      }
+    ]
   }
 ];

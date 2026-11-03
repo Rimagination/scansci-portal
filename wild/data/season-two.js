@@ -747,5 +747,53 @@ window.WILD_RESEARCHERS = [
         "height": 427
       }
     ]
+  },
+  {
+    "number": 99,
+    "displayNumber": 34,
+    "name": "吴涵",
+    "organization": "云南大学",
+    "time": "2024年暑假",
+    "location": "新疆吐鲁番",
+    "story": "2024年暑假在新疆吐鲁番出野外，热浪滚滚！毫无荫蔽之地！但是不影响采样哈哈哈哈哈哈。第一张图人和山都融在一起了",
+    "submissionKey": "dde10f26b974809b5221175db84fcda5623ba485f4362f7fbcffb2fab5a06e6f",
+    "photos": [
+      {
+        "src": "assets/season-two/34-1.webp",
+        "thumb": "assets/season-two/thumbs/34-1.webp",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "src": "assets/season-two/34-2.webp",
+        "thumb": "assets/season-two/thumbs/34-2.webp",
+        "width": 1620,
+        "height": 1080
+      },
+      {
+        "src": "assets/season-two/34-3.webp",
+        "thumb": "assets/season-two/thumbs/34-3.webp",
+        "width": 1080,
+        "height": 1440
+      }
+    ]
+  },
+  {
+    "number": 100,
+    "displayNumber": 35,
+    "name": "周杰",
+    "organization": "中国科学院新疆生态与地理研究所",
+    "time": "2025年9月",
+    "location": "塔克拉玛干沙漠",
+    "story": "照片记录下第三次新疆综合科学考察的野外瞬间。科考途中遭遇突发沙尘暴，队员们快速支起帐篷，在风沙笼罩的荒漠中安顿下来。帐外黄沙翻涌，帐内队员分工配合、生火做饭，在简陋的条件下，用一餐烟火消解野外奔波的疲惫。大漠风沙挡不住科考脚步，帐篷里的人间烟火，映照出荒漠科考队伍迎难而上、乐观坚韧的科研风貌。",
+    "submissionKey": "723b5c951a6714c4dd31de30af16775296dfb0c1b6789013f14e35261c9f96d4",
+    "photos": [
+      {
+        "src": "assets/season-two/35-1.webp",
+        "thumb": "assets/season-two/thumbs/35-1.webp",
+        "width": 1800,
+        "height": 1350
+      }
+    ]
   }
 ];

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-01T22:48:11+00:00",
+  "capturedAt": "2026-11-03T01:34:17+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-10-31T01:02:02.298150+00:00",
+      "updatedAt": "2026-11-02T21:10:49.212902+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -228,9 +228,9 @@ window.EXTENDED_DATA = {
         {
           "model": "GPT-6 Astra",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 43.75,
-          "scoreRaw": 43.75,
-          "passed": 21,
+          "score": 45.83,
+          "scoreRaw": 45.833333333333336,
+          "passed": 22,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -250,7 +250,7 @@ window.EXTENDED_DATA = {
           "source": "https://frontier-cs.org/"
         },
         {
-          "model": "Claude Code · Fable 5.1 (Subscription, max effort)",
+          "model": "GPT-6.1 Sol",
           "agent": "FrontierCS 2 · 48 项",
           "score": 37.5,
           "scoreRaw": 37.5,
@@ -258,7 +258,7 @@ window.EXTENDED_DATA = {
           "source": "https://frontier-cs.org/"
         },
         {
-          "model": "GPT-6.1 Sol",
+          "model": "Claude Code · Fable 5.1 (Subscription, max effort)",
           "agent": "FrontierCS 2 · 48 项",
           "score": 35.42,
           "scoreRaw": 35.416666666666664,
@@ -268,17 +268,17 @@ window.EXTENDED_DATA = {
         {
           "model": "GLM 5.3 (ZCode)",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 25.0,
-          "scoreRaw": 25.0,
-          "passed": 12,
+          "score": 22.92,
+          "scoreRaw": 22.916666666666668,
+          "passed": 11,
           "source": "https://frontier-cs.org/"
         },
         {
-          "model": "Kimi K3.1 Pro",
+          "model": "Muse Code · Muse Wonder 1.0",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 25.0,
-          "scoreRaw": 25.0,
-          "passed": 12,
+          "score": 22.92,
+          "scoreRaw": 22.916666666666668,
+          "passed": 11,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -290,7 +290,7 @@ window.EXTENDED_DATA = {
           "source": "https://frontier-cs.org/"
         },
         {
-          "model": "Muse Code · Muse Wonder 1.0",
+          "model": "Kimi K3.1 Pro",
           "agent": "FrontierCS 2 · 48 项",
           "score": 20.83,
           "scoreRaw": 20.833333333333332,
@@ -300,17 +300,17 @@ window.EXTENDED_DATA = {
         {
           "model": "DeepSeek V4.1 Flash 1017 (DSH)",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 16.67,
-          "scoreRaw": 16.666666666666668,
-          "passed": 8,
+          "score": 14.58,
+          "scoreRaw": 14.583333333333334,
+          "passed": 7,
           "source": "https://frontier-cs.org/"
         },
         {
           "model": "DeepSeek V4.1 Flash (DSH)",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 14.58,
-          "scoreRaw": 14.583333333333334,
-          "passed": 7,
+          "score": 12.5,
+          "scoreRaw": 12.5,
+          "passed": 6,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -332,9 +332,17 @@ window.EXTENDED_DATA = {
         {
           "model": "Qwen Code CLI · Qwen 3.8 Max",
           "agent": "FrontierCS 2 · 48 项",
-          "score": 12.5,
-          "scoreRaw": 12.5,
-          "passed": 6,
+          "score": 10.42,
+          "scoreRaw": 10.416666666666666,
+          "passed": 5,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Step Code - Step 5 Preview",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 10.42,
+          "scoreRaw": 10.416666666666666,
+          "passed": 5,
           "source": "https://frontier-cs.org/"
         },
         {
@@ -346,7 +354,7 @@ window.EXTENDED_DATA = {
           "source": "https://frontier-cs.org/"
         },
         {
-          "model": "Step Code - Step 5 Preview",
+          "model": "Claude Code · MiniMax-M3.1-Flash",
           "agent": "FrontierCS 2 · 48 项",
           "score": 8.33,
           "scoreRaw": 8.333333333333334,
@@ -357,7 +365,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-01T22:48:11+00:00",
+      "updatedAt": "2026-11-03T01:34:17+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",
@@ -377,6 +385,14 @@ window.EXTENDED_DATA = {
           "score": 58.4,
           "scoreRaw": 58.4,
           "source": "https://artificialanalysis.ai/models/claude-opus-5-5"
+        },
+        {
+          "model": "Gemini 4 Carbon (Medium)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 57.7,
+          "scoreRaw": 57.7,
+          "source": "https://artificialanalysis.ai/models/gemini-4-carbon-medium"
         },
         {
           "model": "Claude Opus 5.5 (Xhigh, Default Fallback)",
@@ -425,6 +441,14 @@ window.EXTENDED_DATA = {
           "score": 54.2,
           "scoreRaw": 54.2,
           "source": "https://artificialanalysis.ai/models/claude-sonnet-5-5"
+        },
+        {
+          "model": "Gemini 4 Carbon (Low)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 53.7,
+          "scoreRaw": 53.7,
+          "source": "https://artificialanalysis.ai/models/gemini-4-carbon-low"
         },
         {
           "model": "GPT-6.1 Sol (Xhigh)",
@@ -619,6 +643,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-haiku-5-5"
         },
         {
+          "model": "Grok 4.7 (Xhigh)",
+          "provider": "SpaceXAI",
+          "agent": "Artificial Analysis",
+          "score": 35.3,
+          "scoreRaw": 35.3,
+          "source": "https://artificialanalysis.ai/models/grok-4-7"
+        },
+        {
           "model": "Grok 4.7 (High)",
           "provider": "SpaceXAI",
           "agent": "Artificial Analysis",
@@ -649,14 +681,6 @@ window.EXTENDED_DATA = {
           "score": 34.3,
           "scoreRaw": 34.3,
           "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-xhigh"
-        },
-        {
-          "model": "Grok 4.7 (Xhigh)",
-          "provider": "SpaceXAI",
-          "agent": "Artificial Analysis",
-          "score": 34.3,
-          "scoreRaw": 34.3,
-          "source": "https://artificialanalysis.ai/models/grok-4-7"
         },
         {
           "model": "Qwen3.8 Max (0902)",
@@ -761,6 +785,14 @@ window.EXTENDED_DATA = {
           "score": 28.9,
           "scoreRaw": 28.9,
           "source": "https://artificialanalysis.ai/models/minimax-m3-1-flash"
+        },
+        {
+          "model": "DeepSeek V4.1 Flash 1017 (High)",
+          "provider": "DeepSeek",
+          "agent": "Artificial Analysis",
+          "score": 28.5,
+          "scoreRaw": 28.5,
+          "source": "https://artificialanalysis.ai/models/deepseek-v4-1-flash-1017-high"
         },
         {
           "model": "Step 5 Preview",
@@ -881,6 +913,14 @@ window.EXTENDED_DATA = {
           "score": 21.4,
           "scoreRaw": 21.4,
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-high"
+        },
+        {
+          "model": "Nanbeige4.3-33B",
+          "provider": "Nanbeige",
+          "agent": "Artificial Analysis",
+          "score": 20.4,
+          "scoreRaw": 20.4,
+          "source": "https://artificialanalysis.ai/models/nanbeige4-3-33b"
         },
         {
           "model": "Qwen3.8 27B (Xhigh)",
@@ -1049,6 +1089,14 @@ window.EXTENDED_DATA = {
           "score": 5.5,
           "scoreRaw": 5.5,
           "source": "https://artificialanalysis.ai/models/nemotron-3-5-lightning"
+        },
+        {
+          "model": "Granite 4.2 8B",
+          "provider": "IBM",
+          "agent": "Artificial Analysis",
+          "score": 5.1,
+          "scoreRaw": 5.1,
+          "source": "https://artificialanalysis.ai/models/granite-4-2-8b"
         },
         {
           "model": "Granite 4.2 3B",

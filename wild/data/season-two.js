@@ -795,5 +795,35 @@ window.WILD_RESEARCHERS = [
         "height": 1350
       }
     ]
+  },
+  {
+    "number": 101,
+    "displayNumber": 36,
+    "name": "彭海洋",
+    "organization": "版纳植物园",
+    "time": "未提供",
+    "location": "未提供",
+    "story": "常言道“车到山前必有路”，但出野外的多数情况并非如此。路途虽然折腾，但这就是生态学的乐趣之一吧。",
+    "submissionKey": "cb464225d3d1eca6172f444a0aae0d54524bb9557c886c57918e1b535a490836",
+    "photos": [
+      {
+        "src": "assets/season-two/36-1.webp",
+        "thumb": "assets/season-two/thumbs/36-1.webp",
+        "width": 1200,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/36-2.webp",
+        "thumb": "assets/season-two/thumbs/36-2.webp",
+        "width": 1800,
+        "height": 1200
+      },
+      {
+        "src": "assets/season-two/36-3.webp",
+        "thumb": "assets/season-two/thumbs/36-3.webp",
+        "width": 1200,
+        "height": 1800
+      }
+    ]
   }
 ];

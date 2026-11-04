@@ -825,5 +825,47 @@ window.WILD_RESEARCHERS = [
         "height": 1800
       }
     ]
+  },
+  {
+    "number": 102,
+    "displayNumber": 37,
+    "name": "王楠",
+    "organization": "东北农业大学",
+    "time": "2025年6月",
+    "location": "阿勒泰地区青河县、富蕴县",
+    "story": "在雄伟的阿尔泰山脉，林海作营。孤身收服边境山獒，持枯木为杖，携猛犬同行，踏遍祖国山河！",
+    "submissionKey": "f5568746a83757f5446f1f9d6d7cb02cd2c3f70b87fdfd8bc5ca7ac1746fa793",
+    "photos": [
+      {
+        "src": "assets/season-two/37-1.webp",
+        "thumb": "assets/season-two/thumbs/37-1.webp",
+        "width": 1080,
+        "height": 1440
+      },
+      {
+        "src": "assets/season-two/37-2.webp",
+        "thumb": "assets/season-two/thumbs/37-2.webp",
+        "width": 1080,
+        "height": 1440
+      },
+      {
+        "src": "assets/season-two/37-3.webp",
+        "thumb": "assets/season-two/thumbs/37-3.webp",
+        "width": 1440,
+        "height": 1080
+      },
+      {
+        "src": "assets/season-two/37-4.webp",
+        "thumb": "assets/season-two/thumbs/37-4.webp",
+        "width": 1248,
+        "height": 1080
+      },
+      {
+        "src": "assets/season-two/37-5.webp",
+        "thumb": "assets/season-two/thumbs/37-5.webp",
+        "width": 1248,
+        "height": 1080
+      }
+    ]
   }
 ];

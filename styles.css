@@ -802,10 +802,13 @@ body.is-miniprogram-popup-open {
   top: 10px;
   right: 10px;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 24px;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 999px;
-  padding: 4px 9px 3px;
+  padding: 0 9px;
   background: rgba(15, 143, 123, 0.92);
   color: #ffffff;
   font-size: 11px;

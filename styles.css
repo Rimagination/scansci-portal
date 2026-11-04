@@ -1013,11 +1013,18 @@ body.is-miniprogram-popup-open {
 /* ── Stats inline ───────────────────────────────────────────── */
 
 .main-head .stats-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 8px;
   margin: 0;
   font-size: 12px;
   line-height: 1.5;
   color: var(--muted);
 }
+
+.stats-inline__separator { margin-left: 8px; }
+@media (max-width: 480px) { .stats-inline__separator { display: none; } }
 
 .stats-inline strong {
   color: inherit;
@@ -1314,7 +1321,8 @@ html.dark #easymdRoot { --background: #16221d; --foreground: #e6eee8; --primary:
 .stats-source { color: inherit; text-underline-offset: 3px; }
 .stats-source:hover { color: var(--brand); }
 .stats-source:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
-.stats-info-toggle { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; margin-left: 2px; padding: 0; border: 1px solid currentColor; border-radius: 50%; background: transparent; color: var(--muted); font: 500 12px var(--font-ui); line-height: 1; vertical-align: middle; cursor: pointer; }
+.stats-info-toggle { position: relative; display: inline-grid; place-items: center; width: 20px; height: 20px; padding: 0; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.stats-info-toggle svg { display: block; width: 20px; height: 20px; }
 .stats-info-toggle::before { content: ""; position: absolute; inset: -12px; }
 .stats-info-toggle:hover { color: var(--ink); }
 .stats-info-toggle:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }

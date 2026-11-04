@@ -1234,11 +1234,10 @@ function bindEvents() {
 
 // ── Stats ─────────────────────────────────────────────────────
 
-function fmtK(n) {
-  if (typeof n !== "number" || isNaN(n)) return "—";
-  if (n >= 10000) return (n / 10000).toFixed(1).replace(/\.0$/, "") + "w";
-  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
-  return String(n);
+function formatStatCount(n) {
+  if (typeof n !== "number" || !Number.isFinite(n)) return "—";
+  const options = n >= 10000 ? { notation: "compact", maximumFractionDigits: 1 } : {};
+  return new Intl.NumberFormat("zh-CN", options).format(n);
 }
 
 function setStatVal(id, value) {
@@ -1253,9 +1252,9 @@ async function loadStats() {
     const res = await fetch(`${API_BASE}/stats`, { signal });
     if (!res.ok) return;
     const data = await res.json();
-    if (data.visitors_24h != null) setStatVal("stat24h", fmtK(data.visitors_24h));
-    if (data.visitors_30d != null) setStatVal("stat30d", fmtK(data.visitors_30d));
-    if (data.requests_30d != null) setStatVal("statReq", fmtK(data.requests_30d));
+    if (data.visitors_24h != null) setStatVal("stat24h", formatStatCount(data.visitors_24h));
+    if (data.visitors_30d != null) setStatVal("stat30d", formatStatCount(data.visitors_30d));
+    if (data.requests_30d != null) setStatVal("statReq", formatStatCount(data.requests_30d));
   } catch {
     // stats are non-critical, fail silently
   }

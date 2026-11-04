@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://acti.scansci.com" crossorigin />
   <link rel="icon" type="image/svg+xml" sizes="any" href="/assets/brand/scansci-app-icon-clean.svg" />
   <link rel="icon" type="image/svg+xml" sizes="any" href="/assets/brand/scansci-app-icon-clean-large.svg" />
-  <link rel="stylesheet" href="/styles.css?v=20261104-card-badges-v2" />
+  <link rel="stylesheet" href="/styles.css?v=20261104-compact-header-v2" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -214,9 +214,9 @@
         <h1 id="catalogTitle" hidden>素材库</h1>
         <div class="main-head-meta">
           <p class="stats-inline" aria-label="Cloudflare 访问统计">
-            <span title="Cloudflare 每小时独立 IP 数相加，同一 IP 跨小时会重复计入。">近24小时 <strong id="stat24h">—</strong> 人次</span>&thinsp;·&thinsp;
-            <span>近30天 <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。"><strong id="stat30d">—</strong> 人次</span>、<span title="近30天的网络请求次数，包含页面、资源和自动访问请求。"><strong id="statReq">—</strong> 次请求</span></span>&thinsp;·&thinsp;
-            <button id="openStatsInfoBtn" class="stats-info-toggle" type="button" popovertarget="statsInfoPopover" title="查看访问统计说明" aria-label="查看访问统计说明">?</button>
+            <span title="Cloudflare 每小时独立 IP 数相加，同一 IP 跨小时会重复计入。">近24小时访问 <strong id="stat24h">—</strong>人次<span class="stats-inline__separator" aria-hidden="true">·</span></span>
+            <span>近30天访问 <span title="Cloudflare 每天独立 IP 数相加，同一 IP 跨天会重复计入。按 UTC 日期统计，包含起止日期。"><strong id="stat30d">—</strong>人次</span>，请求 <span title="近30天的网络请求次数，包含页面、资源和自动访问请求。"><strong id="statReq">—</strong>次</span></span>
+            <button id="openStatsInfoBtn" class="stats-info-toggle" type="button" popovertarget="statsInfoPopover" title="查看访问统计说明" aria-label="查看访问统计说明"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="8.5"/><path d="M10 9v4.5"/><circle cx="10" cy="6.3" r="0.8" fill="currentColor" stroke="none"/></svg></button>
           </p>
           <div class="miniprogram-notice" aria-label="网站通知">
             <button id="openMiniProgramNoticeBtn" class="miniprogram-notice__trigger" type="button" popovertarget="miniProgramNoticePopover" aria-expanded="false">
@@ -379,7 +379,7 @@
   </div>
 
   <script src="/anon-prompt.js?v=20260616b"></script>
-  <script src="/app.js?v=20261012-catalog-v2"></script>
+  <script src="/app.js?v=20261104-stats-format-v1"></script>
   <noscript>
     <section class="noscript-catalog" aria-label="ScanSci 轻工具目录">
       <h2>ScanSci 轻工具目录</h2>

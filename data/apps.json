@@ -136,6 +136,7 @@
     },
     {
       "id": "journal-scout",
+      "status": "支持插件",
       "name": "Journal Scout",
       "description": "期刊信息查询工具，集中展示 JCR、分区、影响因子、CiteScore 等期刊指标。",
       "summary": "查询 JCR 分区、影响因子与 CiteScore。",

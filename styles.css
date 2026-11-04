@@ -815,6 +815,11 @@ body.is-miniprogram-popup-open {
   box-shadow: 0 8px 18px rgba(12, 72, 65, 0.22);
 }
 
+.tool-card--journal-scout .tool-card__status {
+  background: #d1397b;
+  box-shadow: 0 8px 18px rgba(145, 30, 81, 0.22);
+}
+
 .tool-card__overlay {
   position: absolute;
   inset: 0;

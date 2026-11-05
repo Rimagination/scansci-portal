@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-03T23:58:20+00:00",
+  "capturedAt": "2026-11-05T00:22:36+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -365,7 +365,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-03T23:58:20+00:00",
+      "updatedAt": "2026-11-05T00:22:36+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "description": "Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。",
@@ -574,8 +574,8 @@ window.EXTENDED_DATA = {
           "model": "GPT-6 Sol (Max)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
-          "score": 44.1,
-          "scoreRaw": 44.1,
+          "score": 44.2,
+          "scoreRaw": 44.2,
           "source": "https://artificialanalysis.ai/models/gpt-6-sol"
         },
         {
@@ -710,8 +710,8 @@ window.EXTENDED_DATA = {
           "model": "GPT-5.6 Terra (Max)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
-          "score": 32.2,
-          "scoreRaw": 32.2,
+          "score": 32.3,
+          "scoreRaw": 32.3,
           "source": "https://artificialanalysis.ai/models/gpt-5-6-terra"
         },
         {
@@ -729,6 +729,14 @@ window.EXTENDED_DATA = {
           "score": 31.1,
           "scoreRaw": 31.1,
           "source": "https://artificialanalysis.ai/models/grok-4-7-low"
+        },
+        {
+          "model": "Grok 4.6 (Xhigh)",
+          "provider": "SpaceXAI",
+          "agent": "Artificial Analysis",
+          "score": 31.0,
+          "scoreRaw": 31.0,
+          "source": "https://artificialanalysis.ai/models/grok-4-6-xhigh"
         },
         {
           "model": "Gemini 3.8 Flash (High)",
@@ -883,6 +891,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-haiku-5-5-medium"
         },
         {
+          "model": "GPT-5.6 Luna (Max)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 23.8,
+          "scoreRaw": 23.8,
+          "source": "https://artificialanalysis.ai/models/gpt-5-6-luna"
+        },
+        {
           "model": "GPT-6 Luna (Xhigh)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -1035,6 +1051,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/inkling-small"
         },
         {
+          "model": "DeepSeek V4 Pro 0813 (Non-reasoning)",
+          "provider": "DeepSeek",
+          "agent": "Artificial Analysis",
+          "score": 12.6,
+          "scoreRaw": 12.6,
+          "source": "https://artificialanalysis.ai/models/deepseek-v4-pro-non-reasoning"
+        },
+        {
           "model": "Inkling (Xhigh)",
           "provider": "Thinking Machines",
           "agent": "Artificial Analysis",
@@ -1083,6 +1107,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-non-reasoning"
         },
         {
+          "model": "Claude 4.5 Haiku (Reasoning)",
+          "provider": "Anthropic",
+          "agent": "Artificial Analysis",
+          "score": 7.4,
+          "scoreRaw": 7.4,
+          "source": "https://artificialanalysis.ai/models/claude-4-5-haiku-reasoning"
+        },
+        {
           "model": "Muse Glimmer (High)",
           "provider": "Meta",
           "agent": "Artificial Analysis",
@@ -1097,6 +1129,14 @@ window.EXTENDED_DATA = {
           "score": 6.2,
           "scoreRaw": 6.2,
           "source": "https://artificialanalysis.ai/models/command-a-plus"
+        },
+        {
+          "model": "Gemini 3.1 Flash-Lite",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 6.2,
+          "scoreRaw": 6.2,
+          "source": "https://artificialanalysis.ai/models/gemini-3-1-flash-lite-preview"
         },
         {
           "model": "Nemotron 3.5 Lightning",
@@ -1121,6 +1161,14 @@ window.EXTENDED_DATA = {
           "score": 4.7,
           "scoreRaw": 4.7,
           "source": "https://artificialanalysis.ai/models/granite-4-2-3b"
+        },
+        {
+          "model": "Mistral Medium 3.5",
+          "provider": "Mistral",
+          "agent": "Artificial Analysis",
+          "score": 4.6,
+          "scoreRaw": 4.6,
+          "source": "https://artificialanalysis.ai/models/mistral-medium-3-5"
         },
         {
           "model": "Mistral Small 4 (Reasoning)",

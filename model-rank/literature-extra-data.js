@@ -1,5 +1,5 @@
 window.LITERATURE_EXTRA_DATA = {
-  "capturedAt": "2026-11-03T23:58:18+00:00",
+  "capturedAt": "2026-11-05T00:22:34+00:00",
   "groups": {
     "autoresearch-deep": {
       "source": "https://cheryou.github.io/autoresearchbench.github.io/#leaderboard",

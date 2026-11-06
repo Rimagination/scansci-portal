@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-05T00:22:36+00:00",
+  "capturedAt": "2026-11-06T00:12:23+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -1189,5 +1189,7 @@ window.EXTENDED_DATA = {
       ]
     }
   },
-  "failed": []
+  "failed": [
+    "aa-index"
+  ]
 };

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-06T23:43:31+00:00",
+  "capturedAt": "2026-11-07T22:42:53+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-11-06T20:10:50.406128+00:00",
+      "updatedAt": "2026-11-07T17:13:26.772849+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -375,6 +375,22 @@ window.EXTENDED_DATA = {
           "score": 8.33,
           "scoreRaw": 8.333333333333334,
           "passed": 4,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Claude Code · Inkling 2 Small",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 8.33,
+          "scoreRaw": 8.333333333333334,
+          "passed": 4,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "OpenCode · Inkling 2 Small",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 6.25,
+          "scoreRaw": 6.25,
+          "passed": 3,
           "source": "https://frontier-cs.org/"
         }
       ]

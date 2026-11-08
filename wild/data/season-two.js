@@ -903,5 +903,167 @@ window.WILD_RESEARCHERS = [
         "height": 1350
       }
     ]
+  },
+  {
+    "number": 104,
+    "displayNumber": 39,
+    "name": "胡尔查",
+    "organization": "内蒙古自治区林业科学研究院",
+    "time": "未提供",
+    "location": "腾格里沙漠",
+    "story": "本组影像记录腾格里沙漠植被野外调查实况：科考队员分工配合，在沙地布设样方、开展植被调查，完成点位调查后继续转场作业。沙丘之上大家互帮互助，午休时就地取用沙葱搭配简餐休整；偶遇闯入样方的骆驼，为野外调查旅途平添乐趣。队员带着采集标本与调研资料，收获野外调查的 “战利品”，呈现荒漠野外调查充实又富有野趣的工作片段。",
+    "submissionKey": "1acf63910cc272e735fc6492ba5f8b22e57c9a06fc2dce23f2f73c6adeaa39a0",
+    "photos": [
+      {
+        "src": "assets/season-two/39-1.webp",
+        "thumb": "assets/season-two/thumbs/39-1.webp",
+        "width": 1800,
+        "height": 1013
+      },
+      {
+        "src": "assets/season-two/39-2.webp",
+        "thumb": "assets/season-two/thumbs/39-2.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/39-3.webp",
+        "thumb": "assets/season-two/thumbs/39-3.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/39-4.webp",
+        "thumb": "assets/season-two/thumbs/39-4.webp",
+        "width": 1800,
+        "height": 1013
+      },
+      {
+        "src": "assets/season-two/39-5.webp",
+        "thumb": "assets/season-two/thumbs/39-5.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/39-6.webp",
+        "thumb": "assets/season-two/thumbs/39-6.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/39-7.webp",
+        "thumb": "assets/season-two/thumbs/39-7.webp",
+        "width": 1800,
+        "height": 1013
+      }
+    ]
+  },
+  {
+    "number": 105,
+    "displayNumber": 40,
+    "name": "高茂林",
+    "organization": "杭州师范大学",
+    "time": "2026年盛夏",
+    "location": "中科院鄂尔多斯沙地草地生态研究站",
+    "story": "照片说明内容如下：2026 年盛夏，鄂尔多斯小分队来中科院鄂尔多斯沙地草地生态研究站做实验啦！(a)三轮车是我们在站上唯一的坐骑，好在撑到了实验收尾，辛苦了三轮车师兄！(b)师弟们像考古般挖出完整油蒿幼苗；(c)师生埋头调查，认真的你们最最美！(d)白天调查，晚上处理堆积如山的样品，We are family！(e)暴雨突袭，三人两伞，死命护住数据纸；(f)又是一次被暴雨“追杀”后的”逃亡“！(g)赶上英仙座流星雨，和师弟们在院子里仰望一小时，许愿实验顺利！(h)抬头见彩虹，lucky！(i)为赶进度，带着面包去地里吃早餐，略显心酸狼狈。\n三轮车都撑住了，两个月的野外调查我们凭什么喊累？流星看了，彩虹见了，青春圆满了！\n\n注：邮件说明中的观星照片标为（g），原图标为（j）。",
+    "submissionKey": "7967ae874047a874f7944569b8ab9ced8030312dbd834aabec31d2c2f4e346e4",
+    "photos": [
+      {
+        "src": "assets/season-two/40-1.webp",
+        "thumb": "assets/season-two/thumbs/40-1.webp",
+        "width": 1800,
+        "height": 1336
+      }
+    ]
+  },
+  {
+    "number": 106,
+    "displayNumber": 41,
+    "name": "董晓雪",
+    "organization": "西藏大学生态环境学院高原流域环境化学实验室",
+    "time": "2025年10月31日、2026年9月19日",
+    "location": "西藏自治区日喀则市珠穆朗玛峰国家自然保护区、那曲市双湖县",
+    "story": "2025年10月31日，西藏自治区日喀则市珠穆朗玛峰国家自然保护区。珠穆朗玛峰国家自然保护区湿地采样工作于2025年10月底至11月初开展。高原气温低至零下，水面结起薄冰。风雪里，老师与师妹撑伞护住记录本，冻僵的双手认真记下每一组数据；师弟身着下水裤踏入冰冷水中，采集水体指标、收集底泥样品。岸上队员同步开展指标测定、水样过滤与封存。大家不畏严寒，坚守岗位，用扎实监测，摸清珠峰湿地生态状况，守护这片高原湿地。\n2026年9月19日，西藏自治区那曲市双湖县。野外调查在世界上海拔最高的县城-双湖县开展。辽阔的高原荒原上，藏野驴、藏羚羊、野牦牛、金雕自在栖居，它们是这片湿地生态系统里鲜活的主人。我们克服高反，踏遍高寒湿地布设样点、采集样品，在科考途中与这些高原生灵相逢。我们远观记录、保持敬畏，不打扰它们的生活。每一份监测数据，都是为摸清羌塘湿地生态本底，守护这片高原净土，守护万物共生的羌塘原野。",
+    "submissionKey": "ff37be3379eec31fbf8a984e5f0a4680a1a94465e4efb5dd4ccd09fb786e0fe6",
+    "photos": [
+      {
+        "src": "assets/season-two/41-1.webp",
+        "thumb": "assets/season-two/thumbs/41-1.webp",
+        "width": 1706,
+        "height": 1280
+      },
+      {
+        "src": "assets/season-two/41-2.webp",
+        "thumb": "assets/season-two/thumbs/41-2.webp",
+        "width": 1706,
+        "height": 1280
+      },
+      {
+        "src": "assets/season-two/41-3.webp",
+        "thumb": "assets/season-two/thumbs/41-3.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
+  },
+  {
+    "number": 107,
+    "displayNumber": 42,
+    "name": "徐亮",
+    "organization": "西南大学地理科学学院",
+    "time": "2026年5月10日",
+    "location": "重庆市青木关某溶洞",
+    "story": "时间：2026年5月10日\n地点：重庆市青木关某溶洞\n本作品记录西南大学2025级地理科学类本科生，于2026年5月10日赴重庆青木关溶洞开展水文学野外实习的场景。青木关溶洞内部从洞口通往地下河的通道陡峭崎岖，路面泥泞湿滑，行进风险较高，实习途中我曾险些滑入地下河内，深刻体会到野外考察的艰辛。团队克服洞内黑暗湿冷的环境，抵达地下河点位，完成地下河水温测定、水样采集与现场水质观察等实习任务。照片真实展现地理学子深入野外、实地观测水文要素的实践过程，体现地理学科求真务实、不畏艰险的野外科研精神。",
+    "submissionKey": "7bc7201af091c7d2db3c1833abaddf50b579843b0a2b6385c8fd2de08f496f75",
+    "photos": [
+      {
+        "src": "assets/season-two/42-1.webp",
+        "thumb": "assets/season-two/thumbs/42-1.webp",
+        "width": 1706,
+        "height": 1280
+      },
+      {
+        "src": "assets/season-two/42-2.webp",
+        "thumb": "assets/season-two/thumbs/42-2.webp",
+        "width": 1616,
+        "height": 1080
+      }
+    ]
+  },
+  {
+    "number": 108,
+    "displayNumber": 43,
+    "name": "费家城",
+    "organization": "重庆师范大学",
+    "time": "2025年4月—7月",
+    "location": "重庆缙云山",
+    "story": "拍摄时间：2025年4月-7月\n地点：重庆-缙云山\n照片背后的故事：\n自2022年缙云山山火之后，缙云山的一草一木多年以来都在默默地舔舐伤口。野火烧不尽，春风吹又生，许多像苔藓这样的先锋植物扎根于灰烬遍地的火烧地，坚韧顽强地创造一个生机勃勃的明天。我们正在调查的就是火烧地之后的生态重建与恢复情况。我们在晚春初夏的缙云山间攀爬，在火烧地的草木灰里穿梭，这些脚踏实地的脚印就是科研人对崇山峻岭最谦卑的敬畏。",
+    "submissionKey": "6db99299fb879bfd6cd188bb1763ebe4ceac2dbc57df07c66608aeb8c591564f",
+    "photos": [
+      {
+        "src": "assets/season-two/43-1.webp",
+        "thumb": "assets/season-two/thumbs/43-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/43-2.webp",
+        "thumb": "assets/season-two/thumbs/43-2.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/43-3.webp",
+        "thumb": "assets/season-two/thumbs/43-3.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/43-4.webp",
+        "thumb": "assets/season-two/thumbs/43-4.webp",
+        "width": 1350,
+        "height": 1800
+      }
+    ]
   }
 ];

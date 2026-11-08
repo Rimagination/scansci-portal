@@ -867,5 +867,41 @@ window.WILD_RESEARCHERS = [
         "height": 1080
       }
     ]
+  },
+  {
+    "number": 103,
+    "displayNumber": 38,
+    "name": "陈鹏飞",
+    "organization": "西北生态环境资源研究院",
+    "time": "2023年",
+    "location": "珠峰东绒布冰川",
+    "story": "照片说明：2023年，珠峰东绒布冰川进行冰芯钻取工作，首先从营地搬运物资到冰川垭口（图1），搭好工作帐篷（6500米），清晨可以欣赏日照金山（图2），通宵工作获取的一节冰芯样品（图3），登山路线上有一道巨大的冰墙，希望未来可以去更高的地方（图4）。",
+    "submissionKey": "a1fdada997d6a291662383dc2e04883b87de90dea774090027749a6d40c5fda9",
+    "photos": [
+      {
+        "src": "assets/season-two/38-1.webp",
+        "thumb": "assets/season-two/thumbs/38-1.webp",
+        "width": 1800,
+        "height": 900
+      },
+      {
+        "src": "assets/season-two/38-2.webp",
+        "thumb": "assets/season-two/thumbs/38-2.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/38-3.webp",
+        "thumb": "assets/season-two/thumbs/38-3.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/38-4.webp",
+        "thumb": "assets/season-two/thumbs/38-4.webp",
+        "width": 1800,
+        "height": 1350
+      }
+    ]
   }
 ];

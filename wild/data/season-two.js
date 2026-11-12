@@ -1065,5 +1065,41 @@ window.WILD_RESEARCHERS = [
         "height": 1800
       }
     ]
+  },
+  {
+    "number": 109,
+    "displayNumber": 44,
+    "name": "张家豪",
+    "organization": "清华大学",
+    "time": "2018—2022年夏季",
+    "location": "青海湖",
+    "story": "2018—2022年，每年夏季都会前往青海湖调查裸鲤栖息地。坐在岸边洗石头，踏入河水中测量水深、流速，越过牧场拦网走到湖边淹没的草场，一回头看到废弃河道里盛开的小花。",
+    "submissionKey": "3c25685d5b61894a374fbc78f091326232aae88a496960148e68c4c110a581d1",
+    "photos": [
+      {
+        "src": "assets/season-two/44-1.webp",
+        "thumb": "assets/season-two/thumbs/44-1.webp",
+        "width": 1350,
+        "height": 1800
+      },
+      {
+        "src": "assets/season-two/44-2.webp",
+        "thumb": "assets/season-two/thumbs/44-2.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/44-3.webp",
+        "thumb": "assets/season-two/thumbs/44-3.webp",
+        "width": 1800,
+        "height": 1350
+      },
+      {
+        "src": "assets/season-two/44-4.webp",
+        "thumb": "assets/season-two/thumbs/44-4.webp",
+        "width": 1800,
+        "height": 1350
+      }
+    ]
   }
 ];

@@ -126,6 +126,40 @@ def terminal_science():
         rows.append({'model': row[1], 'agent': row[2], 'score': value, 'scoreRaw': value, 'source': url})
     return {'terminal-science': pack(url, date, '原榜更新', rows)}
 
+def spu():
+    url = 'https://www.unipat.ai/blog/SciencePredictionUniverse'
+    html = fetch(url)
+    published = re.search(r'<span class="mono crumb">.*?<span>(\d{4}-\d{2}-\d{2})</span>', html, re.S)
+    if not published or not re.search(r'\b100 public tasks\b', html, re.I):
+        raise ValueError('SPU publication date or public task count missing')
+    date = datetime.strptime(published.group(1), '%Y-%m-%d').date().isoformat()
+    page = Tables()
+    page.feed(html)
+    entries = rows_for(page, ['#', 'Configuration', 'Harness', 'Scored tasks', 'Task-adjusted mean [95% CI]', 'Above chance'])
+    if len(entries) < 13:
+        raise ValueError('Incomplete SPU leaderboard')
+    rows = []
+    for entry in entries:
+        if len(entry) != 6:
+            raise ValueError('Incomplete SPU result row')
+        rank, model, harness, task_count, result, chance = entry
+        interval = re.fullmatch(r'(-?\d+(?:\.\d+)?)\s*\[\s*(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\s*\]', result)
+        above = re.fullmatch(r'(\d+)\s*\((\d+)%\)', chance)
+        if not rank.isdigit() or not task_count.isdigit() or not model or not harness or not interval or not above:
+            raise ValueError('Invalid SPU result row')
+        value, low, high = map(float, interval.groups())
+        count, above_count, above_percent = int(task_count), int(above.group(1)), int(above.group(2))
+        if not (-1 <= low <= value <= high <= 1 and 1 <= count <= 100 and 0 <= above_count <= count
+                and 0 <= above_percent <= 100 and abs(above_percent - 100 * above_count / count) <= 1):
+            raise ValueError('SPU score or coverage out of range')
+        source_rank = int(rank)
+        if source_rank != len(rows) + 1 or (rows and value > rows[-1]['scoreRaw']):
+            raise ValueError('SPU ranking and scores disagree')
+        rows.append({'rank': source_rank, 'model': model, 'agent': harness, 'score': value, 'scoreRaw': value,
+                     'scoreLow': low, 'scoreHigh': high, 'scoredTasks': count, 'totalTasks': 100,
+                     'aboveChance': above_count, 'aboveChancePercent': above_percent, 'source': url})
+    return {'spu': pack(url, date, '原文发布', rows)}
+
 def main():
     try:
         old = json.loads(TARGET.read_text(encoding='utf8').removeprefix('window.RECENT_DATA = ').removesuffix(';\n'))
@@ -133,7 +167,7 @@ def main():
         old = {}
     groups = old.get('groups', {})
     failed = []
-    for keys, load in [(('swescience',), swescience), (('paperbench-science',), paperbench), (('scifigure-image','scifigure-caption'), scifigure), (('english-writing',), writing), (('sciconbench',), scicon), (('terminal-science',), terminal_science)]:
+    for keys, load in [(('swescience',), swescience), (('paperbench-science',), paperbench), (('scifigure-image','scifigure-caption'), scifigure), (('english-writing',), writing), (('sciconbench',), scicon), (('terminal-science',), terminal_science), (('spu',), spu)]:
         try:
             groups.update(load())
             print(load.__name__, 'OK', flush=True)

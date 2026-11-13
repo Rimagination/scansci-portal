@@ -35,6 +35,15 @@ async page => {
       }
     }
   }
+  await page.locator('[data-category="prediction"]').click();
+  const spu = await page.evaluate(() => window.RECENT_DATA.groups.spu);
+  check((await page.locator('#rows tr').count()) === spu.rows.length, 'SPU rows are missing');
+  for (const name of ['95% 置信区间', '已评分任务', '超随机阈值']) check(await page.getByRole('columnheader', { name, exact: true }).count(), `SPU ${name} is missing`);
+  const firstSpu = await page.locator('#rows tr').first().innerText();
+  check(firstSpu.includes(spu.rows[0].score.toFixed(3)) && firstSpu.includes(`${spu.rows[0].scoredTasks} / ${spu.rows[0].totalTasks}`), 'SPU score or task coverage is incorrect');
+  check((await page.locator('.table-foot').innerText()).includes('组内排名仍有不确定性'), 'SPU coverage caveat is missing');
+  await page.locator('#search').fill('Codex');
+  check((await page.locator('#rows tr').count()) > 0 && (await page.locator('#rows').innerText()).includes('Codex'), 'SPU configuration search failed');
   await page.locator('[data-category="visualization"]').click();
   await page.locator('[data-benchmark="chart2code-direct"]').click();
   await page.locator('[data-variant]').selectOption('chart2code-edit');
@@ -58,6 +67,8 @@ async page => {
   check(await page.locator('#chart svg').count(), 'AIHOT frontier is missing');
   check((await page.locator('.frontier-summary').innerText()).includes('价格未核验的模型未纳入图表'), 'AIHOT missing price is not excluded from frontier');
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator('[data-category="prediction"]').click();
+  check((await page.locator('#rows tr').count()) === spu.rows.length, 'SPU mobile results are missing');
   await page.locator('[data-category="visualization"]').click();
   await page.locator('[data-variant]').selectOption('figcode-r');
   check((await page.locator('#rows tr').count()) === 24, 'FigCode R results are missing');

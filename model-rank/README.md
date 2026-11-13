@@ -18,9 +18,10 @@
 - [SciConBench](https://sciconbench.cs.princeton.edu/)：最新评测月份的医学系统综述证据综合 F1，展示每个模型的覆盖篇数；文献检索和学术写作页面中是相关能力参考。
 - [SWE-bench Science](https://swescience.github.io/)：科学软件问题修复的完成率，反映模型与编程智能体组合，不能直接等同于数据分析能力。
 - [Terminal-Bench Science / Vals AI](https://vals-ai.com/benchmarks/terminal-bench-science)：Vals AI 对 70 项多学科研究工作流的评测，筛选 Mini-SWE-agent 配置，涵盖数据处理和建模，但不限于数据分析。
+- [Science Prediction Universe (SPU)](https://www.unipat.ai/blog/SciencePredictionUniverse)：`python -B update_recent.py` 读取 UniPat AI 2026 年文章中 100 项公开任务的表格，保留模型、智能体框架、原榜名次、任务调整后的 Spearman 均值、95% 区间和覆盖情况。16 项私有任务不在该表中；部分配置因拒答等原因覆盖较少任务，原文指出组内名次尚不能确定。文章的发布日期不代表新的评测已产生，读取失败或表格格式变化时保留上次有效快照。
 - [PaperBench Science](https://pipelinelab.ai/blog/paperbench-expanded/)：93 项论文复现任务的部分复现分，成绩由评测方论文公布，不等同完整复现率。
 - [SciFigure2Code](https://arxiv.org/abs/2609.08155)：2026/09/08 论文固定结果，分别列出纯图和带图注的绘图代码复现；并非持续更新的榜单。
-- [AI Writing Benchmark](https://aiwritingbenchmark.com/leaderboard/)：一般英文写作综合成绩，AI 评审分，不直接评估学术准确性或引文。上述六个来源由 `python -B update_recent.py` 刷新；某个来源失败时保留其上一次数据并在页面提示。
+- [AI Writing Benchmark](https://aiwritingbenchmark.com/leaderboard/)：一般英文写作综合成绩，AI 评审分，不直接评估学术准确性或引文。上述七个来源由 `python -B update_recent.py` 刷新；某个来源失败时保留其上一次数据并在页面提示。
 - [AutoResearchBench](https://cheryou.github.io/autoresearchbench.github.io/#leaderboard)、[SciDocBench](https://github.com/InternLM/SciDocBench#leaderboard)、[LitReview Arena](https://arxiv.org/html/2608.21374v2#S4.T1) 和 [ResearchQA](https://arxiv.org/html/2509.00496v2#S3.T3)：`python -B update_literature_extra.py`。原榜或论文中的检索配置、评审方式和不同指标分别保留；LitReview 含标注为人工参考的条目。论文日期和榜单采集日期含义不同，页面分别显示。
 - [FigCodeBench](https://arxiv.org/html/2610.10066v1#S4.T7)、[CharTide 对 ChartMimic v2 的重测](https://arxiv.org/html/2604.22192v2#S3.T1)、[TableBench](https://tablebench.github.io/) 和 [Chart2Code ACL 2026 正式版](https://aclanthology.org/2026.acl-long.616/)：`python -B update_visual_extra.py`。FigCodeBench 按语言分榜；CharTide 分别展示高、低层评分；TableBench 的可视化分数来自方法榜，含产品、智能体与模型配置；Chart2Code 的图像评分、代码评分及执行率分别展示。Chart2Code 正式版与项目网站、其他论文版本的任务和模型数量不同。正式版摘要与表 4 对 GPT-5.2 的一组数值归属不一致，本页采用表 4；Kimi-VL-A3B 的表格分组与附录 checkpoint 名称存在歧义，行内保留说明。
 - [NatureBench](https://frontisai.github.io/NatureBench/) 和 [FrontierCS 2](https://frontier-cs.org/)：`python -B update_extended.py`。NatureBench 仅纳入完整 90 题赛道，源文件修改时间不等于评测时间；FrontierCS 2 从官方结果文件统计所有 48 项任务中 `PASS` 的比例，缺失判定不计通过。两者展示的都是模型与智能体配置。

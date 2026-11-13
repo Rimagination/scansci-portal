@@ -200,3 +200,25 @@ npx wrangler deploy --config wrangler.wild-research.toml
 ```
 
 本项目的较早迁移在生产库已执行过，但未全部登记到 Wrangler 迁移表；部署时按顺序执行上面的两个 SQL 文件。第二届数据表必须先于新版 Worker 建立。
+
+## 最野科研人第二届投票
+
+投票与点赞分开存储。每个已登录账号最多同时为 3 个不同作品各投 1 票，可以在截止前取消和重投；服务端和数据库共同限制票数。当前配置为北京时间 2026 年 11 月 18 日 24:00 截止，`WILD_VOTE_END` 使用 UTC 时间。前端每 30 秒刷新一次公开票数。
+
+上线时先创建投票表，再部署 Worker，最后发布图库前端：
+
+```bash
+npx wrangler d1 execute scansci_auth --remote --file=sql/0022_wild_research_votes_season_two.sql --config wrangler.wild-research.toml
+npx wrangler deploy --config wrangler.wild-research.toml
+```
+
+Worker 构建时从 `wild/data/season-two.js` 读取有效作品编号。新增作品时，前端和 Worker 必须使用同一份更新后的作品列表并一起发布。正式票数可通过数据库汇总：
+
+```sql
+SELECT entry_number, COUNT(*) AS votes
+FROM wild_research_votes_season_two
+GROUP BY entry_number
+ORDER BY votes DESC, entry_number;
+```
+
+数据库中的 `entry_number` 对应作品数据的 `number`；页面展示的编号对应 `displayNumber`。统计只包含获得过票的作品。账号限制不能阻止同一人使用多个账号。

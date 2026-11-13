@@ -1,4 +1,5 @@
 import { handleWildResearchLikes } from './wild-research-likes.js';
+import { handleWildResearchVotes } from './wild-research-votes.js';
 
 async function requireAuth(request, env) {
   const response = await env.AUTH.fetch(new Request(`${env.PUBLIC_ORIGIN}/api/me`, {
@@ -27,13 +28,15 @@ export default {
       return new Response(null, { status: 204, headers: { Allow: 'GET, POST, OPTIONS' } });
     }
     try {
-      return await handleWildResearchLikes(request, env, {
+      const handler = new URL(request.url).pathname === '/api/wild-research/votes'
+        ? handleWildResearchVotes : handleWildResearchLikes;
+      return await handler(request, env, {
         requireAuth,
         jsonResponse,
         getPublicOrigin: () => env.PUBLIC_ORIGIN,
       });
     } catch (error) {
-      console.error('Wild research likes failed', error);
+      console.error('Wild research request failed', error);
       return jsonResponse(request, env, { ok: false, error: 'internal_error' }, 503);
     }
   },

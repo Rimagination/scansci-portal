@@ -5,6 +5,7 @@ workers_dev = false
 
 [vars]
 PUBLIC_ORIGIN = "https://www.scansci.com"
+WILD_VOTE_END = "2026-11-18T16:00:00Z" # 11 月 18 日 24:00，北京时间
 
 [[routes]]
 pattern = "www.scansci.com/api/wild-research/*"

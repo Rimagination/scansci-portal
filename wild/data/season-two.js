@@ -1,5 +1,5 @@
-window.WILD_SEASON = { label: '第二届', year: '2026' };
-window.WILD_RESEARCHERS = [
+globalThis.WILD_SEASON = { label: '第二届', year: '2026' };
+globalThis.WILD_RESEARCHERS = [
   {
     number: 66, displayNumber: 1, name: '郑之灿', organization: '云南大学生态与环境学院',
     time: '2025年6月末', location: '云南西双版纳过门山',

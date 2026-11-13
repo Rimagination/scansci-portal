@@ -180,6 +180,7 @@ img{display:block;max-width:100%}
 .auth-dialog #send-code{background:#fff;color:var(--ink)}
 .auth-dialog #auth-message{min-height:18px;margin:14px 0 0;color:var(--muted)}
 .like-notice{position:fixed;z-index:20;bottom:20px;left:50%;transform:translateX(-50%);margin:0;padding:9px 15px;background:#25342a;color:#fff;font-size:12px;box-shadow:0 4px 20px #0002}
+.like-notice.is-centered{top:50%;bottom:auto;width:max-content;max-width:calc(100vw - 36px);padding:12px 18px;border-radius:12px;transform:translate(-50%,-50%);text-align:center;line-height:1.5;pointer-events:none}
 
 @media(max-width:900px){.gallery-grid{column-count:2}.featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.about-top{gap:30px}.award-list{grid-template-columns:repeat(2,1fr)}}
 @media(hover:none){.photo-card-body,.photo-card-no{opacity:1}}

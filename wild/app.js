@@ -52,7 +52,10 @@ function addText(parent, className, content) {
   return span;
 }
 
-function showNotice(message) {
+function showNotice(message, centered = false) {
+  const host = centered && photoDialog.open ? photoDialog : document.body;
+  if (notice.parentElement !== host) host.append(notice);
+  notice.classList.toggle('is-centered', centered);
   notice.textContent = message;
   notice.hidden = false;
   clearTimeout(noticeTimer);
@@ -357,7 +360,7 @@ async function toggleVote(entry, selected) {
     }
     if (data.error === 'vote_limit') {
       voted = new Set(data.selected);
-      showNotice('已投满 3 票，可以取消已有投票后再选。');
+      showNotice('已投满 3 票，可以取消已有投票后再选。', true);
       return;
     }
     if (!response.ok || !data.ok) throw new Error('vote_failed');
@@ -504,6 +507,12 @@ dialogStage.addEventListener('touchend', event => {
   touchStartX = null;
 }, { passive: true });
 photoDialog.addEventListener('click', event => { if (event.target === photoDialog) photoDialog.close(); });
+photoDialog.addEventListener('close', () => {
+  if (notice.parentElement === photoDialog) {
+    notice.hidden = true;
+    document.body.append(notice);
+  }
+});
 document.querySelector('#auth-close').addEventListener('click', () => authDialog.close());
 authDialog.addEventListener('click', event => { if (event.target === authDialog) authDialog.close(); });
 

@@ -11,7 +11,7 @@ function fixture(t, time = '2026-11-17T12:00:00Z') {
   for (const migration of ['0013_user_card_orders.sql', '0020_wild_research_likes.sql', '0021_wild_research_likes_season_two.sql', '0022_wild_research_votes_season_two.sql']) {
     f.sqlite.exec(readFileSync(new URL(`../sql/${migration}`, import.meta.url), 'utf8'));
   }
-  f.env.WILD_VOTE_END = '2026-11-18T16:00:00Z';
+  f.env.WILD_VOTE_END = '2026-11-18T04:00:00Z';
   f.env.AUTH = { fetch: request => authWorker.fetch(request, f.env) };
   const request = (method, { user = 1, origin = 'https://www.scansci.com', body, type = 'application/json', path = 'votes' } = {}) => {
     const headers = {};
@@ -84,11 +84,11 @@ test('the endpoint validates identity, origin, content, and the actual second-ed
   } finally { f.sqlite.close(); }
 });
 
-test('the server closes voting at midnight Beijing time and retains the final counts', async t => {
-  const f = fixture(t, '2026-11-18T15:59:59.999Z');
+test('the server closes voting at noon Beijing time and retains the final counts', async t => {
+  const f = fixture(t, '2026-11-18T03:59:59.999Z');
   try {
     assert.equal((await f.request('POST', { body: { entry: 66, selected: true } })).status, 200);
-    t.mock.timers.setTime(Date.parse('2026-11-18T16:00:00Z'));
+    t.mock.timers.setTime(Date.parse('2026-11-18T04:00:00Z'));
     for (const selected of [true, false]) {
       const response = await f.request('POST', { body: { entry: 66, selected } });
       assert.equal(response.status, 403);

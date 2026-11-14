@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-14T00:19:48+00:00",
+  "capturedAt": "2026-11-14T22:57:57+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -196,7 +196,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-11-07T17:13:26.772849+00:00",
+      "updatedAt": "2026-11-14T08:50:39.525450+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -259,6 +259,14 @@ window.EXTENDED_DATA = {
         },
         {
           "model": "GPT-6.1 Sol",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 37.5,
+          "scoreRaw": 37.5,
+          "passed": 18,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Antigravity · Gemini 4 Hydrogen",
           "agent": "FrontierCS 2 · 48 项",
           "score": 37.5,
           "scoreRaw": 37.5,

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-13T00:19:18+00:00",
+  "capturedAt": "2026-11-14T00:19:48+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",

@@ -653,7 +653,7 @@ function cardTemplate(app) {
       <a class="tool-card__link" href="${escapeHtml(appUrl)}" target="_self" rel="noopener" data-action="open">
         <div class="tool-card__figure">
           ${statusBadge}
-          <img src="${escapeHtml((app.cover || "/assets/covers/default.svg").replace(/^\.\//, "/"))}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
+          <img src="${escapeHtml((app.cover || "/assets/covers/default.webp").replace(/^\.\//, "/"))}" alt="${escapeHtml(app.name)} 封面" loading="lazy" />
           <div class="tool-card__overlay">
             <span class="tool-card__cta">立即使用</span>
           </div>
@@ -755,7 +755,7 @@ function renderAuth() {
   }
 
   if (els.userAvatar) {
-    els.userAvatar.src = state.me.avatar_url || "/assets/brand/dataraven-crow-only.svg";
+    els.userAvatar.src = state.me.avatar_url || "/assets/brand/dataraven-crow-only.webp";
     els.userAvatar.width = 34;
     els.userAvatar.height = 34;
     els.userAvatar.style.width = "34px";

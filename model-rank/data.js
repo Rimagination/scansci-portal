@@ -1,6 +1,6 @@
 window.BENCHMARK_DATA = {
   "source": "https://hal.cs.princeton.edu/scienceagentbench",
-  "capturedAt": "2026-11-14T22:57:43+00:00",
+  "capturedAt": "2026-11-15T23:22:41+00:00",
   "rows": [
     {
       "model": "o3 Medium (April 2025)",

@@ -1,13 +1,21 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-14T22:57:57+00:00",
+  "capturedAt": "2026-11-15T23:22:50+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
-      "updatedAt": "2026-10-20T07:03:09+00:00",
+      "updatedAt": "2026-11-15T10:55:36+00:00",
       "dateLabel": "源文件修改",
       "metric": "超越论文 SOTA 比例 %",
       "description": "90 个科学机器学习任务；仅包含完整赛道。超过论文基准 10% 的有效任务计为超越，达标比例包含超越的任务。模型、智能体与执行预算共同影响成绩。",
       "rows": [
+        {
+          "model": "Claude Opus 5.5 (OPTIMUS)",
+          "agent": "OPTIMUS 1.1",
+          "score": 33.33,
+          "scoreRaw": 33.333333,
+          "matchRate": 61.111111,
+          "source": "https://frontisai.github.io/NatureBench/"
+        },
         {
           "model": "Opus 5 (HELIX)",
           "agent": "HELIX",

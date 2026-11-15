@@ -1,9 +1,9 @@
 window.OVERALL_DATA = {
-  "capturedAt": "2026-11-14T22:57:54+00:00",
+  "capturedAt": "2026-11-15T23:22:49+00:00",
   "groups": {
     "aihot": {
       "source": "https://aihot.news/leaderboard",
-      "updatedAt": "2026-11-14T18:08:24.648Z",
+      "updatedAt": "2026-11-15T18:06:00.986Z",
       "dateLabel": "原榜更新",
       "rows": [
         {

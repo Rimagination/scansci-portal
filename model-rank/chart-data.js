@@ -1,6 +1,6 @@
 window.CHART_DATA = {
   "source": "https://chartmimic.github.io/",
-  "capturedAt": "2026-11-14T22:57:47+00:00",
+  "capturedAt": "2026-11-15T23:22:44+00:00",
   "groups": {
     "direct": [
       {

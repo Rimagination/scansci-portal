@@ -1,47 +1,47 @@
 window.UPDATE_STATUS = {
   "science": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:40+00:00",
+    "attemptedAt": "2026-11-17T02:27:51+00:00",
     "message": "Updated 16 ScienceAgentBench results from https://hal.cs.princeton.edu/scienceagentbench"
   },
   "asta": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:41+00:00",
+    "attemptedAt": "2026-11-17T02:27:52+00:00",
     "message": "AstaBench test records: {'literature': 34, 'reading': 28, 'writing': 41, 'discovery': 30, 'reproduction': 25, 'tables': 33}"
   },
   "chart": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:42+00:00",
+    "attemptedAt": "2026-11-17T02:27:53+00:00",
     "message": "ChartMimic records: {'direct': 17, 'custom': 17}"
   },
   "inspire": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:44+00:00",
+    "attemptedAt": "2026-11-17T02:27:54+00:00",
     "message": "INSPIRE: 6 results from Table 2 of the 2026-09-27 preprint"
   },
   "recent": {
-    "ok": true,
-    "attemptedAt": "2026-11-15T23:22:44+00:00",
-    "message": "swescience OK\npaperbench OK\nscifigure OK\nwriting OK\nscicon OK\nterminal_science OK\nspu OK"
+    "ok": false,
+    "attemptedAt": "2026-11-17T02:27:55+00:00",
+    "message": "terminal_science FAILED: HTTP Error 522: <none>"
   },
   "overall": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:46+00:00",
+    "attemptedAt": "2026-11-17T02:28:17+00:00",
     "message": "aihot OK 50\narena OK 421"
   },
   "literature": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:49+00:00",
+    "attemptedAt": "2026-11-17T02:28:19+00:00",
     "message": "autoresearch OK\nscidoc OK\nlitreview OK\nresearchqa OK"
   },
   "visual": {
     "ok": true,
-    "attemptedAt": "2026-11-15T23:22:49+00:00",
+    "attemptedAt": "2026-11-17T02:28:20+00:00",
     "message": "figcode OK\ncharttide OK\ntablebench OK"
   },
   "extended": {
     "ok": false,
-    "attemptedAt": "2026-11-15T23:22:50+00:00",
+    "attemptedAt": "2026-11-17T02:28:20+00:00",
     "message": "aa-index FAILED: HTTP Error 410: Gone"
   }
 };

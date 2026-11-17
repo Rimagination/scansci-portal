@@ -1,9 +1,9 @@
 window.OVERALL_DATA = {
-  "capturedAt": "2026-11-17T02:28:19+00:00",
+  "capturedAt": "2026-11-17T08:37:41+00:00",
   "groups": {
     "aihot": {
       "source": "https://aihot.news/leaderboard",
-      "updatedAt": "2026-11-17T02:11:18.562Z",
+      "updatedAt": "2026-11-17T06:05:51.490Z",
       "dateLabel": "原榜更新",
       "rows": [
         {
@@ -11,8 +11,8 @@ window.OVERALL_DATA = {
           "model": "Claude Fable 5.2",
           "agent": "AIHOT 综合",
           "provider": "Anthropic",
-          "score": 79.9,
-          "scoreRaw": 79.9,
+          "score": 79.8,
+          "scoreRaw": 79.8,
           "releaseDate": "2026-11-09",
           "benchmarkCount": 39,
           "coveragePercent": 78,
@@ -866,8 +866,8 @@ window.OVERALL_DATA = {
           "model": "MiMo V 2.6 Flash",
           "agent": "AIHOT 综合",
           "provider": "Xiaomi",
-          "score": 58.8,
-          "scoreRaw": 58.8,
+          "score": 58.9,
+          "scoreRaw": 58.9,
           "releaseDate": "2026-09-21",
           "benchmarkCount": 29,
           "coveragePercent": 61,

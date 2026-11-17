@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent
 TARGET = ROOT / 'extended-data.js'
 NATURE_URL = 'https://frontisai.github.io/NatureBench/naturebench-data.js'
 FRONTIER_URL = 'https://huggingface.co/datasets/FrontierCS2/FrontierCS-2-runs/resolve/main/metadata/formal-results.json'
-AA_URL = 'https://artificialanalysis.ai/api/v2/data/llms/models'
+AA_URL = 'https://artificialanalysis.ai/api/v2/language/models/free'
 
 
 def fetch(url, headers=None):
@@ -85,24 +85,73 @@ def frontier():
 
 
 def artificial_analysis(key):
-    text, _ = fetch(AA_URL, {'x-api-key': key})
-    data = json.loads(text)
+    page = 1
+    total_pages = None
+    index_version = None
+    seen = set()
     rows = []
-    for item in data['data']:
-        value = item.get('evaluations', {}).get('artificial_analysis_intelligence_index')
-        if value is None:
-            continue
-        value = numeric(value)
-        rows.append({'model': item['name'], 'provider': item.get('model_creator', {}).get('name', ''),
-                     'agent': 'Artificial Analysis', 'score': round(value, 2), 'scoreRaw': value,
-                     'source': 'https://artificialanalysis.ai/models/' + item['slug']})
+    while total_pages is None or page <= total_pages:
+        text, _ = fetch(f'{AA_URL}?page={page}', {'x-api-key': key})
+        data = json.loads(text)
+        pagination = data.get('pagination')
+        if not isinstance(pagination, dict):
+            raise ValueError('Artificial Analysis pagination missing')
+        current_page = pagination.get('page')
+        page_total = pagination.get('total_pages')
+        has_more = pagination.get('has_more')
+        if (isinstance(current_page, bool) or current_page != page
+                or isinstance(page_total, bool) or not isinstance(page_total, int)
+                or not 1 <= page_total <= 100 or not isinstance(has_more, bool)):
+            raise ValueError('Invalid Artificial Analysis pagination')
+        if total_pages is None:
+            total_pages = page_total
+        elif page_total != total_pages:
+            raise ValueError('Artificial Analysis page count changed during refresh')
+        if has_more != (page < total_pages):
+            raise ValueError('Inconsistent Artificial Analysis pagination')
+
+        version = data.get('intelligence_index_version')
+        if (isinstance(version, bool) or not isinstance(version, (int, float))
+                or not math.isfinite(version) or version <= 0):
+            raise ValueError('Artificial Analysis index version missing or invalid')
+        if index_version is None:
+            index_version = float(version)
+        elif float(version) != index_version:
+            raise ValueError('Artificial Analysis index version changed during refresh')
+
+        models = data.get('data')
+        if not isinstance(models, list) or not models:
+            raise ValueError('Artificial Analysis model page is empty or invalid')
+        for item in models:
+            if not isinstance(item, dict):
+                raise ValueError('Invalid Artificial Analysis model row')
+            model_id = item.get('id')
+            if not isinstance(model_id, str) or not model_id or model_id in seen:
+                raise ValueError('Missing or duplicate Artificial Analysis model ID')
+            seen.add(model_id)
+            slug = item.get('slug')
+            name = item.get('name')
+            creator = item.get('model_creator')
+            evaluations = item.get('evaluations')
+            if (not isinstance(slug, str) or not slug or not isinstance(name, str) or not name
+                    or not isinstance(creator, dict) or not isinstance(evaluations, dict)):
+                raise ValueError('Incomplete Artificial Analysis model metadata')
+            value = evaluations.get('artificial_analysis_intelligence_index')
+            if value is None:
+                continue
+            value = numeric(value)
+            rows.append({'model': name, 'provider': creator.get('name', ''),
+                         'agent': 'Artificial Analysis', 'score': round(value, 2), 'scoreRaw': value,
+                         'source': 'https://artificialanalysis.ai/models/' + slug})
+        page += 1
     if len(rows) < 5:
         raise ValueError('Incomplete Artificial Analysis API results')
     rows.sort(key=lambda row: -row['scoreRaw'])
     return {'aa-index': {'source': 'https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index',
                          'updatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                          'dateLabel': '数据采集', 'metric': 'Intelligence Index',
-                         'description': 'Artificial Analysis 对模型的独立综合评测，指数的组成和版本可能变化；请以原榜当前方法为准。数据来源：Artificial Analysis。',
+                         'indexVersion': index_version,
+                         'description': f'Artificial Analysis 的独立 Intelligence Index；API 指数版本 v{index_version:.1f}（不含补丁版本），以原榜当前方法为准。',
                          'rows': rows}}
 
 

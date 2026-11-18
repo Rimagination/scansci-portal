@@ -1,5 +1,5 @@
 window.RECENT_DATA = {
-  "capturedAt": "2026-11-18T00:33:25+00:00",
+  "capturedAt": "2026-11-18T00:36:09+00:00",
   "groups": {
     "swescience": {
       "source": "https://swescience.github.io/",
@@ -1638,317 +1638,331 @@ window.RECENT_DATA = {
       ]
     },
     "terminal-science": {
-      "source": "https://vals-ai.com/benchmarks/terminal-bench-science",
-      "updatedAt": "2026-11-09",
+      "source": "https://www.vals.ai/benchmarks/terminal-bench-science",
+      "updatedAt": "2026-11-16",
       "dateLabel": "原榜更新",
       "rows": [
+        {
+          "model": "GPT-6.2 Astra",
+          "agent": "Mini-SWE-agent",
+          "score": 71.43,
+          "scoreRaw": 71.43,
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
+        },
         {
           "model": "GPT-6 Astra",
           "agent": "Mini-SWE-agent",
           "score": 62.86,
           "scoreRaw": 62.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
+        },
+        {
+          "model": "GPT-6.2 Sol",
+          "agent": "Mini-SWE-agent",
+          "score": 58.57,
+          "scoreRaw": 58.57,
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Fable 5.2",
           "agent": "Mini-SWE-agent",
           "score": 55.71,
           "scoreRaw": 55.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-6.1 Sol",
           "agent": "Mini-SWE-agent",
           "score": 52.86,
           "scoreRaw": 52.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Opus 5.5",
           "agent": "Mini-SWE-agent",
           "score": 47.14,
           "scoreRaw": 47.14,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Sonnet 5.5",
           "agent": "Mini-SWE-agent",
           "score": 47.14,
           "scoreRaw": 47.14,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 4 Argon",
           "agent": "Mini-SWE-agent",
           "score": 44.29,
           "scoreRaw": 44.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Fable 5.1",
           "agent": "Mini-SWE-agent",
           "score": 40.0,
           "scoreRaw": 40.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Wonder Full",
           "agent": "Mini-SWE-agent",
           "score": 37.14,
           "scoreRaw": 37.14,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Kimi K3.1 Pro",
           "agent": "Mini-SWE-agent",
           "score": 31.43,
           "scoreRaw": 31.43,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-6 Sol",
           "agent": "Mini-SWE-agent",
           "score": 30.0,
           "scoreRaw": 30.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Opus 5",
           "agent": "Mini-SWE-agent",
           "score": 27.14,
           "scoreRaw": 27.14,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Wonder",
           "agent": "Mini-SWE-agent",
           "score": 22.86,
           "scoreRaw": 22.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-5.6 Sol",
           "agent": "Mini-SWE-agent",
           "score": 20.0,
           "scoreRaw": 20.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Fable 5",
           "agent": "Mini-SWE-agent",
           "score": 15.71,
           "scoreRaw": 15.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Qwen 3.8 Max",
           "agent": "Mini-SWE-agent",
           "score": 12.86,
           "scoreRaw": 12.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Grok 4.6",
           "agent": "Mini-SWE-agent",
           "score": 11.43,
           "scoreRaw": 11.43,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Muse Spark 1.3 Max",
           "agent": "Mini-SWE-agent",
           "score": 10.0,
           "scoreRaw": 10.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Grok 4.7",
           "agent": "Mini-SWE-agent",
           "score": 10.0,
           "scoreRaw": 10.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Haiku 5.5",
           "agent": "Mini-SWE-agent",
           "score": 10.0,
           "scoreRaw": 10.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-5.6 Terra",
           "agent": "Mini-SWE-agent",
           "score": 10.0,
           "scoreRaw": 10.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 3.8 Flash",
           "agent": "Mini-SWE-agent",
           "score": 8.57,
           "scoreRaw": 8.57,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 3.7 Flash",
           "agent": "Mini-SWE-agent",
           "score": 7.14,
           "scoreRaw": 7.14,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 3.5 Flash",
           "agent": "Mini-SWE-agent",
           "score": 5.71,
           "scoreRaw": 5.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GLM 5.3",
           "agent": "Mini-SWE-agent",
           "score": 5.71,
           "scoreRaw": 5.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Sonnet 5",
           "agent": "Mini-SWE-agent",
           "score": 5.71,
           "scoreRaw": 5.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Ember-1",
           "agent": "Mini-SWE-agent",
           "score": 5.71,
           "scoreRaw": 5.71,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Muse Spark 1.3",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-6 Luna",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "DeepSeek V4 Flash 0731",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 3.6 Flash",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Claude Opus 4.8",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "DeepSeek V4 Pro 0813",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "MiMo V2.6 Flash",
           "agent": "Mini-SWE-agent",
           "score": 4.29,
           "scoreRaw": 4.29,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Inkling 2 Small",
           "agent": "Mini-SWE-agent",
           "score": 2.86,
           "scoreRaw": 2.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Step 5 Preview",
           "agent": "Mini-SWE-agent",
           "score": 2.86,
           "scoreRaw": 2.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "MiMo V2.6 Pro",
           "agent": "Mini-SWE-agent",
           "score": 2.86,
           "scoreRaw": 2.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GLM 5.3 Flash",
           "agent": "Mini-SWE-agent",
           "score": 2.86,
           "scoreRaw": 2.86,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Gemini 3.1 Pro Preview (02/26)",
           "agent": "Mini-SWE-agent",
           "score": 1.43,
           "scoreRaw": 1.43,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Beam 1.0",
           "agent": "Mini-SWE-agent",
           "score": 1.43,
           "scoreRaw": 1.43,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Kimi K3",
           "agent": "Mini-SWE-agent",
           "score": 1.43,
           "scoreRaw": 1.43,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Mercury 2.5",
           "agent": "Mini-SWE-agent",
           "score": 0.0,
           "scoreRaw": 0.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "GPT-5.6 Luna",
           "agent": "Mini-SWE-agent",
           "score": 0.0,
           "scoreRaw": 0.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "DeepSeek V4.1 Flash",
           "agent": "Mini-SWE-agent",
           "score": 0.0,
           "scoreRaw": 0.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {
           "model": "Qwen 3.8 27B",
           "agent": "Mini-SWE-agent",
           "score": 0.0,
           "scoreRaw": 0.0,
-          "source": "https://vals-ai.com/benchmarks/terminal-bench-science"
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         }
       ]
     },
@@ -2142,7 +2156,5 @@ window.RECENT_DATA = {
       ]
     }
   },
-  "failed": [
-    "terminal-science"
-  ]
+  "failed": []
 };

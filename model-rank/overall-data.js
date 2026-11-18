@@ -1,5 +1,5 @@
 window.OVERALL_DATA = {
-  "capturedAt": "2026-11-18T00:33:27+00:00",
+  "capturedAt": "2026-11-18T00:36:11+00:00",
   "groups": {
     "aihot": {
       "source": "https://aihot.news/leaderboard",

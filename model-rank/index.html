@@ -16,5 +16,20 @@
       <div id="content"></div>
     </main>
   </div>
-<script src="data.js?v=20261029"></script><script src="asta-data.js?v=20261029"></script><script src="chart-data.js?v=20261029"></script><script src="inspire-data.js?v=20261029"></script><script src="recent-data.js?v=20261118-vals"></script><script src="overall-data.js?v=20261029"></script><script src="literature-extra-data.js?v=20261029"></script><script src="visual-extra-data.js?v=20261029"></script><script src="extended-data.js?v=20261029-2"></script><script src="update-status.js?v=20261029"></script><script src="app.js?v=20261118-vals"></script>
+<script>
+  (() => {
+    const files = ['data.js', 'asta-data.js', 'chart-data.js', 'inspire-data.js', 'recent-data.js', 'overall-data.js', 'literature-extra-data.js', 'visual-extra-data.js', 'extended-data.js', 'update-status.js'];
+    const refresh = Date.now();
+    Promise.all(files.map(file => new Promise(resolve => {
+      const script = document.createElement('script');
+      script.src = `${file}?refresh=${refresh}`;
+      script.onload = script.onerror = resolve;
+      document.head.appendChild(script);
+    }))).then(() => {
+      const script = document.createElement('script');
+      script.src = 'app.js?v=20261118-vals';
+      document.body.appendChild(script);
+    });
+  })();
+</script>
 </body></html>

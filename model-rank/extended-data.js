@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-17T08:37:43+00:00",
+  "capturedAt": "2026-11-18T00:33:29+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -413,7 +413,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-17T08:37:43+00:00",
+      "updatedAt": "2026-11-18T00:33:29+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -436,12 +436,36 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-fable-5-2-xhigh"
         },
         {
+          "model": "GPT-6.2 Astra (Max)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 62.1,
+          "scoreRaw": 62.1,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-astra"
+        },
+        {
           "model": "Claude Fable 5.2 (High, Default Fallback)",
           "provider": "Anthropic",
           "agent": "Artificial Analysis",
           "score": 61.8,
           "scoreRaw": 61.8,
           "source": "https://artificialanalysis.ai/models/claude-fable-5-2-high"
+        },
+        {
+          "model": "GPT-6.2 Astra (Xhigh)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 61.6,
+          "scoreRaw": 61.6,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-xhigh"
+        },
+        {
+          "model": "GPT-6.2 Astra (High)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 60.1,
+          "scoreRaw": 60.1,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-high"
         },
         {
           "model": "Gemini 4 Carbon (High)",
@@ -476,6 +500,22 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-opus-5-5-xhigh"
         },
         {
+          "model": "GPT-6.2 Sol (Max)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 57.3,
+          "scoreRaw": 57.3,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-sol"
+        },
+        {
+          "model": "GPT-6.2 Astra (Medium)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 57.0,
+          "scoreRaw": 57.0,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-medium"
+        },
+        {
           "model": "GPT-6 Astra (Max)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -492,12 +532,28 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/claude-fable-5-2-medium"
         },
         {
+          "model": "GPT-6.2 Sol (Xhigh)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 55.7,
+          "scoreRaw": 55.7,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-xhigh"
+        },
+        {
           "model": "GPT-6 Astra (Xhigh)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
           "score": 55.3,
           "scoreRaw": 55.3,
           "source": "https://artificialanalysis.ai/models/gpt-6-astra-xhigh"
+        },
+        {
+          "model": "GPT-6.2 Sol (High)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 54.9,
+          "scoreRaw": 54.9,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-high"
         },
         {
           "model": "GPT-6 Astra (High)",
@@ -546,6 +602,14 @@ window.EXTENDED_DATA = {
           "score": 53.9,
           "scoreRaw": 53.9,
           "source": "https://artificialanalysis.ai/models/gemini-4-hydrogen"
+        },
+        {
+          "model": "GPT-6.2 Sol (Medium)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 52.7,
+          "scoreRaw": 52.7,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-medium"
         },
         {
           "model": "GPT-6.1 Sol (Xhigh)",
@@ -676,6 +740,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gpt-6-1-sol-medium"
         },
         {
+          "model": "GPT-6.2 Astra (Low)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 45.7,
+          "scoreRaw": 45.7,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-low"
+        },
+        {
           "model": "GPT-6.1 Terra (Xhigh)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -754,6 +826,14 @@ window.EXTENDED_DATA = {
           "score": 41.2,
           "scoreRaw": 41.2,
           "source": "https://artificialanalysis.ai/models/gemini-4-hydrogen-medium"
+        },
+        {
+          "model": "GPT-6.2 Sol (Low)",
+          "provider": "OpenAI",
+          "agent": "Artificial Analysis",
+          "score": 40.6,
+          "scoreRaw": 40.6,
+          "source": "https://artificialanalysis.ai/models/gpt-6-2-sol-low"
         },
         {
           "model": "Muse Wonder (High)",
@@ -1340,6 +1420,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-non-reasoning"
         },
         {
+          "model": "A.X-K2",
+          "provider": "SK Telecom",
+          "agent": "Artificial Analysis",
+          "score": 9.0,
+          "scoreRaw": 9.0,
+          "source": "https://artificialanalysis.ai/models/a-x-k2"
+        },
+        {
           "model": "K-EXAONE 2.0",
           "provider": "LG AI Research",
           "agent": "Artificial Analysis",
@@ -1378,6 +1466,14 @@ window.EXTENDED_DATA = {
           "score": 6.2,
           "scoreRaw": 6.2,
           "source": "https://artificialanalysis.ai/models/gemini-3-1-flash-lite-preview"
+        },
+        {
+          "model": "LFM3-1.7B",
+          "provider": "Liquid AI",
+          "agent": "Artificial Analysis",
+          "score": 6.0,
+          "scoreRaw": 6.0,
+          "source": "https://artificialanalysis.ai/models/lfm3-1-7b"
         },
         {
           "model": "Nemotron 3.5 Lightning",
@@ -1458,6 +1554,14 @@ window.EXTENDED_DATA = {
           "score": 1.8,
           "scoreRaw": 1.8,
           "source": "https://artificialanalysis.ai/models/nvidia-nemotron-3-nano-4b"
+        },
+        {
+          "model": "LFM3-VL-2B",
+          "provider": "Liquid AI",
+          "agent": "Artificial Analysis",
+          "score": 1.7,
+          "scoreRaw": 1.7,
+          "source": "https://artificialanalysis.ai/models/lfm3-vl-2b"
         }
       ]
     }

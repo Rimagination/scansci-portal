@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-18T00:36:14+00:00",
+  "capturedAt": "2026-11-18T01:36:24+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -413,7 +413,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-18T00:36:14+00:00",
+      "updatedAt": "2026-11-18T01:36:24+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1396,6 +1396,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gemini-3-5-flash-lite"
         },
         {
+          "model": "Inkling (High)",
+          "provider": "Thinking Machines",
+          "agent": "Artificial Analysis",
+          "score": 11.0,
+          "scoreRaw": 11.0,
+          "source": "https://artificialanalysis.ai/models/inkling-high"
+        },
+        {
           "model": "Qwen3.8 27B (Non-reasoning)",
           "provider": "Alibaba",
           "agent": "Artificial Analysis",
@@ -1410,6 +1418,14 @@ window.EXTENDED_DATA = {
           "score": 9.7,
           "scoreRaw": 9.7,
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-low"
+        },
+        {
+          "model": "Inkling Small (High)",
+          "provider": "Thinking Machines",
+          "agent": "Artificial Analysis",
+          "score": 9.6,
+          "scoreRaw": 9.6,
+          "source": "https://artificialanalysis.ai/models/inkling-small-high"
         },
         {
           "model": "GPT-6 Luna (Non-reasoning)",

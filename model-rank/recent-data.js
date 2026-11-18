@@ -1,5 +1,5 @@
 window.RECENT_DATA = {
-  "capturedAt": "2026-11-18T00:36:09+00:00",
+  "capturedAt": "2026-11-18T01:36:16+00:00",
   "groups": {
     "swescience": {
       "source": "https://swescience.github.io/",

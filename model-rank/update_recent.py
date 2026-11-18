@@ -110,7 +110,7 @@ def scicon():
     return {'sciconbench': pack(source, month, '最近评测月份', rows)}
 
 def terminal_science():
-    url = 'https://vals-ai.com/benchmarks/terminal-bench-science'
+    url = 'https://www.vals.ai/benchmarks/terminal-bench-science'
     html = fetch(url)
     page = Tables()
     page.feed(html)

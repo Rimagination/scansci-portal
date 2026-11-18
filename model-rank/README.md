@@ -17,7 +17,7 @@
 - [ChartMimic](https://chartmimic.github.io/)：`python -B update_chart.py`，读取 Direct Mimic 和 Customized Mimic 两组官方榜单，分开展示综合分和代码执行率。该基准评估参考图表的代码生成与复现，不代表所有科研绘图任务。
 - [SciConBench](https://sciconbench.cs.princeton.edu/)：最新评测月份的医学系统综述证据综合 F1，展示每个模型的覆盖篇数；文献检索和学术写作页面中是相关能力参考。
 - [SWE-bench Science](https://swescience.github.io/)：科学软件问题修复的完成率，反映模型与编程智能体组合，不能直接等同于数据分析能力。
-- [Terminal-Bench Science / Vals AI](https://vals-ai.com/benchmarks/terminal-bench-science)：Vals AI 对 70 项多学科研究工作流的评测，筛选 Mini-SWE-agent 配置，涵盖数据处理和建模，但不限于数据分析。
+- [Terminal-Bench Science / Vals AI](https://www.vals.ai/benchmarks/terminal-bench-science)：Vals AI 对 70 项多学科研究工作流的评测，筛选 Mini-SWE-agent 配置，涵盖数据处理和建模，但不限于数据分析。
 - [Science Prediction Universe (SPU)](https://www.unipat.ai/blog/SciencePredictionUniverse)：`python -B update_recent.py` 读取 UniPat AI 2026 年文章中 100 项公开任务的表格，保留模型、智能体框架、原榜名次、任务调整后的 Spearman 均值、95% 区间和覆盖情况。16 项私有任务不在该表中；部分配置因拒答等原因覆盖较少任务，原文指出组内名次尚不能确定。文章的发布日期不代表新的评测已产生，读取失败或表格格式变化时保留上次有效快照。
 - [PaperBench Science](https://pipelinelab.ai/blog/paperbench-expanded/)：93 项论文复现任务的部分复现分，成绩由评测方论文公布，不等同完整复现率。
 - [SciFigure2Code](https://arxiv.org/abs/2609.08155)：2026/09/08 论文固定结果，分别列出纯图和带图注的绘图代码复现；并非持续更新的榜单。

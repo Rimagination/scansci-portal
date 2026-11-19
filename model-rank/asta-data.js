@@ -2,10 +2,20 @@ window.ASTA_DATA = {
   "source": "https://huggingface.co/datasets/allenai/asta-bench-results",
   "suite": "1.0.0",
   "split": "test",
-  "capturedAt": "2026-11-18T01:36:11+00:00",
-  "fileCount": 87,
+  "capturedAt": "2026-11-19T01:11:36+00:00",
+  "fileCount": 88,
   "groups": {
     "literature": [
+      {
+        "model": "none/none",
+        "agent": "RoboPhD",
+        "score": 50.14,
+        "scoreRaw": 0.501395181157862,
+        "metric": "score_paper_finder/adjusted_f1_micro_avg",
+        "source": "https://huggingface.co/datasets/allenai/asta-bench-results/resolve/main/1.0.0/test/andborth_RoboPhD_2026-11-15_22-40-32.json",
+        "submittedAt": "2026-11-15T22:40:32.404414Z",
+        "modelArgs": "{}"
+      },
       {
         "model": "none/none",
         "agent": "RoboPhD",

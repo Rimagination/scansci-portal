@@ -1,5 +1,5 @@
 window.RECENT_DATA = {
-  "capturedAt": "2026-11-18T01:36:16+00:00",
+  "capturedAt": "2026-11-19T01:11:40+00:00",
   "groups": {
     "swescience": {
       "source": "https://swescience.github.io/",
@@ -1639,7 +1639,7 @@ window.RECENT_DATA = {
     },
     "terminal-science": {
       "source": "https://www.vals.ai/benchmarks/terminal-bench-science",
-      "updatedAt": "2026-11-16",
+      "updatedAt": "2026-11-18",
       "dateLabel": "原榜更新",
       "rows": [
         {
@@ -1647,6 +1647,13 @@ window.RECENT_DATA = {
           "agent": "Mini-SWE-agent",
           "score": 71.43,
           "scoreRaw": 71.43,
+          "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
+        },
+        {
+          "model": "Gemini 4 Neon",
+          "agent": "Mini-SWE-agent",
+          "score": 62.86,
+          "scoreRaw": 62.86,
           "source": "https://www.vals.ai/benchmarks/terminal-bench-science"
         },
         {

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-18T01:36:24+00:00",
+  "capturedAt": "2026-11-19T01:11:47+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -204,7 +204,7 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-11-14T08:50:39.525450+00:00",
+      "updatedAt": "2026-11-18T22:48:21.546010+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
@@ -243,6 +243,14 @@ window.EXTENDED_DATA = {
         },
         {
           "model": "GPT-6 Astra",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 45.83,
+          "scoreRaw": 45.833333333333336,
+          "passed": 22,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "Claude Code · Qwen 4 Max (xhigh effort)",
           "agent": "FrontierCS 2 · 48 项",
           "score": 45.83,
           "scoreRaw": 45.833333333333336,
@@ -413,7 +421,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-18T01:36:24+00:00",
+      "updatedAt": "2026-11-19T01:11:47+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -460,6 +468,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/gpt-6-2-astra-xhigh"
         },
         {
+          "model": "Gemini 4 Neon (Xhigh)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 61.4,
+          "scoreRaw": 61.4,
+          "source": "https://artificialanalysis.ai/models/gemini-4-neon"
+        },
+        {
           "model": "GPT-6.2 Astra (High)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -474,6 +490,14 @@ window.EXTENDED_DATA = {
           "score": 60.0,
           "scoreRaw": 60.0,
           "source": "https://artificialanalysis.ai/models/gemini-4-carbon"
+        },
+        {
+          "model": "Gemini 4 Neon (High)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 59.6,
+          "scoreRaw": 59.6,
+          "source": "https://artificialanalysis.ai/models/gemini-4-neon-high"
         },
         {
           "model": "Claude Opus 5.5 (Max, Default Fallback)",
@@ -546,6 +570,14 @@ window.EXTENDED_DATA = {
           "score": 55.3,
           "scoreRaw": 55.3,
           "source": "https://artificialanalysis.ai/models/gpt-6-astra-xhigh"
+        },
+        {
+          "model": "Gemini 4 Neon (Medium)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 54.9,
+          "scoreRaw": 54.9,
+          "source": "https://artificialanalysis.ai/models/gemini-4-neon-medium"
         },
         {
           "model": "GPT-6.2 Sol (High)",
@@ -770,6 +802,14 @@ window.EXTENDED_DATA = {
           "score": 44.2,
           "scoreRaw": 44.2,
           "source": "https://artificialanalysis.ai/models/gpt-6-sol"
+        },
+        {
+          "model": "Gemini 4 Neon (Low)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 44.1,
+          "scoreRaw": 44.1,
+          "source": "https://artificialanalysis.ai/models/gemini-4-neon-low"
         },
         {
           "model": "Muse Wonder (Max)",
@@ -1092,6 +1132,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/step-5"
         },
         {
+          "model": "JoyAI-VL-Preview",
+          "provider": "Joy Future Academy",
+          "agent": "Artificial Analysis",
+          "score": 28.0,
+          "scoreRaw": 28.0,
+          "source": "https://artificialanalysis.ai/models/joyai-vl"
+        },
+        {
           "model": "GPT-6 Luna (Max)",
           "provider": "OpenAI",
           "agent": "Artificial Analysis",
@@ -1340,6 +1388,22 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/solar-pro4"
         },
         {
+          "model": "K2 Horizon 32B",
+          "provider": "Institute of Foundation Models",
+          "agent": "Artificial Analysis",
+          "score": 13.9,
+          "scoreRaw": 13.9,
+          "source": "https://artificialanalysis.ai/models/k2-horizon-32b"
+        },
+        {
+          "model": "K2 Horizon MoVA 36B A4B",
+          "provider": "Institute of Foundation Models",
+          "agent": "Artificial Analysis",
+          "score": 13.8,
+          "scoreRaw": 13.8,
+          "source": "https://artificialanalysis.ai/models/k2-horizon-mova-36b-a4b"
+        },
+        {
           "model": "Apodex 1.1",
           "provider": "Apodex",
           "agent": "Artificial Analysis",
@@ -1404,6 +1468,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/inkling-high"
         },
         {
+          "model": "K2 Horizon 7B",
+          "provider": "Institute of Foundation Models",
+          "agent": "Artificial Analysis",
+          "score": 10.6,
+          "scoreRaw": 10.6,
+          "source": "https://artificialanalysis.ai/models/k2-horizon-7b"
+        },
+        {
           "model": "Qwen3.8 27B (Non-reasoning)",
           "provider": "Alibaba",
           "agent": "Artificial Analysis",
@@ -1442,6 +1514,14 @@ window.EXTENDED_DATA = {
           "score": 9.0,
           "scoreRaw": 9.0,
           "source": "https://artificialanalysis.ai/models/a-x-k2"
+        },
+        {
+          "model": "K2 Horizon 3.7B",
+          "provider": "Institute of Foundation Models",
+          "agent": "Artificial Analysis",
+          "score": 8.0,
+          "scoreRaw": 8.0,
+          "source": "https://artificialanalysis.ai/models/k2-horizon-3-7b"
         },
         {
           "model": "K-EXAONE 2.0",
@@ -1562,6 +1642,14 @@ window.EXTENDED_DATA = {
           "score": 3.4,
           "scoreRaw": 3.4,
           "source": "https://artificialanalysis.ai/models/north-mini-code"
+        },
+        {
+          "model": "K2 Horizon 0.9B",
+          "provider": "Institute of Foundation Models",
+          "agent": "Artificial Analysis",
+          "score": 2.7,
+          "scoreRaw": 2.7,
+          "source": "https://artificialanalysis.ai/models/k2-horizon-0-9b"
         },
         {
           "model": "NVIDIA Nemotron 3 Nano 4B",

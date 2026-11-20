@@ -1,7 +1,7 @@
 window.INSPIRE_DATA = {
   "source": "https://arxiv.org/html/2609.33233v1#S4.T2",
   "publishedAt": "2026-09-27",
-  "capturedAt": "2026-11-19T01:11:38+00:00",
+  "capturedAt": "2026-11-20T01:15:23+00:00",
   "rows": [
     {
       "model": "Claude Opus 5",

@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-19T01:11:47+00:00",
+  "capturedAt": "2026-11-20T01:15:30+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -421,7 +421,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-19T01:11:47+00:00",
+      "updatedAt": "2026-11-20T01:15:30+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1570,6 +1570,14 @@ window.EXTENDED_DATA = {
           "score": 6.0,
           "scoreRaw": 6.0,
           "source": "https://artificialanalysis.ai/models/lfm3-1-7b"
+        },
+        {
+          "model": "Granite 4.2 30B",
+          "provider": "IBM",
+          "agent": "Artificial Analysis",
+          "score": 5.5,
+          "scoreRaw": 5.5,
+          "source": "https://artificialanalysis.ai/models/granite-4-2-30b"
         },
         {
           "model": "Nemotron 3.5 Lightning",

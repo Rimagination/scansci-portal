@@ -1,9 +1,9 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-20T01:15:30+00:00",
+  "capturedAt": "2026-11-21T00:47:46+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
-      "updatedAt": "2026-11-15T10:55:36+00:00",
+      "updatedAt": "2026-11-20T07:00:54+00:00",
       "dateLabel": "源文件修改",
       "metric": "超越论文 SOTA 比例 %",
       "description": "90 个科学机器学习任务；仅包含完整赛道。超过论文基准 10% 的有效任务计为超越，达标比例包含超越的任务。模型、智能体与执行预算共同影响成绩。",
@@ -46,6 +46,14 @@ window.EXTENDED_DATA = {
           "score": 23.33,
           "scoreRaw": 23.333333,
           "matchRate": 53.333333,
+          "source": "https://frontisai.github.io/NatureBench/"
+        },
+        {
+          "model": "Qwen 4 Max",
+          "agent": "Claude Code",
+          "score": 23.33,
+          "scoreRaw": 23.333333,
+          "matchRate": 51.111111,
           "source": "https://frontisai.github.io/NatureBench/"
         },
         {
@@ -204,11 +212,19 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-11-18T22:48:21.546010+00:00",
+      "updatedAt": "2026-11-20T20:22:54.865748+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
       "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
       "rows": [
+        {
+          "model": "GPT-6.2 Astra",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 66.67,
+          "scoreRaw": 66.66666666666667,
+          "passed": 32,
+          "source": "https://frontier-cs.org/"
+        },
         {
           "model": "Claude Code · Opus 5.5 (Subscription, max effort)",
           "agent": "FrontierCS 2 · 48 项",
@@ -227,6 +243,22 @@ window.EXTENDED_DATA = {
         },
         {
           "model": "Antigravity · Gemini 4 Carbon",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 54.17,
+          "scoreRaw": 54.166666666666664,
+          "passed": 26,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "pi · Gemini 4 Neon",
+          "agent": "FrontierCS 2 · 48 项",
+          "score": 54.17,
+          "scoreRaw": 54.166666666666664,
+          "passed": 26,
+          "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "GPT-6.2 Sol",
           "agent": "FrontierCS 2 · 48 项",
           "score": 54.17,
           "scoreRaw": 54.166666666666664,
@@ -421,7 +453,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-20T01:15:30+00:00",
+      "updatedAt": "2026-11-21T00:47:46+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1298,6 +1330,14 @@ window.EXTENDED_DATA = {
           "score": 20.1,
           "scoreRaw": 20.1,
           "source": "https://artificialanalysis.ai/models/qwen3-8-27b"
+        },
+        {
+          "model": "Inkling 2 Mini",
+          "provider": "Thinking Machines",
+          "agent": "Artificial Analysis",
+          "score": 20.1,
+          "scoreRaw": 20.1,
+          "source": "https://artificialanalysis.ai/models/inkling-2-mini"
         },
         {
           "model": "JT-4.1 Flash 236B A21B",

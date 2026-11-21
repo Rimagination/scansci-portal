@@ -1,9 +1,9 @@
 window.OVERALL_DATA = {
-  "capturedAt": "2026-11-21T00:47:44+00:00",
+  "capturedAt": "2026-11-21T23:47:21+00:00",
   "groups": {
     "aihot": {
       "source": "https://aihot.news/leaderboard",
-      "updatedAt": "2026-11-21T00:05:59.673Z",
+      "updatedAt": "2026-11-21T18:05:39.761Z",
       "dateLabel": "原榜更新",
       "rows": [
         {
@@ -68,8 +68,8 @@ window.OVERALL_DATA = {
           "model": "gpt-6.2-astra",
           "agent": "AIHOT 综合",
           "provider": "OpenAI",
-          "score": 74.9,
-          "scoreRaw": 74.9,
+          "score": 75.0,
+          "scoreRaw": 75.0,
           "releaseDate": "2026-11-17",
           "benchmarkCount": 35,
           "coveragePercent": 71,
@@ -486,8 +486,8 @@ window.OVERALL_DATA = {
           "model": "Gemini 3.8 Flash",
           "agent": "AIHOT 综合",
           "provider": "Google",
-          "score": 63.9,
-          "scoreRaw": 63.9,
+          "score": 64.0,
+          "scoreRaw": 64.0,
           "releaseDate": "2026-09-02",
           "benchmarkCount": 48,
           "coveragePercent": 97,
@@ -673,25 +673,6 @@ window.OVERALL_DATA = {
         },
         {
           "rank": 36,
-          "model": "Inkling 2 Small",
-          "agent": "AIHOT 综合",
-          "provider": "Thinking Machines Lab",
-          "score": 62.5,
-          "scoreRaw": 62.5,
-          "releaseDate": "2026-11-05",
-          "benchmarkCount": 30,
-          "coveragePercent": 69,
-          "cachePrice": 0.2,
-          "inputPrice": 2.0,
-          "outputPrice": 6.68,
-          "cachePriceRaw": "¥0.2",
-          "inputPriceRaw": "¥2",
-          "outputPriceRaw": "¥6.68",
-          "cost": 1.208,
-          "source": "https://aihot.news/leaderboard/inkling-2-small"
-        },
-        {
-          "rank": 37,
           "model": "Grok 4.6",
           "agent": "AIHOT 综合",
           "provider": "xAI",
@@ -708,6 +689,25 @@ window.OVERALL_DATA = {
           "outputPriceRaw": "¥40.07",
           "cost": 9.017,
           "source": "https://aihot.news/leaderboard/grok-4-6"
+        },
+        {
+          "rank": 37,
+          "model": "Inkling 2 Small",
+          "agent": "AIHOT 综合",
+          "provider": "Thinking Machines Lab",
+          "score": 62.4,
+          "scoreRaw": 62.4,
+          "releaseDate": "2026-11-05",
+          "benchmarkCount": 30,
+          "coveragePercent": 69,
+          "cachePrice": 0.2,
+          "inputPrice": 2.0,
+          "outputPrice": 6.68,
+          "cachePriceRaw": "¥0.2",
+          "inputPriceRaw": "¥2",
+          "outputPriceRaw": "¥6.68",
+          "cost": 1.208,
+          "source": "https://aihot.news/leaderboard/inkling-2-small"
         },
         {
           "rank": 38,

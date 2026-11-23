@@ -1,5 +1,5 @@
 window.VISUAL_EXTRA_DATA = {
-  "capturedAt": "2026-11-21T23:47:22+00:00",
+  "capturedAt": "2026-11-23T00:17:21+00:00",
   "groups": {
     "chart2code-direct": {
       "source": "https://aclanthology.org/2026.acl-long.616.pdf#page=7",

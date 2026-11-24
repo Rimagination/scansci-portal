@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-23T00:17:23+00:00",
+  "capturedAt": "2026-11-24T04:17:12+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -461,7 +461,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-23T00:17:23+00:00",
+      "updatedAt": "2026-11-24T04:17:12+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1274,6 +1274,14 @@ window.EXTENDED_DATA = {
           "score": 23.5,
           "scoreRaw": 23.5,
           "source": "https://artificialanalysis.ai/models/gpt-6-luna-xhigh"
+        },
+        {
+          "model": "Ling-3.2-air",
+          "provider": "InclusionAI",
+          "agent": "Artificial Analysis",
+          "score": 23.4,
+          "scoreRaw": 23.4,
+          "source": "https://artificialanalysis.ai/models/ling-3-2-air"
         },
         {
           "model": "Mistral Large 4 (Medium)",

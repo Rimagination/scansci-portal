@@ -1,5 +1,5 @@
 window.OVERALL_DATA = {
-  "capturedAt": "2026-11-25T03:02:01+00:00",
+  "capturedAt": "2026-11-26T02:11:21+00:00",
   "groups": {
     "aihot": {
       "source": "https://aihot.news/leaderboard",
@@ -6090,5 +6090,7 @@ window.OVERALL_DATA = {
       ]
     }
   },
-  "failed": []
+  "failed": [
+    "aihot"
+  ]
 };

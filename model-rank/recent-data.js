@@ -1,5 +1,5 @@
 window.RECENT_DATA = {
-  "capturedAt": "2026-11-26T02:11:18+00:00",
+  "capturedAt": "2026-11-27T02:09:44+00:00",
   "groups": {
     "swescience": {
       "source": "https://swescience.github.io/",
@@ -456,7 +456,7 @@ window.RECENT_DATA = {
     },
     "english-writing": {
       "source": "https://aiwritingbenchmark.com/leaderboard/",
-      "updatedAt": "2026-11-25T21:16:25.186632Z",
+      "updatedAt": "2026-11-26T21:03:05.702186Z",
       "dateLabel": "原榜更新",
       "rows": [
         {

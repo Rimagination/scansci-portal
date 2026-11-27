@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-26T02:11:25+00:00",
+  "capturedAt": "2026-11-27T02:09:48+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -461,7 +461,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-26T02:11:25+00:00",
+      "updatedAt": "2026-11-27T02:09:48+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1666,6 +1666,14 @@ window.EXTENDED_DATA = {
           "score": 4.3,
           "scoreRaw": 4.3,
           "source": "https://artificialanalysis.ai/models/mistral-small-4"
+        },
+        {
+          "model": "Gemma 4 26B A4B (Reasoning)",
+          "provider": "Google",
+          "agent": "Artificial Analysis",
+          "score": 4.0,
+          "scoreRaw": 4.0,
+          "source": "https://artificialanalysis.ai/models/gemma-4-26b-a4b"
         },
         {
           "model": "gpt-oss-120b (High)",

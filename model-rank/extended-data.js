@@ -1,5 +1,5 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-28T01:56:49+00:00",
+  "capturedAt": "2026-11-28T11:55:22+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
@@ -220,10 +220,10 @@ window.EXTENDED_DATA = {
     },
     "frontiercs2": {
       "source": "https://frontier-cs.org/",
-      "updatedAt": "2026-11-22T02:29:03.249024+00:00",
+      "updatedAt": "2026-11-24T19:33:39.758819+00:00",
       "dateLabel": "结果文件生成",
       "metric": "超过参考实现的任务比例 %",
-      "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。",
+      "description": "48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。缺运行记录或缺判定的任务仍计入分母，只统计明确通过的任务。结果反映模型与编程智能体组合。",
       "rows": [
         {
           "model": "GPT-6.2 Astra",
@@ -464,12 +464,20 @@ window.EXTENDED_DATA = {
           "scoreRaw": 6.25,
           "passed": 3,
           "source": "https://frontier-cs.org/"
+        },
+        {
+          "model": "OpenCode · Nemotron 3 Ultra",
+          "agent": "FrontierCS 2 · 有运行记录 47/48 项",
+          "score": 0.0,
+          "scoreRaw": 0.0,
+          "passed": 0,
+          "source": "https://frontier-cs.org/"
         }
       ]
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-28T01:56:49+00:00",
+      "updatedAt": "2026-11-28T11:55:22+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1742,7 +1750,5 @@ window.EXTENDED_DATA = {
       ]
     }
   },
-  "failed": [
-    "frontiercs2"
-  ]
+  "failed": []
 };

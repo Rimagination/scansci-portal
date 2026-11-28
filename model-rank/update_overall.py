@@ -31,7 +31,9 @@ def aihot():
     parser.feed(html)
     table = next((t for t in parser.tables if t['rows'] and len(t['rows'][0]) == 8 and 'AIHOT 评分' in t['rows'][0][-1]['text']), None)
     if not table: raise ValueError('AIHOT overall leaderboard table missing')
-    if any(label not in cell['text'] for cell, label in zip(table['rows'][0][4:7], ('缓存价格', '输入价格', '输出价格'))):
+    cache_header, input_header, output_header = (cell['text'] for cell in table['rows'][0][4:7])
+    if (not ('缓存价格' in cache_header or '缓存命中人民币 / 百万 Token' in cache_header)
+            or '输入价格' not in input_header or '输出价格' not in output_header):
         raise ValueError('AIHOT price columns changed')
     rows = []
     for cells in table['rows'][1:]:

@@ -3,7 +3,6 @@ import json
 import math
 import os
 import sys
-from collections import Counter
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
@@ -13,6 +12,8 @@ ROOT = Path(__file__).resolve().parent
 TARGET = ROOT / 'extended-data.js'
 NATURE_URL = 'https://frontisai.github.io/NatureBench/naturebench-data.js'
 FRONTIER_URL = 'https://huggingface.co/datasets/FrontierCS2/FrontierCS-2-runs/resolve/main/metadata/formal-results.json'
+# The release's schema_note documents this candidate-task pair without a formal run.
+FRONTIER_MISSING_RUNS = {'nemotron': {'vllm_llm_serving_optimization'}}
 AA_URL = 'https://artificialanalysis.ai/api/v2/language/models/free'
 
 
@@ -62,7 +63,6 @@ def frontier():
     if len(tasks) != 48 or len(models) < 5:
         raise ValueError('FrontierCS task set changed; review before refreshing')
     runs = data['runs']
-    counts = Counter(item['model_id'] for item in runs)
     by_model = {}
     for item in runs:
         by_model.setdefault(item['model_id'], []).append(item)
@@ -71,16 +71,19 @@ def frontier():
     for item in models:
         model_id = item['model_id']
         entries = by_model.get(model_id, [])
-        if counts[model_id] != len(tasks) or {row['task'] for row in entries} != tasks:
+        observed = {row['task'] for row in entries}
+        missing = tasks - observed
+        if len(entries) != len(observed) or observed - tasks or missing - FRONTIER_MISSING_RUNS.get(model_id, set()):
             raise ValueError('Incomplete or duplicated FrontierCS task results')
         passed = sum(row.get('verdict') == 'PASS' for row in entries)
         value = passed * 100 / len(tasks)
-        rows.append({'model': item['candidate_name'], 'agent': 'FrontierCS 2 · 48 项',
+        coverage = f'有运行记录 {len(entries)}/{len(tasks)} 项' if missing else f'{len(tasks)} 项'
+        rows.append({'model': item['candidate_name'], 'agent': f'FrontierCS 2 · {coverage}',
                      'score': round(value, 2), 'scoreRaw': value, 'passed': passed, 'source': source})
     rows.sort(key=lambda row: -row['scoreRaw'])
     return {'frontiercs2': {'source': source, 'updatedAt': data['generated_at'], 'dateLabel': '结果文件生成',
                             'metric': '超过参考实现的任务比例 %',
-                            'description': '48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。结果反映模型与编程智能体组合。',
+                            'description': '48 个计算机科学研究任务；每项通过需在所有隐藏测试中超过论文参考实现。缺运行记录或缺判定的任务仍计入分母，只统计明确通过的任务。结果反映模型与编程智能体组合。',
                             'rows': rows}}
 
 

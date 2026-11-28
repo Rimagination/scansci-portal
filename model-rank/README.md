@@ -8,7 +8,7 @@
 
 数据来源与刷新：
 
-- [AIHOT 综合榜](https://aihot.news/leaderboard)：`python -B update_overall.py` 从原榜公开页面读取综合评分、模型上线日期和评测覆盖率，沿用原始名次；AIHOT 的标准化综合分不是百分比，原榜当前只列前 30 个模型。
+- [AIHOT 综合榜](https://aihot.news/leaderboard)：`python -B update_overall.py` 从原榜公开页面读取综合评分、模型上线日期和评测覆盖率，沿用原始名次，收录原榜当前展示的模型。AIHOT 提供的是标准化综合分。
 - AIHOT 斩杀线使用原榜显示的人民币缓存命中、输入和输出价格，按 7∶2∶1 计算每百万 Token 的近似折算价，再与页面展示的综合评分比较；价格或评分的展示精度可能影响接近边界的模型，缺价格的模型不进入图表。DeepSeek V4.1 Flash 1017 采用原榜非高峰价，实际费用取决于用量和服务商定价。
 - [Arena 文本榜](https://arena.ai/leaderboard/chat/text)：同一更新脚本读取 [Arena 官方开放数据集](https://huggingface.co/datasets/lmarena-ai/leaderboard-dataset)的 `text_style_control` / `latest` / `overall`，展示原始名次、真人偏好评分与投票数。数据按 CC BY 4.0 提供；评分与 AIHOT 分数分开呈现。使用本机已安装的 `pyarrow` 读取官方 Parquet 快照，缺少时回退 Hugging Face 数据集查询接口；各来源更新失败时保留上次有效数据。
 - Princeton HAL ScienceAgentBench：`python -B update_data.py`，保留 SAB Self-Debug 配置和原榜 token 总成本。
@@ -24,7 +24,7 @@
 - [AI Writing Benchmark](https://aiwritingbenchmark.com/leaderboard/)：一般英文写作综合成绩，AI 评审分，不直接评估学术准确性或引文。上述七个来源由 `python -B update_recent.py` 刷新；某个来源失败时保留其上一次数据并在页面提示。
 - [AutoResearchBench](https://cheryou.github.io/autoresearchbench.github.io/#leaderboard)、[SciDocBench](https://github.com/InternLM/SciDocBench#leaderboard)、[LitReview Arena](https://arxiv.org/html/2608.21374v2#S4.T1) 和 [ResearchQA](https://arxiv.org/html/2509.00496v2#S3.T3)：`python -B update_literature_extra.py`。原榜或论文中的检索配置、评审方式和不同指标分别保留；LitReview 含标注为人工参考的条目。论文日期和榜单采集日期含义不同，页面分别显示。
 - [FigCodeBench](https://arxiv.org/html/2610.10066v1#S4.T7)、[CharTide 对 ChartMimic v2 的重测](https://arxiv.org/html/2604.22192v2#S3.T1)、[TableBench](https://tablebench.github.io/) 和 [Chart2Code ACL 2026 正式版](https://aclanthology.org/2026.acl-long.616/)：`python -B update_visual_extra.py`。FigCodeBench 按语言分榜；CharTide 分别展示高、低层评分；TableBench 的可视化分数来自方法榜，含产品、智能体与模型配置；Chart2Code 的图像评分、代码评分及执行率分别展示。Chart2Code 正式版与项目网站、其他论文版本的任务和模型数量不同。正式版摘要与表 4 对 GPT-5.2 的一组数值归属不一致，本页采用表 4；Kimi-VL-A3B 的表格分组与附录 checkpoint 名称存在歧义，行内保留说明。
-- [NatureBench](https://frontisai.github.io/NatureBench/) 和 [FrontierCS 2](https://frontier-cs.org/)：`python -B update_extended.py`。NatureBench 仅纳入完整 90 题赛道，源文件修改时间不等于评测时间；FrontierCS 2 从官方结果文件统计所有 48 项任务中 `PASS` 的比例，缺失判定不计通过。两者展示的都是模型与智能体配置。
+- [NatureBench](https://frontisai.github.io/NatureBench/) 和 [FrontierCS 2](https://frontier-cs.org/)：`python -B update_extended.py`。NatureBench 仅纳入完整 90 题赛道，源文件修改时间指该数据文件的变动。FrontierCS 2 从官方结果文件统计所有 48 项任务中 `PASS` 的比例，只有明确判为 `PASS` 的任务计入通过数，行内标明来源已说明的运行记录缺口。两者展示的都是模型与智能体配置。
 - [Artificial Analysis Intelligence Index](https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index)：使用官方[免费数据 API](https://artificialanalysis.ai/api-reference/)，通过环境变量 `ARTIFICIAL_ANALYSIS_API_KEY` 或同名 GitHub Actions secret 配置密钥，并按要求署名。页面保留原榜入口；未配置密钥时不采集成绩，也不会使其他来源刷新失败。API 指数版本可能变动，以来源方法为准；不要把密钥写入静态文件。
 
 运行 `python -B update_all.py` 可逐个更新全部数据；也可只更新某个来源，例如 `python -B update_all.py overall` 或 `python -B update_all.py literature visual extended`。各来源独立更新，失败时保留该来源上一次有效快照，并将状态写入 `update-status.js`；页面每五分钟检查本地快照。AstaBench 必须成功读取全部来源文件且各组数据通过检查后才替换快照。

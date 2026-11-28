@@ -36,6 +36,8 @@ assert fixture['rows'][1]['score'] == 78 and fixture['rows'][1]['cachePrice'] is
 assert fixture['rows'][1]['cachePriceRaw'] == '无官方价'
 assert fixture['rows'][2]['cachePriceRaw'] == '未知新格式' and fixture['rows'][2]['cost'] is None
 assert fixture['rows'][0]['source'] == 'https://aihot.news/leaderboard/model-1'
+with patch.object(update_overall, 'fetch', return_value=html.replace('缓存价格', '缓存命中人民币 / 百万 Token▲')):
+    assert update_overall.aihot() == fixture
 
 try:
     import pyarrow.parquet as parquet

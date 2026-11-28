@@ -1,9 +1,9 @@
 window.EXTENDED_DATA = {
-  "capturedAt": "2026-11-27T02:09:48+00:00",
+  "capturedAt": "2026-11-28T01:56:49+00:00",
   "groups": {
     "naturebench": {
       "source": "https://frontisai.github.io/NatureBench/",
-      "updatedAt": "2026-11-24T07:35:55+00:00",
+      "updatedAt": "2026-11-27T20:20:34+00:00",
       "dateLabel": "源文件修改",
       "metric": "超越论文 SOTA 比例 %",
       "description": "90 个科学机器学习任务；仅包含完整赛道。超过论文基准 10% 的有效任务计为超越，达标比例包含超越的任务。模型、智能体与执行预算共同影响成绩。",
@@ -14,6 +14,14 @@ window.EXTENDED_DATA = {
           "score": 33.33,
           "scoreRaw": 33.333333,
           "matchRate": 61.111111,
+          "source": "https://frontisai.github.io/NatureBench/"
+        },
+        {
+          "model": "Gemini 4 Carbon (Megatron) [full/gemini-4-carbon-megatron]",
+          "agent": "Megatron",
+          "score": 27.78,
+          "scoreRaw": 27.777778,
+          "matchRate": 64.444444,
           "source": "https://frontisai.github.io/NatureBench/"
         },
         {
@@ -461,7 +469,7 @@ window.EXTENDED_DATA = {
     },
     "aa-index": {
       "source": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index",
-      "updatedAt": "2026-11-27T02:09:48+00:00",
+      "updatedAt": "2026-11-28T01:56:49+00:00",
       "dateLabel": "数据采集",
       "metric": "Intelligence Index",
       "indexVersion": 5.0,
@@ -1052,6 +1060,14 @@ window.EXTENDED_DATA = {
           "source": "https://artificialanalysis.ai/models/glm-5-3"
         },
         {
+          "model": "ERNIE 5.5 Flash Preview",
+          "provider": "Baidu",
+          "agent": "Artificial Analysis",
+          "score": 31.3,
+          "scoreRaw": 31.3,
+          "source": "https://artificialanalysis.ai/models/ernie-5-5-flash"
+        },
+        {
           "model": "Grok 4.7 (Low)",
           "provider": "SpaceXAI",
           "agent": "Artificial Analysis",
@@ -1282,6 +1298,14 @@ window.EXTENDED_DATA = {
           "score": 23.4,
           "scoreRaw": 23.4,
           "source": "https://artificialanalysis.ai/models/ling-3-2-air"
+        },
+        {
+          "model": "Quasar 1.2 358B (Max, Based on GLM-5.3)",
+          "provider": "Multiverse Computing",
+          "agent": "Artificial Analysis",
+          "score": 23.1,
+          "scoreRaw": 23.1,
+          "source": "https://artificialanalysis.ai/models/quasar-1-2-358b"
         },
         {
           "model": "Mistral Large 4 (Medium)",
